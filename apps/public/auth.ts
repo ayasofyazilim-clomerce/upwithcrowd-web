@@ -15,14 +15,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         let user = null
+        let scopes = "openid profile email";
+        const openId_response = await fetch(OPENID_URL);
         console.log(credentials)
-
-        const scopes: string = await fetch(OPENID_URL)
-          .then((response) => response.json())
-          .then(
-            (json: { scopes_supported?: string[] }) =>
-              json.scopes_supported?.join(" ") || "",
-          );
+        const scopes_json = await openId_response.json();
+        if ("scopes_supported" in scopes_json) {
+          scopes = scopes_json.scopes_supported.join(" ");
+        }
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
@@ -30,10 +29,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const urlencoded = new URLSearchParams();
         const urlEncodedContent: Record<string, string> = {
           grant_type: "password",
-          client_id: "Angular",
-          username: "" +  credentials.email,
-          password:  "" + credentials.password,
+          client_id: "frontend",
+          username: "" + credentials.email,
+          password: "" + credentials.password,
           scope: scopes,
+          client_secret: "frontend",
         };
         Object.keys(urlEncodedContent).forEach((key) => {
           urlencoded.append(key, urlEncodedContent[key]);
@@ -44,9 +44,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           body: urlencoded,
         };
         const response = await fetch(TOKEN_URL, requestOptions);
-        const json: User= (await response.json()) as User;
+        console.log("response", response);
+        const json: User = await response.json();
         user = json;
-        console.log(user)
+        console.log("json user", user)
+        if ("error" in user && "error_description" in user) {
+          throw new Error(user.error + ": " + user.error_description);
+        }
         if (!user) {
           // No user found, so this is their first attempt to login
           // Optionally, this is also the place you could do a user registration

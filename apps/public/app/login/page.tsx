@@ -14,12 +14,17 @@ export default function LoginPage() {
             <CardTitle>Welcome Back</CardTitle>
           </CardHeader>
           <CardContent>
-            <form action={async (formData) => {
+            <form action={async (formData:FormData) => {
               "use server"
               try {
-                await signIn("credentials", formData) 
+                await signIn("credentials", {
+                  redirect: false,
+                  email: formData.get("email"),
+                  password: formData.get("password")
+                }) 
+                console.log("success")
               } catch (error) {
-                console.log("error")
+                console.log("error", error)
               }
             }}>
               <div className="space-y-4">
@@ -27,7 +32,7 @@ export default function LoginPage() {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
                   </label>
-                  <Input id="email" type="email" name="email" placeholder="Enter your email" required />
+                  <Input id="email" type="text" name="email" placeholder="Enter your email" required />
                 </div>
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">
