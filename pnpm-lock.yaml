@@ -36,6 +36,9 @@ importers:
 
   apps/public:
     dependencies:
+      '@ayasofyazilim/saas':
+        specifier: 0.0.92
+        version: 0.0.92(openapi-types@12.1.3)
       '@radix-ui/react-accordion':
         specifier: ^1.1.2
         version: 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.0)(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
@@ -72,6 +75,9 @@ importers:
       next:
         specifier: 14.2.16
         version: 14.2.16(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
+      next-auth:
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@14.2.16(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0))(react@18.3.0)
       react:
         specifier: ^18
         version: 18.3.0
@@ -886,12 +892,30 @@ packages:
       nodemailer:
         optional: true
 
+  '@auth/core@0.37.2':
+    resolution: {integrity: sha512-kUvzyvkcd6h1vpeMAojK2y7+PAV5H+0Cc9+ZlKYDFhDY31AlvsB+GW5vNO4qE3Y07KeQgvNO9U0QUx/fN62kBw==}
+    peerDependencies:
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      nodemailer:
+        optional: true
+
   '@ayasofyazilim/saas@0.0.87':
     resolution: {integrity: sha512-JbIpL5eoSOWqCoXvuc4WXoq7PKaIEC30p0d+Ue1r1XX8TdMzPyhCd/Y0D65ETN1kPaQAaC2Sft6vFR7rzUL1uw==}
     hasBin: true
 
   '@ayasofyazilim/saas@0.0.90':
     resolution: {integrity: sha512-HVIij7QXikZfbzq2wYlO9E7KTmw/YWnW7zmJXfRD6Qb0D+sLFTuEKo5VBxG6GpW46hMQQdNbR1T0zXDAbuFH7g==}
+    hasBin: true
+
+  '@ayasofyazilim/saas@0.0.92':
+    resolution: {integrity: sha512-uWS/7NvG/jRL+qBtqsxjnu4/3ieiu+oiW2hO53095qdKIQ1l+DPZCQfzw2WvaAQZpQX+0uWeQFqScnLIbVOJ9Q==}
     hasBin: true
 
   '@babel/code-frame@7.24.7':
@@ -5145,6 +5169,10 @@ packages:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
 
+  cookie@0.7.1:
+    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
+    engines: {node: '>= 0.6'}
+
   core-js-compat@3.38.1:
     resolution: {integrity: sha512-JRH6gfXxGmrzF3tZ57lFx97YARxCXPaMzPo6jELZhv88pBH5VXpQ+y0znKGlFnzuaihqhLbefxSJxWJMPtfDzw==}
 
@@ -6902,6 +6930,9 @@ packages:
   jose@5.9.2:
     resolution: {integrity: sha512-ILI2xx/I57b20sd7rHZvgiiQrmp2mcotwsAH+5ajbpFQbrYVQdNHYlQhoA5cFb78CgtBOxtC05TeA+mcgkuCqQ==}
 
+  jose@5.9.6:
+    resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -7412,6 +7443,22 @@ packages:
       nodemailer:
         optional: true
 
+  next-auth@5.0.0-beta.25:
+    resolution: {integrity: sha512-2dJJw1sHQl2qxCrRk+KTQbeH+izFbGFPuJj5eGgBZFYyiYYtvlrBeUw1E/OJJxTRjuxbSYGnCTkUIRsIIW0bog==}
+    peerDependencies:
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      next: ^14.0.0-0 || ^15.0.0-0
+      nodemailer: ^6.6.5
+      react: ^18.2.0 || ^19.0.0-0
+    peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      nodemailer:
+        optional: true
+
   next-themes@0.2.1:
     resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
     peerDependencies:
@@ -7558,6 +7605,9 @@ packages:
 
   oauth4webapi@2.15.0:
     resolution: {integrity: sha512-6nZnlxj6M3LeVrxB7bgxwY8hq0B5Quemxhbw85evRlK70qCCUm9O1s47AepSmgYUbkwLTFedP1DZ1eBUIKyRSw==}
+
+  oauth4webapi@3.1.4:
+    resolution: {integrity: sha512-eVfN3nZNbok2s/ROifO0UAc5G8nRoLSbrcKJ09OqmucgnhXEfdIQOR4gq1eJH1rN3gV7rNw62bDEgftsgFtBEg==}
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -9867,6 +9917,16 @@ snapshots:
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
 
+  '@auth/core@0.37.2':
+    dependencies:
+      '@panva/hkdf': 1.2.1
+      '@types/cookie': 0.6.0
+      cookie: 0.7.1
+      jose: 5.9.6
+      oauth4webapi: 3.1.4
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3(preact@10.11.3)
+
   '@ayasofyazilim/saas@0.0.87(openapi-types@12.1.3)':
     dependencies:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
@@ -9876,6 +9936,14 @@ snapshots:
       - openapi-types
 
   '@ayasofyazilim/saas@0.0.90(openapi-types@12.1.3)':
+    dependencies:
+      '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
+      '@hey-api/openapi-ts': 0.45.1(typescript@5.7.2)
+      typescript: 5.7.2
+    transitivePeerDependencies:
+      - openapi-types
+
+  '@ayasofyazilim/saas@0.0.92(openapi-types@12.1.3)':
     dependencies:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
       '@hey-api/openapi-ts': 0.45.1(typescript@5.7.2)
@@ -14701,6 +14769,8 @@ snapshots:
 
   cookie@0.6.0: {}
 
+  cookie@0.7.1: {}
+
   core-js-compat@3.38.1:
     dependencies:
       browserslist: 4.23.3
@@ -16808,6 +16878,8 @@ snapshots:
 
   jose@5.9.2: {}
 
+  jose@5.9.6: {}
+
   joycon@3.1.1: {}
 
   js-tokens@4.0.0: {}
@@ -17268,6 +17340,12 @@ snapshots:
       next: 14.2.20(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
       react: 18.3.0
 
+  next-auth@5.0.0-beta.25(next@14.2.16(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0))(react@18.3.0):
+    dependencies:
+      '@auth/core': 0.37.2
+      next: 14.2.16(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
+      react: 18.3.0
+
   next-themes@0.2.1(next@14.2.11(@babel/core@7.25.2)(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0))(react-dom@18.3.0(react@18.3.0))(react@18.3.0):
     dependencies:
       next: 14.2.11(@babel/core@7.25.2)(@playwright/test@1.47.1)(react-dom@18.3.0(react@18.3.0))(react@18.3.0)
@@ -17468,6 +17546,8 @@ snapshots:
       ufo: 1.5.4
 
   oauth4webapi@2.15.0: {}
+
+  oauth4webapi@3.1.4: {}
 
   object-assign@4.1.1: {}
 
