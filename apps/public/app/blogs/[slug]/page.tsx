@@ -46,14 +46,14 @@ const blogPost = {
 
     <p>By following these tips, you'll be well on your way to running a successful crowdfunding campaign. Remember, success often comes from a combination of careful planning, authentic storytelling, and persistent effort. Good luck with your crowdfunding journey!</p>
   `,
-  image: "/placeholder.svg?height=400&width=800",
+  image: "/placeholder.svg",
   date: "2023-06-01",
   category: "Crowdfunding",
   readTime: "5 min read",
   lastUpdated: "2023-06-05",
   author: {
     name: "Jane Doe",
-    avatar: "/placeholder.svg?height=50&width=50",
+    avatar: "/placeholder.svg",
     role: "Crowdfunding Expert"
   },
   topics: ["Crowdfunding", "Fundraising", "Project Management"]

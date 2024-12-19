@@ -12,7 +12,7 @@ export default function HeroSection() {
         </div>
         <div className="relative w-full md:w-96 h-64 md:h-96">
           <Image
-            src="/placeholder.svg?height=384&width=384"
+            src="/placeholder.svg"
             alt="Crowdfunding illustration"
             fill
             className="rounded-tl-[100px] object-cover"

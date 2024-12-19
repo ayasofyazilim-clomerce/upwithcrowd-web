@@ -4,19 +4,19 @@ import Link from 'next/link'
 const blogPosts = [
   {
     title: "10 Tips for Successful Crowdfunding",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     excerpt: "Learn the secrets to running a successful crowdfunding campaign and bringing your ideas to life.",
     slug: "10-tips-for-successful-crowdfunding",
   },
   {
     title: "The Future of Crowdfunding",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     excerpt: "Explore emerging trends and technologies shaping the future of crowdfunding and online fundraising.",
     slug: "the-future-of-crowdfunding",
   },
   {
     title: "Spotlight: Innovative Projects Making a Difference",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     excerpt: "Discover inspiring projects that are leveraging crowdfunding to create positive change in communities worldwide.",
     slug: "spotlight-innovative-projects",
   },

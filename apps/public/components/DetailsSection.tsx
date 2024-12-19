@@ -7,7 +7,7 @@ export default function DetailsSection() {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <Image
-            src="/placeholder.svg?height=400&width=600"
+            src="/placeholder.svg"
             alt="Project details"
             width={600}
             height={400}

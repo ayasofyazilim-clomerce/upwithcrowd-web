@@ -11,7 +11,7 @@ const projects = [
   {
     id: 1,
     title: "Eco-Friendly Water Purifier",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "San Francisco, CA",
     badge: "Environment",
     goal: 50000,
@@ -20,7 +20,7 @@ const projects = [
   {
     id: 2,
     title: "Solar-Powered Education Kits",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Nairobi, Kenya",
     badge: "Education",
     goal: 30000,
@@ -29,7 +29,7 @@ const projects = [
   {
     id: 3,
     title: "Community Garden Initiative",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "London, UK",
     badge: "Community",
     goal: 20000,
@@ -38,7 +38,7 @@ const projects = [
   {
     id: 4,
     title: "Affordable 3D-Printed Prosthetics",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Berlin, Germany",
     badge: "Healthcare",
     goal: 40000,
@@ -47,7 +47,7 @@ const projects = [
   {
     id: 5,
     title: "Sustainable Fashion Marketplace",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Paris, France",
     badge: "Fashion",
     goal: 60000,
@@ -56,7 +56,7 @@ const projects = [
   {
     id: 6,
     title: "Urban Beekeeping Network",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "New York, USA",
     badge: "Environment",
     goal: 25000,
@@ -65,7 +65,7 @@ const projects = [
   {
     id: 7,
     title: "AI-Powered Language Learning App",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Tokyo, Japan",
     badge: "Education",
     goal: 80000,
@@ -74,7 +74,7 @@ const projects = [
   {
     id: 8,
     title: "Micro-Lending Platform for Entrepreneurs",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Mumbai, India",
     badge: "Finance",
     goal: 100000,
@@ -83,7 +83,7 @@ const projects = [
   {
     id: 9,
     title: "Ocean Plastic Recycling Initiative",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Sydney, Australia",
     badge: "Environment",
     goal: 70000,

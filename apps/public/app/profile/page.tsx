@@ -15,7 +15,7 @@ const initialUserData = {
   email: "john.doe@example.com",
   phone: "+1 (555) 123-4567",
   bio: "Passionate about crowdfunding and supporting innovative projects.",
-  profileImage: "/placeholder.svg?height=200&width=200"
+  profileImage: "/placeholder.svg"
 }
 
 export default function ProfilePage() {

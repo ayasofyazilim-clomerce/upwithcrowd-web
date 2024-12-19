@@ -9,7 +9,7 @@ const blogPosts = [
     slug: "10-tips-for-successful-crowdfunding",
     title: "10 Tips for Successful Crowdfunding",
     excerpt: "Learn the secrets to running a successful crowdfunding campaign and bringing your ideas to life.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     date: "2023-06-01",
     category: "Crowdfunding",
     readTime: "5 min read"
@@ -18,7 +18,7 @@ const blogPosts = [
     slug: "the-future-of-crowdfunding",
     title: "The Future of Crowdfunding",
     excerpt: "Explore emerging trends and technologies shaping the future of crowdfunding and online fundraising.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     date: "2023-05-15",
     category: "Industry Insights",
     readTime: "7 min read"
@@ -27,7 +27,7 @@ const blogPosts = [
     slug: "spotlight-innovative-projects",
     title: "Spotlight: Innovative Projects Making a Difference",
     excerpt: "Discover inspiring projects that are leveraging crowdfunding to create positive change in communities worldwide.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     date: "2023-05-01",
     category: "Project Spotlight",
     readTime: "6 min read"
@@ -36,7 +36,7 @@ const blogPosts = [
     slug: "crowdfunding-for-nonprofits",
     title: "Crowdfunding for Nonprofits: A Complete Guide",
     excerpt: "Learn how nonprofits can effectively use crowdfunding to support their causes and expand their reach.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     date: "2023-04-20",
     category: "Nonprofit",
     readTime: "8 min read"
@@ -45,7 +45,7 @@ const blogPosts = [
     slug: "building-community-around-your-project",
     title: "Building a Community Around Your Crowdfunding Project",
     excerpt: "Discover strategies to engage supporters and create a lasting community around your crowdfunding campaign.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     date: "2023-04-10",
     category: "Community",
     readTime: "6 min read"
@@ -54,7 +54,7 @@ const blogPosts = [
     slug: "legal-considerations-for-crowdfunding",
     title: "Legal Considerations for Crowdfunding Campaigns",
     excerpt: "Navigate the legal landscape of crowdfunding with this comprehensive guide to regulations and best practices.",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     date: "2023-03-25",
     category: "Legal",
     readTime: "7 min read"

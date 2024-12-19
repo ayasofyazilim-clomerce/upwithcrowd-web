@@ -18,9 +18,9 @@ const project = {
   title: "Eco-Friendly Water Purifier",
   description: "Our innovative water purifier uses cutting-edge technology to provide clean, safe drinking water without harmful chemicals or excessive plastic waste. Help us bring this sustainable solution to communities in need around the world.",
   images: [
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
-    "/placeholder.svg?height=400&width=600",
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
   ],
   badge: "Environment",
   goal: 50000,
@@ -32,9 +32,9 @@ const project = {
 
 // Mock data for recent projects
 const recentProjects = [
-  { id: 2, title: "Solar-Powered Education Kits", image: "/placeholder.svg?height=100&width=150" },
-  { id: 3, title: "Community Garden Initiative", image: "/placeholder.svg?height=100&width=150" },
-  { id: 4, title: "Affordable 3D-Printed Prosthetics", image: "/placeholder.svg?height=100&width=150" },
+  { id: 2, title: "Solar-Powered Education Kits", image: "/placeholder.svg" },
+  { id: 3, title: "Community Garden Initiative", image: "/placeholder.svg" },
+  { id: 4, title: "Affordable 3D-Printed Prosthetics", image: "/placeholder.svg" },
 ]
 
 const donationOptions = [10, 25, 50, 100, 250, 500]
@@ -174,7 +174,7 @@ export default function ProjectPage() {
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Project Creator</h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             <Image
-              src="/placeholder.svg?height=200&width=200"
+              src="/placeholder.svg"
               alt="Project Creator"
               width={200}
               height={200}

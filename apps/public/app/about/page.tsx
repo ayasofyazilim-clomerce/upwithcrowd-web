@@ -54,7 +54,7 @@ export default function AboutPage() {
         <div className="flex flex-col lg:flex-row items-center gap-8 mb-16">
           <div className="lg:w-1/2">
             <Image
-              src="/placeholder.svg?height=400&width=600"
+              src="/placeholder.svg"
               alt="CrowdFund in action"
               width={600}
               height={400}

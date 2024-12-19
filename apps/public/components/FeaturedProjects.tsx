@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react'
 import Image from 'next/image'
 import {
@@ -26,7 +28,7 @@ const projects: Project[] = [
   {
     id: 1,
     title: "Eco-Friendly Water Purifier",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "San Francisco, CA",
     badge: "Environment",
     goal: 50000,
@@ -35,7 +37,7 @@ const projects: Project[] = [
   {
     id: 2,
     title: "Solar-Powered Education Kits",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Nairobi, Kenya",
     badge: "Education",
     goal: 30000,
@@ -44,7 +46,7 @@ const projects: Project[] = [
   {
     id: 3,
     title: "Community Garden Initiative",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "London, UK",
     badge: "Community",
     goal: 20000,
@@ -53,7 +55,7 @@ const projects: Project[] = [
   {
     id: 4,
     title: "Affordable 3D-Printed Prosthetics",
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.svg",
     location: "Berlin, Germany",
     badge: "Healthcare",
     goal: 40000,

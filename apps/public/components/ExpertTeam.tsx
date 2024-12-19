@@ -4,22 +4,22 @@ const team = [
   {
     name: "John Doe",
     role: "CEO & Founder",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/placeholder.svg",
   },
   {
     name: "Jane Smith",
     role: "CTO",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/placeholder.svg",
   },
   {
     name: "Alex Johnson",
     role: "Head of Community",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/placeholder.svg",
   },
   {
     name: "Maria Garcia",
     role: "Lead Designer",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/placeholder.svg",
   },
 ]
 

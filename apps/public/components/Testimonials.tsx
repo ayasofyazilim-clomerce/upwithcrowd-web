@@ -6,19 +6,19 @@ const testimonials = [
     name: "Sarah Johnson",
     role: "Project Creator",
     comment: "CrowdFund made it easy for me to bring my eco-friendly product to market. The support from the community was incredible!",
-    avatar: "/placeholder.svg?height=40&width=40",
+    avatar: "/placeholder.svg",
   },
   {
     name: "Michael Lee",
     role: "Backer",
     comment: "I love being part of projects that make a difference. CrowdFund connects me with innovative ideas I'm excited to support.",
-    avatar: "/placeholder.svg?height=40&width=40",
+    avatar: "/placeholder.svg",
   },
   {
     name: "Emily Chen",
     role: "Nonprofit Leader",
     comment: "Thanks to CrowdFund, we were able to fund our community outreach program and make a real impact in our local area.",
-    avatar: "/placeholder.svg?height=40&width=40",
+    avatar: "/placeholder.svg",
   },
 ]
 

@@ -129,7 +129,7 @@ export default function ContactPage() {
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Our Location</h2>
           <div className="aspect-w-16 aspect-h-9">
             <Image
-              src="/placeholder.svg?height=450&width=800"
+              src="/placeholder.svg"
               alt="Map of CrowdFund office location"
               width={800}
               height={450}

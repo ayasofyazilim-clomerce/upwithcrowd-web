@@ -42,7 +42,7 @@ export default function LoginPage() {
         </Card>
         <div className="flex-1 hidden md:block">
           <Image
-            src="/placeholder.svg?height=600&width=600"
+            src="/placeholder.svg"
             alt="Login illustration"
             width={600}
             height={600}
