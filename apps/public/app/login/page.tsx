@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { signIn } from '@/auth'
 
 export default function LoginPage() {
   return (
@@ -13,19 +14,26 @@ export default function LoginPage() {
             <CardTitle>Welcome Back</CardTitle>
           </CardHeader>
           <CardContent>
-            <form>
+            <form action={async (formData) => {
+              "use server"
+              try {
+                await signIn("credentials", formData) 
+              } catch (error) {
+                console.log("error")
+              }
+            }}>
               <div className="space-y-4">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
                   </label>
-                  <Input id="email" type="email" placeholder="Enter your email" required />
+                  <Input id="email" type="email" name="email" placeholder="Enter your email" required />
                 </div>
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                     Password
                   </label>
-                  <Input id="password" type="password" placeholder="Enter your password" required />
+                  <Input id="password" type="password" name="password" placeholder="Enter your password" required />
                 </div>
               </div>
               <Button className="w-full mt-4">Log In</Button>
