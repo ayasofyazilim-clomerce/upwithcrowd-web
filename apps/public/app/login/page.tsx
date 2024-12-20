@@ -24,7 +24,10 @@ export default function LoginPage() {
                 }) 
                 console.log("success")
               } catch (error) {
-                console.log("error", error)
+                if (error instanceof Error) { 
+                  console.log("error 1", typeof error)
+                  console.log("error 1", error.name, error.message.split("Read more at https://errors.authjs.")[0])
+                }
               }
             }}>
               <div className="space-y-4">

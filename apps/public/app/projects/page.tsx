@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { MapPin, DollarSign, Target } from 'lucide-react'
+import { auth } from '@/auth'
+
 
 // Mock data for projects
 const projects = [
@@ -91,7 +93,11 @@ const projects = [
   },
 ]
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  console.log("projects page");
+  const session = await auth();
+  console.log(session)
+  if (!session?.user) return null
   return (
     <div className="min-h-screen bg-background">
       <section className="py-12 md:py-20 px-6">
