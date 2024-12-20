@@ -1,8 +1,10 @@
 import NextAuth, { AuthError, User } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import { getUpwithcrowd } from "./utils/client";
+import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/saas/upwithcrowdService";
 
-const TOKEN_URL = `${process.env.AUTH_URL}/connect/token`;
-const OPENID_URL = `${process.env.AUTH_URL}/.well-known/openid-configuration`;
+const TOKEN_URL = `${process.env.ABP_AUTH_URL}/connect/token`;
+const OPENID_URL = `${process.env.ABP_AUTH_URL}/.well-known/openid-configuration`;
 
 type Token = {
   access_token: string
@@ -60,18 +62,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const response = await fetch(TOKEN_URL, requestOptions);
         const json = await response.json();
-        user = json;
-        // if (isToken(json)) {
-        //   let user: User = { email: "" + credentials.email }
-        //   // const userResponse = await fetch(`${process.env.BASE_URL}/api/user`, {
-        //   //   headers: {
-        //   //     Authorization: `Bearer ${json.access_token}`,
-        //   //   },
-        //   // });
-        //   // user = await userResponse.json();
-        //   // return { user: json, token: json } as User;
-        //   return json;
-        // }
+        if (isToken(json)) {
+          const userReuqest = await fetch(`${process.env.BASE_URL}/api/abp/application-configuration`, {
+          });
+          const user_data: GetApiAbpApplicationConfigurationResponse = await userReuqest.json();
+          const current_user = user_data.currentUser;
+          // const upWithCrowdClient = await getUpwithcrowd();
+          // const appConfig = await upWithCrowdClient.abpApplicationConfiguration.getApiAbpApplicationConfiguration();
+          // const userAbp = appConfig.currentUser;
+          let user: User = { 
+            email: current_user?.email || credentials.email + "",
+            name: current_user?.userName || credentials.email + "",
+            // image: userAbp?.profilePicture,
+            id: current_user?.id || "",
+           }
+          // const user = {email: credentials.email, name: credentials.email, id: "1"}
+          return { ...user, ...json } as User;
+        }
         if ("error" in json && "error_description" in json) {
           // return { error: json.error + ": " + json.error_description }; 
           throw new AuthError(json.error + ": " + json.error_description);
