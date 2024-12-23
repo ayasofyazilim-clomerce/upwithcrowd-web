@@ -1,6 +1,6 @@
-import NextAuth, { AuthError, User } from "next-auth";
+import NextAuth, { AuthError, DefaultSession, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { getUpwithcrowd } from "./utils/client";
+// import { getUpwithcrowd } from "./utils/client";
 import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/saas/upwithcrowdService";
 
 const TOKEN_URL = `${process.env.ABP_AUTH_URL}/connect/token`;
@@ -77,9 +77,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: current_user?.userName || credentials.email + "",
             // image: userAbp?.profilePicture,
             id: current_user?.id || "",
+            access_token: json.access_token,
           };
+          // console.log("user", user, json);
+
           // const user = {email: credentials.email, name: credentials.email, id: "1"}
-          return { ...user, ...json } as User;
+          return { ...user, ...json };
         }
         if ("error" in json && "error_description" in json) {
           // return { error: json.error + ": " + json.error_description };
@@ -95,22 +98,48 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // name?: string | null
         // email?: string | null
         // image?: string | null
-
+        // console.log("user", user);
         // return user object with their profile data
         return user;
       },
     }),
   ],
   callbacks: {
+    jwt({ token, user }) {
+      // console.log("jwt", user);
+      if (user?.access_token) {
+        // User is available during sign-in
+        token.access_token = user?.access_token;
+      }
+      return token;
+    },
     session({ session, token, user }) {
+      // console.log("session", user);
       // `session.user.address` is now a valid property, and will be type-checked
       // in places like `useSession().data.user` or `auth().user`
       return {
+        access_token: token.access_token,
         ...session,
         user: {
+          ...user,
           ...session.user,
         },
       };
     },
   },
 });
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      access_token: string;
+    } & DefaultSession["user"];
+  }
+  interface User {
+    access_token?: string;
+    id?: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  }
+}
