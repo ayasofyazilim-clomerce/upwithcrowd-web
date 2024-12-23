@@ -1,12 +1,18 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 // Mock user data
 const initialUserData = {
@@ -15,45 +21,51 @@ const initialUserData = {
   email: "john.doe@example.com",
   phone: "+1 (555) 123-4567",
   bio: "Passionate about crowdfunding and supporting innovative projects.",
-  profileImage: "/placeholder.svg"
-}
+  profileImage: "/placeholder.svg",
+};
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState(initialUserData)
-  const [isEditing, setIsEditing] = useState(false)
+  const [userData, setUserData] = useState(initialUserData);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setUserData(prevData => ({ ...prevData, [name]: value }))
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setUserData(prevData => ({ ...prevData, profileImage: reader.result as string }))
-      }
-      reader.readAsDataURL(file)
+        setUserData((prevData) => ({
+          ...prevData,
+          profileImage: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleSave = () => {
     // Here you would typically send the updated data to your backend
-    console.log('Saving user data:', userData)
-    setIsEditing(false)
-  }
+    setIsEditing(false);
+  };
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="bg-background min-h-screen px-4 py-8">
+      <div className="mx-auto max-w-2xl">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">User Profile</CardTitle>
+            <CardTitle className="text-center text-2xl font-bold">
+              User Profile
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col items-center mb-6">
-              <div className="relative w-32 h-32 mb-4">
+            <div className="mb-6 flex flex-col items-center">
+              <div className="relative mb-4 h-32 w-32">
                 <Image
                   src={userData.profileImage}
                   alt="Profile"
@@ -63,7 +75,10 @@ export default function ProfilePage() {
               </div>
               {isEditing && (
                 <div>
-                  <Label htmlFor="profileImage" className="cursor-pointer text-primary hover:underline">
+                  <Label
+                    htmlFor="profileImage"
+                    className="text-primary cursor-pointer hover:underline"
+                  >
                     Change Profile Picture
                   </Label>
                   <Input
@@ -134,7 +149,11 @@ export default function ProfilePage() {
           <CardFooter className="flex justify-end">
             {isEditing ? (
               <>
-                <Button onClick={() => setIsEditing(false)} variant="outline" className="mr-2">
+                <Button
+                  onClick={() => setIsEditing(false)}
+                  variant="outline"
+                  className="mr-2"
+                >
                   Cancel
                 </Button>
                 <Button onClick={handleSave}>Save Changes</Button>
@@ -146,6 +165,5 @@ export default function ProfilePage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
-
