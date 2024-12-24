@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "@/auth";
+import SingOut from "./signout";
 
 export default function LoginPage() {
   return (
@@ -91,6 +92,7 @@ export default function LoginPage() {
             >
               Don't have an account? Sign Up
             </Link>
+            <SingOut></SingOut>
           </CardFooter>
         </Card>
         <div className="hidden flex-1 md:block">
