@@ -73,5 +73,6 @@
   "ExportValidation.Description": "You can view the export validations from here.",
   "Finance": "Finance",
   "Billing": "Billing",
-  "Billing.Description": "You can view the billing from here."
+  "Billing.Description": "You can view the billing from here.",
+  "MyAccount": "My Account"
 }
