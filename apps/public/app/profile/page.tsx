@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,13 +8,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ChevronRight, Bell, HelpCircle, FileText, Shield, BellDot, Link2, Building2, Plus } from 'lucide-react'
+import { useSession } from 'next-auth/react';
+import { getUpwithcrowd } from '@/utils/client';
+import { getMembership } from './actions';
 
 // Mock user data
 const userData = {
   name: "John",
   surname: "Doe",
   email: "john.doe@example.com",
-  profileImage: "/placeholder.svg?height=200&width=200"
+  profileImage: "/placeholder.svg"
 }
 
 // Mock user accounts
@@ -24,7 +27,15 @@ const userAccounts = [
 ]
 
 export default function ProfilePage() {
+  const { data: session } = useSession();
+  const currentUser = session?.user;
   const [profileImage, setProfileImage] = useState(userData.profileImage)
+
+  // useEffect(() => {
+  //   console.log("session", session);
+  // })s
+
+  void getMembership();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -58,6 +69,7 @@ export default function ProfilePage() {
                     className="rounded-full object-cover"
                   />
                 </div>
+                <h2 className="font-semibold text-lg">{currentUser?.name}</h2>
                 <Label htmlFor="profileImage" className="cursor-pointer">
                   <Button variant="outline" className="mt-2">Change Profile Picture</Button>
                 </Label>
@@ -70,10 +82,10 @@ export default function ProfilePage() {
                 />
               </CardContent>
             </Card>
-            
+
             <div className="space-y-4">
               {userAccounts.map((account) => (
-                <Card 
+                <Card
                   key={account.id}
                   className="transition-colors hover:bg-muted cursor-pointer"
                   onClick={() => handleAccountClick(account.id)}
@@ -89,6 +101,23 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               ))}
+              {currentUser &&
+                <Card
+                  key={currentUser?.id || 1}
+                  className="transition-colors hover:bg-muted cursor-pointer"
+                  onClick={() => handleAccountClick( Number(currentUser?.id) )}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="font-semibold mb-2">{currentUser.name}</h3>
+                        <p className="text-sm text-muted-foreground">{currentUser.email}</p>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                    </div>
+                  </CardContent>
+                </Card>
+              }
             </div>
 
             <Button className="w-full" variant="outline">

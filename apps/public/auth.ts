@@ -118,11 +118,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // `session.user.address` is now a valid property, and will be type-checked
       // in places like `useSession().data.user` or `auth().user`
       return {
-        access_token: token.access_token,
         ...session,
         user: {
           ...user,
           ...session.user,
+          access_token: token.access_token + "",
         },
       };
     },

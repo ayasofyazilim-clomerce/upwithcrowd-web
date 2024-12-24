@@ -8,7 +8,7 @@ const HEADERS = {
 };
 export async function getUpwithcrowd(session?: Session | null) {
     const userData = session || (await auth());
-    const token = userData?.expires || "" //userData?.user;
+    const token = userData?.user.access_token || "" //userData?.user;
     return new upwithcrowdServiceClient({
         TOKEN: token,
         BASE: process.env.BASE_URL,

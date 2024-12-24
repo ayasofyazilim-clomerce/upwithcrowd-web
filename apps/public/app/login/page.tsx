@@ -24,24 +24,12 @@ export default function LoginPage() {
             <form
               action={async (formData: FormData) => {
                 "use server";
-                try {
-                  await signIn("credentials", {
-                    redirect: false,
-                    email: formData.get("email"),
-                    password: formData.get("password"),
-                  });
-                } catch (error) {
-                  if (error instanceof Error) {
-                    console.log("error 1", typeof error);
-                    console.log(
-                      "error 1",
-                      error.name,
-                      error.message.split(
-                        "Read more at https://errors.authjs.",
-                      )[0],
-                    );
-                  }
-                }
+                await signIn("credentials", {
+                  redirect: true,
+                  redirectTo: "./profile",
+                  email: formData.get("email"),
+                  password: formData.get("password"),
+                });
               }}
             >
               <div className="space-y-4">
