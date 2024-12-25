@@ -1,10 +1,20 @@
+"use client";
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { createUser } from './action';
+import { useFormState } from 'react-dom';
+import SubmitButton from './SubmitButton';
 
+ 
+const initialState = {
+  message: '',
+}
 export default function SignupPage() {
+  const [state, formAction] = useFormState(createUser, initialState)
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="max-w-6xl w-full flex flex-col md:flex-row gap-8">
@@ -13,7 +23,7 @@ export default function SignupPage() {
             <CardTitle>Create an Account</CardTitle>
           </CardHeader>
           <CardContent>
-            <form>
+            <form action={formAction} method="post">
               <div className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -40,7 +50,7 @@ export default function SignupPage() {
                   <Input id="confirmPassword" type="password" placeholder="Confirm your password" required />
                 </div>
               </div>
-              <Button className="w-full mt-4">Sign Up</Button>
+              <SubmitButton></SubmitButton>
             </form>
           </CardContent>
           <CardFooter>
