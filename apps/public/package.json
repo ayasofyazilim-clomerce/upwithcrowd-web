@@ -6,7 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix --quiet",
+    "lint:report": "next lint --quiet  > lint-output.txt 2>&1",
+    "type-check": "tsc --noEmit",
+    "type-check:report": "tsc --noEmit > type-check-output.txt 2>&1",
+    "format": "prettier --write . --plugin=prettier-plugin-tailwindcss --log-level=warn",
+    "precommit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write",
+      "next lint --fix",
+      "tsc --noEmit"
+    ]
   },
   "dependencies": {
     "@ayasofyazilim/saas": "0.0.94",
@@ -21,6 +34,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.0.0",
+    "lint-staged": "15.2.2",
     "lucide-react": "^0.468.0",
     "next": "14.2.16",
     "next-auth": "5.0.0-beta.25",

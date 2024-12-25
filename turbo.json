@@ -19,7 +19,19 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {},
-    "type-check": {},
+    "lint:fix": {},
+    "type-check": {
+      "cache": false
+    },
+    "type-check:report": {
+      "cache": false
+    },
+    "precommit": {
+      "cache": false
+    },
+    "format": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true

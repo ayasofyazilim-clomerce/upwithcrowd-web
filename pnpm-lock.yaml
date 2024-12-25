@@ -72,6 +72,9 @@ importers:
       embla-carousel-react:
         specifier: ^8.0.0
         version: 8.3.0(react@18.3.1)
+      lint-staged:
+        specifier: 15.2.2
+        version: 15.2.2
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@18.3.1)
@@ -220,7 +223,6 @@ importers:
         version: 8.4.35
       tailwindcss:
         specifier: 3.4.1
-        version: 3.4.1(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.5))(@types/node@20.11.24)(typescript@5.3.3))
         version: 3.4.1(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.5))(@types/node@20.11.24)(typescript@5.3.3))
       typescript:
         specifier: 5.3.3
@@ -910,16 +912,12 @@ packages:
       nodemailer:
         optional: true
 
-  '@ayasofyazilim/saas@0.0.87':
-    resolution: {integrity: sha512-JbIpL5eoSOWqCoXvuc4WXoq7PKaIEC30p0d+Ue1r1XX8TdMzPyhCd/Y0D65ETN1kPaQAaC2Sft6vFR7rzUL1uw==}
-    hasBin: true
-
-  '@ayasofyazilim/saas@0.0.90':
-    resolution: {integrity: sha512-HVIij7QXikZfbzq2wYlO9E7KTmw/YWnW7zmJXfRD6Qb0D+sLFTuEKo5VBxG6GpW46hMQQdNbR1T0zXDAbuFH7g==}
-    hasBin: true
-
   '@ayasofyazilim/saas@0.0.94':
     resolution: {integrity: sha512-LSCmh4zgTWYhONIECUosZmYxRYiDD0meEvP/jCnPuYimSTjj8k5VnH82nCUxtvGXRl5/uQBfAyA8AfvUY6rT/g==}
+    hasBin: true
+
+  '@ayasofyazilim/saas@0.0.95':
+    resolution: {integrity: sha512-EQWTVr3OFcmJe+L6dOBBW+a/6kCR4PMgnsBEmkAhvpwn8Lz8Ht2AZhM0tPaSnfZK/zOzQ+O8Kwx2KWuBeMlDbQ==}
     hasBin: true
 
   '@babel/code-frame@7.24.7':
@@ -5531,8 +5529,8 @@ packages:
     resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  consola@3.3.1:
-    resolution: {integrity: sha512-GyKnPG3/I+a4RtJxgHquJXWr70g9I3c4NT3dvqh0LPHQP2nZFQBOBszb7a5u/pGzqr40AKplQA6UxM1BSynSXg==}
+  consola@3.3.0:
+    resolution: {integrity: sha512-kxltocVQCwQNFvw40dlVRYeAkAvtYjMFZYNlOcsF5wExPpGwPxMwgx4IfDJvBRPtBpnQwItd5WkTaR0ZwT/TmQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
   console-browserify@1.2.0:
@@ -10739,23 +10737,15 @@ snapshots:
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
 
-  '@ayasofyazilim/saas@0.0.87(openapi-types@12.1.3)':
-    dependencies:
-      '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
-      '@hey-api/openapi-ts': 0.45.1(typescript@5.7.2)
-      typescript: 5.7.2
-    transitivePeerDependencies:
-      - openapi-types
-
-  '@ayasofyazilim/saas@0.0.90(openapi-types@12.1.3)':
-    dependencies:
-      '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
-      '@hey-api/openapi-ts': 0.45.1(typescript@5.7.2)
-      typescript: 5.7.2
-    transitivePeerDependencies:
-      - openapi-types
-
   '@ayasofyazilim/saas@0.0.94(openapi-types@12.1.3)':
+    dependencies:
+      '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
+      '@hey-api/openapi-ts': 0.45.1(typescript@5.7.2)
+      typescript: 5.7.2
+    transitivePeerDependencies:
+      - openapi-types
+
+  '@ayasofyazilim/saas@0.0.95(openapi-types@12.1.3)':
     dependencies:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
       '@hey-api/openapi-ts': 0.45.1(typescript@5.7.2)
@@ -11621,7 +11611,7 @@ snapshots:
       '@babel/parser': 7.25.6
       '@babel/template': 7.25.0
       '@babel/types': 7.25.6
-      debug: 4.3.7
+      debug: 4.4.0
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -11964,7 +11954,7 @@ snapshots:
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
-      debug: 4.3.7
+      debug: 4.4.0
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -14862,7 +14852,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
-      debug: 4.3.7
+      debug: 4.4.0
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -15826,7 +15816,7 @@ snapshots:
 
   citty@0.1.6:
     dependencies:
-      consola: 3.3.1
+      consola: 3.3.0
 
   cjs-module-lexer@1.4.1: {}
 
@@ -15985,7 +15975,7 @@ snapshots:
 
   consola@3.2.3: {}
 
-  consola@3.3.1: {}
+  consola@3.3.0: {}
 
   console-browserify@1.2.0: {}
 
@@ -17750,7 +17740,7 @@ snapshots:
   giget@1.2.3:
     dependencies:
       citty: 0.1.6
-      consola: 3.3.1
+      consola: 3.3.0
       defu: 6.1.4
       node-fetch-native: 1.6.4
       nypm: 0.3.12
@@ -18453,7 +18443,7 @@ snapshots:
   istanbul-lib-source-maps@5.0.6:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
-      debug: 4.3.7
+      debug: 4.4.0
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
       - supports-color
@@ -19171,7 +19161,7 @@ snapshots:
   nypm@0.3.12:
     dependencies:
       citty: 0.1.6
-      consola: 3.3.1
+      consola: 3.3.0
       execa: 8.0.1
       pathe: 1.1.2
       pkg-types: 1.2.1
@@ -21302,27 +21292,6 @@ snapshots:
       '@swc/core': 1.7.26(@swc/helpers@0.5.5)
     optional: true
 
-  ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.5))(@types/node@20.11.24)(typescript@5.3.3):
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.11
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.4
-      '@types/node': 20.11.24
-      acorn: 8.12.1
-      acorn-walk: 8.3.4
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 5.3.3
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
-    optionalDependencies:
-      '@swc/core': 1.7.26(@swc/helpers@0.5.5)
-    optional: true
-
   ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.5))(@types/node@20.11.25)(typescript@5.6.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
@@ -21844,7 +21813,7 @@ snapshots:
   vite-node@1.6.0(@types/node@20.11.25)(terser@5.32.0):
     dependencies:
       cac: 6.7.14
-      debug: 4.3.7
+      debug: 4.4.0
       pathe: 1.1.2
       picocolors: 1.1.0
       vite: 5.4.5(@types/node@20.11.25)(terser@5.32.0)

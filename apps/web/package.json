@@ -7,15 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix",
+    "lint:fix": "next lint --fix --quiet",
     "lint:report": "next lint --quiet  > lint-output.txt 2>&1",
     "type-check": "tsc --noEmit",
     "type-check:report": "tsc --noEmit > type-check-output.txt 2>&1",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
-    "format": "prettier --write . --plugin=prettier-plugin-tailwindcss",
-    "precommit": "prettier --write . && next lint --fix && tsc --noEmit "
+    "format": "prettier --write . --plugin=prettier-plugin-tailwindcss --log-level=warn",
+    "precommit": "npx lint-staged"
   },
   "lint-staged": {
     "*": [
