@@ -33,8 +33,7 @@ export default function ProfilePage() {
   const [myMember, setMyMember] = useState<GetApiMymemberResponse>();
   useEffect(() => {
     void getMembership().then((result) => {
-      if (!result || typeof result.items !== "undefined" ) return;
-      console.log("myMember client", result);
+      if (!result || !result.items ) return;
       setMyMember(result.items);
     });
   }, [session]);
