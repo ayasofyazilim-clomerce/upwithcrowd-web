@@ -20,7 +20,6 @@
     },
     "lint": {},
     "lint:fix": {},
-    "lintstaged": {},
     "type-check": {
       "cache": false
     },

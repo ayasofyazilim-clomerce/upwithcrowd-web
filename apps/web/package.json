@@ -15,12 +15,13 @@
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "format": "prettier --write . --plugin=prettier-plugin-tailwindcss --log-level=warn",
-    "lintstaged": "npx lint-staged",
-    "precommit": "pnpm format && pnpm lint:fix && pnpm type-check"
+    "precommit": "npx lint-staged"
   },
   "lint-staged": {
     "*": [
-      "pnpm precommit"
+      "prettier --write",
+      "next lint --fix",
+      "tsc --noEmit"
     ]
   },
   "dependencies": {

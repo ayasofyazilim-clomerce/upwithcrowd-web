@@ -11,13 +11,14 @@
     "lint:report": "next lint --quiet  > lint-output.txt 2>&1",
     "type-check": "tsc --noEmit",
     "type-check:report": "tsc --noEmit > type-check-output.txt 2>&1",
-    "lintstaged": "npx lint-staged",
     "format": "prettier --write . --plugin=prettier-plugin-tailwindcss --log-level=warn",
-    "precommit": "pnpm format && pnpm lint:fix && pnpm type-check"
+    "precommit": "npx lint-staged"
   },
   "lint-staged": {
     "*": [
-      "pnpm precommit"
+      "prettier --write",
+      "next lint --fix",
+      "tsc --noEmit"
     ]
   },
   "dependencies": {
