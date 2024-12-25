@@ -1,23 +1,31 @@
 "use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { createUser } from './action';
-import { useFormState } from 'react-dom';
-import SubmitButton from './SubmitButton';
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { createUser } from "./action";
+import { useFormState } from "react-dom";
+import SubmitButton from "./SubmitButton";
 
- 
 const initialState = {
-  message: '',
-}
+  message: "",
+};
 export default function SignupPage() {
-  const [state, formAction] = useFormState(createUser, initialState)
+  const [state, formAction] = useFormState(
+    createUser<typeof initialState>,
+    initialState,
+  );
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="max-w-6xl w-full flex flex-col md:flex-row gap-8">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
+      <div className="flex w-full max-w-6xl flex-col gap-8 md:flex-row">
         <Card className="flex-1">
           <CardHeader>
             <CardTitle>Create an Account</CardTitle>
@@ -26,50 +34,76 @@ export default function SignupPage() {
             <form action={formAction} method="post">
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Full Name
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    username
                   </label>
-                  <Input id="name" type="text" placeholder="Enter your full name" required />
+                  <Input
+                    id="username"
+                    type="text"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                  />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email
                   </label>
-                  <Input id="email" type="email" placeholder="Enter your email" required />
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                  />
                 </div>
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Password
                   </label>
-                  <Input id="password" type="password" placeholder="Create a password" required />
-                </div>
-                <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                    Confirm Password
-                  </label>
-                  <Input id="confirmPassword" type="password" placeholder="Confirm your password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                  />
                 </div>
               </div>
               <SubmitButton></SubmitButton>
             </form>
+            {state.message && (
+              <p className="mt-4 text-sm text-red-500">{state.message}</p>
+            )}
           </CardContent>
           <CardFooter>
-            <Link href="/login" className="text-sm text-primary hover:underline">
+            <Link
+              href="/login"
+              className="text-primary text-sm hover:underline"
+            >
               Already have an account? Log In
             </Link>
           </CardFooter>
         </Card>
-        <div className="flex-1 hidden md:block">
+        <div className="hidden flex-1 md:block">
           <Image
             src="/placeholder.svg"
             alt="Signup illustration"
             width={600}
             height={600}
-            className="w-full h-full object-cover rounded-lg"
+            className="h-full w-full rounded-lg object-cover"
           />
         </div>
       </div>
     </div>
-  )
+  );
 }
-
