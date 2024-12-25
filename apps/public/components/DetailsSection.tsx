@@ -1,39 +1,61 @@
-import Image from 'next/image'
-import { Clock, Users, Target } from 'lucide-react'
+import Image from "next/image";
+import { Clock, Users, Target } from "lucide-react";
 
 export default function DetailsSection() {
   return (
-    <section className="py-12 md:py-20 px-6">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
-        <div className="w-full md:w-1/2 mb-8 md:mb-0">
+    <section className="px-6 py-12 md:py-20">
+      <div className="container mx-auto flex flex-col justify-between md:flex-row md:gap-8 lg:gap-16">
+        <div className="grid w-full grid-cols-2 gap-4 lg:gap-8">
           <Image
-            src="/placeholder.svg"
+            src="https://placehold.co/290x525"
             alt="Project details"
-            width={600}
-            height={400}
-            className="rounded-lg shadow-lg w-full h-auto"
+            width={290}
+            height={525}
+            className="-translate-y-10 rounded-lg shadow-lg"
+          />
+          <Image
+            src="https://placehold.co/290x525"
+            alt="Project details"
+            width={290}
+            height={525}
+            className="rounded-lg shadow-lg"
           />
         </div>
-        <div className="w-full md:w-1/2 md:ml-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Bringing Ideas to Life</h2>
-          <p className="text-lg mb-8">Our platform connects visionary creators with passionate backers, fostering innovation and positive change in communities worldwide.</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="space-y-8">
+          <h2 className="text-2xl font-bold md:text-5xl">
+            We are the Powerful, Free Fundraising Platform
+          </h2>
+          <div className="text-muted-foreground space-y-4">
+            <p>
+              Amet, consectetur adipiscing elit. Etiam eu turpis molestie,
+              dictum est a, mattis tellus. Sed dignissim, metus nec fringilla
+              accumsan, risus sem sollicitudin lacus, ut interdum tellus elit
+              sed risus. Maecenas eget condimentum velit, sit amet feugiat risus
+              sem sollicitudin lectus.
+            </p>
+            <p>
+              Consectetur adipiscing elit. Etiam eu turpis molestie, dictum est
+              a, mattis tellus. Sed dignissim, metus nec fringilla accumsan,
+              risus sem sollicitudin lacus, ut interdum tellus elit sed risus.
+              Maecenas eget condimentum.
+            </p>
+          </div>
+          <div className="grid gap-8">
             <div className="flex items-center">
-              <Clock className="w-8 h-8 text-primary mr-2" />
+              <Clock className="text-primary mr-2 h-8 w-8" />
               <span>Quick Setup</span>
             </div>
             <div className="flex items-center">
-              <Users className="w-8 h-8 text-primary mr-2" />
+              <Users className="text-primary mr-2 h-8 w-8" />
               <span>Global Reach</span>
             </div>
             <div className="flex items-center">
-              <Target className="w-8 h-8 text-primary mr-2" />
+              <Target className="text-primary mr-2 h-8 w-8" />
               <span>Goal Tracking</span>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
-
