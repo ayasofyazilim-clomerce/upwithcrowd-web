@@ -13,7 +13,7 @@ const initialState = {
   message: '',
 }
 export default function SignupPage() {
-  const [state, formAction] = useFormState(createUser, initialState)
+  const [state, formAction] = useFormState(createUser<typeof initialState>, initialState)
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">

@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -8,12 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/auth";
 import SingOut from "./signout";
 import SubmitButton from "./loading";
-import { redirect } from "next/navigation";
-
+import { useFormState } from "react-dom";
+import { signInForm } from "./action";
+const initialState = {
+  message: '',
+}
 export default function LoginPage() {
+  const [state, formAction] = useFormState(signInForm<typeof initialState>, initialState)
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center px-4">
@@ -24,24 +28,7 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <form
-              action={async (formData: FormData) => {
-                "use server";
-                try {
-                  await signIn("credentials", {
-                    redirect: true,
-                    redirectTo: "/profile",
-                    email: formData.get("email"),
-                    password: formData.get("password"),
-                  });
-                } catch (error) {
-                  if (error instanceof Error) {
-                    if (error.message === "NEXT_REDIRECT") {
-                      redirect("/profile");
-                    }
-                  }
-                }
-
-              }}
+              action={formAction}
             >
               <div className="space-y-4">
                 <div>

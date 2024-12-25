@@ -2,7 +2,7 @@
  
 import { redirect } from 'next/navigation'
  
-export async function createUser(prevState: any, formData: FormData) {
+export async function createUser<State>(prevState: State, formData: FormData) {
   const res = {
     ok: false,
     json: async () => ({})
