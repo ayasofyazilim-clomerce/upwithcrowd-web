@@ -1,19 +1,38 @@
-'use server'
- 
-import { redirect } from 'next/navigation'
- 
+"use server";
+
+import {
+  ApiErrorResponse,
+  getUpwithcrowdAccount,
+  isApiError,
+} from "@/utils/client";
+import { redirect } from "next/navigation";
+
 export async function createUser<State>(prevState: State, formData: FormData) {
-  const res = {
-    ok: false,
-    json: async () => ({})
+  const client = await getUpwithcrowdAccount();
+
+  try {
+    await client.account.postApiAccountRegister({
+      requestBody: {
+        password: formData.get("password") + "",
+        userName: formData.get("username") + "",
+        emailAddress: formData.get("email") + "",
+        appName: "MVC",
+      },
+    });
+  } catch (error) {
+    console.log("error 123");
+    if (isApiError(error)) {
+      const errorBody = error.body as ApiErrorResponse;
+      return {
+        message:
+          error.status +
+          ": " +
+          error.statusText +
+          ", " +
+          errorBody.error.message,
+      };
+    }
+    return { message: "An error occurred" };
   }
-//   await for 5 seconds 
-    await new Promise(resolve => setTimeout(resolve, 5000))
-  const json = await res.json()
- 
-  if (!res.ok) {
-    return { message: 'Please enter a valid email' }
-  }
- 
-  redirect('/dashboard')
+  redirect("/login");
 }

@@ -1,68 +1,74 @@
 "use client";
 
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ChevronRight, Bell, HelpCircle, FileText, Shield, BellDot, Link2, Building2, Plus } from 'lucide-react'
-import { useSession } from 'next-auth/react';
-import { getMembership } from './actions';
-import { GetApiMymemberResponse } from '@ayasofyazilim/saas/upwithcrowdService';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  ChevronRight,
+  Bell,
+  HelpCircle,
+  FileText,
+  Shield,
+  BellDot,
+  Link2,
+  Building2,
+  Plus,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import { getMembership } from "./actions";
+import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/saas/upwithcrowdService";
 
 // Mock user data
 const userData = {
   name: "John",
   surname: "Doe",
   email: "john.doe@example.com",
-  profileImage: "/placeholder.svg"
-}
-
-// Mock user accounts
-const userAccounts = [
-  { id: 1, name: "John", surname: "Doe", email: "john.doe@example.com" },
-  { id: 2, name: "Jane", surname: "Doe", email: "jane.doe@example.com" },
-]
+  profileImage: "/placeholder.svg",
+};
 
 export default function ProfilePage() {
   const { data: session } = useSession();
   const currentUser = session?.user;
-  const [profileImage, setProfileImage] = useState(userData.profileImage)
-  const [myMember, setMyMember] = useState<GetApiMymemberResponse>();
+  const [profileImage, setProfileImage] = useState(userData.profileImage);
+  const [myMember, setMyMember] =
+    useState<UpwithCrowd_Members_ListMemberResponseDto[]>();
   useEffect(() => {
     void getMembership().then((result) => {
-      if (!result || !result.items ) return;
-      setMyMember(result.items);
+      if (!result || !result.items) return;
+      const myMember = result.items;
+      setMyMember(myMember);
     });
   }, [session]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleAccountClick = (accountId: number) => {
-    console.log(`Switching to account ${accountId}`)
+    console.log(`Switching to account ${accountId}`);
     // Here you would typically implement account switching logic
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">User Profile</h1>
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="w-full md:w-1/3 space-y-4">
+    <div className="bg-background min-h-screen px-4 py-8">
+      <div className="mx-auto max-w-6xl">
+        <h1 className="mb-8 text-3xl font-bold">User Profile</h1>
+        <div className="flex flex-col gap-8 md:flex-row">
+          <div className="w-full space-y-4 md:w-1/3">
             <Card>
-              <CardContent className="p-6 flex flex-col items-center">
-                <div className="relative w-32 h-32 mb-4">
+              <CardContent className="flex flex-col items-center p-6">
+                <div className="relative mb-4 h-32 w-32">
                   <Image
                     src={profileImage}
                     alt="Profile"
@@ -70,9 +76,11 @@ export default function ProfilePage() {
                     className="rounded-full object-cover"
                   />
                 </div>
-                <h2 className="font-semibold text-lg">{currentUser?.name}</h2>
+                <h2 className="text-lg font-semibold">{currentUser?.name}</h2>
                 <Label htmlFor="profileImage" className="cursor-pointer">
-                  <Button variant="outline" className="mt-2">Change Profile Picture</Button>
+                  <Button variant="outline" className="mt-2">
+                    Change Profile Picture
+                  </Button>
                 </Label>
                 <Input
                   id="profileImage"
@@ -85,27 +93,33 @@ export default function ProfilePage() {
             </Card>
 
             <div className="space-y-4">
-              {typeof myMember !== "undefined" && myMember.length > 0 && myMember.map((membership) => (
-                <Card
-                  key={membership.id}
-                  className="transition-colors hover:bg-muted cursor-pointer"
-                  onClick={() => handleAccountClick(Number(membership.id))}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-semibold mb-2">{membership.name} {membership.surname}</h3>
-                        <p className="text-sm text-muted-foreground">{membership.mail}</p>
+              {typeof myMember !== "undefined" &&
+                myMember.length > 0 &&
+                myMember.map((membership) => (
+                  <Card
+                    key={membership.id}
+                    className="hover:bg-muted cursor-pointer transition-colors"
+                    onClick={() => handleAccountClick(Number(membership.id))}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="mb-2 font-semibold">
+                            {membership.name} {membership.surname}
+                          </h3>
+                          <p className="text-muted-foreground text-sm">
+                            {membership.mail}
+                          </p>
+                        </div>
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </div>
-                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
 
             <Button className="w-full" variant="outline">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="mr-2 h-4 w-4" />
               Add New Account
             </Button>
           </div>
@@ -115,91 +129,122 @@ export default function ProfilePage() {
               <CardContent className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-semibold mb-4">Your account</h2>
+                    <h2 className="mb-4 text-xl font-semibold">Your account</h2>
                     <div className="space-y-2">
-                      <Link href="/inbox" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/inbox"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
                           <div className="relative">
-                            <div className="p-2 bg-muted rounded-full">
-                              <Bell className="w-5 h-5" />
+                            <div className="bg-muted rounded-full p-2">
+                              <Bell className="h-5 w-5" />
                             </div>
-                            <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
+                            <div className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-red-500" />
                           </div>
                           <span>Inbox</span>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
-                      <Link href="/help" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/help"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-muted rounded-full">
-                            <HelpCircle className="w-5 h-5" />
+                          <div className="bg-muted rounded-full p-2">
+                            <HelpCircle className="h-5 w-5" />
                           </div>
                           <span>Help</span>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
-                      <Link href="/documents" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/documents"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-muted rounded-full">
-                            <FileText className="w-5 h-5" />
+                          <div className="bg-muted rounded-full p-2">
+                            <FileText className="h-5 w-5" />
                           </div>
                           <span>Statements and documents</span>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
                     </div>
                   </div>
 
                   <div>
-                    <h2 className="text-xl font-semibold mb-4">Settings</h2>
+                    <h2 className="mb-4 text-xl font-semibold">Settings</h2>
                     <div className="space-y-2">
-                      <Link href="/settings/security" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/settings/security"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-muted rounded-full">
-                            <Shield className="w-5 h-5" />
+                          <div className="bg-muted rounded-full p-2">
+                            <Shield className="h-5 w-5" />
                           </div>
                           <div className="flex flex-col">
                             <span>Security and privacy</span>
-                            <span className="text-sm text-muted-foreground">Change your security and privacy settings.</span>
+                            <span className="text-muted-foreground text-sm">
+                              Change your security and privacy settings.
+                            </span>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
-                      <Link href="/settings/notifications" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/settings/notifications"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-muted rounded-full">
-                            <BellDot className="w-5 h-5" />
+                          <div className="bg-muted rounded-full p-2">
+                            <BellDot className="h-5 w-5" />
                           </div>
                           <div className="flex flex-col">
                             <span>Display and notifications</span>
-                            <span className="text-sm text-muted-foreground">Customise your app display and choose how you get updates.</span>
+                            <span className="text-muted-foreground text-sm">
+                              Customise your app display and choose how you get
+                              updates.
+                            </span>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
-                      <Link href="/settings/integrations" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/settings/integrations"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-muted rounded-full">
-                            <Link2 className="w-5 h-5" />
+                          <div className="bg-muted rounded-full p-2">
+                            <Link2 className="h-5 w-5" />
                           </div>
                           <div className="flex flex-col">
                             <span>Integrations and tools</span>
-                            <span className="text-sm text-muted-foreground">Connect your account to third-party software.</span>
+                            <span className="text-muted-foreground text-sm">
+                              Connect your account to third-party software.
+                            </span>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
-                      <Link href="/settings/payment" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
+                      <Link
+                        href="/settings/payment"
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-muted rounded-full">
-                            <Building2 className="w-5 h-5" />
+                          <div className="bg-muted rounded-full p-2">
+                            <Building2 className="h-5 w-5" />
                           </div>
                           <div className="flex flex-col">
                             <span>Payment methods</span>
-                            <span className="text-sm text-muted-foreground">Manage saved cards and bank accounts that are linked to this account.</span>
+                            <span className="text-muted-foreground text-sm">
+                              Manage saved cards and bank accounts that are
+                              linked to this account.
+                            </span>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
                     </div>
                   </div>
@@ -210,6 +255,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
