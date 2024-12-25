@@ -1,22 +1,20 @@
-import Header from '../components/Header'
-import HeroSection from '../components/HeroSection'
-import FeaturedProjects from '../components/FeaturedProjects'
-import DetailsSection from '../components/DetailsSection'
-import ServicesSection from '../components/ServicesSection'
-import MissionSection from '../components/MissionSection'
-import OrganizationNumbers from '../components/OrganizationNumbers'
-import Testimonials from '../components/Testimonials'
-import ExpertTeam from '../components/ExpertTeam'
-import BlogPreview from '../components/BlogPreview'
-import CallToAction from '../components/CallToAction'
-import Footer from '../components/Footer'
+import { ProjectSlider } from "@/components/ProjectSlider";
+import BlogPreview from "../components/BlogPreview";
+import CallToAction from "../components/CallToAction";
+import DetailsSection from "../components/DetailsSection";
+import ExpertTeam from "../components/ExpertTeam";
+import HeroSection from "../components/HeroSection";
+import MissionSection from "../components/MissionSection";
+import OrganizationNumbers from "../components/OrganizationNumbers";
+import ServicesSection from "../components/ServicesSection";
+import Testimonials from "../components/Testimonials";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       <main>
         <HeroSection />
-        <FeaturedProjects />
+        <ProjectSlider />
         <DetailsSection />
         <ServicesSection />
         <MissionSection />
@@ -27,6 +25,5 @@ export default function Home() {
         <CallToAction />
       </main>
     </div>
-  )
+  );
 }
-

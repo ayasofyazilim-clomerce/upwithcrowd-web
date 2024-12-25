@@ -14,13 +14,6 @@
     "format": "prettier --write . --plugin=prettier-plugin-tailwindcss --log-level=warn",
     "precommit": "npx lint-staged"
   },
-  "lint-staged": {
-    "*": [
-      "prettier --write",
-      "next lint --fix",
-      "tsc --noEmit"
-    ]
-  },
   "dependencies": {
     "@ayasofyazilim/saas": "0.0.94",
     "@radix-ui/react-accordion": "^1.2.2",
