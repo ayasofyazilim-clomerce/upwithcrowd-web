@@ -33,8 +33,7 @@ export default function ProfilePage() {
   const [myMember, setMyMember] = useState<GetApiMymemberResponse>();
   useEffect(() => {
     void getMembership().then((result) => {
-      if (!result || typeof result.items !== "undefined" ) return;
-      console.log("myMember client", result);
+      if (!result || !result.items ) return;
       setMyMember(result.items);
     });
   }, [session]);
@@ -103,23 +102,6 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               ))}
-              {currentUser &&
-                <Card
-                  key={currentUser?.id || 1}
-                  className="transition-colors hover:bg-muted cursor-pointer"
-                  onClick={() => handleAccountClick( Number(currentUser?.id) )}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-semibold mb-2">{currentUser.name}</h3>
-                        <p className="text-sm text-muted-foreground">{currentUser.email}</p>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-              }
             </div>
 
             <Button className="w-full" variant="outline">

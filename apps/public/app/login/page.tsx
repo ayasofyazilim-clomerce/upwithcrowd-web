@@ -8,11 +8,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { signIn } from "@/auth";
 import SingOut from "./signout";
+import SubmitButton from "./loading";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
+
   return (
     <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <div className="flex w-full max-w-6xl flex-col gap-8 md:flex-row">
@@ -24,12 +26,21 @@ export default function LoginPage() {
             <form
               action={async (formData: FormData) => {
                 "use server";
-                await signIn("credentials", {
-                  redirect: true,
-                  redirectTo: "/profile",
-                  email: formData.get("email"),
-                  password: formData.get("password"),
-                });
+                try {
+                  await signIn("credentials", {
+                    redirect: true,
+                    redirectTo: "/profile",
+                    email: formData.get("email"),
+                    password: formData.get("password"),
+                  });
+                } catch (error) {
+                  if (error instanceof Error) {
+                    if (error.message === "NEXT_REDIRECT") {
+                      redirect("/profile");
+                    }
+                  }
+                }
+
               }}
             >
               <div className="space-y-4">
@@ -64,7 +75,7 @@ export default function LoginPage() {
                   />
                 </div>
               </div>
-              <Button className="mt-4 w-full">Log In</Button>
+              <SubmitButton />
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
