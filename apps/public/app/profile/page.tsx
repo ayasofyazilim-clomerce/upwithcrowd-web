@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ChevronRight, Bell, HelpCircle, FileText, Shield, BellDot, Link2, Building2, Plus } from 'lucide-react'
 import { useSession } from 'next-auth/react';
-import { getUpwithcrowd } from '@/utils/client';
 import { getMembership } from './actions';
+import { GetApiMymemberResponse } from '@ayasofyazilim/saas/upwithcrowdService';
 
 // Mock user data
 const userData = {
@@ -30,12 +30,14 @@ export default function ProfilePage() {
   const { data: session } = useSession();
   const currentUser = session?.user;
   const [profileImage, setProfileImage] = useState(userData.profileImage)
-
-  // useEffect(() => {
-  //   console.log("session", session);
-  // })s
-
-  void getMembership();
+  const [myMember, setMyMember] = useState<GetApiMymemberResponse>();
+  useEffect(() => {
+    void getMembership().then((result) => {
+      if (!result || typeof result.items !== "undefined" ) return;
+      console.log("myMember client", result);
+      setMyMember(result.items);
+    });
+  }, [session]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -84,17 +86,17 @@ export default function ProfilePage() {
             </Card>
 
             <div className="space-y-4">
-              {userAccounts.map((account) => (
+              {typeof myMember !== "undefined" && myMember.length > 0 && myMember.map((membership) => (
                 <Card
-                  key={account.id}
+                  key={membership.id}
                   className="transition-colors hover:bg-muted cursor-pointer"
-                  onClick={() => handleAccountClick(account.id)}
+                  onClick={() => handleAccountClick(Number(membership.id))}
                 >
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h3 className="font-semibold mb-2">{account.name} {account.surname}</h3>
-                        <p className="text-sm text-muted-foreground">{account.email}</p>
+                        <h3 className="font-semibold mb-2">{membership.name} {membership.surname}</h3>
+                        <p className="text-sm text-muted-foreground">{membership.mail}</p>
                       </div>
                       <ChevronRight className="w-5 h-5 text-muted-foreground" />
                     </div>

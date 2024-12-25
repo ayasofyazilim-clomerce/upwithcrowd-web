@@ -26,7 +26,7 @@ export default function LoginPage() {
                 "use server";
                 await signIn("credentials", {
                   redirect: true,
-                  redirectTo: "./profile",
+                  redirectTo: "/profile",
                   email: formData.get("email"),
                   password: formData.get("password"),
                 });
