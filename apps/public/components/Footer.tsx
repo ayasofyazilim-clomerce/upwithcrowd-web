@@ -102,7 +102,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-muted-foreground/20 mt-auto border-t py-4 text-center">
-        <p>&copy; 2023 CrowdFund. All rights reserved.</p>
+        <p>&copy; 2023 UPwithCrowd. All rights reserved.</p>
       </div>
     </footer>
   );

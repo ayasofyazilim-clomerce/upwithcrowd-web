@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
+import Image from "next/image";
 const PublicLinks = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
@@ -35,8 +35,12 @@ export default function Header() {
   return (
     <header className="bg-background flex h-24 px-6">
       <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="text-primary text-2xl font-bold">
-          CrowdFund
+        <Link
+          href="/"
+          className="text-primary flex items-center text-2xl font-bold"
+        >
+          <Image src="/upwc.png" alt="" width={60} height={60} />
+          UPwithCrowd
         </Link>
         <nav className="hidden md:block">
           <ul className="flex space-x-8 text-lg">
