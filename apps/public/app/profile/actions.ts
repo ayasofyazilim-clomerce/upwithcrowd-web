@@ -1,11 +1,21 @@
 "use server";
 
-import { getUpwithcrowd } from "@/utils/client";
+import { getUpwithcrowd, isApiError } from "@/utils/client";
 
 export async function getMembership() {
   const api_client = await getUpwithcrowd();
-  // console.log("api_client server", api_client);
-  const myMember = await api_client.myMember.getApiMymember();
-  // console.log("myMember server", myMember);
-  return myMember;
+  try {
+    const myMember = await api_client.myMember.getApiMymember();
+    return myMember;
+  } catch (error) {
+    if (isApiError(error)) {
+      console.error("error", error.statusText);
+      return null;
+    }
+    if (error instanceof Error) {
+      console.error("error", error.message);
+      return null;
+    }
+    return null;
+  }
 }
