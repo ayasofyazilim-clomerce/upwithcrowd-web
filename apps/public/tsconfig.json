@@ -18,8 +18,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*", "../../packages/ayasofyazilim-ui/@/*"],
-      "components/*": ["./src/components/*"]
+      "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
