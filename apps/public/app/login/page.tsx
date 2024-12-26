@@ -17,7 +17,7 @@ const initialState = {
   message: "",
 };
 export default function LoginPage() {
-  const [, formAction] = useFormState(
+  const [state, formAction] = useFormState(
     signInForm<typeof initialState>,
     initialState,
   );
@@ -64,6 +64,9 @@ export default function LoginPage() {
                 </div>
               </div>
               <SubmitButton />
+              {state.message && state.message.length > 1 && (
+                <div className="mt-4 text-sm text-red-500">{state.message}</div>
+              )}
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
