@@ -1,7 +1,7 @@
 "use client";
 
-import { projects } from "@/_data/projects";
-import { Project } from "@/_types";
+import { projects } from "#/_data/projects";
+import { Project } from "#/_types";
 import { DollarSign, MapPin, Target } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "./ui/badge";

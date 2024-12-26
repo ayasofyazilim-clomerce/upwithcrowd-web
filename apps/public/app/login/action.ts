@@ -1,7 +1,7 @@
 "use server";
 
-import { signIn } from "@/auth";
-import { ApiErrorResponse, isApiError } from "@/utils/client";
+import { signIn } from "#/auth";
+import { ApiErrorResponse, isApiError } from "#/utils/client";
 import { redirect } from "next/navigation";
 
 export async function signInForm<State>(prevState: State, formData: FormData) {

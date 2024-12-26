@@ -1,4 +1,4 @@
-import { ProjectSlider } from "@/components/ProjectSlider";
+import { ProjectSlider } from "#/components/ProjectSlider";
 import BlogPreview from "../components/BlogPreview";
 import CallToAction from "../components/CallToAction";
 import DetailsSection from "../components/DetailsSection";

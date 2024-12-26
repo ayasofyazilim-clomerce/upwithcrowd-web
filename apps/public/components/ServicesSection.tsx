@@ -1,5 +1,5 @@
-import { services } from "@/_data/services";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { services } from "#/_data/services";
+import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card";
 
 export default function ServicesSection() {
   return (

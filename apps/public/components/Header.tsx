@@ -1,8 +1,8 @@
 "use client";
 
-import SingOut from "@/app/login/signout";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import SingOut from "#/app/login/signout";
+import { Button } from "#/components/ui/button";
+import { cn } from "#/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";

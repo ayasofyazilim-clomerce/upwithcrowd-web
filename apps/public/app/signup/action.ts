@@ -4,7 +4,7 @@ import {
   ApiErrorResponse,
   getUpwithcrowdAccount,
   isApiError,
-} from "@/utils/client";
+} from "#/utils/client";
 import { redirect } from "next/navigation";
 
 export async function createUser<State>(prevState: State, formData: FormData) {

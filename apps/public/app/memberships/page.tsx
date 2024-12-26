@@ -1,123 +1,138 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "#/components/ui/table";
+import { Button } from "#/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "#/components/ui/dialog";
+import { Input } from "#/components/ui/input";
+import { Label } from "#/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "#/components/ui/select";
 
-type IdType = 'NONE' | 'TCKN' | 'SCL' | 'YKN' | 'VKN' | 'MKN'
+type IdType = "NONE" | "TCKN" | "SCL" | "YKN" | "VKN" | "MKN";
 
 interface Member {
-  id: string
-  idType: IdType
-  memberId: string
-  name?: string
-  surname?: string
-  title?: string
-  tel?: string
-  mail: string
-  annualIncome?: number
-  mobile?: string
-  isInvestor?: boolean
-  isEntrepreneur?: boolean
-  qualifiedCheck?: boolean
-  fullNameCheck?: boolean
-  eDevletStatus?: boolean
+  id: string;
+  idType: IdType;
+  memberId: string;
+  name?: string;
+  surname?: string;
+  title?: string;
+  tel?: string;
+  mail: string;
+  annualIncome?: number;
+  mobile?: string;
+  isInvestor?: boolean;
+  isEntrepreneur?: boolean;
+  qualifiedCheck?: boolean;
+  fullNameCheck?: boolean;
+  eDevletStatus?: boolean;
 }
 
 // Mock data for demonstration
 const initialMembers: Member[] = [
   {
-    id: '1',
-    idType: 'TCKN',
-    memberId: '12345678901',
-    name: 'John',
-    surname: 'Doe',
-    mail: 'john.doe@example.com',
+    id: "1",
+    idType: "TCKN",
+    memberId: "12345678901",
+    name: "John",
+    surname: "Doe",
+    mail: "john.doe@example.com",
     isInvestor: true,
-    qualifiedCheck: true
+    qualifiedCheck: true,
   },
   {
-    id: '2',
-    idType: 'VKN',
-    memberId: '9876543210',
-    name: 'Jane',
-    surname: 'Smith',
-    mail: 'jane.smith@example.com',
+    id: "2",
+    idType: "VKN",
+    memberId: "9876543210",
+    name: "Jane",
+    surname: "Smith",
+    mail: "jane.smith@example.com",
     isEntrepreneur: true,
-    eDevletStatus: true
-  }
-]
+    eDevletStatus: true,
+  },
+];
 
 export default function MembershipsPage() {
-  const [members, setMembers] = useState<Member[]>(initialMembers)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [currentMember, setCurrentMember] = useState<Member | null>(null)
+  const [members, setMembers] = useState<Member[]>(initialMembers);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentMember, setCurrentMember] = useState<Member | null>(null);
 
   const handleCreateMember = () => {
-    setCurrentMember(null)
-    setIsDialogOpen(true)
-  }
+    setCurrentMember(null);
+    setIsDialogOpen(true);
+  };
 
   const handleEditMember = (member: Member) => {
-    setCurrentMember(member)
-    setIsDialogOpen(true)
-  }
+    setCurrentMember(member);
+    setIsDialogOpen(true);
+  };
 
   const handleSaveMember = (member: Member) => {
     if (currentMember) {
-      setMembers(members.map(m => m.id === member.id ? member : m))
+      setMembers(members.map((m) => (m.id === member.id ? member : m)));
     } else {
-      setMembers([...members, { ...member, id: Date.now().toString() }])
+      setMembers([...members, { ...member, id: Date.now().toString() }]);
     }
-    setIsDialogOpen(false)
-  }
+    setIsDialogOpen(false);
+  };
 
   return (
-    <div className="container mx-auto py-12 px-4">
-      <div className="flex justify-between items-center mb-8">
+    <div className="container mx-auto px-4 py-12">
+      <div className="mb-8 flex items-center justify-between">
         <h1 className="text-3xl font-bold">User Memberships</h1>
         <Button onClick={handleCreateMember}>Create New Member</Button>
       </div>
-      <div className="bg-card rounded-lg shadow-md overflow-hidden">
+      <div className="bg-card overflow-hidden rounded-lg shadow-md">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="py-4 px-6">ID Type</TableHead>
-              <TableHead className="py-4 px-6">Member ID</TableHead>
-              <TableHead className="py-4 px-6">Name</TableHead>
-              <TableHead className="py-4 px-6">Email</TableHead>
-              <TableHead className="py-4 px-6">Investor</TableHead>
-              <TableHead className="py-4 px-6">Entrepreneur</TableHead>
-              <TableHead className="py-4 px-6">Actions</TableHead>
+              <TableHead className="px-6 py-4">ID Type</TableHead>
+              <TableHead className="px-6 py-4">Member ID</TableHead>
+              <TableHead className="px-6 py-4">Name</TableHead>
+              <TableHead className="px-6 py-4">Email</TableHead>
+              <TableHead className="px-6 py-4">Investor</TableHead>
+              <TableHead className="px-6 py-4">Entrepreneur</TableHead>
+              <TableHead className="px-6 py-4">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {members.map((member) => (
               <TableRow key={member.id}>
-                <TableCell className="py-4 px-6">{member.idType}</TableCell>
-                <TableCell className="py-4 px-6">{member.memberId}</TableCell>
-                <TableCell className="py-4 px-6">{`${member.name || ''} ${member.surname || ''}`}</TableCell>
-                <TableCell className="py-4 px-6">{member.mail}</TableCell>
-                <TableCell className="py-4 px-6">{member.isInvestor ? 'Yes' : 'No'}</TableCell>
-                <TableCell className="py-4 px-6">{member.isEntrepreneur ? 'Yes' : 'No'}</TableCell>
-                <TableCell className="py-4 px-6">
-                  <Button variant="outline" onClick={() => handleEditMember(member)}>Edit</Button>
+                <TableCell className="px-6 py-4">{member.idType}</TableCell>
+                <TableCell className="px-6 py-4">{member.memberId}</TableCell>
+                <TableCell className="px-6 py-4">{`${member.name || ""} ${member.surname || ""}`}</TableCell>
+                <TableCell className="px-6 py-4">{member.mail}</TableCell>
+                <TableCell className="px-6 py-4">
+                  {member.isInvestor ? "Yes" : "No"}
+                </TableCell>
+                <TableCell className="px-6 py-4">
+                  {member.isEntrepreneur ? "Yes" : "No"}
+                </TableCell>
+                <TableCell className="px-6 py-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleEditMember(member)}
+                  >
+                    Edit
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -128,52 +143,58 @@ export default function MembershipsPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{currentMember ? 'Edit Member' : 'Create New Member'}</DialogTitle>
+            <DialogTitle>
+              {currentMember ? "Edit Member" : "Create New Member"}
+            </DialogTitle>
           </DialogHeader>
           <MemberForm member={currentMember} onSave={handleSaveMember} />
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
 
 interface MemberFormProps {
-  member: Member | null
-  onSave: (member: Member) => void
+  member: Member | null;
+  onSave: (member: Member) => void;
 }
 
 function MemberForm({ member, onSave }: MemberFormProps) {
   const [formData, setFormData] = useState<Member>(
     member || {
-      id: '',
-      idType: 'NONE',
-      memberId: '',
-      mail: '',
-    }
-  )
+      id: "",
+      idType: "NONE",
+      memberId: "",
+      mail: "",
+    },
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }))
-  }
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const handleSelectChange = (name: string) => (value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave(formData)
-  }
+    e.preventDefault();
+    onSave(formData);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="idType">ID Type</Label>
-        <Select name="idType" value={formData.idType} onValueChange={handleSelectChange('idType')}>
+        <Select
+          name="idType"
+          value={formData.idType}
+          onValueChange={handleSelectChange("idType")}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select ID Type" />
           </SelectTrigger>
@@ -189,19 +210,42 @@ function MemberForm({ member, onSave }: MemberFormProps) {
       </div>
       <div className="space-y-2">
         <Label htmlFor="memberId">Member ID</Label>
-        <Input id="memberId" name="memberId" value={formData.memberId} onChange={handleChange} required />
+        <Input
+          id="memberId"
+          name="memberId"
+          value={formData.memberId}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input id="name" name="name" value={formData.name || ''} onChange={handleChange} />
+        <Input
+          id="name"
+          name="name"
+          value={formData.name || ""}
+          onChange={handleChange}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="surname">Surname</Label>
-        <Input id="surname" name="surname" value={formData.surname || ''} onChange={handleChange} />
+        <Input
+          id="surname"
+          name="surname"
+          value={formData.surname || ""}
+          onChange={handleChange}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="mail">Email</Label>
-        <Input id="mail" name="mail" type="email" value={formData.mail} onChange={handleChange} required />
+        <Input
+          id="mail"
+          name="mail"
+          type="email"
+          value={formData.mail}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className="flex items-center space-x-2">
         <input
@@ -210,7 +254,7 @@ function MemberForm({ member, onSave }: MemberFormProps) {
           name="isInvestor"
           checked={formData.isInvestor || false}
           onChange={handleChange}
-          className="rounded border-gray-300 text-primary focus:ring-primary"
+          className="text-primary focus:ring-primary rounded border-gray-300"
         />
         <Label htmlFor="isInvestor">Is Investor</Label>
       </div>
@@ -221,12 +265,13 @@ function MemberForm({ member, onSave }: MemberFormProps) {
           name="isEntrepreneur"
           checked={formData.isEntrepreneur || false}
           onChange={handleChange}
-          className="rounded border-gray-300 text-primary focus:ring-primary"
+          className="text-primary focus:ring-primary rounded border-gray-300"
         />
         <Label htmlFor="isEntrepreneur">Is Entrepreneur</Label>
       </div>
-      <Button type="submit" className="w-full">Save</Button>
+      <Button type="submit" className="w-full">
+        Save
+      </Button>
     </form>
-  )
+  );
 }
-

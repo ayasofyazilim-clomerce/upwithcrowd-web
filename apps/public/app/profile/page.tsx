@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "#/components/ui/button";
+import { Input } from "#/components/ui/input";
+import { Label } from "#/components/ui/label";
 import {
   ChevronRight,
   Bell,
@@ -23,8 +23,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
+} from "#/components/ui/dialog";
+import { Card, CardContent } from "#/components/ui/card";
 import { useSession } from "next-auth/react";
 import { getMembership } from "./actions";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/saas/upwithcrowdService";

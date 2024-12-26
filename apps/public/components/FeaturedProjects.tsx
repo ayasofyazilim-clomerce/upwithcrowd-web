@@ -1,11 +1,11 @@
 "use client";
 
-import { projects } from "@/_data";
-import { Project } from "@/_types";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { projects } from "#/_data";
+import { Project } from "#/_types";
+import { Badge } from "#/components/ui/badge";
+import { Button } from "#/components/ui/button";
+import { Card } from "#/components/ui/card";
+import { Progress } from "#/components/ui/progress";
 import {
   createColumnHelper,
   flexRender,
