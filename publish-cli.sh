@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Colors
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+BLUE='\e[34m'
+BOLD='\e[1m'
+RESET='\e[0m'
+
+used_ports=($(netstat -tuln | grep -oP ':\K\d+' | sort -un))
 PS3='Please select apps to publish: '
 options=("all" "quit")
 for dir in ./apps/*/; do
@@ -12,7 +21,7 @@ validate_port() {
     if [[ $1 -ge 1 && $1 -le 65535 ]]; then
         return 0
     else
-        echo "Invalid port number. Please enter a value between 1 and 65535."
+        echo -e "${RED}Invalid port number. Please enter a value between 1 and 65535.${RESET}"
         return 1
     fi
 }
@@ -20,38 +29,36 @@ validate_port() {
 get_app_details() {
     local app_type=$1
     if [[ -n $2 && -n $3 ]]; then
-        app_name=$2
+        app_name="($3) $2"
         app_port=$3
     else
         read -p "Please provide the app name for $app_type: " app_name
         while true; do
+            echo -e "${BOLD}${YELLOW}\nWarning: The following ports are currently in use: ${used_ports[*]}${RESET}\n"
             read -p "Please provide port number for $app_name: " app_port
             validate_port $app_port || continue
             port_in_use=false
             for used_port in "${used_ports[@]}"; do
                 if [[ $app_port -eq $used_port ]]; then
-                    echo "Port $app_port is already in use by another app. Please choose a different port."
+                    echo -e "${RED}Port $app_port is already in use by another app. Please choose a different port.${RESET}"
                     port_in_use=true
                     break
                 fi
             done
             [[ $port_in_use == false ]] && break
         done
+        app_name="($app_port) $app_name"
     fi
-    echo "App name for $app_type is set to $app_name"
-    echo "Port number for $app_name is set to $app_port"
+    echo -e "${GREEN}App name for $app_type is set to $app_name${RESET}"
+    echo -e "${GREEN}Port number for $app_name is set to $app_port${RESET}"
     eval "${app_type,,}_app=\$app_name"
     eval "${app_type,,}_port=\$app_port"
     used_ports+=($app_port)
 }
 
 update_code_from_remote() {
-    echo -e '\e[1m\e[34mPulling code from remote..\e[0m\n'
-    git clean -fd
-    git submodule foreach --recursive git clean -fd
-    git fetch --all
-    git reset --hard origin/main
-    git pull --recurse-submodules
+    echo -e "${BOLD}${BLUE}Pulling code from remote..${RESET}\n"
+    git reset --hard origin/main && git pull --recurse-submodules
 }
 
 start_app() {
@@ -62,11 +69,13 @@ start_app() {
     local app_port=${!app_port_var}
 
     pnpm run build --filter "./apps/${app_type,,}"
-    echo -e "\e[1m\e[34m\nStarting $app_type..\e[0m\n"
-    pm2 delete "$app_name" || true
+    echo -e "${BOLD}${BLUE}\nStarting $app_type..${RESET}\n"
+    if pm2 list | grep -q "$app_name"; then
+        pm2 delete "$app_name"
+    fi
     cd "apps/${app_type,,}"
     pm2 start "pnpm start --port $app_port" -n "$app_name"
-    echo -e "\e[1m\e[34m\n$app_type Started\e[0m\n"
+    echo -e "${BOLD}${BLUE}\n$app_type Started${RESET}\n"
     cd ../..
 }
 
@@ -108,7 +117,7 @@ else
                 shift 2
                 ;;
             *)
-                echo "Unknown option: $1"
+                echo -e "${RED}Unknown option: $1${RESET}"
                 exit 1
                 ;;
         esac
@@ -119,7 +128,7 @@ fi
 
 update_code_from_remote
 
-echo -e "\e[1m\e[34m\nStarting setup for ${apps_to_publish[*]}..\e[0m\n"
+echo -e "${BOLD}${BLUE}\nStarting setup for ${apps_to_publish[*]}..${RESET}\n"
 pnpm install
 
 for app in "${apps_to_publish[@]}"; do
