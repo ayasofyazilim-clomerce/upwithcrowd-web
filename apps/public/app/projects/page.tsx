@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Card, CardContent, CardFooter } from "#/components/ui/card";
-import { Badge } from "#/components/ui/badge";
-import { Progress } from "#/components/ui/progress";
-import { Button } from "#/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { MapPin, DollarSign, Target } from "lucide-react";
-import { projects } from "#/_data";
+import { projects } from "@/_data";
 
 export default async function ProjectsPage() {
   return (

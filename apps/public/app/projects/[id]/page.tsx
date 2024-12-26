@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Badge } from "#/components/ui/badge";
-import { Button } from "#/components/ui/button";
-import { Card, CardContent, CardFooter } from "#/components/ui/card";
-import { Input } from "#/components/ui/input";
-import { Progress } from "#/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import CallToAction from "#/components/CallToAction";
-import Footer from "#/components/Footer";
+import CallToAction from "@/components/CallToAction";
+import Footer from "@/components/Footer";
 
 // Mock data for the project
 const project = {

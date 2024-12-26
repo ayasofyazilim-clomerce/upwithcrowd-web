@@ -1,6 +1,6 @@
 "use server";
 
-import { getUpwithcrowd, isApiError } from "#/utils/client";
+import { getUpwithcrowd, isApiError } from "@/utils/client";
 
 export async function getMembership() {
   const api_client = await getUpwithcrowd();

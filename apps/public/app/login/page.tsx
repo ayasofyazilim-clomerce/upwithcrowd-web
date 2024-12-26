@@ -7,8 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "#/components/ui/card";
-import { Input } from "#/components/ui/input";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import SingOut from "./signout";
 import SubmitButton from "./loading";
 import { useFormState } from "react-dom";

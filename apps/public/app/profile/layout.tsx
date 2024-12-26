@@ -3,7 +3,7 @@ export const metadata = {
   description: "Empowering ideas through crowdfunding",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;

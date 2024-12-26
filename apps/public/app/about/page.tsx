@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { Button } from "#/components/ui/button";
-import { Card, CardContent } from "#/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Lightbulb, Users, Target, Heart } from "lucide-react";
-import ExpertTeam from "#/components/ExpertTeam";
-import Testimonials from "#/components/Testimonials";
-import BlogPreview from "#/components/BlogPreview";
-import CallToAction from "#/components/CallToAction";
+import ExpertTeam from "@/components/ExpertTeam";
+import Testimonials from "@/components/Testimonials";
+import BlogPreview from "@/components/BlogPreview";
+import CallToAction from "@/components/CallToAction";
 
 const goals = [
   {
