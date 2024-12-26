@@ -207,7 +207,7 @@ export default function ContactPage() {
           <div className="aspect-w-16 aspect-h-9">
             <Image
               src="/placeholder.svg"
-              alt="Map of CrowdFund office location"
+              alt="Map of UPwithCrowd office location"
               width={800}
               height={450}
               className="rounded-lg object-cover"
