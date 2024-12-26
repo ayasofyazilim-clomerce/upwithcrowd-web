@@ -1,5 +1,6 @@
 #!/bin/bash
 
+used_ports=($(netstat -tuln | grep -oP ':\K\d+' | sort -un))
 PS3='Please select apps to publish: '
 options=("all" "quit")
 for dir in ./apps/*/; do
@@ -20,11 +21,12 @@ validate_port() {
 get_app_details() {
     local app_type=$1
     if [[ -n $2 && -n $3 ]]; then
-        app_name=$2
+        app_name="($3) $2"
         app_port=$3
     else
         read -p "Please provide the app name for $app_type: " app_name
         while true; do
+            echo -e "\e[1m\e[33m\nWarning: The following ports are currently in use: ${used_ports[*]}\e[0m\n"
             read -p "Please provide port number for $app_name: " app_port
             validate_port $app_port || continue
             port_in_use=false
@@ -37,6 +39,7 @@ get_app_details() {
             done
             [[ $port_in_use == false ]] && break
         done
+        app_name="($app_port) $app_name"
     fi
     echo "App name for $app_type is set to $app_name"
     echo "Port number for $app_name is set to $app_port"
@@ -47,11 +50,7 @@ get_app_details() {
 
 update_code_from_remote() {
     echo -e '\e[1m\e[34mPulling code from remote..\e[0m\n'
-    git clean -fd
-    git submodule foreach --recursive git clean -fd
-    git fetch --all
-    git reset --hard origin/main
-    git pull --recurse-submodules
+    git reset --hard origin/main && git pull --recurse-submodules
 }
 
 start_app() {
@@ -63,7 +62,9 @@ start_app() {
 
     pnpm run build --filter "./apps/${app_type,,}"
     echo -e "\e[1m\e[34m\nStarting $app_type..\e[0m\n"
-    pm2 delete "$app_name" || true
+    if pm2 list | grep -q "$app_name"; then
+        pm2 delete "$app_name"
+    fi
     cd "apps/${app_type,,}"
     pm2 start "pnpm start --port $app_port" -n "$app_name"
     echo -e "\e[1m\e[34m\n$app_type Started\e[0m\n"
