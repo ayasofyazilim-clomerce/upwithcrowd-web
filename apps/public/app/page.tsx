@@ -4,7 +4,7 @@ import CallToAction from "../components/CallToAction";
 import DetailsSection from "../components/DetailsSection";
 import ExpertTeam from "../components/ExpertTeam";
 import HeroSection from "../components/HeroSection";
-import MissionSection from "../components/MissionSection";
+import MissionsSection from "../components/MissionSection";
 import OrganizationNumbers from "../components/OrganizationNumbers";
 import ServicesSection from "../components/ServicesSection";
 import Testimonials from "../components/Testimonials";
@@ -17,7 +17,7 @@ export default function Home() {
         <ProjectSlider />
         <DetailsSection />
         <ServicesSection />
-        <MissionSection />
+        <MissionsSection />
         <OrganizationNumbers />
         <Testimonials />
         <ExpertTeam />
