@@ -20,7 +20,6 @@ export async function createUser<State>(prevState: State, formData: FormData) {
       },
     });
   } catch (error) {
-    console.log("error 123");
     if (isApiError(error)) {
       const errorBody = error.body as ApiErrorResponse;
       return {

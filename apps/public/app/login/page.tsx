@@ -14,10 +14,13 @@ import SubmitButton from "./loading";
 import { useFormState } from "react-dom";
 import { signInForm } from "./action";
 const initialState = {
-  message: '',
-}
+  message: "",
+};
 export default function LoginPage() {
-  const [state, formAction] = useFormState(signInForm<typeof initialState>, initialState)
+  const [state, formAction] = useFormState(
+    signInForm<typeof initialState>,
+    initialState,
+  );
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center px-4">
@@ -27,9 +30,7 @@ export default function LoginPage() {
             <CardTitle>Welcome Back</CardTitle>
           </CardHeader>
           <CardContent>
-            <form
-              action={formAction}
-            >
+            <form action={formAction}>
               <div className="space-y-4">
                 <div>
                   <label
@@ -63,6 +64,9 @@ export default function LoginPage() {
                 </div>
               </div>
               <SubmitButton />
+              {state.message && state.message.length > 1 && (
+                <div className="mt-4 text-sm text-red-500">{state.message}</div>
+              )}
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
