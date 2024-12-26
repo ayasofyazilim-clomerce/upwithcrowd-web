@@ -24,12 +24,16 @@ export default function HeroSection() {
           </p>
           <Button size="lg">Explore Projects</Button>
         </div>
-        <div className="relative aspect-square w-full max-w-lg">
+        <div
+          className="ring-primary/30 relative flex aspect-square
+         w-full max-w-lg items-center justify-center rounded-[25px] rounded-tl-[100px] bg-white ring-4"
+        >
           <Image
-            src="/placeholder.svg"
+            src="/upwc.png"
             alt="Crowdfunding illustration"
-            fill
-            className="ring-primary/30 rounded-[25px] rounded-tl-[100px] object-cover ring-4"
+            width={400}
+            height={400}
+            className="object-cover"
           />
         </div>
       </div>

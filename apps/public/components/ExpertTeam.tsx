@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from "next/image";
 
 const team = [
   {
@@ -21,14 +21,15 @@ const team = [
     role: "Lead Designer",
     image: "/placeholder.svg",
   },
-]
+];
 
 export default function ExpertTeam() {
   return (
-    <section className="py-12 md:py-20 px-6">
+    <section className="px-6 py-12 md:py-20">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold mb-10 text-center">Meet Our Expert Team</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <h1 className="text-center text-2xl uppercase">Our Team</h1>
+        <h2 className="text-center text-4xl font-bold">Meet Our Expert Team</h2>
+        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member, index) => (
             <div key={index} className="text-center">
               <Image
@@ -36,7 +37,7 @@ export default function ExpertTeam() {
                 alt={member.name}
                 width={300}
                 height={300}
-                className="rounded-full w-32 h-32 md:w-48 md:h-48 object-cover mx-auto mb-4"
+                className="mx-auto mb-4 h-32 w-32 rounded-3xl object-cover md:h-48 md:w-48"
               />
               <h3 className="text-xl font-semibold">{member.name}</h3>
               <p className="text-muted-foreground">{member.role}</p>
@@ -45,6 +46,5 @@ export default function ExpertTeam() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
