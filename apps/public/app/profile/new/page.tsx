@@ -1,7 +1,7 @@
 import ProfileTypeSwitch from "../_components/ProfileTypeSwitch";
 
-function page() {
+function Page() {
   return <ProfileTypeSwitch />;
 }
 
-export default page;
+export default Page;

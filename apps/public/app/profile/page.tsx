@@ -38,7 +38,7 @@ const userData = {
   profileImage: "/placeholder.svg",
 };
 
-export default function ProfilePage() {
+export default function Page() {
   const { data: session } = useSession();
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const currentUser = session?.user;

@@ -8,7 +8,7 @@ import Image from "next/image";
 import { blogPost } from "@/_data/blogs";
 // Mock data for a single blog post
 
-export default function BlogDetailPage() {
+export default function Page() {
   // In a real application, you would fetch the blog post data based on the slug
   // For this example, we're using the mock data
   return (

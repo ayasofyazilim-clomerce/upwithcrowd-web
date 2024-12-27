@@ -46,7 +46,7 @@ const topics = [
   "Other",
 ];
 
-export default function ContactPage() {
+export default function Page() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
