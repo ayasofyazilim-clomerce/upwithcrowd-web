@@ -3,11 +3,7 @@ export const metadata = {
   description: "Empowering ideas through crowdfunding",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-background min-h-screen px-4 py-8">
       <div className="mx-auto max-w-6xl">

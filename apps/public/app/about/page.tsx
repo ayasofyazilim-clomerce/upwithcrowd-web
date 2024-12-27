@@ -34,7 +34,7 @@ const goals = [
   },
 ];
 
-export default function AboutPage() {
+export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, DollarSign, Target } from "lucide-react";
 import { projects } from "@/_data";
 
-export default async function ProjectsPage() {
+export default async function Page() {
   return (
     <div className="bg-background min-h-screen">
       <section className="px-6 py-12 md:py-20">

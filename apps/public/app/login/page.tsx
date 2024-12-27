@@ -16,7 +16,7 @@ import { signInForm } from "./action";
 const initialState = {
   message: "",
 };
-export default function LoginPage() {
+export default function Page() {
   const [state, formAction] = useFormState(
     signInForm<typeof initialState>,
     initialState,

@@ -9,7 +9,7 @@ import OrganizationNumbers from "../components/OrganizationNumbers";
 import ServicesSection from "../components/ServicesSection";
 import Testimonials from "../components/Testimonials";
 
-export default function Home() {
+export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main>

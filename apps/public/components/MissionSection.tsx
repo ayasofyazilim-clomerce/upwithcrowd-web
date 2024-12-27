@@ -1,3 +1,4 @@
+"use client";
 import { Presentation } from "lucide-react";
 import { IconWrapper } from "./IconWrapper";
 import { missions } from "@/_data";
