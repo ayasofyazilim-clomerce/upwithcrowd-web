@@ -2,6 +2,7 @@ import NextAuth, { AuthError, DefaultSession, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 // import { getUpwithcrowd } from "./utils/client";
 import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/saas/upwithcrowdService";
+import { getUpwithcrowdAccount } from "./utils/client";
 
 const TOKEN_URL = `${process.env.ABP_AUTH_URL}/connect/token`;
 const OPENID_URL = `${process.env.ABP_AUTH_URL}/.well-known/openid-configuration`;
@@ -63,19 +64,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const json = await response.json();
         if (isToken(json)) {
           const userReuqest = await fetch(
-            `${process.env.BASE_URL}/api/abp/application-configuration`,
-            {},
+            `${process.env.BASE_URL}/api/abp/application-configuration?IncludeLocalizationResources=false`,
+            {
+              headers: {
+                Authorization: `Bearer ${json.access_token}`,
+              },
+            },
           );
           const user_data: GetApiAbpApplicationConfigurationResponse =
             await userReuqest.json();
           const current_user = user_data.currentUser;
-          // const upWithCrowdClient = await getUpwithcrowd();
-          // const appConfig = await upWithCrowdClient.abpApplicationConfiguration.getApiAbpApplicationConfiguration();
+          const upWithCrowdClient = await getUpwithcrowdAccount();
+          const profile_picture =
+            await upWithCrowdClient.account.getApiAccountProfilePictureById({
+              id: current_user?.id || "",
+            });
           // const userAbp = appConfig.currentUser;
           const user: User = {
             email: current_user?.email || credentials.email + "",
             name: current_user?.userName || credentials.email + "",
-            // image: userAbp?.profilePicture,
+            image: profile_picture.fileContent || "",
             id: current_user?.id || "",
             access_token: json.access_token,
           };
@@ -121,10 +129,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return {
         ...session,
         user: {
-          email: user.email || localUser.email || "",
-          name: user.name || localUser.name || "",
-          image: user.image || localUser.image || "",
-          id: user.id || localUser.id || "",
+          email: user?.email || localUser.email || "",
+          name: user?.name || localUser.name || "",
+          image: user?.image || localUser.image || "",
+          id: user?.id || localUser.id || "",
           access_token: token.access_token + "",
         },
       };
