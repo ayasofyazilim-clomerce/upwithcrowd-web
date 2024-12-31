@@ -4,22 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea, TextareaProps } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import * as SheetRoot from "@/components/ui/sheet";
 import { Combobox } from "@repo/ayasofyazilim-ui/molecules/combobox";
-import { Lightbulb, Search } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { Search, UserPlus } from "lucide-react";
 import {
   FormContainer,
   FormField,
   FormInputFieldWithCounter,
 } from "../_components/form";
+import { Section, SectionHint } from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
+import { Button } from "@/components/ui/button";
 
-const defaultTextWithTitleClassNames = {
-  title: "text-black/80",
-  text: "text-muted-foreground",
-};
 export default function Page() {
   return (
     <div className="bg-muted w-full">
@@ -29,6 +25,8 @@ export default function Page() {
           text="Make it easy for people to learn about your project."
           classNames={{
             container: "mb-8",
+            title: "text-3xl",
+            text: "text-lg",
           }}
         />
         <Section
@@ -107,6 +105,29 @@ export default function Page() {
                 selectLabel={""}
               />
             </FormField>
+          </FormContainer>
+        </Section>
+        <Section title="Project leader" text="Who is leading this project?">
+          <FormContainer>
+            <Combobox
+              list={[]}
+              onValueChange={() => {}}
+              selectIdentifier={""}
+              selectLabel={""}
+            />
+          </FormContainer>
+        </Section>
+        <Section title="Project members" text="Who is working on this project?">
+          <FormContainer>
+            <SheetRoot.Sheet>
+              <SheetRoot.SheetTrigger asChild>
+                <Button variant={"outline"}>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Add member
+                </Button>
+              </SheetRoot.SheetTrigger>
+              <SheetRoot.SheetContent></SheetRoot.SheetContent>
+            </SheetRoot.Sheet>
           </FormContainer>
         </Section>
         <Section
@@ -197,53 +218,6 @@ export default function Page() {
           </FormContainer>
         </Section>
       </section>
-    </div>
-  );
-}
-
-function Section({
-  children,
-  title,
-  text,
-  className,
-}: {
-  children: React.ReactNode;
-  title: string;
-  text: string | string[];
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "grid items-start gap-8 border-b py-8 md:grid-cols-3",
-        className,
-      )}
-    >
-      <TextWithTitle
-        classNames={defaultTextWithTitleClassNames}
-        title={title}
-        text={text}
-      />
-      {children}
-    </div>
-  );
-}
-
-function SectionHint({
-  message,
-  link,
-}: {
-  message: string;
-  link?: {
-    href: string;
-    text: string;
-  };
-}) {
-  return (
-    <div className="text-primary mt-auto flex items-center gap-2 text-sm">
-      <Lightbulb />
-      {message}
-      {link && <Link href={link.href}> {link.text}</Link>}
     </div>
   );
 }

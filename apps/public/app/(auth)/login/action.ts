@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { ApiErrorResponse, isApiError } from "@/utils/client";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -36,4 +36,11 @@ export async function signInForm<State>(prevState: State, formData: FormData) {
   return {
     message: "Invalid email or password",
   };
+}
+
+export async function handleSignOut() {
+  await signOut({
+    redirect: true,
+    redirectTo: "/login",
+  });
 }
