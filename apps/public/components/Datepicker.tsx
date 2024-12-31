@@ -73,7 +73,7 @@ export const DatePicker = forwardRef<
           variant={"outline"}
           size="icon"
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full text-left font-normal",
             !date && "text-muted-foreground",
             className,
           )}
@@ -85,6 +85,9 @@ export const DatePicker = forwardRef<
       <DrawerContent ref={ref}>
         <div className="mt-4 border-t">
           <Calendar
+            classNames={{
+              table: "w-max mx-auto",
+            }}
             id={id}
             mode="single"
             selected={date}
