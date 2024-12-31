@@ -22,8 +22,8 @@ const defaultTextWithTitleClassNames = {
 };
 export default function Page() {
   return (
-    <div className="bg-muted">
-      <section className="mx-auto max-w-6xl p-8">
+    <div className="bg-muted w-full">
+      <section className="mx-auto w-full max-w-6xl p-4 md:p-8">
         <TextWithTitle
           title="Start with the basics"
           text="Make it easy for people to learn about your project."
@@ -215,7 +215,7 @@ function Section({
   return (
     <div
       className={cn(
-        "grid grid-cols-3 items-start gap-8 border-b py-8",
+        "grid items-start gap-8 border-b py-8 md:grid-cols-3",
         className,
       )}
     >
@@ -260,7 +260,7 @@ function DateInputs({
   fullDateId?: string;
 }) {
   return (
-    <div className="flex max-w-80 items-end gap-4">
+    <div className="flex max-w-80 flex-col gap-4 md:flex-row md:items-end">
       <FormField htmlFor={dayId} label="Day">
         <Input
           className="min-w-20"
@@ -296,7 +296,7 @@ function DateInputs({
       </FormField>
       <DatePicker
         id={fullDateId}
-        className="max-w-24"
+        className="md:max-w-24"
         date={new Date()}
         showIcon
         dateRange={{

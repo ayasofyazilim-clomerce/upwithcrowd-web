@@ -19,7 +19,7 @@ export default async function RootLayout({
   const sessionKey = new Date().valueOf();
   return (
     <html lang="en">
-      <body className={` flex min-h-screen flex-col`}>
+      <body className={`min-h-screen overflow-hidden`}>
         <Providers session={session} sessionKey={sessionKey}>
           {children}
         </Providers>

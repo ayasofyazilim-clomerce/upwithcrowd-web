@@ -4,8 +4,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <TabLayout
       classNames={{
         horizontal: {
-          // tabs: "overflow-auto h-[calc(100dvh-6rem)]",
-          tabList: "bg-red-200 sticky top-0",
+          tabs: "h-auto overflow-visible",
+          tabList:
+            "w-full bg-white shadow border-t p-0 sticky top-0 rounded-none h-16 justify-start md:justify-center",
+          tabContent: "mt-0",
+          tabTrigger:
+            "data-[state=active]:text-primary h-full rounded-none data-[state=active]:shadow-none min-w-24 text-center data-[state=active]:font-bold",
         },
       }}
       tabList={[
