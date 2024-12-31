@@ -1,9 +1,14 @@
 {
+  "NotImplemented": "Geliştirme aşamasında.",
   "Back": "Geri",
   "Save": "Kaydet",
+  "Search": "Ara",
+  "Searching": "Aranıyor",
   "Delete.Assurance": "Silmek istediğinize emin misiniz?",
   "Cancel": "İptal",
   "Edit.Save": "Değişiklikleri kaydet",
+
+  "SomethingWentWrong": "Bir şeyler yanlış gitti.",
 
   "Yes": "Evet",
   "No": "Hayır",
@@ -19,19 +24,21 @@
   "Delete": "Sil",
   "Delete.Success": "Veri başarıyla silindi.",
   "Delete.Fail": "Veri silinirken bir hata oluştu.",
-
   "Fetch.Fail": "Veriler alırken bir hata oluştu.",
 
   "Country.Select": "Ülke Seç",
   "Region.Select": "Bölge Seç",
   "City.Select": "Şehir Seç",
   "District.Select": "İlçe Seç",
+  "Neighborhood.Select": "Mahalle Seç",
   "Select.Placeholder": "Ara...",
   "Select.ResultLabel": "0 arama sonucu.",
+  "Select.EmptyValue": "Lütfen seçim yapınız.",
   "PhoneNumber": "Telefon Numarası",
-
   "Country.Fetch.Fail": "Ülkeler getirilirken bir hata oluştu..",
   "City.Fetch.Fail": "Şehirleri getirilirken bir hata oluştu.",
+  "District.Fetch.Fail": "İlçeler getirilirken bir hata oluştu.",
+  "Neighborhood.Fetch.Fail": "Mahalleler getirilirken bir hata oluştu.",
 
   "ExportCSV": "CSV Dışa Aktar",
 
@@ -46,7 +53,7 @@
   "Residences": "İkametler",
   "FirstName": "Ad",
   "LastName": "Soyad",
-  "CreationTime": "Olusturulma Zamanı",
+  "CreationTime": "Oluşturulma Zamanı",
   "LastModificationTime": "Son Değişiklik Zamanı",
   "IsActive": "Aktif",
   "IsDeleted": "Silindi",
@@ -96,6 +103,8 @@
   "Form.address.countryId": "Ülke",
   "Form.address.regionId": "Bölge",
   "Form.address.cityId": "Şehir",
+  "Form.address.districtId": "Ilçe",
+  "Form.address.neighborhoodId": "Mahalle",
   "Form.address.postalCode": "Posta Kodu",
   "Form.address.addressLine": "Adres Satırı",
   "Form.address.fullAddress": "Tam Adres",
