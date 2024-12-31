@@ -1,14 +1,14 @@
-"use server";
 import { auth } from "@/auth";
 import "./globals.css";
 import Providers from "./providers";
+import { Inter } from "next/font/google";
 
-// const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata = {
-//   title: "UPwithCrowd",
-//   description: "Empowering ideas through crowdfunding",
-// };
+export const metadata = {
+  title: "UPwithCrowd",
+  description: "Empowering ideas through crowdfunding",
+};
 
 export default async function RootLayout({
   children,
@@ -19,7 +19,7 @@ export default async function RootLayout({
   const sessionKey = new Date().valueOf();
   return (
     <html lang="en">
-      <body className={`min-h-screen overflow-hidden`}>
+      <body className={`${inter.className} min-h-screen overflow-hidden`}>
         <Providers session={session} sessionKey={sessionKey}>
           {children}
         </Providers>

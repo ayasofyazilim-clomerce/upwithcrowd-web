@@ -29,7 +29,7 @@ import { useSession } from "next-auth/react";
 import { getMembership } from "./actions";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/saas/upwithcrowdService";
 import ProfileTypeSwitch from "./_components/ProfileTypeSwitch";
-import SingOut from "@/app/(auth)/login/signout";
+import { handleSignOut } from "@/app/(auth)/login/action";
 
 // Mock user data
 const userData = {
@@ -88,7 +88,7 @@ export default function Page() {
         </Dialog>
       )}
       <div className="flex flex-col gap-8 md:flex-row">
-        <div className="w-full space-y-4 md:w-1/3">
+        <div className="flex w-full flex-col gap-4 md:w-1/3">
           <Card>
             <CardContent className="flex flex-col items-center p-6">
               <div className="relative mb-4 h-32 w-32">
@@ -114,6 +114,13 @@ export default function Page() {
               />
             </CardContent>
           </Card>
+          <Button
+            variant="outline"
+            className="mx-auto"
+            onClick={() => handleSignOut()}
+          >
+            Sign out
+          </Button>
 
           <div className="space-y-4">
             {typeof myMember !== "undefined" &&
@@ -149,7 +156,6 @@ export default function Page() {
             <Plus className="mr-2 h-4 w-4" />
             Add New Account
           </Button>
-          <SingOut />
         </div>
 
         <div className="w-full md:w-2/3">
