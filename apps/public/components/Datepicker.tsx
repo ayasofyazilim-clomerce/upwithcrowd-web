@@ -49,12 +49,13 @@ export const DatePicker = forwardRef<
           {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
         </Button>
       </PopoverTrigger>
-      <PopoverContent
-        className="min-w-screen max-w-screen w-full p-0"
-        ref={ref}
-      >
+      <PopoverContent className="min-w-max p-0" ref={ref}>
         <Calendar
           mode="single"
+          id={id}
+          classNames={{
+            table: "w-max mx-auto",
+          }}
           selected={date}
           onSelect={onChange}
           disabled={dateRange}
@@ -85,9 +86,6 @@ export const DatePicker = forwardRef<
         <div className="mt-4 border-t">
           <Calendar
             id={id}
-            classNames={{
-              table: "w-max mx-auto",
-            }}
             mode="single"
             selected={date}
             onSelect={onChange}
