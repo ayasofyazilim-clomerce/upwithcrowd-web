@@ -100,16 +100,14 @@ function ProjectDetails({ project }: { project: Project }) {
           <div className="flex items-center">
             <DollarSign className="text-primary mr-2 h-5 w-5" />
             <div>
-              <p className="font-semibold">
-                ${project.raised.toLocaleString()}
-              </p>
+              <p className="font-semibold">${project.raised.toString()}</p>
               <p className="text-muted-foreground text-xs">raised</p>
             </div>
           </div>
           <div className="flex items-center">
             <Target className="text-primary mr-2 h-5 w-5" />
             <div>
-              <p className="font-semibold">${project.goal.toLocaleString()}</p>
+              <p className="font-semibold">${project.goal.toString()}</p>
               <p className="text-muted-foreground text-xs">goal</p>
             </div>
           </div>

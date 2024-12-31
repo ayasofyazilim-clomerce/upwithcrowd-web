@@ -29,6 +29,7 @@ import { useSession } from "next-auth/react";
 import { getMembership } from "./actions";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/saas/upwithcrowdService";
 import ProfileTypeSwitch from "./_components/ProfileTypeSwitch";
+import SingOut from "@/app/(auth)/login/signout";
 
 // Mock user data
 const userData = {
@@ -148,6 +149,7 @@ export default function Page() {
             <Plus className="mr-2 h-4 w-4" />
             Add New Account
           </Button>
+          <SingOut />
         </div>
 
         <div className="w-full md:w-2/3">

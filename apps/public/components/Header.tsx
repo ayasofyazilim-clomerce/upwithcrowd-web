@@ -1,14 +1,14 @@
 "use client";
 
-import SingOut from "@/app/login/signout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { ChevronRight, Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 const PublicLinks = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
@@ -18,20 +18,10 @@ const PublicLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-const PrivateLinks = [{ href: "/profile", label: "Profile" }];
-
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data } = useSession();
-  const [isLogged, setIsLogged] = useState(false);
   const pathName = usePathname();
-  useEffect(() => {
-    if (data?.user) {
-      setIsLogged(true);
-    } else {
-      setIsLogged(false);
-    }
-  }, [data]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { status, data } = useSession();
   return (
     <header className="bg-background flex h-24 px-6">
       <div className="container mx-auto flex items-center justify-between">
@@ -60,22 +50,25 @@ export default function Header() {
           </ul>
         </nav>
         <div className="space-x-4">
-          {isLogged ? (
-            <>
-              {PrivateLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-foreground hover:text-primary",
-                    pathName === link.href && "text-primary",
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <SingOut />
-            </>
+          {status === "authenticated" ? (
+            <Button
+              className="group flex h-16 max-w-80 items-center justify-between gap-2"
+              variant="ghost"
+              asChild
+            >
+              <Link href={"/profile"}>
+                <Avatar>
+                  <AvatarImage src={data?.user?.image || ""} />
+                  <AvatarFallback className="group-hover:bg-white">
+                    {data?.user?.name?.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="w-full max-w-40 overflow-hidden text-ellipsis text-nowrap text-sm">
+                  {data?.user?.name}
+                </span>
+                <ChevronRight className="w-4 min-w-4" />
+              </Link>
+            </Button>
           ) : (
             <>
               <Button asChild variant="outline">

@@ -2,7 +2,7 @@
 
 import { signIn } from "@/auth";
 import { ApiErrorResponse, isApiError } from "@/utils/client";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
 export async function signInForm<State>(prevState: State, formData: FormData) {
   try {
@@ -15,7 +15,7 @@ export async function signInForm<State>(prevState: State, formData: FormData) {
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === "NEXT_REDIRECT") {
-        redirect("/profile");
+        redirect("/profile", RedirectType.push);
       }
       if (isApiError(error)) {
         const errorBody = error.body as ApiErrorResponse;
