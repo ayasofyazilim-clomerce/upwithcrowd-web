@@ -30,7 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        let user = null;
+        const user = null;
         let scopes = "openid profile email";
         const openId_response = await fetch(OPENID_URL);
         const scopes_json = await openId_response.json();
@@ -72,7 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // const upWithCrowdClient = await getUpwithcrowd();
           // const appConfig = await upWithCrowdClient.abpApplicationConfiguration.getApiAbpApplicationConfiguration();
           // const userAbp = appConfig.currentUser;
-          let user: User = {
+          const user: User = {
             email: current_user?.email || credentials.email + "",
             name: current_user?.userName || credentials.email + "",
             // image: userAbp?.profilePicture,
@@ -114,14 +114,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     session({ session, token, user }) {
+      const localUser = session.user;
       // console.log("session", user);
       // `session.user.address` is now a valid property, and will be type-checked
       // in places like `useSession().data.user` or `auth().user`
       return {
         ...session,
         user: {
-          ...user,
-          ...session.user,
+          email: user.email || localUser.email || "",
+          name: user.name || localUser.name || "",
+          image: user.image || localUser.image || "",
+          id: user.id || localUser.id || "",
           access_token: token.access_token + "",
         },
       };
