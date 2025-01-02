@@ -31,7 +31,6 @@ validate_port() {
 get_app_details() {
     local app=$1
     local port=$2
-    echo $app $port
     if [[ -n $port ]]; then
         app_port=$port
     else        
@@ -112,27 +111,27 @@ if [[ $# -eq 0 ]]; then
     done
 else
     while [[ $# -gt 0 ]]; do
-    case $1 in
-        --app)
-            app=$2
-            shift 2
-            ;;
-        --port)
-            port=$2
-            shift 2
-            ;;
-        *)
-            echo -e "${RED}Unknown option: $1${RESET}"
-            exit 1
-            ;;
-    esac
-    if [[ -n $app && -n $port ]]; then
-        get_app_details "$app" "$port"
-        apps_to_publish+=("$app")
-        unset app
-        unset port
-    fi
-done
+        case $1 in
+            --app)
+                app=$2
+                shift 2
+                ;;
+            --port)
+                port=$2
+                shift 2
+                ;;
+            *)
+                echo -e "${RED}Unknown option: $1${RESET}"
+                exit 1
+                ;;
+        esac
+        if [[ -n $app && -n $port ]]; then
+            get_app_details "$app" "$port"
+            apps_to_publish+=("$app")
+            unset app
+            unset port
+        fi
+    done
 fi
 
 update_code_from_remote
