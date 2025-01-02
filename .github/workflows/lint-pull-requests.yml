@@ -1,4 +1,4 @@
-name: Lint
+name: Lint pull request
 run-name: Linting the Pull request 🚀
 on:
   pull_request_target:
