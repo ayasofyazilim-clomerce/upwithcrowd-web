@@ -78,7 +78,7 @@ start_app() {
     echo -e $app_name
     pnpm run build --filter "./apps/${app,,}"
     echo -e "${BOLD}${BLUE}\nStarting $app_name..${RESET}\n"
-    if pm2 list | grep -q "$app_name"; then
+    if pm2 pid "$app_name"; then
         pm2 delete "$app_name"
     fi
     cd "apps/${app,,}"
