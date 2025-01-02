@@ -7,13 +7,15 @@ YELLOW='\e[33m'
 BLUE='\e[34m'
 BOLD='\e[1m'
 RESET='\e[0m'
+system_ports=($(netstat -tuln | grep -oP ':\K\d+' | sort -un))
+options=("all" "quit")
+selected_ports=()
 
-used_ports=($(netstat -tuln | grep -oP ':\K\d+' | sort -un))
 PS3='Please select apps to publish: '
 options=("all" "quit")
 for dir in ./apps/*/; do
-    dir=${dir%*/}
-    options+=("${dir##*/}")
+    dir_name=$(basename "$dir")    
+    options+=("$dir_name")
 done
 apps_to_publish=()
 
@@ -34,11 +36,11 @@ get_app_details() {
     else
         read -p "Please provide the app name for $app_type: " app_name
         while true; do
-            echo -e "${BOLD}${YELLOW}\nWarning: The following ports are currently in use: ${used_ports[*]}${RESET}\n"
+            echo -e "${BOLD}${YELLOW}\nWarning: The following ports are currently in use: ${system_ports[*]}${RESET}\n"
             read -p "Please provide port number for $app_name: " app_port
             validate_port $app_port || continue
             port_in_use=false
-            for used_port in "${used_ports[@]}"; do
+            for used_port in "${selected_ports[@]}"; do
                 if [[ $app_port -eq $used_port ]]; then
                     echo -e "${RED}Port $app_port is already in use by another app. Please choose a different port.${RESET}"
                     port_in_use=true
@@ -49,11 +51,17 @@ get_app_details() {
         done
         app_name="($app_port) $app_name"
     fi
+
+    # Check for .env file
+    if [[ ! -f "./apps/${app_type,,}/.env" ]]; then
+        echo -e "${RED}Warning: .env file does not exist for $app_type. Please create one before proceeding.${RESET}"
+    fi
+
     echo -e "${GREEN}App name for $app_type is set to $app_name${RESET}"
     echo -e "${GREEN}Port number for $app_name is set to $app_port${RESET}"
     eval "${app_type,,}_app=\$app_name"
     eval "${app_type,,}_port=\$app_port"
-    used_ports+=($app_port)
+    selected_ports+=($app_port)
 }
 
 update_code_from_remote() {
