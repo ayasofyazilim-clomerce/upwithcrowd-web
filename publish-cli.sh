@@ -32,9 +32,8 @@ get_app_details() {
     local app=$1
     local port=$2
     local env_name=$(basename "$(pwd)")
-    local project_name=$(basename "$(dirname "$(PWD)")")
+    local project_name=$(basename "$(dirname "$(pwd)")")
     local app_name="[$port][${env_name^^}]${project_name^}($app)"
-    
     if [[ -n $port ]]; then
         app_port=$port
     else        
@@ -56,7 +55,8 @@ get_app_details() {
 
     # Check for .env file
     if [[ ! -f "./apps/${app,,}/.env" ]]; then
-        echo -e "${RED}Warning: .env file does not exist for $app. Please create one before proceeding.${RESET}"
+        echo -e "${RED}Error: .env file does not exist for $app. Please create one before proceeding.${RESET}"
+        exit 1
     fi
 
     echo -e "${GREEN}App name for $app is set to $app${RESET}"
