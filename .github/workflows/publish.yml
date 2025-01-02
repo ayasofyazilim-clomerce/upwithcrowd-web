@@ -1,15 +1,16 @@
 name: Publish dev websites
 run-name: ${{ github.actor }} is publishing projects to dev 🚀
- workflow_dispatch:
-    inputs:
-      release-type:
-        description: 'Release type (one of): dev, prod'
-        required: true
-        default: 'dev'
-        type: choice
-        options:
-        - dev
-        - prod
+on:
+  workflow_dispatch:
+      inputs:
+        release-type:
+          description: 'Release type (one of): dev, prod'
+          required: true
+          default: 'dev'
+          type: choice
+          options:
+          - dev
+          - prod
   workflow_call: 
     inputs:
       release-type:
