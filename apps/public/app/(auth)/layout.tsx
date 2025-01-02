@@ -9,8 +9,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+  const [current, setCurrent] = useState(1);
+  const [count, setCount] = useState(5);
 
   useEffect(() => {
     if (!api) {
@@ -25,8 +25,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     });
   }, [api]);
   return (
-    <section className="grid h-screen grid-cols-2 overflow-hidden bg-white">
-      <div className="bg-primary relative">
+    <section className="grid h-dvh w-full grid-cols-4 overflow-hidden bg-white">
+      <div className="bg-primary relative col-span-3">
         <Carousel
           setApi={setApi}
           opts={{
