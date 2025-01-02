@@ -1,4 +1,4 @@
-name: Publish dev websites
+name: Publish apps
 run-name: ${{ github.actor }} is publishing projects to dev 🚀
 on:
   workflow_dispatch:
