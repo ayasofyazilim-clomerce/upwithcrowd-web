@@ -31,16 +31,16 @@ validate_port() {
 get_app_details() {
     local app=$1
     local port=$2
-    local env_name=$(basename "$(dirname "$(dirname "$dir")")")
-    local project_name=$(basename "$(dirname "$(dirname "$(dirname "$dir")")")" | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')
-    local app_name="($port)($env_name)-$project_name-$app"
+    local env_name=$(basename "$(pwd)")
+    local project_name=$(basename "$(dirname "$(PWD)")")
+    local app_name="[$port][${env_name^^}]${project_name^}($app)"
     
     if [[ -n $port ]]; then
         app_port=$port
     else        
         while true; do
             echo -e "${BOLD}${YELLOW}\nWarning: The following ports are currently in use: ${system_ports[*]}${RESET}\n"
-            read -p "Please provide port number for $app_name: " app_port
+            read -p "Please provide port number for $app: " app_port
             validate_port $app_port || continue
             port_in_use=false
             for used_port in "${selected_ports[@]}"; do
