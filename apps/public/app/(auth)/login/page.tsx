@@ -4,17 +4,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@repo/ayasofyazilim-ui/molecules/password-input";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useFormState } from "react-dom";
-import { signInForm } from "./action";
+import { signInAction } from "./action";
 import SubmitButton from "./loading";
 const initialState = {
   message: "",
 };
+
 export default function Page() {
-  const [state, formAction] = useFormState(
-    signInForm<typeof initialState>,
-    initialState,
-  );
+  const search = useSearchParams();
+  const loginWithCallbackURL = signInAction.bind(null, {
+    callBackURL: search.get("callbackUrl"),
+  });
+  const [state, formAction] = useFormState(loginWithCallbackURL, initialState);
   return (
     <>
       <h2 className="text-primary mb-4 text-center text-2xl font-bold md:text-3xl">
