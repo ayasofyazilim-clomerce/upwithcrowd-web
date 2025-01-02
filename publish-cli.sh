@@ -31,9 +31,6 @@ validate_port() {
 get_app_details() {
     local app=$1
     local port=$2
-    local env_name=$(basename "$(pwd)")
-    local project_name=$(basename "$(dirname "$(pwd)")")
-    local app_name="[$port][${env_name^^}]${project_name^}($app)"
     if [[ -n $port ]]; then
         app_port=$port
     else        
@@ -68,22 +65,23 @@ get_app_details() {
 
 update_code_from_remote() {
     echo -e "${BOLD}${BLUE}Pulling code from remote..${RESET}\n"
-    git reset --hard origin/main && git pull --recurse-submodules
+    #git reset --hard origin/main && git pull --recurse-submodules
 }
 
-start_app() {
-    local app_name=$1
-    local app_name_var="${app_name,,}_app"
-    local app_port_var="${app_name,,}_port"
-    local app_name=${!app_name_var}
+start_app() {    
+    local app=$1
+    local app_port_var="${app,,}_port"
     local app_port=${!app_port_var}
-
-    pnpm run build --filter "./apps/${app_name,,}"
+    local env_name=$(basename "$(pwd)")
+    local project_name=$(basename "$(dirname "$(pwd)")")
+    local app_name="[$app_port][${env_name^^}]${project_name^}($app)"
+    echo -e $app_name
+    pnpm run build --filter "./apps/${app,,}"
     echo -e "${BOLD}${BLUE}\nStarting $app_name..${RESET}\n"
     if pm2 list | grep -q "$app_name"; then
         pm2 delete "$app_name"
     fi
-    cd "apps/${app_type,,}"
+    cd "apps/${app,,}"
     pm2 start "pnpm start --port $app_port" -n "$app_name"
     echo -e "${BOLD}${BLUE}\n$app_type Started${RESET}\n"
     cd ../..
@@ -102,7 +100,7 @@ if [[ $# -eq 0 ]]; then
                 break
                 ;;
             "quit")
-                exit
+                exit 1
                 ;;
             *) 
                 get_app_details "$opt"
@@ -133,7 +131,6 @@ else
 fi
 
 update_code_from_remote
-
 echo -e "${BOLD}${BLUE}\nStarting setup for ${apps_to_publish[*]}..${RESET}\n"
 pnpm install
 
