@@ -29,12 +29,15 @@ validate_port() {
 }
 
 get_app_details() {
-    local app_type=$1
-    if [[ -n $2 && -n $3 ]]; then
-        app_name="($3) $2"
-        app_port=$3
-    else
-        read -p "Please provide the app name for $app_type: " app_name
+    local app=$1
+    local port=$2
+    local env_name=$(basename "$(dirname "$(dirname "$dir")")")
+    local project_name=$(basename "$(dirname "$(dirname "$(dirname "$dir")")")" | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')
+    local app_name="($port)($env_name)-$project_name-$app"
+    
+    if [[ -n $port ]]; then
+        app_port=$port
+    else        
         while true; do
             echo -e "${BOLD}${YELLOW}\nWarning: The following ports are currently in use: ${system_ports[*]}${RESET}\n"
             read -p "Please provide port number for $app_name: " app_port
@@ -49,18 +52,17 @@ get_app_details() {
             done
             [[ $port_in_use == false ]] && break
         done
-        app_name="($app_port) $app_name"
     fi
 
     # Check for .env file
-    if [[ ! -f "./apps/${app_type,,}/.env" ]]; then
-        echo -e "${RED}Warning: .env file does not exist for $app_type. Please create one before proceeding.${RESET}"
+    if [[ ! -f "./apps/${app,,}/.env" ]]; then
+        echo -e "${RED}Warning: .env file does not exist for $app. Please create one before proceeding.${RESET}"
     fi
 
-    echo -e "${GREEN}App name for $app_type is set to $app_name${RESET}"
-    echo -e "${GREEN}Port number for $app_name is set to $app_port${RESET}"
-    eval "${app_type,,}_app=\$app_name"
-    eval "${app_type,,}_port=\$app_port"
+    echo -e "${GREEN}App name for $app is set to $app${RESET}"
+    echo -e "${GREEN}Port number for $app is set to $app_port${RESET}"
+    eval "${app,,}_app=\$app"
+    eval "${app,,}_port=\$app_port"
     selected_ports+=($app_port)
 }
 
@@ -70,14 +72,14 @@ update_code_from_remote() {
 }
 
 start_app() {
-    local app_type=$1
-    local app_name_var="${app_type,,}_app"
-    local app_port_var="${app_type,,}_port"
+    local app_name=$1
+    local app_name_var="${app_name,,}_app"
+    local app_port_var="${app_name,,}_port"
     local app_name=${!app_name_var}
     local app_port=${!app_port_var}
 
-    pnpm run build --filter "./apps/${app_type,,}"
-    echo -e "${BOLD}${BLUE}\nStarting $app_type..${RESET}\n"
+    pnpm run build --filter "./apps/${app_name,,}"
+    echo -e "${BOLD}${BLUE}\nStarting $app_name..${RESET}\n"
     if pm2 list | grep -q "$app_name"; then
         pm2 delete "$app_name"
     fi
@@ -116,10 +118,6 @@ else
                 app=$2
                 shift 2
                 ;;
-            --name)
-                name=$2
-                shift 2
-                ;;
             --port)
                 port=$2
                 shift 2
@@ -129,7 +127,7 @@ else
                 exit 1
                 ;;
         esac
-        get_app_details "$app" "$name" "$port"
+        get_app_details "$app" "$port"
         apps_to_publish+=("$app")
     done
 fi
