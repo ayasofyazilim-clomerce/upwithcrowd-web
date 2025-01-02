@@ -125,8 +125,12 @@ else
                 exit 1
                 ;;
         esac
-        get_app_details "$app" "$port"
-        apps_to_publish+=("$app")
+        if [[ -n $app && -n $port ]]; then
+            get_app_details "$app" "$port"
+            apps_to_publish+=("$app")
+            unset app
+            unset port
+        fi
     done
 fi
 
