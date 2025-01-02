@@ -1,4 +1,4 @@
-name: Lint
+name: Lint main branch
 run-name: Linting the main branch 🚀
 on:
   push:
@@ -39,5 +39,4 @@ jobs:
           title: "ci: lint [auto]"
           assignees: |
             ${{ github.actor }}
-            a0m0rajab
-
+            ayasofyazilim
