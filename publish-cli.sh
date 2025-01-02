@@ -51,6 +51,12 @@ get_app_details() {
         done
         app_name="($app_port) $app_name"
     fi
+
+    # Check for .env file
+    if [[ ! -f "./apps/${app_type,,}/.env" ]]; then
+        echo -e "${RED}Warning: .env file does not exist for $app_type. Please create one before proceeding.${RESET}"
+    fi
+
     echo -e "${GREEN}App name for $app_type is set to $app_name${RESET}"
     echo -e "${GREEN}Port number for $app_name is set to $app_port${RESET}"
     eval "${app_type,,}_app=\$app_name"
