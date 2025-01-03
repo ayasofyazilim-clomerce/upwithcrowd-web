@@ -2,8 +2,8 @@ import type { Session } from "next-auth";
 import { auth } from "@/auth";
 import {
   ApiError,
-  upwithcrowdServiceClient,
-} from "@ayasofyazilim/saas/upwithcrowdService";
+  UPWCServiceClient,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
 const HEADERS = {
   "X-Requested-With": "XMLHttpRequest",
@@ -12,7 +12,7 @@ const HEADERS = {
 export async function getUpwithcrowd(session?: Session | null) {
   const userData = session || (await auth());
   const token = userData?.user.access_token || ""; //userData?.user;
-  return new upwithcrowdServiceClient({
+  return new UPWCServiceClient({
     TOKEN: token,
     BASE: process.env.BASE_URL,
     HEADERS,
@@ -20,7 +20,7 @@ export async function getUpwithcrowd(session?: Session | null) {
 }
 
 export async function getUpwithcrowdAccount() {
-  return new upwithcrowdServiceClient({
+  return new UPWCServiceClient({
     BASE: process.env.ACCOUNT_URL,
     HEADERS,
   });
