@@ -56,7 +56,7 @@ const Map: FC<MapProps> = ({ latitude, longitude, zoom }) => {
   return (
     <div
       id="map"
-      style={{ height: "500px", width: "100%", borderRadius: "40px" }}
+      style={{ height: "500px", width: "100%", borderRadius: "24px" }}
     ></div>
   );
 };

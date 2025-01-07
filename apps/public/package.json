@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.0.0",
+    "framer-motion": "^11.2.10",
     "leaflet": "^1.9.4",
     "lint-staged": "15.2.2",
     "lucide-react": "^0.468.0",
