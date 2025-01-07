@@ -1,7 +1,7 @@
 import NextAuth, { AuthError, DefaultSession, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 // import { getUpwithcrowd } from "./utils/client";
-import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/saas/upwithcrowdService";
+import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { getUpwithcrowdAccount } from "./utils/client";
 
 const TOKEN_URL = `${process.env.ABP_AUTH_URL}/connect/token`;

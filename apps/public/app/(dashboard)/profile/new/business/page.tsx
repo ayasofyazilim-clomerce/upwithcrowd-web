@@ -2,7 +2,7 @@
 import {
   $UpwithCrowd_Members_SaveMemberDto,
   UpwithCrowd_Members_SaveMemberDto,
-} from "@ayasofyazilim/saas/upwithcrowdService";
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { SchemaForm } from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import { createUiSchemaWithResource } from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
 

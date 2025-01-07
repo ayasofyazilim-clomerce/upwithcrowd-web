@@ -27,7 +27,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import { getMembership } from "./actions";
-import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/saas/upwithcrowdService";
+import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ProfileTypeSwitch from "./_components/ProfileTypeSwitch";
 import { handleSignOut } from "@/app/(auth)/login/action";
 
