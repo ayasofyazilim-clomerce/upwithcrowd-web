@@ -44,3 +44,68 @@ export type ApiErrorResponse = {
     validationErrors: string;
   };
 };
+
+export type ServerResponse<T = undefined> = BaseServerResponse &
+  (ErrorTypes | SuccessServerResponse<T>);
+
+export type ErrorTypes = BaseServerResponse &
+  (ErrorServerResponse | ApiErrorServerResponse);
+
+export interface BaseServerResponse {
+  status: number;
+  message: string;
+}
+
+export interface SuccessServerResponse<T> {
+  type: "success";
+  data: T;
+}
+export interface ApiErrorServerResponse {
+  type: "api-error";
+  data: ApiError["message"];
+}
+export interface ErrorServerResponse {
+  type: "error";
+  data: unknown;
+}
+
+export function structuredError(error: unknown): ErrorTypes {
+  if (isApiError(error)) {
+    const body = error.body as
+      | {
+          error: { message?: string; details?: string };
+        }
+      | undefined;
+    const errorDetails = body?.error || {};
+    return {
+      type: "api-error",
+      data: errorDetails.message || error.statusText || "Something went wrong",
+      status: error.status,
+      message:
+        errorDetails.details ||
+        errorDetails.message ||
+        error.statusText ||
+        "Something went wrong",
+    };
+  }
+  return {
+    type: "error",
+    data: error,
+    status: 500,
+    message: "An error occurred",
+  };
+}
+
+export interface PagedResult<T> {
+  items?: T[] | null;
+  totalCount: number;
+}
+
+export function structuredResponse<T>(data: T): ServerResponse<T> {
+  return {
+    type: "success",
+    data,
+    status: 200,
+    message: "",
+  };
+}
