@@ -2,7 +2,6 @@ import NextAuth, { AuthError, DefaultSession, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 // import { getUpwithcrowd } from "./utils/client";
 import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { getUpwithcrowdAccount } from "./utils/client";
 
 const TOKEN_URL = `${process.env.ABP_AUTH_URL}/connect/token`;
 const OPENID_URL = `${process.env.ABP_AUTH_URL}/.well-known/openid-configuration`;
@@ -74,16 +73,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const user_data: GetApiAbpApplicationConfigurationResponse =
             await userReuqest.json();
           const current_user = user_data.currentUser;
-          const upWithCrowdClient = await getUpwithcrowdAccount();
-          const profile_picture =
-            await upWithCrowdClient.account.getApiAccountProfilePictureById({
-              id: current_user?.id || "",
-            });
+          // const upWithCrowdClient = await getUpwithcrowdAccount();
+          // const profile_picture =
+          //   await upWithCrowdClient.account.getApiAccountProfilePictureById({
+          //     id: current_user?.id || "",
+          //   });
           // const userAbp = appConfig.currentUser;
           const user: User = {
             email: current_user?.email || credentials.email + "",
             name: current_user?.userName || credentials.email + "",
-            image: profile_picture.fileContent || "",
+            // image: profile_picture.fileContent || "",
             id: current_user?.id || "",
             access_token: json.access_token,
           };

@@ -25,11 +25,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import { useSession } from "next-auth/react";
-import { getMembership } from "./actions";
+
+import { getMembership } from "../../../actions/upwithcrowd/my-member/actions";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ProfileTypeSwitch from "./_components/ProfileTypeSwitch";
 import { handleSignOut } from "@/app/(auth)/login/action";
+import { useSession } from "@/app/providers/session";
 
 // Mock user data
 const userData = {
@@ -40,7 +41,7 @@ const userData = {
 };
 
 export default function Page() {
-  const { data: session } = useSession();
+  const { session } = useSession();
   const [showAccountDialog, setShowAccountDialog] = useState(false);
   const currentUser = session?.user;
   const [profileImage, setProfileImage] = useState(userData.profileImage);

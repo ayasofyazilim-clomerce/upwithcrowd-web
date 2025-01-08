@@ -19,6 +19,7 @@
   "Form.AuditLog.maxExecutionDuration": "Max Execution Duration",
   "Form.AuditLog.minExecutionDuration": "Min Execution Duration",
 
+  "Language": "Language",
   "Language.New": "New Language",
   "Language.Edit": "Edit Language",
   "Language.Delete": "Delete Language",

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import "./globals.css";
-import Providers from "./providers";
 import { Inter } from "next/font/google";
+import "./globals.css";
+import Providers from "./providers/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,13 +16,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  const sessionKey = new Date().valueOf();
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen overflow-hidden`}>
-        <Providers session={session} sessionKey={sessionKey}>
-          {children}
-        </Providers>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );

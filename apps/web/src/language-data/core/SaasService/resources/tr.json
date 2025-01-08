@@ -12,6 +12,7 @@
   "Form.Edition.tenantCount": "Müşteri Sayısı",
   "Form.Edition.displayName": "Paket Adı",
 
+  "Tenant": "Müşteri",
   "Tenants": "Müşteriler",
   "Tenant.New": "Yeni Müşteri",
   "Tenant.Edit": "Müşteriyi Değiştir",
