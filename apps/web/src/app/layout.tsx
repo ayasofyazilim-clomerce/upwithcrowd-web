@@ -1,6 +1,7 @@
 "use server";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { auth } from "auth";
 import Providers from "src/providers/providers";
 import "./globals.css";
 
@@ -22,12 +23,22 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  await Promise.resolve();
   const { lang } = params;
+  const session = await auth();
+  const grantedPolicies = session?.grantedPolicies;
+
+  const sessionKey = new Date().valueOf();
   return (
     <html className="h-full overflow-hidden" lang={lang}>
       <body className={GeistSans.className} data-app-name={appName}>
-        <Providers lang={lang}>{children}</Providers>
+        <Providers
+          grantedPolicies={grantedPolicies}
+          lang={lang}
+          session={session}
+          sessionKey={sessionKey}
+        >
+          {children}
+        </Providers>
       </body>
     </html>
   );
