@@ -1,16 +1,3 @@
-import type { Volo_Abp_AspNetCore_Mvc_ApplicationConfigurations_ApplicationLocalizationDto } from "@ayasofyazilim/saas/AccountService";
-
-type LocalizationDto =
-  Volo_Abp_AspNetCore_Mvc_ApplicationConfigurations_ApplicationLocalizationDto;
-export type ResourcesDto = LocalizationDto["resources"];
-
-type En = Record<string, string>;
-type Other = Record<string, string | undefined> | undefined;
-export interface LanguageDataType {
-  en: En;
-  [key: string]: Other;
-}
-
 export function isServerSide() {
   return typeof window === "undefined";
 }
@@ -28,56 +15,18 @@ export async function getLocalizationResources(
   languageCode: string,
 ): Promise<ResourceResult> {
   try {
-    const response = await fetch(
-      `http://${process.env.HOSTNAME}:${process.env.PORT}/api/?lang=${languageCode}`,
-    );
-    return ((await response.json()) as LocalizationDto).resources || {};
-  } catch (error) {
+    await Promise.resolve();
     return {};
+  } catch (error) {
+    return { texts: { texts: { languageCode } } };
   }
 }
 
-function getLocale(locale?: string): string {
-  if (locale) return locale;
-  // FIXME: This is a temporary solution for eslint
+export function getBaseLink(location: string, locale?: string) {
   if (isServerSide()) {
-    //   return localeServerSide();
-    return "en";
+    return `/${locale || "en"}/${location}`;
   }
   const pathname = window.location.pathname;
   const pathnameParts = pathname.split("/");
-  return pathnameParts[1] ?? "en";
-}
-function getAppType(appType?: string) {
-  if (appType === "public") return `${appType}/`;
-
-  if (appType) {
-    return `app/${appType}/`;
-  }
-
-  if (!isServerSide()) {
-    const pathname = window.location.pathname;
-    const pathnameParts = pathname.split("/");
-    return `app/${pathnameParts[3]}/`;
-  }
-  return "public/";
-}
-export function getBaseLink(
-  location: string,
-  withLocale?: boolean,
-  locale?: string,
-  withAppType?: boolean,
-  appType?: string,
-) {
-  // check if location first character is a slash
-  let newLocation = location;
-  if (location.startsWith("/")) {
-    newLocation = location.slice(1);
-  }
-  let localePath = withLocale ? `${getLocale(locale)}/` : "";
-  if (withAppType) {
-    localePath += getAppType(appType);
-  }
-
-  return `/${localePath}${newLocation}`;
+  return `/${locale || pathnameParts[1] || "en"}/${location}`;
 }
