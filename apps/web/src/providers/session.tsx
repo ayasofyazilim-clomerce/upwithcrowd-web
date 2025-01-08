@@ -6,7 +6,6 @@ import { createContext, useContext, useMemo } from "react";
 interface ProvidersProps {
   children: React.ReactNode;
   session: Session | null;
-  sessionKey?: number;
 }
 interface SessionContextProps {
   session: Session | null;
@@ -19,14 +18,10 @@ export const useSession = () => {
   return useContext(SessionContext);
 };
 
-export function SessionProvider({
-  children,
-  session,
-  sessionKey,
-}: ProvidersProps) {
+export function SessionProvider({ children, session }: ProvidersProps) {
   const memoizedSessionKey = useMemo(() => {
-    return sessionKey;
-  }, [sessionKey]);
+    return new Date().valueOf();
+  }, [session]);
   return (
     <SessionContext.Provider key={memoizedSessionKey} value={{ session }}>
       {children}
