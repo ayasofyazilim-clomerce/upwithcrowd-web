@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Menu, X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/app/providers/session";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +21,7 @@ const PublicLinks = [
 export default function Header() {
   const pathName = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { status, data } = useSession();
+  const { session } = useSession();
   return (
     <header className="bg-background flex h-24 px-6">
       <div className="container mx-auto flex items-center justify-between">
@@ -50,7 +50,7 @@ export default function Header() {
           </ul>
         </nav>
         <div className="space-x-4">
-          {status === "authenticated" ? (
+          {session !== null ? (
             <Button
               className="group flex h-16 max-w-80 items-center justify-between gap-2"
               variant="ghost"
@@ -58,13 +58,13 @@ export default function Header() {
             >
               <Link href={"/profile"}>
                 <Avatar>
-                  <AvatarImage src={data?.user?.image || ""} />
+                  <AvatarImage src={""} />
                   <AvatarFallback className="group-hover:bg-white">
-                    {data?.user?.name?.slice(0, 2).toUpperCase()}
+                    {session?.user?.name?.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <span className="w-full max-w-40 overflow-hidden text-ellipsis text-nowrap text-sm">
-                  {data?.user?.name}
+                  {session?.user?.name}
                 </span>
                 <ChevronRight className="w-4 min-w-4" />
               </Link>
@@ -106,7 +106,7 @@ export default function Header() {
             ))}
             <li>
               <Button className="w-full">
-                {data?.user ? "Start a Project" : "Sign up"}
+                {session?.user ? "Start a Project" : "Sign up"}
               </Button>
             </li>
           </ul>
