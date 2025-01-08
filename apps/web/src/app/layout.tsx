@@ -27,7 +27,6 @@ export default async function RootLayout({
   const session = await auth();
   const grantedPolicies = session?.grantedPolicies;
 
-  const sessionKey = new Date().valueOf();
   return (
     <html className="h-full overflow-hidden" lang={lang}>
       <body className={GeistSans.className} data-app-name={appName}>
@@ -35,7 +34,6 @@ export default async function RootLayout({
           grantedPolicies={grantedPolicies}
           lang={lang}
           session={session}
-          sessionKey={sessionKey}
         >
           {children}
         </Providers>

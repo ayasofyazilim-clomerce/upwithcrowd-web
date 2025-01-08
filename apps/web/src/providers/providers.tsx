@@ -15,14 +15,12 @@ interface ProvidersProps {
   children: JSX.Element;
   lang: string;
   grantedPolicies: Record<Policy, boolean> | undefined;
-  sessionKey: number;
   session: Session | null;
 }
 export default async function Providers({
   children,
   lang,
   grantedPolicies,
-  sessionKey,
   session,
 }: ProvidersProps) {
   const resources = await getLocalizationResources(lang);
@@ -31,7 +29,7 @@ export default async function Providers({
     <>
       <Toaster richColors />
       <ApplicationProvider appName={appName}>
-        <SessionProvider session={session} sessionKey={sessionKey}>
+        <SessionProvider session={session}>
           <GrantedPoliciesProvider grantedPolicies={grantedPolicies}>
             <ConfigProvider>
               <Tooltip>
