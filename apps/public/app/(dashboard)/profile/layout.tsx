@@ -1,3 +1,5 @@
+import { TabLayout } from "@repo/ayasofyazilim-ui/templates/tab-layout";
+
 export const metadata = {
   title: "CrowdFund - Profiles",
   description: "Empowering ideas through crowdfunding",
@@ -5,12 +7,32 @@ export const metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-background min-h-screen px-4 py-8">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-8 text-3xl font-bold">User Profile</h1>
-        <div className="flex flex-col gap-8 md:flex-row"></div>
-        {children}
-      </div>
-    </div>
+    <TabLayout
+      orientation="vertical"
+      classNames={{
+        vertical: {
+          tabs: "container mx-auto h-auto",
+          tabList: "min-w-60 bg-transparent gap-2",
+          tabTrigger:
+            "rounded-full items-center data-[state=active]:bg-muted shadow-none hover:text-black data-[state=active]:shadow-none",
+        },
+      }}
+      tabList={[
+        {
+          href: "/profile",
+          label: "Profil",
+        },
+        {
+          href: "/profile/payments",
+          label: "Ödemelerim",
+        },
+        {
+          href: "/profile/projects",
+          label: "Projelerim",
+        },
+      ]}
+    >
+      {children}
+    </TabLayout>
   );
 }
