@@ -12,6 +12,7 @@
   "Form.Edition.tenantCount": "Tenant Count",
   "Form.Edition.displayName": "Display Name",
 
+  "Tenant": "Tenant",
   "Tenants": "Tenants",
   "Tenant.New": "New Tenant",
   "Tenant.Edit": "Edit Tenant",
