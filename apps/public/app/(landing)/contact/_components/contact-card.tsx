@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 import { Home, Phone, Mail } from "lucide-react";
 
