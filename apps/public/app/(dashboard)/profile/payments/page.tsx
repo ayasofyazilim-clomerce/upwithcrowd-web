@@ -1,3 +1,116 @@
-export default function Page() {
-  return <div>Payments</div>;
+import PaymentsTable from "./client";
+
+export default function Payments() {
+  const payments = [
+    {
+      projectName: "Lorem ipsum",
+      transactionId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      paymentStatus: "Success",
+      amount: 316.0,
+      paymentDate: "2021-09-01",
+      currency: "USD",
+      paymentType: "Credit Card",
+    },
+    {
+      projectName: "Dolor sit amet",
+      transactionId: "1a2b3c4d-5678-9101-1121-314151617181",
+      paymentStatus: "Success",
+      amount: 242.0,
+      paymentDate: "2021-09-02",
+      currency: "USD",
+      paymentType: "PayPal",
+    },
+    {
+      projectName: "Consectetur adipiscing",
+      transactionId: "9f8e7d6c-5432-1098-7654-321098765432",
+      paymentStatus: "Processing",
+      amount: 837.0,
+      paymentDate: "2021-09-03",
+      currency: "USD",
+      paymentType: "Bank Transfer",
+    },
+    {
+      projectName: "Elit sed do",
+      transactionId: "2b3c4d5e-6789-0123-4567-890123456789",
+      paymentStatus: "Failed",
+      amount: 721.0,
+      paymentDate: "2021-09-04",
+      currency: "USD",
+      paymentType: "Credit Card",
+    },
+    {
+      projectName: "Dolor sit amet",
+      transactionId: "1a2b3c4d-5678-9101-1121-314151617181",
+      paymentStatus: "Success",
+      amount: 242.0,
+      paymentDate: "2021-09-02",
+      currency: "USD",
+      paymentType: "PayPal",
+    },
+    {
+      projectName: "Consectetur adipiscing",
+      transactionId: "9f8e7d6c-5432-1098-7654-321098765432",
+      paymentStatus: "Processing",
+      amount: 837.0,
+      paymentDate: "2021-09-03",
+      currency: "USD",
+      paymentType: "Bank Transfer",
+    },
+    {
+      projectName: "Elit sed do",
+      transactionId: "2b3c4d5e-6789-0123-4567-890123456789",
+      paymentStatus: "Failed",
+      amount: 721.0,
+      paymentDate: "2021-09-04",
+      currency: "USD",
+      paymentType: "Credit Card",
+    },
+    {
+      projectName: "Dolor sit amet",
+      transactionId: "1a2b3c4d-5678-9101-1121-314151617181",
+      paymentStatus: "Success",
+      amount: 242.0,
+      paymentDate: "2021-09-02",
+      currency: "USD",
+      paymentType: "PayPal",
+    },
+    {
+      projectName: "Consectetur adipiscing",
+      transactionId: "9f8e7d6c-5432-1098-7654-321098765432",
+      paymentStatus: "Processing",
+      amount: 837.0,
+      paymentDate: "2021-09-03",
+      currency: "USD",
+      paymentType: "Bank Transfer",
+    },
+    {
+      projectName: "Elit sed do",
+      transactionId: "2b3c4d5e-6789-0123-4567-890123456789",
+      paymentStatus: "Failed",
+      amount: 721.0,
+      paymentDate: "2021-09-04",
+      currency: "USD",
+      paymentType: "Credit Card",
+    },
+    {
+      projectName: "Consectetur adipiscing",
+      transactionId: "9f8e7d6c-5432-1098-7654-321098765432",
+      paymentStatus: "Processing",
+      amount: 837.0,
+      paymentDate: "2021-09-03",
+      currency: "USD",
+      paymentType: "Bank Transfer",
+    },
+    {
+      projectName: "Elit sed do",
+      transactionId: "2b3c4d5e-6789-0123-4567-890123456789",
+      paymentStatus: "Failed",
+      amount: 721.0,
+      paymentDate: "2021-09-04",
+      currency: "USD",
+      paymentType: "Credit Card",
+    },
+  ];
+
+  return <PaymentsTable payments={payments} />;
 }
