@@ -1,4 +1,3 @@
-"use client";
 import CallToAction from "@/components/CallToAction";
 import Map from "@/components/Map";
 import ContactInfo from "./_components/contact-card";
