@@ -23,8 +23,6 @@ function isToken(obj: unknown): obj is Token {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         email: {},
         password: {},
@@ -122,9 +120,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session({ session, token, user }) {
       const localUser = session.user;
-      // console.log("session", user);
-      // `session.user.address` is now a valid property, and will be type-checked
-      // in places like `useSession().data.user` or `auth().user`
       return {
         ...session,
         user: {

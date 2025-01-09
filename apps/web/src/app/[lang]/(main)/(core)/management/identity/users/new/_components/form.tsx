@@ -94,12 +94,10 @@ export default function Form({
       uiSchema={uiSchema}
       widgets={{
         Role: CustomMultiSelectWidget({
-          optionList: roleList
-            .filter((role) => role.isAssignable)
-            .map((role) => ({
-              label: role.roleName || "",
-              value: role.roleName || "",
-            })),
+          optionList: roleList.map((role) => ({
+            label: role.roleName || "",
+            value: role.roleName || "",
+          })),
         }),
         OrganizationUnit: CustomMultiSelectWidget({
           optionList: organizationList.map((organization) => ({
