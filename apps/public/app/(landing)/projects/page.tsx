@@ -9,11 +9,7 @@ import { getPublicProjectsApi } from "@/actions/upwithcrowd/public-project/actio
 export default async function Page() {
   const projectsResponse = await getPublicProjectsApi();
   if (projectsResponse.type !== "success") return <>yok</>;
-
   const projects = projectsResponse.data.items || [];
-
-  console.log(projects);
-
   return (
     <div className="bg-background min-h-screen">
       <section className="px-6 py-12 md:py-20">
