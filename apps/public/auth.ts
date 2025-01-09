@@ -1,8 +1,7 @@
 import NextAuth, { AuthError, DefaultSession, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 // import { getUpwithcrowd } from "./utils/client";
-import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/saas/upwithcrowdService";
-import { getUpwithcrowdAccount } from "./utils/client";
+import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
 const TOKEN_URL = `${process.env.ABP_AUTH_URL}/connect/token`;
 const OPENID_URL = `${process.env.ABP_AUTH_URL}/.well-known/openid-configuration`;
@@ -24,8 +23,6 @@ function isToken(obj: unknown): obj is Token {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         email: {},
         password: {},
@@ -74,16 +71,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const user_data: GetApiAbpApplicationConfigurationResponse =
             await userReuqest.json();
           const current_user = user_data.currentUser;
-          const upWithCrowdClient = await getUpwithcrowdAccount();
-          const profile_picture =
-            await upWithCrowdClient.account.getApiAccountProfilePictureById({
-              id: current_user?.id || "",
-            });
+          // const upWithCrowdClient = await getUpwithcrowdAccount();
+          // const profile_picture =
+          //   await upWithCrowdClient.account.getApiAccountProfilePictureById({
+          //     id: current_user?.id || "",
+          //   });
           // const userAbp = appConfig.currentUser;
           const user: User = {
             email: current_user?.email || credentials.email + "",
             name: current_user?.userName || credentials.email + "",
-            image: profile_picture.fileContent || "",
+            // image: profile_picture.fileContent || "",
             id: current_user?.id || "",
             access_token: json.access_token,
           };
@@ -123,9 +120,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session({ session, token, user }) {
       const localUser = session.user;
-      // console.log("session", user);
-      // `session.user.address` is now a valid property, and will be type-checked
-      // in places like `useSession().data.user` or `auth().user`
       return {
         ...session,
         user: {
@@ -137,6 +131,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       };
     },
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth;
+    },
+  },
+  pages: {
+    signIn: "/login",
+    signOut: "/login",
+    verifyRequest: "/login",
+    newUser: "/signup",
   },
 });
 

@@ -4,18 +4,26 @@ import { signIn, signOut } from "@/auth";
 import { ApiErrorResponse, isApiError } from "@/utils/client";
 import { redirect, RedirectType } from "next/navigation";
 
-export async function signInForm<State>(prevState: State, formData: FormData) {
+export async function signInAction<State>(
+  args: { callBackURL?: string | null },
+  prevState: State,
+  formData: FormData,
+) {
+  const { callBackURL } = args;
   try {
     await signIn("credentials", {
       redirect: true,
-      redirectTo: "/profile",
+      redirectTo: callBackURL ? callBackURL.toString() : "/profile",
       email: formData.get("email"),
       password: formData.get("password"),
     });
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === "NEXT_REDIRECT") {
-        redirect("/profile", RedirectType.push);
+        redirect(
+          callBackURL ? callBackURL.toString() : "/profile",
+          RedirectType.push,
+        );
       }
       if (isApiError(error)) {
         const errorBody = error.body as ApiErrorResponse;

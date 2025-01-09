@@ -10,7 +10,7 @@ export default function SubmitButton() {
   const { pending } = useFormStatus();
   const Wrapper = pending ? Skeleton : Fragment;
   return (
-    <Wrapper className="h-9">
+    <Wrapper {...(pending && { className: "h-9" })}>
       <Button
         className={cn(
           "w-full transition-all",
