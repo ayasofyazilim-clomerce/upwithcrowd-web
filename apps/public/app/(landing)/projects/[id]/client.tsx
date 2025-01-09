@@ -1,6 +1,6 @@
 "use client";
 
-import { GetApiPublicProjectV1ProjectDetailByIdResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { GetApiPublicProjectProjectDetailByIdResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import Image from "next/image";
 export default function ProjectDetails({
   project,
 }: {
-  project: GetApiPublicProjectV1ProjectDetailByIdResponse;
+  project: GetApiPublicProjectProjectDetailByIdResponse;
 }) {
   const [currentImageIndex] = useState(0);
 
