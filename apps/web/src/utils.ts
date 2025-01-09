@@ -1,3 +1,5 @@
+import type { Volo_Abp_AspNetCore_Mvc_ApplicationConfigurations_ApplicationLocalizationDto } from "@ayasofyazilim/saas/AccountService";
+
 export function isServerSide() {
   return typeof window === "undefined";
 }
@@ -15,8 +17,14 @@ export async function getLocalizationResources(
   languageCode: string,
 ): Promise<ResourceResult> {
   try {
-    await Promise.resolve();
-    return {};
+    const response = await fetch(
+      `http://${process.env.HOSTNAME}:${process.env.PORT}/api/?lang=${languageCode}`,
+    );
+    return (
+      (
+        (await response.json()) as Volo_Abp_AspNetCore_Mvc_ApplicationConfigurations_ApplicationLocalizationDto
+      ).resources || {}
+    );
   } catch (error) {
     return { texts: { texts: { languageCode } } };
   }
