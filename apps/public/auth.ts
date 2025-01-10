@@ -3,8 +3,8 @@ import Credentials from "next-auth/providers/credentials";
 // import { getUpwithcrowd } from "./utils/client";
 import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
-const TOKEN_URL = `${process.env.NEXT_AUTH_URL}/connect/token`;
-const OPENID_URL = `${process.env.NEXT_AUTH_URL}/.well-known/openid-configuration`;
+const TOKEN_URL = `${process.env.NEXTAUTH_URL}/connect/token`;
+const OPENID_URL = `${process.env.NEXTAUTH_URL}/.well-known/openid-configuration`;
 
 type Token = {
   access_token: string;
