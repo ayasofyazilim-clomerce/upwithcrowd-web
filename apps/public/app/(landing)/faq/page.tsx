@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import LandingHero from "@/components/landing-hero";
 
 const faqItems = [
   {
@@ -44,16 +45,14 @@ const faqItems = [
 ];
 
 export default function Page() {
+  const title = "Frequently Asked Questions";
+  const description =
+    "Find answers to common questions about UPwithCrowd, how it works, and how you can get involved.";
+
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-          Frequently Asked Questions
-        </h1>
-        <p className="mx-auto mb-8 max-w-2xl text-center text-lg md:text-xl">
-          Find answers to common questions about UPwithCrowd, how it works, and
-          how you can get involved.
-        </p>
+        <LandingHero title={title} description={description} />
 
         <Accordion
           type="single"

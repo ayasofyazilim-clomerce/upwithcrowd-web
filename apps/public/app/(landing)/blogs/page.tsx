@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import LandingHero from "@/components/landing-hero";
 
 // Mock data for blog posts
 const blogPosts = [
@@ -68,15 +69,13 @@ const blogPosts = [
 ];
 
 export default function Page() {
+  const title = "UPwithCrowd Blog";
+  const description =
+    "Insights, tips, and stories from the world of crowdfunding";
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-          UPwithCrowd Blog
-        </h1>
-        <p className="mx-auto mb-12 max-w-2xl text-center text-lg md:text-xl">
-          Insights, tips, and stories from the world of crowdfunding
-        </p>
+        <LandingHero title={title} description={description} />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post) => (
