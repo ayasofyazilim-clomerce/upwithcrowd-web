@@ -2,18 +2,17 @@ import CallToAction from "@/components/CallToAction";
 import Map from "@/components/Map";
 import ContactInfo from "./_components/contact-card";
 import { ContactForm } from "./client";
+import LandingHero from "@/components/landing-hero";
 
 export default function Page() {
+  const title = "Contact Us";
+  const description =
+    "Have questions or need support? We're here to help. Reach out to us using any of the methods below.";
+
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-          Contact Us
-        </h1>
-        <p className="mx-auto mb-12 max-w-2xl text-center text-lg md:text-xl">
-          Have questions or need support? We're here to help. Reach out to us
-          using any of the methods below.
-        </p>
+        <LandingHero title={title} description={description} />
 
         <ContactInfo />
 

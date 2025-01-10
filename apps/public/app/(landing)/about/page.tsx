@@ -6,6 +6,7 @@ import ExpertTeam from "@/components/ExpertTeam";
 import Testimonials from "@/components/Testimonials";
 import BlogPreview from "@/components/BlogPreview";
 import CallToAction from "@/components/CallToAction";
+import LandingHero from "@/components/landing-hero";
 
 const goals = [
   {
@@ -30,22 +31,19 @@ const goals = [
     icon: Heart,
     title: "Empower Creators",
     description:
-      "We give creators the tools and resources they need to bring their visions to life and achieve their goals.",
+      "Empowering innovators and changemakers to bring their ideas to life through the power of community support.",
   },
 ];
+
+const title = "About UPwithCrowd";
+const description =
+  "Empowering innovators and changemakers to bring their ideas to life through the power of community support.";
 
 export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-          About UPwithCrowd
-        </h1>
-        <p className="mx-auto mb-12 max-w-2xl text-center text-lg md:text-xl">
-          Empowering innovators and changemakers to bring their ideas to life
-          through the power of community support.
-        </p>
-
+        <LandingHero title={title} description={description} />
         <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {goals.map((goal, index) => (
             <Card key={index}>
@@ -86,8 +84,10 @@ export default function Page() {
         <ExpertTeam />
         <Testimonials />
         <BlogPreview />
+        <div className="mt-16 rounded-lg">
+          <CallToAction />
+        </div>
       </main>
-      <CallToAction />
     </div>
   );
 }
