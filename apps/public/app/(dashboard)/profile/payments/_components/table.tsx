@@ -8,71 +8,71 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     projectID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     memberID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     amount: 100.0,
-    paymentType: 1,
-    type: 2,
+    paymentType: "BankTransfer",
+    type: "Decrease",
     relatedTransactionID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     remainingAmount: 50.0,
-    paymentStatus: 0,
+    paymentStatus: "APPROVED",
   },
   {
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
-    paymentType: 2,
-    type: 1,
+    paymentType: "CreditCard",
+    type: "Increase",
     relatedTransactionID: null,
     remainingAmount: null,
-    paymentStatus: 2,
+    paymentStatus: "APPROVED",
   },
   {
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
-    paymentType: 2,
-    type: 1,
+    paymentType: "CreditCard",
+    type: "Increase",
     relatedTransactionID: null,
     remainingAmount: null,
-    paymentStatus: 1,
+    paymentStatus: "DRAFT",
   },
   {
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
-    paymentType: 2,
-    type: 1,
+    paymentType: "CreditCard",
+    type: "Increase",
     relatedTransactionID: null,
     remainingAmount: null,
-    paymentStatus: 2,
+    paymentStatus: "APPROVED",
   },
   {
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
-    paymentType: 2,
-    type: 1,
+    paymentType: "CreditCard",
+    type: "Increase",
     relatedTransactionID: null,
     remainingAmount: null,
-    paymentStatus: 2,
+    paymentStatus: "APPROVED",
   },
   {
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
-    paymentType: 2,
-    type: 1,
+    paymentType: "CreditCard",
+    type: "Increase",
     relatedTransactionID: null,
     remainingAmount: null,
-    paymentStatus: 2,
+    paymentStatus: "APPROVED",
   },
   {
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
-    paymentType: 2,
-    type: 1,
+    paymentType: "CreditCard",
+    type: "Increase",
     relatedTransactionID: null,
     remainingAmount: null,
-    paymentStatus: 2,
+    paymentStatus: "APPROVED",
   },
   // Add more items as needed
 ];
@@ -112,17 +112,17 @@ export default function PaymentsTable() {
                 onClick: () => handleInfoClick("Success info"),
               };
               switch (row.paymentStatus) {
-                case 0:
+                case "REJECTION":
                   options.className = "bg-red-200 text-red-700";
                   options.label = "Failed";
                   options.onClick = () => handleInfoClick("Failed");
                   break;
-                case 1:
+                case "APPROVED":
                   options.className = "bg-green-200 text-green-700";
                   options.label = "Successed";
                   options.onClick = () => handleInfoClick("Successed");
                   break;
-                case 2:
+                case "PENDING":
                   options.className = "bg-yellow-100 text-yellow-700";
                   options.label = "Processing";
                   options.onClick = () => handleInfoClick("Processing");

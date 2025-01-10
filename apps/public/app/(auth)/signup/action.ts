@@ -1,14 +1,10 @@
 "use server";
 
-import {
-  ApiErrorResponse,
-  getUpwithcrowdAccount,
-  isApiError,
-} from "@/utils/client";
+import { ApiErrorResponse, getAccountClient, isApiError } from "@/utils/client";
 import { redirect } from "next/navigation";
 
 export async function createUser<State>(prevState: State, formData: FormData) {
-  const client = await getUpwithcrowdAccount();
+  const client = await getAccountClient();
 
   try {
     await client.account.postApiAccountRegister({

@@ -5,6 +5,7 @@ import {
   UPWCServiceClient,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
+import { AccountServiceClient } from "@ayasofyazilim/core-saas/AccountService";
 const HEADERS = {
   "X-Requested-With": "XMLHttpRequest",
   "Content-Type": "application/json",
@@ -19,8 +20,8 @@ export async function getUpwithcrowd(session?: Session | null) {
   });
 }
 
-export async function getUpwithcrowdAccount() {
-  return new UPWCServiceClient({
+export async function getAccountClient() {
+  return new AccountServiceClient({
     BASE: process.env.ACCOUNT_URL,
     HEADERS,
   });
