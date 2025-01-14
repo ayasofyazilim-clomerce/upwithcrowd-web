@@ -7,13 +7,13 @@ import NextError from "next/error";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
-import { useLocale } from "src/providers/locale";
 import {
   sendPasswordResetCodeServer,
   signInServer,
   signUpServer,
-} from "auth-action";
+} from "src/actions/core/AccountService/actions";
 import { useApplication } from "src/providers/application";
+import { useLocale } from "src/providers/locale";
 
 export default function Page(): JSX.Element {
   const { cultureName, resources, changeLocale } = useLocale();
