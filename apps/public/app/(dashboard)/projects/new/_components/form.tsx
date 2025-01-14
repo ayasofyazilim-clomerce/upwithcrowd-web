@@ -1,3 +1,4 @@
+"use client";
 import { Input, InputProps } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";

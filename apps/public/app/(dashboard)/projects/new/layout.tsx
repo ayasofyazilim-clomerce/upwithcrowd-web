@@ -22,6 +22,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           label: "Funding",
         },
         {
+          href: "story",
+          label: "Story",
+        },
+        {
           href: "people",
           label: "People",
         },
