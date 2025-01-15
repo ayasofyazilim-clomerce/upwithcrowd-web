@@ -1,7 +1,7 @@
-import { auth } from "@/auth";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers/providers";
+import { auth } from "../../../packages/utils/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 

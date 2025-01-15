@@ -15,7 +15,7 @@ const HEADERS = {
 export async function getAccountServiceClient(accessToken?: string) {
   return new AccountServiceClient({
     TOKEN: accessToken,
-    BASE: process.env.BASE_URL,
+    BASE: process.env.ACCOUNT_URL,
     HEADERS: HEADERS,
   });
 }
@@ -61,7 +61,7 @@ export async function fetchToken(credentials: {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "X-Requested-With": "XMLHttpRequest",
-      __tenant: credentials.tenantId || "F3B84A96-8A04-87B7-D3C3-3A1675322587",
+      // __tenant: credentials.tenantId || "",
     },
     body: urlencoded,
   });

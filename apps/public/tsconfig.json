@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./*"],
-      "@tiptap-location/*": ["../../packages/ayasofyazilim-ui/tiptap/*"],
+      "@repo/utils": ["../../packages/utils/*"],
+      "@tiptap-location/*": ["../../packages/ayasofyazilim-ui/tiptap/*"]
     }
   },
   "include": [

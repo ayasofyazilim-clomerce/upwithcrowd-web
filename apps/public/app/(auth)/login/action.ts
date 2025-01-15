@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
+import { signIn, signOut } from "../../../../../packages/utils/auth";
 import { ApiErrorResponse, isApiError } from "@/utils/client";
 import { redirect, RedirectType } from "next/navigation";
 
@@ -14,7 +14,7 @@ export async function signInAction<State>(
     await signIn("credentials", {
       redirect: true,
       redirectTo: callBackURL ? callBackURL.toString() : "/profile",
-      email: formData.get("email"),
+      username: formData.get("email"),
       password: formData.get("password"),
     });
   } catch (error) {
