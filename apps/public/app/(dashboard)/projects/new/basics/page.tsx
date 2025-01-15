@@ -1,12 +1,15 @@
 "use client";
+import { postProjectApi } from "@/actions/upwithcrowd/project/post-action";
 import { DatePicker } from "@/components/Datepicker";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea, TextareaProps } from "@/components/ui/textarea";
 import * as SheetRoot from "@/components/ui/sheet";
+import { Textarea, TextareaProps } from "@/components/ui/textarea";
 import { Combobox } from "@repo/ayasofyazilim-ui/molecules/combobox";
 import { Search, UserPlus } from "lucide-react";
+import { useState } from "react";
 import {
   FormContainer,
   FormField,
@@ -14,9 +17,30 @@ import {
 } from "../_components/form";
 import { Section, SectionHint } from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
-import { Button } from "@/components/ui/button";
 
 export default function Page() {
+  const [disabled, setDisabled] = useState(false);
+  function saveDefaultProject() {
+    setDisabled(true);
+    postProjectApi({
+      requestBody: {
+        projectName: "Deneme" + new Date().getTime(),
+        projectDefinition:
+          "wp4 vMlIe6ygSNB785TN jKLEBncCqd6yqhWqUJzgyQ1bLl'3dK8hUnsZbo5mhb2wanaHcYxxfRx5itN8fCCtm99fR 6DUFP-NNHf'9u6 hGtovjugiuYe0UDx3SUNmlA81u7GZBqZ9aGA-Ri.ECTNvJ SMO33ye2noYQKFhGxMDg on2C9uHrdS7L,qkqjq-CZbRAJjZnStAE3O9keZ7TE-GDAHRi3yS.zS' -IGbKFdFUUkvR3AD28,nj3Dnj3Qny8p5uQihRJ'KpDqZ7Ajgi8Orw-bzyJa",
+        fundCollectionType: "NONE",
+        fundNominalAmount: 10,
+        fundableAmount: 10,
+        additionalFundRate: "89",
+        qualifiedFundRate: "86",
+        privilege: "tVZ3sfeOREFdmoA0Zgt9ToiyJSsbY-yrweYuaSF3Po0B,6Ff2NA9m9b8Q",
+        projectStartDate: "2025-01-15T06:22:15.836Z",
+        projectEndDate: "2025-01-15T06:22:15.836Z",
+        overFunding: true,
+        cashValue: 100,
+        minimumFundAmount: 10,
+      },
+    }).then((res) => alert(res.message || "Başarılı"));
+  }
   return (
     <div className="bg-muted w-full">
       <section className="mx-auto w-full max-w-6xl p-4 md:p-8">
@@ -217,6 +241,13 @@ export default function Page() {
             />
           </FormContainer>
         </Section>
+        <Button
+          className="w-full"
+          onClick={saveDefaultProject}
+          disabled={disabled}
+        >
+          Save
+        </Button>
       </section>
     </div>
   );
