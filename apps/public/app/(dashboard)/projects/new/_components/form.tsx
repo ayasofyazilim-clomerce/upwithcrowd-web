@@ -3,7 +3,7 @@ import { Input, InputProps } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 
 type FormFieldProps<T> = {
   id: string;
@@ -13,7 +13,7 @@ type FormFieldProps<T> = {
   maxLength?: number;
   formElement?: typeof Input | typeof Textarea;
   value?: string;
-  onChange?: (e: string) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 } & T;
 export function FormContainer({
   children,
@@ -52,9 +52,9 @@ export function FormInputFieldWithCounter<T = InputProps>({
         id={id}
         placeholder={placeholder}
         defaultValue={value}
-        onChange={(e) => {
+        onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
           setTextLength(e.target.value.length);
-          if (onChange) onChange(e.target.value);
+          if (onChange) onChange(e);
         }}
         {...rest}
       />
