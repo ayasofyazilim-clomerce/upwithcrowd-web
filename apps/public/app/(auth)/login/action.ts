@@ -1,8 +1,9 @@
 "use server";
 
-import { signIn, signOut } from "../../../../../packages/utils/auth";
-import { ApiErrorResponse, isApiError } from "@/utils/client";
+import { signIn, signOut } from "@repo/utils/auth";
+import { isApiError } from "@repo/utils/api";
 import { redirect, RedirectType } from "next/navigation";
+import { ApiErrorResponse } from "@/utils/client";
 
 export async function signInAction<State>(
   args: { callBackURL?: string | null },

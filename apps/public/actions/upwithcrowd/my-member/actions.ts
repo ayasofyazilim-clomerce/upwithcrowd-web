@@ -1,6 +1,7 @@
 "use server";
 
-import { getUpwithcrowd, isApiError } from "@/utils/client";
+import { getUpwithcrowd } from "@/utils/client";
+import { isApiError } from "@repo/utils/api";
 
 export async function getMembership() {
   const api_client = await getUpwithcrowd();

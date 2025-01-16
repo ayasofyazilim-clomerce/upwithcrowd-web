@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "@/components/ui/sonner";
-import { ServerResponse } from "@/utils/client";
+import { ServerResponse } from "@repo/utils/api";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const handlePutResponse = (
