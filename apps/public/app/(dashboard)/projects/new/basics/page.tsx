@@ -19,8 +19,10 @@ import { Section, SectionHint } from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const { toast } = useToast();
   const [disabled, setDisabled] = useState(false);
   const [title, setTitle] = useState("");
@@ -60,23 +62,24 @@ export default function Page() {
         cashValue: 100,
         minimumFundAmount: 10,
       },
-    })
-      .then((res) => {
+    }).then((res) => {
+      if (res.type === "success") {
         toast({
           title: "Success",
           description: res.message || "Project saved successfully",
         });
+        router.push(`/projects/${res.data.projectId}`);
         setDisabled(false);
-      })
-      .catch((error) => {
+      } else {
         toast({
           title: "Error",
           description:
-            error.message || "An error occurred while saving the project",
+            res.message || "An error occurred while saving the project",
           variant: "destructive",
         });
         setDisabled(false);
-      });
+      }
+    });
   }
   return (
     <div className="bg-muted w-full">
