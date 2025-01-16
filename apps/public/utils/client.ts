@@ -1,11 +1,7 @@
+import { UPWCServiceClient } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type { Session } from "next-auth";
-import { auth } from "../../../packages/utils/auth";
-import {
-  ApiError,
-  UPWCServiceClient,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { auth } from "@repo/utils/auth";
 
-import { AccountServiceClient } from "@ayasofyazilim/core-saas/AccountService";
 const HEADERS = {
   "X-Requested-With": "XMLHttpRequest",
   "Content-Type": "application/json",
@@ -22,23 +18,6 @@ export async function getUpwithcrowd(session?: Session | null) {
     HEADERS,
   });
 }
-
-export async function getAccountClient() {
-  return new AccountServiceClient({
-    BASE: process.env.ACCOUNT_URL,
-    HEADERS,
-  });
-}
-
-export function isApiError(error: unknown): error is ApiError {
-  if ((error as ApiError).name === "ApiError") {
-    return true;
-  }
-  return error instanceof ApiError;
-}
-
-// create a type for the next object
-// {"error":{"code":"Volo.Abp.Identity:DuplicateUserName","message":"Username 'null' is already taken.","details":null,"data":{"0":"null"},"validationErrors":null}}
 export type ApiErrorResponse = {
   error: {
     code: string;
@@ -48,68 +27,3 @@ export type ApiErrorResponse = {
     validationErrors: string;
   };
 };
-
-export type ServerResponse<T = undefined> = BaseServerResponse &
-  (ErrorTypes | SuccessServerResponse<T>);
-
-export type ErrorTypes = BaseServerResponse &
-  (ErrorServerResponse | ApiErrorServerResponse);
-
-export interface BaseServerResponse {
-  status: number;
-  message: string;
-}
-
-export interface SuccessServerResponse<T> {
-  type: "success";
-  data: T;
-}
-export interface ApiErrorServerResponse {
-  type: "api-error";
-  data: ApiError["message"];
-}
-export interface ErrorServerResponse {
-  type: "error";
-  data: unknown;
-}
-
-export function structuredError(error: unknown): ErrorTypes {
-  if (isApiError(error)) {
-    const body = error.body as
-      | {
-          error: { message?: string; details?: string };
-        }
-      | undefined;
-    const errorDetails = body?.error || {};
-    return {
-      type: "api-error",
-      data: errorDetails.message || error.statusText || "Something went wrong",
-      status: error.status,
-      message:
-        errorDetails.details ||
-        errorDetails.message ||
-        error.statusText ||
-        "Something went wrong",
-    };
-  }
-  return {
-    type: "error",
-    data: error,
-    status: 500,
-    message: "An error occurred",
-  };
-}
-
-export interface PagedResult<T> {
-  items?: T[] | null;
-  totalCount: number;
-}
-
-export function structuredResponse<T>(data: T): ServerResponse<T> {
-  return {
-    type: "success",
-    data,
-    status: 200,
-    message: "",
-  };
-}

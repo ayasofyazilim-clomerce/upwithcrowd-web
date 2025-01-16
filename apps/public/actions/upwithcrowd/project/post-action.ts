@@ -1,10 +1,7 @@
 "use server";
-import {
-  getUpwithcrowd,
-  structuredError,
-  structuredResponse,
-} from "@/utils/client";
+import { getUpwithcrowd } from "@/utils/client";
 import { PostApiProjectData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { structuredError, structuredResponse } from "@repo/utils/api";
 
 export async function postProjectApi(data: PostApiProjectData) {
   try {
