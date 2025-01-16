@@ -1,2 +1,2 @@
-import { handlers } from "@/auth" // Referring to the auth.ts we just created
-export const { GET, POST } = handlers
+import { handlers } from "../../../../../../packages/utils/auth"; // Assuming the auth.ts file is located in the packages/utils/auth directory
+export const { GET, POST } = handlers;

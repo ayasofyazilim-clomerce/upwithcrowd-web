@@ -49,6 +49,7 @@ export default function Page() {
     useState<UpwithCrowd_Members_ListMemberResponseDto[]>();
   useEffect(() => {
     void getMembership().then((result) => {
+      console.log(result);
       if (!result || !result.items) return;
       const myMember = result.items;
       setMyMember(myMember);

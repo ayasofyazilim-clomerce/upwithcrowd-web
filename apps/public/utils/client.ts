@@ -1,5 +1,5 @@
 import type { Session } from "next-auth";
-import { auth } from "@/auth";
+import { auth } from "../../../packages/utils/auth";
 import {
   ApiError,
   UPWCServiceClient,
@@ -12,7 +12,10 @@ const HEADERS = {
 };
 export async function getUpwithcrowd(session?: Session | null) {
   const userData = session || (await auth());
-  const token = userData?.user.access_token || ""; //userData?.user;
+  const token =
+    userData?.user && "access_token" in userData?.user
+      ? userData?.user.access_token
+      : ""; //userData?.user;
   return new UPWCServiceClient({
     TOKEN: token,
     BASE: process.env.BASE_URL,

@@ -9,6 +9,7 @@ import {
 } from "./auth-actions";
 import NextAuth, { AuthError } from "next-auth";
 import { MyUser } from "./auth-types";
+import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/core-saas/AccountService";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -32,13 +33,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           });
           if ("error" in signInResponse) {
           }
-
           if (signInResponse?.access_token && signInResponse.refresh_token) {
-            const userData = await getUserData(
-              signInResponse.access_token,
-              signInResponse.refresh_token,
+            //will be changed
+            const userRequest = await fetch(
+              `${process.env.BASE_URL}/api/abp/application-configuration?IncludeLocalizationResources=false`,
+              {
+                headers: {
+                  Authorization: `Bearer ${signInResponse.access_token}`,
+                },
+              },
             );
-            return userData;
+            const user_data: GetApiAbpApplicationConfigurationResponse =
+              await userRequest.json();
+            const current_user = user_data.currentUser;
+            return {
+              userName: current_user?.userName || "",
+              email: current_user?.email || "",
+              name: current_user?.name || "",
+              surname: current_user?.surName || "",
+              access_token: signInResponse.access_token,
+              refresh_token: signInResponse.refresh_token,
+              expiration_date: signInResponse.expires_in * 1000 + Date.now(),
+            };
           }
           return authorizeError("Unknown Error: No token provided");
         } catch (error) {
@@ -63,22 +79,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (token?.user) {
         const user = token?.user as AdapterUser & MyUser;
+        if (user.expiration_date < Date.now()) {
+          const { access_token, refresh_token, expires_in } =
+            await fetchNewAccessTokenByRefreshToken(user.refresh_token || "");
 
+          if (access_token && refresh_token) {
+            user.access_token = access_token;
+            user.refresh_token = refresh_token;
+            user.expiration_date = expires_in * 1000 + Date.now();
+          }
+        }
         session.user = user;
       }
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        if ((token?.exp || 0) * 1000 < Date.now()) {
-          const { access_token, refresh_token } =
-            await fetchNewAccessTokenByRefreshToken(user.refresh_token || "");
-
-          if (access_token && refresh_token) {
-            user.access_token = access_token;
-            user.refresh_token = refresh_token;
-          }
-        }
         token.user = user;
       }
 
