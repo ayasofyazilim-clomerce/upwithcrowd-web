@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/providers/session";
+import { useSession } from "@repo/utils/auth";
 
 // Mock user data
 // const userData = {

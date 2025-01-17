@@ -30,7 +30,7 @@ import { getMembership } from "../../../actions/upwithcrowd/my-member/actions";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ProfileTypeSwitch from "./_components/ProfileTypeSwitch";
 import { handleSignOut } from "@/app/(auth)/login/action";
-import { useSession } from "@/app/providers/session";
+import { useSession } from "@repo/utils/auth";
 
 // Mock user data
 const userData = {

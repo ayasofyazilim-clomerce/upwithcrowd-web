@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn, signOut } from "@repo/utils/auth";
+import { signIn, signOut } from "@repo/utils/auth/next-auth";
 import { isApiError } from "@repo/utils/api";
 import { redirect, RedirectType } from "next/navigation";
 import { ApiErrorResponse } from "@/utils/client";
