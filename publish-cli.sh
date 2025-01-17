@@ -65,7 +65,7 @@ get_app_details() {
 
 update_code_from_remote() {
     echo -e "${BOLD}${BLUE}Pulling code from remote..${RESET}\n"
-    #git reset --hard origin/main && git pull --recurse-submodules
+    git reset --hard origin/main && git pull --recurse-submodules
 }
 
 start_app() {    
