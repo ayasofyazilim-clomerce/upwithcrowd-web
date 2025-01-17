@@ -19,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       credentials: {
         username: {},
         password: {},
-        tenant: {},
+        tenantId: {},
       },
       authorize: async (credentials) => {
         function authorizeError(message: string) {
@@ -29,35 +29,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const signInResponse = await fetchToken({
             username: credentials?.username as string,
             password: credentials.password as string,
-            tenantId: credentials.tenant as string,
+            tenantId: credentials.tenantId as string,
           });
-          if ("error" in signInResponse) {
+          if (signInResponse.error_description) {
+            return authorizeError(signInResponse.error_description);
           }
-          if (signInResponse?.access_token && signInResponse.refresh_token) {
-            //will be changed
-            const userRequest = await fetch(
-              `${process.env.BASE_URL}/api/abp/application-configuration?IncludeLocalizationResources=false`,
-              {
-                headers: {
-                  Authorization: `Bearer ${signInResponse.access_token}`,
-                },
-              },
-            );
-            const user_data: GetApiAbpApplicationConfigurationResponse =
-              await userRequest.json();
-            const current_user = user_data.currentUser;
-            return {
-              userName: current_user?.userName || "",
-              email: current_user?.email || "",
-              name: current_user?.name || "",
-              surname: current_user?.surName || "",
-              access_token: signInResponse.access_token,
-              refresh_token: signInResponse.refresh_token,
-              expiration_date: signInResponse.expires_in * 1000 + Date.now(),
-            };
-          }
-          return authorizeError("Unknown Error: No token provided");
+          const { access_token, refresh_token, expires_in } = signInResponse;
+          const expiration_date = expires_in * 1000 + Date.now();
+
+          const user_data = await getUserData(
+            access_token,
+            refresh_token,
+            expiration_date,
+          );
+          return user_data;
         } catch (error) {
+          console.log(error);
           return null;
         }
       },
