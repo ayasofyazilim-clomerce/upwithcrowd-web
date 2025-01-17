@@ -3,8 +3,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSession } from "@repo/utils/auth";
 import { ChevronRight, Menu, X } from "lucide-react";
-import { useSession } from "@/app/providers/session";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

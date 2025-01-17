@@ -1,6 +1,6 @@
 import { UPWCServiceClient } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type { Session } from "next-auth";
-import { auth } from "@repo/utils/auth";
+import { auth } from "@repo/utils/auth/next-auth";
 
 const HEADERS = {
   "X-Requested-With": "XMLHttpRequest",
