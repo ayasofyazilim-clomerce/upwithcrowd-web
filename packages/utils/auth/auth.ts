@@ -14,8 +14,6 @@ import { GetApiAbpApplicationConfigurationResponse } from "@ayasofyazilim/core-s
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         username: {},
         password: {},
@@ -44,8 +42,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           );
           return user_data;
         } catch (error) {
-          console.log(error);
-          return null;
+          return authorizeError(JSON.stringify(error));
         }
       },
     }),
