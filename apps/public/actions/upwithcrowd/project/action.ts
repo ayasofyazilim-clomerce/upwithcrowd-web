@@ -2,7 +2,6 @@
 
 import { getUpwithcrowd } from "@/utils/client";
 import {
-  GetApiMyprojectData,
   GetApiProjectProjectLimitQueryData,
   GetApiProjectTotalBalanceQueryData,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
@@ -27,16 +26,6 @@ export async function getProjectsLimitApi(
     const client = await getUpwithcrowd();
     const dataResponse =
       await client.project.getApiProjectProjectLimitQuery(data);
-    return structuredResponse(dataResponse);
-  } catch (error) {
-    return structuredError(error);
-  }
-}
-
-export async function getMyProjectsApi(data?: GetApiMyprojectData) {
-  try {
-    const client = await getUpwithcrowd();
-    const dataResponse = await client.myProject.getApiMyproject(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);

@@ -1,34 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Bell,
+  BellDot,
+  BriefcaseBusiness,
+  Building2,
+  Camera,
+  ChevronRight,
+  FileText,
+  HelpCircle,
+  Link2,
+  LogOut,
+  Shield,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  ChevronRight,
-  Bell,
-  HelpCircle,
-  FileText,
-  Shield,
-  BellDot,
-  Link2,
-  Building2,
-  Plus,
-} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 
-import { getMembership } from "../../../actions/upwithcrowd/my-member/actions";
-import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import ProfileTypeSwitch from "./_components/ProfileTypeSwitch";
 import { handleSignOut } from "@/app/(auth)/login/action";
 import { useSession } from "@repo/utils/auth";
 
@@ -42,19 +33,8 @@ const userData = {
 
 export default function Page() {
   const { session } = useSession();
-  const [showAccountDialog, setShowAccountDialog] = useState(false);
   const currentUser = session?.user;
   const [profileImage, setProfileImage] = useState(userData.profileImage);
-  const [myMember, setMyMember] =
-    useState<UpwithCrowd_Members_ListMemberResponseDto[]>();
-  useEffect(() => {
-    void getMembership().then((result) => {
-      console.log(result);
-      if (!result || !result.items) return;
-      const myMember = result.items;
-      setMyMember(myMember);
-    });
-  }, [session]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -66,47 +46,36 @@ export default function Page() {
       reader.readAsDataURL(file);
     }
   };
-
-  const handleAccountClick = (accountId: number) => {
-    console.log(`Switching to account ${accountId}`);
-    // Here you would typically implement account switching logic
-  };
-
   return (
     <div className="bg-background min-h-screen">
-      {showAccountDialog && (
-        <Dialog open={showAccountDialog} onOpenChange={setShowAccountDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Chose your profile type?</DialogTitle>
-            </DialogHeader>
-            <DialogDescription>
-              <p className="text-muted-foreground">
-                You can add a new account to your profile.
-              </p>
-            </DialogDescription>
-            <ProfileTypeSwitch />
-          </DialogContent>
-        </Dialog>
-      )}
       <div className="flex flex-col gap-8 md:flex-row">
         <div className="flex w-full flex-col gap-4 md:w-1/3">
-          <Card>
-            <CardContent className="flex flex-col items-center p-6">
-              <div className="relative mb-4 h-32 w-32">
-                <Image
-                  src={profileImage}
-                  alt="Profile"
-                  fill
-                  className="rounded-full object-cover"
-                />
+          <Card className="bg-muted flex w-full max-w-md items-center justify-center">
+            <CardContent className="flex flex-col items-center p-8">
+              <div className="relative mb-6">
+                <div className="relative h-24 w-24">
+                  <Image
+                    src={profileImage || "/placeholder.svg"}
+                    alt="Profile"
+                    fill
+                    className="rounded-full bg-[#e5e5e5] object-cover"
+                  />
+                </div>
+                <div
+                  className="bg-primary/20 absolute bottom-0 right-0 cursor-pointer rounded-full p-1.5"
+                  onClick={() =>
+                    document.getElementById("profileImage")?.click()
+                  }
+                >
+                  <Camera className="text-primary h-4 w-4" />
+                </div>
               </div>
-              <h2 className="text-lg font-semibold">{currentUser?.name}</h2>
-              <Label htmlFor="profileImage" className="cursor-pointer">
-                <Button variant="outline" className="mt-2">
-                  Change Profile Picture
-                </Button>
-              </Label>
+              <h2 className="mb-1 text-2xl font-bold">
+                {currentUser?.name || "Your Name"}
+              </h2>
+              <p className="text-muted-foreground mb-4">
+                Your personal account
+              </p>
               <Input
                 id="profileImage"
                 type="file"
@@ -116,48 +85,29 @@ export default function Page() {
               />
             </CardContent>
           </Card>
-          <Button
-            variant="outline"
-            className="mx-auto"
-            onClick={() => handleSignOut()}
-          >
-            Sign out
-          </Button>
-
-          <div className="space-y-4">
-            {typeof myMember !== "undefined" &&
-              myMember.length > 0 &&
-              myMember.map((membership) => (
-                <Card
-                  key={membership.id}
-                  className="hover:bg-muted cursor-pointer transition-colors"
-                  onClick={() => handleAccountClick(Number(membership.id))}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="mb-2 font-semibold">
-                          {membership.name} {membership.surname}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {membership.mail}
-                        </p>
-                      </div>
-                      <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <Card className="hover:bg-muted cursor-pointer border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
+            <Link href={"/profile/new/business"}>
+              <CardContent className="flex items-center justify-between p-6">
+                <div className="flex items-center gap-4">
+                  <BriefcaseBusiness className="text-primary h-8 w-8" />
+                  <span className="font-semibold">
+                    Add New Business Account
+                  </span>
+                </div>
+                <ChevronRight className="text-muted-foreground h-5 w-5" />
+              </CardContent>
+            </Link>
+          </Card>
+          <div className="flex w-full items-center justify-center">
+            <Button
+              variant="outline"
+              className="flex w-1/3 items-center justify-center rounded-full text-red-500 hover:text-red-700 "
+              onClick={() => handleSignOut()}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign out
+            </Button>
           </div>
-
-          <Button
-            className="w-full"
-            variant="outline"
-            onClick={() => setShowAccountDialog(true)}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add New Account
-          </Button>
         </div>
 
         <div className="w-full md:w-2/3">
