@@ -1,14 +1,14 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSession } from "@repo/utils/auth";
-import { ChevronRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import MemberSwitcher from "./member-switcher";
 const PublicLinks = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
@@ -51,24 +51,7 @@ export default function Header() {
         </nav>
         <div className="space-x-4">
           {session !== null ? (
-            <Button
-              className="group flex h-16 max-w-80 items-center justify-between gap-2"
-              variant="ghost"
-              asChild
-            >
-              <Link href={"/profile"}>
-                <Avatar>
-                  <AvatarImage src={""} />
-                  <AvatarFallback className="group-hover:bg-white">
-                    {session?.user?.name?.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="w-full max-w-40 overflow-hidden text-ellipsis text-nowrap text-sm">
-                  {session?.user?.name}
-                </span>
-                <ChevronRight className="w-4 min-w-4" />
-              </Link>
-            </Button>
+            <MemberSwitcher />
           ) : (
             <>
               <Button asChild variant="outline">

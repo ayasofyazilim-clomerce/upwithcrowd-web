@@ -17,6 +17,7 @@ export default function Page() {
   const loginWithCallbackURL = signInAction.bind(null, {
     callBackURL: search.get("callbackUrl"),
   });
+  window.sessionStorage.removeItem("current_member");
   const [state, formAction] = useFormState(loginWithCallbackURL, initialState);
   return (
     <>
