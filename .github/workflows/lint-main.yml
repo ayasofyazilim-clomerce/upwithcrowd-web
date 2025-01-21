@@ -22,7 +22,10 @@ jobs:
           npm install -g pnpm
           pnpm install
       - name: Lint
-        run: pnpm precommit
+        run: |
+          cd apps/web
+          pnpm format
+          pnpm precommit
       - name: commit
         uses: EndBug/add-and-commit@v9
         id: commit
@@ -39,4 +42,3 @@ jobs:
           title: "ci: lint [auto]"
           assignees: |
             ${{ github.actor }}
-            ayasofyazilim
