@@ -23,10 +23,17 @@ export const MemberProvider = ({
   currentMember: Member | null;
   members?: Member[];
 }) => {
-  const [member, setCurrentMember] = useState<Member | null>(currentMember);
-
+  let _currentMember = currentMember;
+  if (window && window.sessionStorage.getItem("current_member")) {
+    _currentMember = JSON.parse(
+      window.sessionStorage.getItem("current_member") || "",
+    );
+  }
+  const [member, setCurrentMember] = useState<Member | null>(_currentMember);
   const saveMember = (member: Member) => {
-    window.localStorage.setItem("active_member", JSON.stringify(member));
+    if (window) {
+      window.sessionStorage.setItem("current_member", JSON.stringify(member));
+    }
     setCurrentMember(member);
   };
   return (
