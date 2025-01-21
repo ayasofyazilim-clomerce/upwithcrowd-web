@@ -48,7 +48,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/",
+    signIn: process.env.AUTHJS_SIGNIN_PATH || "/",
+    signOut: process.env.AUTHJS_SIGNOUT_PATH || "/",
   },
   session: {
     strategy: "jwt",
@@ -77,11 +78,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session;
     },
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.user = user;
       }
-
       return token;
     },
   },
