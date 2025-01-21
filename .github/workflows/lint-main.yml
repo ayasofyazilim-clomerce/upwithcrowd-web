@@ -21,9 +21,14 @@ jobs:
         run: |
           npm install -g pnpm
           pnpm install
-      - name: Lint
+      - name: Lint web
         run: |
           cd apps/web
+          pnpm format
+          pnpm precommit
+      - name: Lint public
+        run: |
+          cd apps/public
           pnpm format
           pnpm precommit
       - name: commit
