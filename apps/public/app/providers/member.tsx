@@ -24,14 +24,17 @@ export const MemberProvider = ({
   members?: Member[];
 }) => {
   let _currentMember = currentMember;
-  if (window && window.sessionStorage.getItem("current_member")) {
+  if (
+    typeof window !== "undefined" &&
+    window.sessionStorage.getItem("current_member")
+  ) {
     _currentMember = JSON.parse(
       window.sessionStorage.getItem("current_member") || "",
     );
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
   const saveMember = (member: Member) => {
-    if (window) {
+    if (typeof window !== "undefined") {
       window.sessionStorage.setItem("current_member", JSON.stringify(member));
     }
     setCurrentMember(member);
