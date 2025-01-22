@@ -27,6 +27,7 @@
     "@repo/ayasofyazilim-ui": "workspace:^",
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
+    "@stepperize/react": "^4.1.3",
     "@tanstack/react-table": "^8.20.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
