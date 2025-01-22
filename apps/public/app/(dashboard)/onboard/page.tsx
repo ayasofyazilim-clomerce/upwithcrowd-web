@@ -81,7 +81,7 @@ export default function OnboardPage() {
     if (validateStep()) {
       if (step === steps.length - 1) {
         // Handle form submission
-        console.log("Form submitted:", formData);
+        //console.log("Form submitted:", formData);
         // Redirect to home page but there is no such transaction for now
         return;
       }
