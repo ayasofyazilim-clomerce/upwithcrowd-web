@@ -4,14 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { MapPin, DollarSign, Target } from "lucide-react";
-
-interface Project {
-  id: string;
-  projectName: string;
-  fundableAmount: number;
-  fundNominalAmount: number;
-  fundCollectionType: string;
-}
+import { UpwithCrowd_Projects_ListProjectsResponseDto as Project } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
 export default function ListedProjectCard({ project }: { project: Project }) {
   const fundedPercentage =

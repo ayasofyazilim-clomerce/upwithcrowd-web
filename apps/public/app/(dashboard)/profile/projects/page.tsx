@@ -1,14 +1,15 @@
+import { getProjectApi } from "@/actions/upwithcrowd/project/action";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import ListedProjectCard from "../_components/listed-project-card";
 
 export default async function Page() {
-  // const projectsResponse = await getMyProjectsApi({
-  //   maxResultCount: 100,
-  // });
-  // if (projectsResponse.type !== "success")
-  //   return <>Henüz Proje Oluşturmadınız!</>;
-  // const projects =  [];
+  const projectsResponse = await getProjectApi({
+    maxResultCount: 100,
+  });
+  if (projectsResponse.type !== "success")
+    return <>{projectsResponse.message}</>;
   return (
     <div className="bg-background min-h-screen">
       <Link
@@ -22,19 +23,10 @@ export default async function Page() {
       <section className="px-6 pb-6">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {/* {projects.map((project) => (
-              <ListedProjectCard
-                key={project.id}
-                project={{
-                  ...project,
-                  fundCollectionType:
-                    project.fundCollectionType?.toString() || "",
-                }}
-              />
+            {projectsResponse.data.items?.map((project) => (
+              <ListedProjectCard key={project.id} project={project} />
             ))}
-            
             This will be updated after backend update
-            */}
           </div>
         </div>
       </section>
