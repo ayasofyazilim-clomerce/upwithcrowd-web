@@ -31,5 +31,5 @@ export async function createUser<State>(prevState: State, formData: FormData) {
     }
     return { message: "An error occurred" };
   }
-  redirect("/login");
+  redirect("/onboard");
 }

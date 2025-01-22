@@ -9,6 +9,8 @@ export default async function Page() {
   const projectsResponse = await getPublicProjectsApi({
     maxResultCount: 100,
   });
+  console.log(projectsResponse);
+
   if (projectsResponse.type !== "success") return <>yok</>;
   const projects = projectsResponse.data.items || [];
   return (
