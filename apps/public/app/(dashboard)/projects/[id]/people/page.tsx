@@ -1,11 +1,11 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { CircleAlert, Mail } from "lucide-react";
-import { FormContainer } from "../_components/form";
-import { Section } from "../_components/section";
-import TextWithTitle from "../_components/text-with-title";
-import UserCard from "../_components/user-card";
-import ProfileLinkInput from "../_components/vanity-url";
+import { FormContainer } from "../../new/_components/form";
+import { Section } from "../../new/_components/section";
+import TextWithTitle from "../../new/_components/text-with-title";
+import UserCard from "../../new/_components/user-card";
+import ProfileLinkInput from "../../new/_components/vanity-url";
 
 export default function People() {
   return (

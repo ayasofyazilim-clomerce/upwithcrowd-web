@@ -4,13 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calculator } from "lucide-react";
 
-export default function GoalAmount() {
+interface FundableAmountProps {
+  onChange?: (value: number) => void;
+}
+
+export default function FundableAmount({ onChange }: FundableAmountProps) {
   return (
     <div className="">
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="amount" className="text-md font-medium">
-            Goal amount
+            Fundable Amount
           </Label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -22,6 +26,7 @@ export default function GoalAmount() {
               placeholder="0"
               className="pl-7"
               min="0"
+              onChange={(e) => onChange?.(Number(e.target.value))}
             />
           </div>
         </div>

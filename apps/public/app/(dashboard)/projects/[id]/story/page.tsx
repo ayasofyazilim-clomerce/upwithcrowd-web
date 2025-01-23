@@ -2,10 +2,13 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea, TextareaProps } from "@/components/ui/textarea";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import FaqCard from "../_components/faq-card";
-import { FormContainer, FormInputFieldWithCounter } from "../_components/form";
-import { Section, SectionHint } from "../_components/section";
-import TextWithTitle from "../_components/text-with-title";
+import FaqCard from "../../new/_components/faq-card";
+import {
+  FormContainer,
+  FormInputFieldWithCounter,
+} from "../../new/_components/form";
+import { Section, SectionHint } from "../../new/_components/section";
+import TextWithTitle from "../../new/_components/text-with-title";
 
 export default function Page() {
   return (

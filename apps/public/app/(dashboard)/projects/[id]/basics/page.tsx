@@ -14,9 +14,9 @@ import {
   FormContainer,
   FormField,
   FormInputFieldWithCounter,
-} from "../_components/form";
-import { Section, SectionHint } from "../_components/section";
-import TextWithTitle from "../_components/text-with-title";
+} from "../../new/_components/form";
+import { Section, SectionHint } from "../../new/_components/section";
+import TextWithTitle from "../../new/_components/text-with-title";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ export default function Page() {
     projectStartDate: new Date() as Date | undefined,
     categoryTypes: [] as CategoryType[],
     projectTypes: [] as ProjectType[],
-    sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd", // Fixed sector ID
+    sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
   });
 
   function saveDefaultProject() {
@@ -58,7 +58,7 @@ export default function Page() {
         projectEndDate: projectEndDate.toISOString(),
         categoryTypes,
         projectTypes,
-        sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd", // Use fixed sector ID regardless of selection
+        sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
       },
     }).then((res) => {
       if (res.type === "success") {

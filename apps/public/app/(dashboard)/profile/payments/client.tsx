@@ -1,4 +1,8 @@
 "use client";
+import { postApiPaymentTransaction } from "@/actions/upwithcrowd/payment/post-action";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Card,
   CardContent,
@@ -6,6 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -15,29 +26,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronDown, MoreVertical } from "lucide-react";
+  UpwithCrowd_Payment_ListPaymentTransactionDto,
+  UpwithCrowd_Payment_SavePaymentTransactionDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-export interface Payment {
+export type Payment = {
   projectName: string;
-  transactionId: string | null | undefined;
-  amount: number;
-  paymentStatus: string;
-  paymentType: string;
-}
-
+} & UpwithCrowd_Payment_ListPaymentTransactionDto;
 interface PaymentsTableProps {
   payments: Payment[];
 }
 
 export default function PaymentsTable({ payments }: PaymentsTableProps) {
+  const { toast } = useToast();
   const [selectedPayments, setSelectedPayments] = useState<Set<number>>(
     new Set(),
   );
@@ -93,6 +96,32 @@ export default function PaymentsTable({ payments }: PaymentsTableProps) {
     setCurrentPage((prev) => (direction === "next" ? prev + 1 : prev - 1));
   };
 
+  const handleRecant = async (payment: Payment) => {
+    const formData = {
+      requestBody: {
+        ...payment,
+        paymentType: "CreditCard",
+        type: "Decrease",
+        paymentStatus: "REJECTION",
+      } as UpwithCrowd_Payment_SavePaymentTransactionDto,
+    };
+    const paymentUpdateResponse = await postApiPaymentTransaction(formData);
+
+    if (paymentUpdateResponse.type === "success") {
+      toast({
+        title: "Başarılı",
+        description: "Cayma işlemi başarıyla gerçekleştirildi.",
+      });
+    } else {
+      toast({
+        title: "Hata",
+        description:
+          paymentUpdateResponse.message || "Cayma işlemi başarısız oldu.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card className="w-full ">
       <CardHeader>
@@ -144,7 +173,7 @@ export default function PaymentsTable({ payments }: PaymentsTableProps) {
                     />
                   </TableCell>
                   <TableCell>{payment.projectName}</TableCell>
-                  <TableCell>{payment.transactionId}</TableCell>
+                  <TableCell>{payment.relatedTransactionID}</TableCell>
                   <TableCell>{payment.amount}</TableCell>
                   <TableCell>
                     <span
@@ -165,8 +194,17 @@ export default function PaymentsTable({ payments }: PaymentsTableProps) {
                   </TableCell>
                   <TableCell>{payment.paymentType}</TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon">
-                      <MoreVertical className="h-4 w-4" />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRecant(payment)}
+                      disabled={
+                        !["APPROVED", "DRAFT", "PENDING"].includes(
+                          payment.paymentStatus,
+                        )
+                      }
+                    >
+                      Cayma
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -200,6 +238,7 @@ export default function PaymentsTable({ payments }: PaymentsTableProps) {
           </div>
         </div>
       </CardContent>
+      <Toaster />
     </Card>
   );
 }

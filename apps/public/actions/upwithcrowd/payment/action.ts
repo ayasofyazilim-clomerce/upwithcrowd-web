@@ -1,8 +1,9 @@
+"use server";
 import { structuredError, structuredResponse } from "@repo/utils/api";
 import { getUpwithcrowd } from "@/utils/client";
 import { GetApiPaymentTransactionData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
-export async function getApiPaymentTransaction(
+export async function getApiPaymentTransactionApi(
   data?: GetApiPaymentTransactionData,
 ) {
   try {

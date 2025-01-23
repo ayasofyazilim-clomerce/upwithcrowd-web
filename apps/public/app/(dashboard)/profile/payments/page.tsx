@@ -1,9 +1,9 @@
 import PaymentsPage from "./client";
-import { getApiPaymentTransaction } from "@/actions/upwithcrowd/payment/action";
+import { getApiPaymentTransactionApi } from "@/actions/upwithcrowd/payment/action";
 import { getProjectApi } from "@/actions/upwithcrowd/project/action";
 
 export default async function Page() {
-  const paymentsResponse = await getApiPaymentTransaction({
+  const paymentsResponse = await getApiPaymentTransactionApi({
     maxResultCount: 100,
   });
 
@@ -26,10 +26,7 @@ export default async function Page() {
 
       return {
         projectName: project?.projectName || "Unknown Project",
-        transactionId: payment.relatedTransactionID,
-        amount: payment.amount,
-        paymentStatus: payment.paymentStatus,
-        paymentType: payment.paymentType,
+        ...payment,
       };
     }) ?? [];
 
