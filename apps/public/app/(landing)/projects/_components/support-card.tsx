@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { DollarSign } from "lucide-react";
@@ -9,12 +10,16 @@ export default function SupportCard({
   setSelectedDonation,
   customAmount,
   handleCustomAmountChange,
+  onDonate,
+  isLoading,
 }: {
   donationOptions: number[];
   selectedDonation: number;
   setSelectedDonation: (amount: number) => void;
   customAmount: string;
   handleCustomAmountChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDonate: (amount: number) => Promise<void>;
+  isLoading: boolean;
 }) {
   return (
     <Card className="border-none bg-transparent p-0 shadow-none">
@@ -43,7 +48,13 @@ export default function SupportCard({
         </div>
       </CardContent>
       <CardFooter className="p-0">
-        <Button className="w-full">Donate ${selectedDonation} Now</Button>
+        <Button
+          className="w-full"
+          onClick={() => onDonate(selectedDonation)}
+          disabled={isLoading}
+        >
+          {isLoading ? "Processing..." : `Donate $${selectedDonation} Now`}
+        </Button>
       </CardFooter>
     </Card>
   );

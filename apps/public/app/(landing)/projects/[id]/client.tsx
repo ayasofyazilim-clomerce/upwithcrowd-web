@@ -1,6 +1,9 @@
 "use client";
 
-import { GetApiPublicProjectProjectDetailByIdResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {
+  GetApiPublicProjectProjectDetailByIdResponse,
+  UpwithCrowd_Payment_PaymentStatus,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { useState } from "react";
 import ProjectCreator from "../_components/project-creator";
 import SupportCard from "../_components/support-card";
@@ -8,6 +11,9 @@ import ProjectSummary from "../_components/project-summary";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
+import { postApiPaymentTransaction } from "@/actions/upwithcrowd/payment/post-action";
+import { UpwithCrowd_Payment_SavePaymentTransactionDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { useSession } from "@repo/utils/auth";
 
 export default function ProjectDetails({
   project,
@@ -23,6 +29,34 @@ export default function ProjectDetails({
     setCustomAmount(value);
     if (value) {
       setSelectedDonation(Number(value));
+    }
+  };
+
+  // const session: Session | null = null;
+  const { session } = useSession();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDonation = async (amount: number) => {
+    try {
+      setIsLoading(true);
+      const paymentResponse = await postApiPaymentTransaction({
+        requestBody: {
+          projectID: project.id,
+          memberID: session?.user?.member_id,
+          amount: amount,
+          paymentType: "CreditCard",
+          type: "Increase",
+          paymentStatus: "Pending" as UpwithCrowd_Payment_PaymentStatus,
+        } as UpwithCrowd_Payment_SavePaymentTransactionDto,
+      });
+      console.log(paymentResponse.message);
+      // Handle success (you can add toast or redirect here)
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,6 +159,8 @@ export default function ProjectDetails({
               setSelectedDonation={setSelectedDonation}
               customAmount={customAmount}
               handleCustomAmountChange={handleCustomAmountChange}
+              onDonate={handleDonation}
+              isLoading={isLoading}
             />
           </div>
         </div>

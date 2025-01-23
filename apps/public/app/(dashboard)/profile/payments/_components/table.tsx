@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
   {
+    id: "",
     projectID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     memberID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     amount: 100.0,
@@ -15,6 +16,7 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     paymentStatus: "APPROVED",
   },
   {
+    id: "",
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
@@ -25,6 +27,7 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     paymentStatus: "APPROVED",
   },
   {
+    id: "",
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
@@ -35,6 +38,7 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     paymentStatus: "DRAFT",
   },
   {
+    id: "",
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
@@ -45,6 +49,7 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     paymentStatus: "APPROVED",
   },
   {
+    id: "",
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
@@ -55,6 +60,7 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     paymentStatus: "APPROVED",
   },
   {
+    id: "",
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
@@ -65,6 +71,7 @@ const paymentData: UpwithCrowd_Payment_ListPaymentTransactionDto[] = [
     paymentStatus: "APPROVED",
   },
   {
+    id: "",
     projectID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     memberID: "4fa85f64-5717-4562-b3fc-2c963f66afa7",
     amount: 200.0,
