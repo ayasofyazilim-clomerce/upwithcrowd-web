@@ -2,6 +2,7 @@
 
 import { Session, SessionProvider } from "@repo/utils/auth";
 import { Member, MemberProvider } from "./member";
+import { Toaster } from "@/components/ui/sonner";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ export default function Providers({
 }: ProvidersProps) {
   return (
     <SessionProvider session={session}>
+      <Toaster richColors />
       <MemberProvider currentMember={currentMember} members={members}>
         {children}
       </MemberProvider>
