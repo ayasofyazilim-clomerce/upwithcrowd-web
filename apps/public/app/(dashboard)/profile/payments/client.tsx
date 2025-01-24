@@ -23,7 +23,6 @@ interface PaymentsTableProps {
 }
 
 export default function PaymentsPage({ payments }: PaymentsTableProps) {
-  console.log("payments", payments);
   return (
     <Card className="w-full">
       <CardHeader>
