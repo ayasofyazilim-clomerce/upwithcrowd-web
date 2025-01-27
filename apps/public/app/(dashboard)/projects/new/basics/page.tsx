@@ -1,5 +1,10 @@
 "use client";
 import { postProjectApi } from "@/actions/upwithcrowd/project/post-action";
+import {
+  UpwithCrowd_Projects_ProjectDto,
+  UpwithCrowd_Projects_CategoryType,
+  UpwithCrowd_Projects_ProjectType,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { DatePicker } from "@/components/Datepicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,32 +19,30 @@ import {
   FormContainer,
   FormField,
   FormInputFieldWithCounter,
-} from "../_components/form";
-import { Section, SectionHint } from "../_components/section";
-import TextWithTitle from "../_components/text-with-title";
+} from "../../new/_components/form";
+import { Section, SectionHint } from "../../new/_components/section";
+import TextWithTitle from "../../new/_components/text-with-title";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/navigation";
 
-type CategoryType = "Technology" | "Production";
-type ProjectType = "Initiative" | "Project";
+type Project = UpwithCrowd_Projects_ProjectDto;
 
 export default function Page() {
   const router = useRouter();
   const { toast } = useToast();
-  const [projectDetails, setProjectDetails] = useState({
-    title: "",
-    subtitle: "",
-    projectStartDate: new Date() as Date | undefined,
-    categoryTypes: [] as CategoryType[],
-    projectTypes: [] as ProjectType[],
-    sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd", // Fixed sector ID
+  const [projectDetails, setProjectDetails] = useState<Project>({
+    projectName: "",
+    projectDefinition: "",
+    projectStartDate: new Date().toISOString(),
+    projectEndDate: "",
+    categoryTypes: [],
+    projectTypes: [],
+    sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
   });
 
   function saveDefaultProject() {
-    const { title, subtitle, projectStartDate, categoryTypes, projectTypes } =
-      projectDetails;
-    if (!projectStartDate) {
+    if (!projectDetails.projectStartDate) {
       toast({
         title: "Error",
         description: "Please select a project start date.",
@@ -47,18 +50,13 @@ export default function Page() {
       });
       return;
     }
-    const projectEndDate = new Date(projectStartDate);
+    const projectEndDate = new Date(projectDetails.projectStartDate);
     projectEndDate.setDate(projectEndDate.getDate() + 60);
 
     postProjectApi({
       requestBody: {
-        projectName: title,
-        projectDefinition: subtitle,
-        projectStartDate: projectStartDate.toISOString(),
+        ...projectDetails,
         projectEndDate: projectEndDate.toISOString(),
-        categoryTypes,
-        projectTypes,
-        sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd", // Use fixed sector ID regardless of selection
       },
     }).then((res) => {
       if (res.type === "success") {
@@ -79,13 +77,22 @@ export default function Page() {
   }
 
   const categoryOptions = [
-    { label: "Technology", value: "Technology" },
-    { label: "Production", value: "Production" },
+    {
+      label: "Technology",
+      value: "Technology" as UpwithCrowd_Projects_CategoryType,
+    },
+    {
+      label: "Production",
+      value: "Production" as UpwithCrowd_Projects_CategoryType,
+    },
   ];
 
   const projectTypeOptions = [
-    { label: "Initiative", value: "Initiative" },
-    { label: "Project", value: "Project" },
+    {
+      label: "Initiative",
+      value: "Initiative" as UpwithCrowd_Projects_ProjectType,
+    },
+    { label: "Project", value: "Project" as UpwithCrowd_Projects_ProjectType },
   ];
 
   return (
@@ -113,9 +120,12 @@ export default function Page() {
               label="Title"
               placeholder="Papercuts: A Party Game for Rude and Well-Read"
               maxLength={60}
-              value={projectDetails.title}
+              value={projectDetails.projectName}
               onChange={(e) =>
-                setProjectDetails({ ...projectDetails, title: e.target.value })
+                setProjectDetails({
+                  ...projectDetails,
+                  projectName: e.target.value,
+                })
               }
             />
             <FormInputFieldWithCounter<TextareaProps>
@@ -125,11 +135,11 @@ export default function Page() {
               maxLength={135}
               formElement={Textarea}
               rows={3}
-              value={projectDetails.subtitle}
+              value={projectDetails.projectDefinition}
               onChange={(e) =>
                 setProjectDetails({
                   ...projectDetails,
-                  subtitle: e.target.value,
+                  projectDefinition: e.target.value,
                 })
               }
             />
@@ -156,24 +166,17 @@ export default function Page() {
                   <Button
                     key={category.value}
                     variant={
-                      projectDetails.categoryTypes.includes(
-                        category.value as CategoryType,
-                      )
+                      projectDetails.categoryTypes.includes(category.value)
                         ? "default"
                         : "outline"
                     }
                     onClick={() => {
                       const newCategories =
-                        projectDetails.categoryTypes.includes(
-                          category.value as CategoryType,
-                        )
+                        projectDetails.categoryTypes.includes(category.value)
                           ? projectDetails.categoryTypes.filter(
                               (c) => c !== category.value,
                             )
-                          : [
-                              ...projectDetails.categoryTypes,
-                              category.value as CategoryType,
-                            ];
+                          : [...projectDetails.categoryTypes, category.value];
                       setProjectDetails({
                         ...projectDetails,
                         categoryTypes: newCategories,
@@ -192,23 +195,18 @@ export default function Page() {
                   <Button
                     key={type.value}
                     variant={
-                      projectDetails.projectTypes.includes(
-                        type.value as ProjectType,
-                      )
+                      projectDetails.projectTypes.includes(type.value)
                         ? "default"
                         : "outline"
                     }
                     onClick={() => {
                       const newTypes = projectDetails.projectTypes.includes(
-                        type.value as ProjectType,
+                        type.value,
                       )
                         ? projectDetails.projectTypes.filter(
                             (t) => t !== type.value,
                           )
-                        : [
-                            ...projectDetails.projectTypes,
-                            type.value as ProjectType,
-                          ];
+                        : [...projectDetails.projectTypes, type.value];
                       setProjectDetails({
                         ...projectDetails,
                         projectTypes: newTypes,
@@ -264,12 +262,15 @@ export default function Page() {
         </Section>
         <Section
           title="Target launch date (optional)"
-          text="We’ll provide you with recommendations on when to complete steps that may take a few days to process. You can edit this date up until the moment you launch your project, which must always be done manually."
+          text="We'll provide you with recommendations on when to complete steps that may take a few days to process. You can edit this date up until the moment you launch your project, which must always be done manually."
         >
           <FormContainer className="space-y-4">
             <DateInputs
               onDateChange={(date) =>
-                setProjectDetails({ ...projectDetails, projectStartDate: date })
+                setProjectDetails({
+                  ...projectDetails,
+                  projectStartDate: date?.toISOString() || "",
+                })
               }
             />
             <div className="text-sm">
@@ -279,12 +280,12 @@ export default function Page() {
                 <li>Submit your project for review</li>
               </ul>
             </div>
-            <SectionHint message="Setting a target date won’t automatically launch your project." />
+            <SectionHint message="Setting a target date won't automatically launch your project." />
           </FormContainer>
         </Section>
         <Section
           title="Target launch date (optional)"
-          text="We’ll provide you with recommendations on when to complete steps that may take a few days to process. You can edit this date up until the moment you launch your project, which must always be done manually."
+          text="We'll provide you with recommendations on when to complete steps that may take a few days to process. You can edit this date up until the moment you launch your project, which must always be done manually."
         >
           <FormContainer className="space-y-4">
             <RadioGroup defaultValue="fixed" className="gap-0">
