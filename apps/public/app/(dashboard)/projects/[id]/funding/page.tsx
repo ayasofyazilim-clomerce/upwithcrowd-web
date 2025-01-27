@@ -26,12 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const fundCollectionTypeOptions = $UpwithCrowd_Projects_FundCollectionType.enum;
-const booleanOptions = [
-  { value: "true", label: "True" },
-  { value: "false", label: "False" },
-];
 
 export default function Page() {
   const { id: projectId } = useParams<{ id: string }>();
@@ -97,17 +94,6 @@ export default function Page() {
             text: "text-lg",
           }}
         />
-        <Section
-          title="Project budget BETA(optional)"
-          text={[
-            "Determine the various costs to bring your project to life with our Google Sheets template.",
-            "We’ll have access to your document, but we will never share your information with others.",
-          ]}
-        >
-          <FormContainer className="">
-            <BudgetCard />
-          </FormContainer>
-        </Section>
 
         <Section
           title="Privilege"
@@ -261,24 +247,26 @@ export default function Page() {
         <Section
           className="border-b-0"
           title="Over Funding"
-          text={["If true, the project can exceed its target funding amount."]}
+          text={[
+            "If checked, the project can exceed its target funding amount.",
+          ]}
         >
           <FormContainer className="">
-            <Select
-              onValueChange={(value) => setOverFunding(value === "true")}
-              value={overFunding ? "true" : "false"}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select over funding option" />
-              </SelectTrigger>
-              <SelectContent>
-                {booleanOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="overfunding"
+                checked={overFunding}
+                onCheckedChange={(checked) =>
+                  setOverFunding(checked as boolean)
+                }
+              />
+              <Label
+                htmlFor="overfunding"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Allow over funding
+              </Label>
+            </div>
           </FormContainer>
         </Section>
         <Section
@@ -337,10 +325,18 @@ export default function Page() {
             </div>
           </FormContainer>
         </Section>
-        <Button
-          onClick={handleSubmit}
-          className="mt-4 rounded bg-blue-500 p-2 text-white"
+        <Section
+          title="Project budget BETA(optional)"
+          text={[
+            "Determine the various costs to bring your project to life with our Google Sheets template.",
+            "We’ll have access to your document, but we will never share your information with others.",
+          ]}
         >
+          <FormContainer className="">
+            <BudgetCard />
+          </FormContainer>
+        </Section>
+        <Button onClick={handleSubmit} className="w-full">
           Submit
         </Button>
       </section>

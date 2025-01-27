@@ -4,6 +4,7 @@ import {
   GetApiPublicProjectProjectDetailByIdResponse,
   UpwithCrowd_Payment_PaymentStatus,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import ProjectCreator from "../_components/project-creator";
 import SupportCard from "../_components/support-card";
@@ -36,6 +37,7 @@ export default function ProjectDetails({
   const { session } = useSession();
 
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleDonation = async (amount: number) => {
     try {
@@ -50,10 +52,26 @@ export default function ProjectDetails({
           paymentStatus: "Pending" as UpwithCrowd_Payment_PaymentStatus,
         } as UpwithCrowd_Payment_SavePaymentTransactionDto,
       });
-      console.log(paymentResponse.message);
-      // Handle success (you can add toast or redirect here)
+
+      if (paymentResponse.type === "success") {
+        toast({
+          title: "Payment Successful",
+          description: "Thank you for your support!",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Payment Failed",
+          description: paymentResponse.message || "Something went wrong",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      // Handle error
+      toast({
+        title: "Error",
+        description: "An error occurred while processing your payment",
+        variant: "destructive",
+      });
       console.error(error);
     } finally {
       setIsLoading(false);

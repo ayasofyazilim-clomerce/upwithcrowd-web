@@ -139,7 +139,6 @@ export default function NewBusinessAccount() {
       return;
     }
     setIsSubmitting(true);
-    console.log("formData", formData);
     try {
       const requestBody: UpwithCrowd_Members_SaveMemberDto = {
         type: formData.type,
@@ -163,7 +162,6 @@ export default function NewBusinessAccount() {
           variant: "default",
         });
       } else {
-        console.log(memberResult.message);
         toast({
           title: "Error",
           description: memberResult.message,
