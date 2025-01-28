@@ -16,13 +16,3 @@ export async function getPublicProjectsApi(
     return structuredError(error);
   }
 }
-export async function getPublicProjectDetailsApi(id: string) {
-  try {
-    const client = await getUpwithcrowd();
-    const dataResponse =
-      await client.publicProject.getApiPublicProjectProjectDetailById({ id });
-    return structuredResponse(dataResponse);
-  } catch (error) {
-    return structuredError(error);
-  }
-}
