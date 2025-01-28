@@ -1,4 +1,7 @@
-import { GetApiPublicProjectProjectDetailByIdResponse } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {
+  UpwithCrowd_Projects_ProjectsResponseDto,
+  UpwithCrowd_Projects_ProjectsFundingResponseDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -6,37 +9,39 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 export default function ProjectSummary({
-  project,
+  basics,
+  funding,
   currentImageIndex,
   fundedPercentage,
 }: {
-  project: GetApiPublicProjectProjectDetailByIdResponse;
+  basics: UpwithCrowd_Projects_ProjectsResponseDto;
+  funding: UpwithCrowd_Projects_ProjectsFundingResponseDto;
   currentImageIndex: number;
   fundedPercentage: number;
 }) {
   return (
     <>
       <h2 className="mb-2 text-2xl font-bold md:text-3xl">
-        {project.projectName}
+        {basics.projectName}
       </h2>
-      <p className="text-md mb-4 font-medium md:text-lg">{project.privilege}</p>
+      <p className="text-md mb-4 font-medium md:text-lg">{funding.privilege}</p>
       <p className="text-normal mb-4">
         <span className="text-primary font-bold">
-          ${(project.fundableAmount ?? 0).toLocaleString()}
+          ${(funding.fundableAmount ?? 0).toLocaleString()}
         </span>{" "}
-        of ${(project.fundNominalAmount ?? 0).toLocaleString()} raised
+        of ${(funding.fundNominalAmount ?? 0).toLocaleString()} raised
       </p>
 
       <div className="relative mx-auto mb-6 w-full">
         <Image
           src={"https://placehold.co/640x360"}
-          alt={`${project.projectName} - Image ${currentImageIndex + 1}`}
+          alt={`${basics.projectName} - Image ${currentImageIndex + 1}`}
           width={640}
           height={360}
           className="aspect-video h-auto w-full rounded-lg object-cover"
         />
         <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">
-          {project.fundCollectionType}
+          {funding.fundCollectionType}
         </Badge>
         <Button
           variant="outline"
@@ -60,11 +65,11 @@ export default function ProjectSummary({
 
       <div className="mb-6 flex justify-between text-sm">
         {/* <span>{project.backers} backers</span>  Bu veri eksik */}
-        <span>${(project.fundableAmount ?? 0).toLocaleString()} raised</span>
+        <span>${(funding.fundableAmount ?? 0).toLocaleString()} raised</span>
         <span>
-          {project.projectEndDate
+          {basics.projectEndDate
             ? Math.ceil(
-                (new Date(project.projectEndDate).getTime() - Date.now()) /
+                (new Date(basics.projectEndDate).getTime() - Date.now()) /
                   (1000 * 60 * 60 * 24),
               )
             : "N/A"}

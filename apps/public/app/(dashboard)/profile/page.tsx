@@ -22,6 +22,7 @@ import { useState } from "react";
 
 import { handleSignOut } from "@/app/(auth)/login/action";
 import { useSession } from "@repo/utils/auth";
+import { useMember } from "@/app/providers/member";
 
 // Mock user data
 const userData = {
@@ -33,6 +34,9 @@ const userData = {
 
 export default function Page() {
   const { session } = useSession();
+  const { members } = useMember();
+  console.log(members);
+
   const currentUser = session?.user;
   const [profileImage, setProfileImage] = useState(userData.profileImage);
 
@@ -46,6 +50,7 @@ export default function Page() {
       reader.readAsDataURL(file);
     }
   };
+
   return (
     <div className="bg-background min-h-screen">
       <div className="flex flex-col gap-8 md:flex-row">

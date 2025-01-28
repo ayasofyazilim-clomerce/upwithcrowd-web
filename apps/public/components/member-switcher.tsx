@@ -26,14 +26,18 @@ import { useSession } from "@repo/utils/auth";
 import Link from "next/link";
 import { useMediaQuery } from "@/components/ui/useMediaQuery";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { useRouter } from "next/navigation";
 
 export default function MemberSwitcher() {
+  const router = useRouter();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [open, setOpen] = React.useState(false);
   const { session } = useSession();
   const { currentMember } = useMember();
   let _currentMember = currentMember;
+
   if (!_currentMember || _currentMember === null) {
+    router.push("/login");
     _currentMember = {
       id: session?.user?.userName || "",
       name: session?.user?.name,

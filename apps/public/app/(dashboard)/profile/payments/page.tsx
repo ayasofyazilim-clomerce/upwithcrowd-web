@@ -25,8 +25,8 @@ export default async function Page() {
       );
 
       return {
-        projectName: project?.projectName || "Unknown Project",
         ...payment,
+        projectName: project?.projectName || "Unknown Project",
       };
     }) ?? [];
 

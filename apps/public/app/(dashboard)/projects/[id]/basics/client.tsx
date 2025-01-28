@@ -2,6 +2,7 @@
 import { postProjectApi } from "@/actions/upwithcrowd/project/post-action";
 import type {
   UpwithCrowd_Projects_CategoryType,
+  UpwithCrowd_Projects_ProjectDto,
   UpwithCrowd_Projects_ProjectType,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -61,22 +62,28 @@ const projectSchema = z.object({
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
 
-export default function Page() {
+export default function ClientBasics({
+  projectDetail,
+}: {
+  projectDetail: UpwithCrowd_Projects_ProjectDto;
+}) {
   const router = useRouter();
   const { toast } = useToast();
   const [spesifDate, setSpesifDate] = useState(false);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
-    defaultValues: {
-      projectName: "",
-      projectDefinition: "",
-      projectStartDate: new Date().toISOString(),
-      projectEndDate: "",
-      categoryTypes: [],
-      projectTypes: [],
-      sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
-    },
+    defaultValues: projectDetail,
+    // {
+    // ...projectDetail,
+    // projectName: projectDetail.projectName,
+    // projectDefinition: ,
+    // projectStartDate: new Date().toISOString(),
+    // projectEndDate: "",
+    // categoryTypes: [],
+    // projectTypes: [],
+    // sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
+    // },
   });
 
   useEffect(() => {
