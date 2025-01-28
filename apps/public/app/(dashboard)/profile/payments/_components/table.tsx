@@ -26,7 +26,7 @@ export default function PaymentsTable({ payments }: PaymentsTableProps) {
         fillerColumn="projectID"
         columnVisibility={{
           columns: [
-            "projectID",
+            "projectName",
             "relatedTransactionID",
             "amount",
             "paymentStatus",
@@ -36,7 +36,7 @@ export default function PaymentsTable({ payments }: PaymentsTableProps) {
           type: "show",
         }}
         columnOrder={[
-          "projectID",
+          "projectName",
           "relatedTransactionID",
           "amount",
           "paymentStatus",
