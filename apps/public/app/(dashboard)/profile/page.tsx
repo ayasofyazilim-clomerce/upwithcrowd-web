@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Bell,
   BellDot,
@@ -10,11 +11,13 @@ import {
   Building2,
   Camera,
   ChevronRight,
+  Copy,
   FileText,
   HelpCircle,
   Link2,
   LogOut,
   Shield,
+  CopyCheck,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,10 +38,10 @@ const userData = {
 export default function Page() {
   const { session } = useSession();
   const { members } = useMember();
-  console.log(members);
 
   const currentUser = session?.user;
   const [profileImage, setProfileImage] = useState(userData.profileImage);
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,6 +51,16 @@ export default function Page() {
         setProfileImage(reader.result as string);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCopy = () => {
+    if (currentUser?.member_id) {
+      navigator.clipboard.writeText(currentUser.member_id);
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 3000);
     }
   };
 
@@ -90,6 +103,35 @@ export default function Page() {
               />
             </CardContent>
           </Card>
+          <ScrollArea className="mb-2 h-72">
+            <div className="space-y-4 pr-2">
+              {typeof members !== "undefined" &&
+                members.length > 0 &&
+                members.map((membership) => (
+                  <Card
+                    key={membership.id}
+                    className="hover:bg-muted cursor-pointer transition-colors"
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="mb-2 font-semibold">
+                            {membership.name} {membership.surname}
+                          </h3>
+                          <p className="text-muted-foreground text-sm">
+                            {membership.mail}
+                          </p>
+                          <p className="text-muted-foreground text-sm">
+                            {membership.type}
+                          </p>
+                        </div>
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          </ScrollArea>
           <Card className="hover:bg-muted cursor-pointer border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
             <Link href={"/profile/new/business"}>
               <CardContent className="flex items-center justify-between p-6">
@@ -103,6 +145,16 @@ export default function Page() {
               </CardContent>
             </Link>
           </Card>
+          <div className="text-muted-foreground flex w-full items-center justify-center gap-2 text-center">
+            <p>Membership Id: {currentUser?.member_id}</p>
+            <div className="cursor-pointer" onClick={handleCopy}>
+              {isCopied ? (
+                <CopyCheck className="h-5 w-5 " />
+              ) : (
+                <Copy className="h-5 w-5" />
+              )}
+            </div>
+          </div>
           <div className="flex w-full items-center justify-center">
             <Button
               variant="outline"
