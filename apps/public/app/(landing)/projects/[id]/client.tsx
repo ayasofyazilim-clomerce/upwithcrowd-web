@@ -17,6 +17,7 @@ import { postApiPaymentTransaction } from "@/actions/upwithcrowd/payment/post-ac
 import { UpwithCrowd_Payment_SavePaymentTransactionDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { useSession } from "@repo/utils/auth";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export default function ProjectDetails({
   funding,
@@ -232,6 +233,16 @@ export default function ProjectDetails({
           </div>
         </div>
       </main>
+
+      {/* Fixed bottom-right link component */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <Link
+          href={`/projects/${projectId}/basics`}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block rounded-full shadow-lg transition-all"
+        >
+          <button className="px-6 py-3 font-medium">Edit Project</button>
+        </Link>
+      </div>
     </>
   );
 }
