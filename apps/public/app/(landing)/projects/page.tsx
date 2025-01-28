@@ -21,7 +21,12 @@ export default async function Page() {
               <ListedProjectCard
                 key={project.id}
                 project={{
-                  ...project,
+                  id: project.id,
+                  projectName: project.projectName,
+                  projectEndDate:
+                    project.projectEndDate || new Date().toISOString(), // Add default value
+                  fundableAmount: project.fundableAmount,
+                  fundNominalAmount: project.fundNominalAmount,
                   fundCollectionType:
                     project.fundCollectionType?.toString() || "",
                 }}

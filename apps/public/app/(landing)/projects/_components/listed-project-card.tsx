@@ -8,6 +8,7 @@ import { MapPin, DollarSign, Target } from "lucide-react";
 interface Project {
   id: string;
   projectName: string;
+  projectEndDate: string; // Changed from Date to string
   fundableAmount: number;
   fundNominalAmount: number;
   fundCollectionType: string;
@@ -16,6 +17,15 @@ interface Project {
 export default function ListedProjectCard({ project }: { project: Project }) {
   const fundedPercentage =
     (project.fundableAmount / project.fundNominalAmount) * 100;
+
+  // Calculate days left
+  const getDaysLeft = () => {
+    const endDate = new Date(project.projectEndDate);
+    const now = new Date();
+    const diffTime = endDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
 
   return (
     <Link href={`/projects/${project.id}`} className="pointer">
@@ -45,7 +55,7 @@ export default function ListedProjectCard({ project }: { project: Project }) {
               Funded: {fundedPercentage.toFixed(0)}%
             </span>
             <span className="text-muted-foreground text-xs md:text-sm">
-              30 days left
+              {getDaysLeft()} days left
             </span>
           </div>
           <Progress value={fundedPercentage} className="mb-3 md:mb-4" />

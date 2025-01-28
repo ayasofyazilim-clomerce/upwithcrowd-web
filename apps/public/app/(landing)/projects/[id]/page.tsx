@@ -1,16 +1,30 @@
 import ProjectDetails from "./client";
-import { getPublicProjectDetailsApi } from "@/actions/upwithcrowd/public-project/actions";
+import {
+  getPublicProjectDetailsApi,
+  getPublicProjectDetailsFundingApi,
+} from "@/actions/upwithcrowd/project/action";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const projectDetailsResponse = await getPublicProjectDetailsApi(id);
-  if (projectDetailsResponse.type !== "success")
-    return <>{projectDetailsResponse.message}</>;
+  const projectDetailsResponseBasics = await getPublicProjectDetailsApi(id);
+  const projectDetailsResponseFunding =
+    await getPublicProjectDetailsFundingApi(id);
+
+  console.log(projectDetailsResponseBasics);
+  console.log(projectDetailsResponseFunding);
+  if (projectDetailsResponseBasics.type !== "success")
+    return <>{projectDetailsResponseBasics.message}</>;
+
+  if (projectDetailsResponseFunding.type !== "success")
+    return <>{projectDetailsResponseBasics.message}</>;
 
   return (
     <div className="bg-background min-h-screen">
-      <ProjectDetails project={projectDetailsResponse.data} />
+      <ProjectDetails
+        funding={projectDetailsResponseFunding.data}
+        basics={projectDetailsResponseBasics.data}
+      />
     </div>
   );
 }

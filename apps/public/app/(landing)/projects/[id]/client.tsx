@@ -1,8 +1,9 @@
 "use client";
 
 import {
-  GetApiPublicProjectProjectDetailByIdResponse,
+  UpwithCrowd_Projects_ProjectsFundingResponseDto,
   UpwithCrowd_Payment_PaymentStatus,
+  UpwithCrowd_Projects_ProjectsResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
@@ -15,12 +16,16 @@ import { Sparkles } from "lucide-react";
 import { postApiPaymentTransaction } from "@/actions/upwithcrowd/payment/post-action";
 import { UpwithCrowd_Payment_SavePaymentTransactionDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { useSession } from "@repo/utils/auth";
+import { useParams } from "next/navigation";
 
 export default function ProjectDetails({
-  project,
+  funding,
+  basics,
 }: {
-  project: GetApiPublicProjectProjectDetailByIdResponse;
+  basics: UpwithCrowd_Projects_ProjectsResponseDto;
+  funding: UpwithCrowd_Projects_ProjectsFundingResponseDto;
 }) {
+  const { id: projectId } = useParams<{ id: string }>();
   const [currentImageIndex] = useState(0);
   const [customAmount, setCustomAmount] = useState<string>("");
   const donationOptions = [10, 25, 50, 100, 250, 500];
@@ -44,7 +49,7 @@ export default function ProjectDetails({
       setIsLoading(true);
       const paymentResponse = await postApiPaymentTransaction({
         requestBody: {
-          projectID: project.id,
+          projectID: projectId,
           memberID: session?.user?.member_id,
           amount: amount,
           paymentType: "CreditCard",
@@ -79,7 +84,7 @@ export default function ProjectDetails({
   };
 
   const fundedPercentage =
-    ((project.fundableAmount ?? 0) / (project.fundNominalAmount ?? 1)) * 100;
+    ((funding.fundableAmount ?? 0) / (funding.fundNominalAmount ?? 1)) * 100;
 
   const blogPost = `
     <article class="prose lg:prose-xl mx-auto">
@@ -159,15 +164,16 @@ export default function ProjectDetails({
         <div className="flex flex-col gap-8 md:gap-20 lg:flex-row">
           <div className="lg:w-3/5">
             <ProjectSummary
-              project={project}
+              basics={basics}
+              funding={funding}
               currentImageIndex={currentImageIndex}
               fundedPercentage={fundedPercentage}
             />
             {/* PROJECT DETAILS SECTION BEGIN */}
             <h2 className="mb-2 text-xl font-bold md:text-2xl">
-              What is the {project.projectName}?{" "}
+              What is the {basics.projectName}?{" "}
             </h2>
-            <p className="mb-8 text-lg">{project.projectDefinition}</p>
+            <p className="mb-8 text-lg">{basics.projectDefinition}</p>
           </div>
           <div className="lg:w-1/3">
             <ProjectCreator />
