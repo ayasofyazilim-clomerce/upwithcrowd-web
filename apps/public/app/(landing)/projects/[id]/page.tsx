@@ -11,8 +11,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   const projectDetailsResponseFunding =
     await getPublicProjectDetailsFundingApi(id);
 
-  console.log(projectDetailsResponseBasics);
-  console.log(projectDetailsResponseFunding);
   if (projectDetailsResponseBasics.type !== "success")
     return <>{projectDetailsResponseBasics.message}</>;
 

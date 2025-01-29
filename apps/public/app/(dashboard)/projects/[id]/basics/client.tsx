@@ -1,5 +1,5 @@
 "use client";
-import { postProjectApi } from "@/actions/upwithcrowd/project/post-action";
+import { putProjectBasicsByIdApi } from "@/actions/upwithcrowd/project/put-action";
 import type {
   UpwithCrowd_Projects_CategoryType,
   UpwithCrowd_Projects_ProjectDto,
@@ -32,6 +32,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useParams } from "next/navigation";
 
 const CategoryType = {
   Technology: "Technology",
@@ -69,6 +70,8 @@ export default function ClientBasics({
 }) {
   const router = useRouter();
   const { toast } = useToast();
+  const { id: projectId } = useParams<{ id: string }>();
+
   const [spesifDate, setSpesifDate] = useState(false);
 
   const form = useForm<ProjectFormValues>({
@@ -102,11 +105,12 @@ export default function ClientBasics({
           new Date(data.projectStartDate).getDate() + 60,
         );
 
-    postProjectApi({
+    putProjectBasicsByIdApi({
       requestBody: {
         ...data,
         projectEndDate: new Date(projectEndDate).toISOString(),
       },
+      id: projectId,
     }).then((res) => {
       if (res.type === "success") {
         toast({
