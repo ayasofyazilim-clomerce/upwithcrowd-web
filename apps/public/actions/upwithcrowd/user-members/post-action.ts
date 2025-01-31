@@ -1,11 +1,11 @@
 "use server";
 import { getUpwithcrowd } from "@/utils/client";
-import { PostApiMemberData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { PostApiUserMembersData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { structuredError, structuredResponse } from "@repo/utils/api";
-export async function postApiMember(data: PostApiMemberData) {
+export async function postUserMembersApi(data: PostApiUserMembersData) {
   try {
     const client = await getUpwithcrowd();
-    const dataResponse = await client.member.postApiMember(data);
+    const dataResponse = await client.userMembers.postApiUserMembers(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);

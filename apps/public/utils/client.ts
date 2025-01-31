@@ -28,7 +28,7 @@ export async function getAccountServiceClient(session?: Session | null) {
       : ""; //userData?.user;
   return new AccountServiceClient({
     TOKEN: token,
-    BASE: process.env.BASE_URL,
+    BASE: process.env.TOKEN_URL,
     HEADERS,
   });
 }

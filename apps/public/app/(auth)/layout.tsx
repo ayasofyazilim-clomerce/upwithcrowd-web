@@ -25,8 +25,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     });
   }, [api]);
   return (
-    <section className="grid h-dvh w-full grid-cols-4 overflow-hidden bg-white">
-      <div className="bg-primary relative col-span-3">
+    <section className="grid h-dvh w-full grid-cols-3 overflow-hidden bg-white">
+      <div className="bg-primary relative col-span-2">
         <Carousel
           setApi={setApi}
           opts={{
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           width={60}
           className="mx-auto"
         />
-        <div className="my-auto flex h-full w-full flex-col items-center justify-center gap-8 px-16">
+        <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-8 px-16">
           {children}
         </div>
       </div>

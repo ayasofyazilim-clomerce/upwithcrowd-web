@@ -40,6 +40,7 @@ export default function Page() {
   const { members } = useMember();
 
   const currentUser = session?.user;
+  console.log(currentUser);
   const [profileImage, setProfileImage] = useState(userData.profileImage);
   const [isCopied, setIsCopied] = useState(false);
 

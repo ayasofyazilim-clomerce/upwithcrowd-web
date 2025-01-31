@@ -76,7 +76,15 @@ export default function ClientBasics({
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
-    defaultValues: projectDetail,
+    defaultValues: {
+      ...projectDetail,
+      categoryTypes: projectDetail.categoryTypes.map(
+        (category) => CategoryType[category as keyof typeof CategoryType],
+      ),
+      projectTypes: projectDetail.projectTypes.map(
+        (type) => ProjectType[type as keyof typeof ProjectType],
+      ),
+    },
     // {
     // ...projectDetail,
     // projectName: projectDetail.projectName,

@@ -37,14 +37,17 @@ export default function MemberSwitcher() {
   let _currentMember = currentMember;
 
   if (!_currentMember || _currentMember === null) {
-    router.push("/login");
+    if (!currentMember || currentMember.isValidated === false) {
+      router.push("/profile/new/personal");
+    }
+
     _currentMember = {
       id: session?.user?.userName || "",
-      name: session?.user?.name,
-      surname: session?.user?.surname,
+      name: session?.user?.name || "",
+      surname: session?.user?.surname || "",
       identifier: session?.user?.email || "",
-      type: "NONE",
-      idType: "NONE",
+      type: "Individual",
+      idType: "TCKN",
       mail: session?.user?.email || "",
     };
   }
@@ -107,10 +110,7 @@ function Content({
 
   const organizations =
     members?.filter((x) => x.type === "Organization" && x.name) || [];
-  const individuals =
-    members?.filter(
-      (x) => x.type === "Individual" || (x.type === "NONE" && x.name),
-    ) || [];
+  const individuals = members?.filter((x) => x.type === "Individual") || [];
   return (
     <Command>
       <CommandInput placeholder="Search member..." />
@@ -165,7 +165,6 @@ function ListItem({
       key={member.id}
       value={member.id}
       onSelect={() => {
-        console.log(member);
         setCurrentMember(member);
         setOpen(false);
       }}
