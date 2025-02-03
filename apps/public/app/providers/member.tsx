@@ -35,6 +35,7 @@ export const MemberProvider = ({
     );
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [memberList, setMembers] = useState<Member[] | undefined>(members);
   const saveMember = (member: Member) => {
     if (typeof window !== "undefined") {
@@ -49,7 +50,7 @@ export const MemberProvider = ({
     <MemberContext.Provider
       value={{
         currentMember: member,
-        members: memberList,
+        members,
         setCurrentMember: saveMember,
         setMembers: saveMembers,
       }}

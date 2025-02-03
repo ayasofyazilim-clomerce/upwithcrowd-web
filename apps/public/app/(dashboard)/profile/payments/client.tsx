@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Toaster } from "@/components/ui/toaster";
 import {
   Card,
   CardContent,
@@ -45,7 +44,6 @@ export default function PaymentsPage({ payments }: PaymentsTableProps) {
 
         <PaymentsTable payments={payments} />
       </CardContent>
-      <Toaster />
     </Card>
   );
 }

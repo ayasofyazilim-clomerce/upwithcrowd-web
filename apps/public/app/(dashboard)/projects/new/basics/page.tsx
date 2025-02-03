@@ -16,8 +16,6 @@ import { useState, useEffect } from "react";
 import { FormContainer, FormField } from "../../new/_components/form";
 import { Section } from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "@/components/ui/sonner";
 
 const CategoryType = {
   Technology: "Technology",
@@ -63,7 +62,6 @@ type ProjectFormValues = z.infer<typeof projectSchema>;
 
 export default function Page() {
   const router = useRouter();
-  const { toast } = useToast();
   const [spesifDate, setSpesifDate] = useState(false);
 
   const form = useForm<ProjectFormValues>({
@@ -102,17 +100,10 @@ export default function Page() {
       },
     }).then((res) => {
       if (res.type === "success") {
-        toast({
-          title: "Başarılı",
-          description: res.message || "Proje başarıyla kaydedildi",
-        });
+        toast.success("Proje başarıyla kaydedildi");
         router.push(`/projects/${res.data.projectId}/basics`);
       } else {
-        toast({
-          title: "Hata",
-          description: res.message || "Proje kaydedilirken bir hata oluştu",
-          variant: "destructive",
-        });
+        toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
       }
     });
   };
@@ -398,66 +389,7 @@ export default function Page() {
             </Button>
           </form>
         </Form>
-        <Toaster />
       </section>
     </div>
   );
 }
-// function DateInputs({
-//   dayId = "day",
-//   monthId = "month",
-//   yearId = "year",
-//   fullDateId = "fullDate",
-//   onDateChange,
-// }: {
-//   dayId?: string
-//   monthId?: string
-//   yearId?: string
-//   fullDateId?: string
-//   onDateChange?: (date: Date | undefined) => void
-// }) {
-//   return (
-//     <div className="flex max-w-80 flex-col gap-4 md:flex-row md:items-end">
-//       <FormField htmlFor={dayId} label="Day">
-//         <Input
-//           className="min-w-20"
-//           id={dayId}
-//           placeholder="DD"
-//           type="number"
-//           min="1"
-//           max="31"
-//           defaultValue={new Date().getDate()}
-//         />
-//       </FormField>
-//       <FormField htmlFor={monthId} label="Month">
-//         <Input
-//           className="min-w-20"
-//           id={monthId}
-//           type="number"
-//           placeholder="MM"
-//           min="1"
-//           max="12"
-//           defaultValue={new Date().getMonth() + 1}
-//         />
-//       </FormField>
-//       <FormField htmlFor={yearId} label="Year">
-//         <Input
-//           className="min-w-20"
-//           id={yearId}
-//           type="number"
-//           placeholder="YYYY"
-//           defaultValue={new Date().getFullYear()}
-//           min={new Date().getFullYear()}
-//           max="2099"
-//         />
-//       </FormField>
-//       <DatePicker
-//         className="md:max-w-24"
-//         date={new Date()}
-//         setDate={(date?: Date) => {
-//           if (onDateChange) onDateChange(date)
-//         }}
-//       />
-//     </div>
-//   )
-// }
