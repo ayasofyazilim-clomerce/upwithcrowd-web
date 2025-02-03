@@ -16,8 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { postApiMember } from "@/actions/upwithcrowd/member/post-action";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
 import { UpwithCrowd_Members_SaveMemberDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import { postUserMembersApi } from "@/actions/upwithcrowd/user-members/post-action";
 import { useSession } from "@repo/utils/auth";
@@ -29,6 +27,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "@/components/ui/sonner";
 
 const formSchema = z.object({
   identifier: z
@@ -53,7 +52,6 @@ const formSchema = z.object({
 export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const currentUser = useSession()?.session?.user?.sub;
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,26 +90,15 @@ export default function NewBusinessAccount() {
           },
         });
 
-        toast({
-          title: "Success",
-          description: "Your business account has been created successfully.",
-          variant: "default",
-        });
+        toast.success("Your business account has been created successfully.");
       } else {
-        toast({
-          title: "Error",
-          description: memberResult.message,
-          variant: "destructive",
-        });
+        toast.error(memberResult.message);
       }
     } catch (error) {
       console.error("Error creating business account:", error);
-      toast({
-        title: "Error",
-        description:
-          "There was an error creating your business account. Please try again.",
-        variant: "destructive",
-      });
+      toast.error(
+        "There was an error creating your business account. Please try again.",
+      );
     }
     setIsSubmitting(false);
   }
@@ -214,7 +201,6 @@ export default function NewBusinessAccount() {
           </CardFooter>
         </form>
       </Form>
-      <Toaster />
     </Card>
   );
 }

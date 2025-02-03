@@ -24,8 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, Shield, Check } from "lucide-react";
 import { postApiMember } from "@/actions/upwithcrowd/member/post-action";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
+import { toast } from "@/components/ui/sonner";
 import {
   UpwithCrowd_Members_IdType,
   UpwithCrowd_Members_SaveMemberDto,
@@ -75,7 +74,6 @@ export default function NewPersonalAccount() {
   const userName = useSession()?.session?.user?.userName || "";
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -150,11 +148,7 @@ export default function NewPersonalAccount() {
       }
 
       if (memberResult.type === "success") {
-        toast({
-          title: "Success",
-          description: "Your personal account has been created successfully.",
-          variant: "default",
-        });
+        toast.success("Your personal account has been created successfully.");
       } else {
         try {
           const errorMessage = memberResult.message || "";
@@ -176,30 +170,19 @@ export default function NewPersonalAccount() {
               });
             } else {
               // If we can't determine the specific field, show a toast
-              toast({
-                title: "Error",
-                description: errorMessage,
-                variant: "destructive",
-              });
+              toast.error(errorMessage);
             }
           }
         } catch (errorMessage) {
-          toast({
-            title: "Error",
-            description: String(errorMessage),
-            variant: "destructive",
-          });
+          toast.error(String(errorMessage));
         }
         return;
       }
     } catch (error) {
       console.error("Error creating personal account:", error);
-      toast({
-        title: "Error",
-        description:
-          "There was an error creating your personal account. Please try again.",
-        variant: "destructive",
-      });
+      toast.error(
+        "There was an error creating your personal account. Please try again.",
+      );
     }
   }
 
@@ -395,7 +378,6 @@ export default function NewPersonalAccount() {
           </CardFooter>
         </form>
       </Form>
-      <Toaster />
     </Card>
   );
 }
