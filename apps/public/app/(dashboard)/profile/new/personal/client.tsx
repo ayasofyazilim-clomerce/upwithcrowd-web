@@ -41,20 +41,36 @@ import { Form } from "@/components/ui/form";
 import { putMyProfileApi } from "@/actions/upwithcrowd/my-profile/put-action";
 import { postUserMembersApi } from "@/actions/upwithcrowd/user-members/post-action";
 import { useSession } from "@repo/utils/auth";
+import { getApiMemberApi } from "@/actions/upwithcrowd/member/actions";
+import { useMember } from "@/app/providers/member";
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  surname: z.string().min(2, "Surname must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  name: z
+    .string()
+    .min(2, "İsim en az 2 karakter olmalıdır.")
+    .regex(/^[a-zA-ZığüşöçİĞÜŞÖÇ\s]+$/, "İsim yalnızca harf içermelidir."),
+  surname: z
+    .string()
+    .min(2, "Soyisim en az 2 karakter olmalıdır.")
+    .regex(/^[a-zA-ZığüşöçİĞÜŞÖÇ\s]+$/, "Soyisim yalnızca harf içermelidir."),
+  email: z.string().email("Geçerli bir e-posta adresi giriniz."),
   idType: z.enum(["NONE", "TCKN", "YKN", "MKN"]),
-  identifier: z.string().min(1, "Identifier is required"),
-  tel: z.string().min(10, "Phone number must be at least 10 digits"),
-  mobile: z.string(),
-  annualIncome: z.string().regex(/^\d+$/, "Annual income must be a number"),
-  title: z.string(),
+  identifier: z
+    .string()
+    .min(11, "Kimlik numarası 11 haneli olmalıdır.")
+    .max(11, "Kimlik numarası 11 haneli olmalıdır.")
+    .regex(/^\d{11}$/, "Kimlik numarası sadece rakam içermelidir."),
+  mobile: z
+    .string()
+    .regex(/^\+?[1-9]\d{9,14}$/, "Geçerli bir telefon numarası giriniz."),
+  annualIncome: z
+    .string()
+    .regex(/^\d+$/, "Yıllık gelir sadece rakam içermelidir."),
+  title: z.string().optional(),
 });
 
 export default function NewPersonalAccount() {
+  const { setMembers, setCurrentMember } = useMember();
   const currentUser = useSession()?.session?.user?.sub;
   const userName = useSession()?.session?.user?.userName || "";
   const [isVerifying, setIsVerifying] = useState(false);
@@ -63,13 +79,13 @@ export default function NewPersonalAccount() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       surname: "",
       email: "",
       idType: "NONE",
       identifier: "",
-      tel: "",
       mobile: "",
       annualIncome: "0",
       title: "",
@@ -95,11 +111,11 @@ export default function NewPersonalAccount() {
         name: values.name,
         surname: values.surname,
         title: values.title,
-        tel: values.tel,
+        tel: "", // Set tel as empty string
         mail: values.email,
         annualIncome: parseInt(values.annualIncome),
         mobile: values.mobile,
-        isValidated: true,
+        isValidated: isVerified, // Change this line to use the isVerified state
       };
 
       const memberResult = await postApiMember({ requestBody });
@@ -110,25 +126,27 @@ export default function NewPersonalAccount() {
             surname: values.surname,
             userName: userName,
           },
-        }).then((result) => {
-          toast({
-            title: result.message,
-            description: "Your profile has been updated successfully.",
-            variant: "default",
-          });
         });
         await postUserMembersApi({
           requestBody: {
             memberId: memberResult.data.memberID || "",
             userId: currentUser || "",
           },
-        }).then((result) => {
-          toast({
-            title: result.message,
-            description: "Your user account has been updated successfully.",
-            variant: "default",
-          });
         });
+        const memberResponse = await getApiMemberApi();
+        if (memberResponse.type !== "success") {
+          return;
+        }
+        const memberList = memberResponse.data.items || [];
+        const memberIndex = memberList.findIndex(
+          (x) => x?.id === memberResult.data.memberID,
+        );
+
+        if (memberList.length == 0 || memberIndex == -1) {
+          return;
+        }
+        setMembers(memberResponse.data.items || []);
+        setCurrentMember(memberList[memberIndex]);
       }
 
       if (memberResult.type === "success") {
@@ -138,39 +156,41 @@ export default function NewPersonalAccount() {
           variant: "default",
         });
       } else {
-        // Try to parse as JSON, if fails, use the message as is
         try {
-          if (memberResult.message) {
-            const errorMessages = JSON.parse(memberResult.message);
-            // Only set errors if they exist in the parsed response
-            if (errorMessages.identifier)
+          const errorMessage = memberResult.message || "";
+          // First try to parse as JSON
+          try {
+            const errorMessages = JSON.parse(errorMessage);
+            Object.keys(errorMessages).forEach((key) => {
+              if (key in form.getValues()) {
+                form.setError(key as keyof z.infer<typeof formSchema>, {
+                  message: errorMessages[key],
+                });
+              }
+            });
+          } catch {
+            // If not JSON, check if it's a simple string message
+            if (errorMessage.toLowerCase().includes("identifier")) {
               form.setError("identifier", {
-                message: errorMessages.identifier,
+                message: errorMessage,
               });
-            if (errorMessages.name)
-              form.setError("name", { message: errorMessages.name });
-            if (errorMessages.surname)
-              form.setError("surname", { message: errorMessages.surname });
-            if (errorMessages.tel)
-              form.setError("tel", { message: errorMessages.tel });
-            if (errorMessages.email)
-              form.setError("email", { message: errorMessages.email });
-            if (errorMessages.annualIncome)
-              form.setError("annualIncome", {
-                message: errorMessages.annualIncome,
+            } else {
+              // If we can't determine the specific field, show a toast
+              toast({
+                title: "Error",
+                description: errorMessage,
+                variant: "destructive",
               });
-            if (errorMessages.mobile)
-              form.setError("mobile", { message: errorMessages.mobile });
+            }
           }
-        } catch (error) {
-          // If parsing fails, just show the raw message
+        } catch (errorMessage) {
           toast({
             title: "Error",
-            description: memberResult.message || "An error occurred",
+            description: String(errorMessage),
             variant: "destructive",
           });
-          return error;
         }
+        return;
       }
     } catch (error) {
       console.error("Error creating personal account:", error);
@@ -188,7 +208,7 @@ export default function NewPersonalAccount() {
     // Simulate verification process
     await new Promise((resolve) => setTimeout(resolve, 3000));
     setIsVerifying(false);
-    setIsVerified(true);
+    setIsVerified(true); // This will now control both the UI state and the isValidated value in the request
   };
 
   return (
@@ -308,12 +328,16 @@ export default function NewPersonalAccount() {
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="tel"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Telephone</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="+12345678901" />
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="Enter email"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -334,19 +358,7 @@ export default function NewPersonalAccount() {
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="email" placeholder="Enter email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name="annualIncome"
@@ -369,14 +381,16 @@ export default function NewPersonalAccount() {
             <Button
               className="w-full"
               type="submit"
-              disabled={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting || !isVerified}
             >
               {form.formState.isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
               {form.formState.isSubmitting
                 ? "Submitting..."
-                : "Create Personal Account"}
+                : !isVerified
+                  ? "E-Devlet Verification Required"
+                  : "Create Personal Account"}
             </Button>
           </CardFooter>
         </form>
