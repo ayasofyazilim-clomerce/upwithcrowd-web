@@ -6,11 +6,13 @@ export type MemberContent = {
   currentMember: Member | null;
   members?: Member[];
   setCurrentMember: (c: Member) => void;
+  setMembers: (m: Member[]) => void;
 };
 export const MemberContext = createContext<MemberContent>({
   currentMember: null,
   members: [],
   setCurrentMember: () => {},
+  setMembers: () => {},
 });
 export const useMember = () => useContext(MemberContext);
 
@@ -33,15 +35,24 @@ export const MemberProvider = ({
     );
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
+  const [memberList, setMembers] = useState<Member[] | undefined>(members);
   const saveMember = (member: Member) => {
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem("current_member", JSON.stringify(member));
     }
     setCurrentMember(member);
   };
+  const saveMembers = (members: Member[]) => {
+    setMembers(members);
+  };
   return (
     <MemberContext.Provider
-      value={{ currentMember: member, members, setCurrentMember: saveMember }}
+      value={{
+        currentMember: member,
+        members: memberList,
+        setCurrentMember: saveMember,
+        setMembers: saveMembers,
+      }}
     >
       {children}
     </MemberContext.Provider>

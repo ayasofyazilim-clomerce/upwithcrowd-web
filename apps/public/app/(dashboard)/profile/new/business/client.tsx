@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Card,
   CardContent,
@@ -10,152 +13,85 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { postApiMember } from "@/actions/upwithcrowd/member/post-action";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { UpwithCrowd_Members_SaveMemberDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { postUserMembersApi } from "@/actions/upwithcrowd/user-members/post-action";
+import { useSession } from "@repo/utils/auth";
 import {
-  UpwithCrowd_Members_IdType,
-  UpwithCrowd_Members_SaveMemberDto,
-  UpwithCrowd_Members_Type,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const formSchema = z.object({
+  identifier: z
+    .string()
+    .length(10, "VKN must be exactly 10 digits")
+    .regex(/^[0-9]+$/, "VKN must contain only numbers"),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .regex(/^[a-zA-Z0-9*\s&,.'\-p{L}]{1,600}$/, "Invalid title format"),
+  tel: z
+    .string()
+    .regex(/^([+]\d{1,2})(\d{10})$/, "Invalid telephone format")
+    .optional()
+    .or(z.literal("")),
+  mail: z.string().email("Invalid email address"),
+  annualIncome: z
+    .string()
+    .regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
+});
 
 export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [formData, setFormData] = useState({
-    type: "Organization" as UpwithCrowd_Members_Type, // Set default value to "Organization"
-    idType: "NONE" as UpwithCrowd_Members_IdType, // Set default value a
-    identifier: "",
-    name: "",
-    surname: "",
-    title: "",
-    tel: "",
-    mail: "",
-    annualIncome: 0,
-    mobile: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showTitle, setShowTitle] = useState(false);
-  const [showNameSurname, setShowNameSurname] = useState(true); // Yeni state
+  const currentUser = useSession()?.session?.user?.sub;
   const { toast } = useToast();
 
-  const handleChange = (
-    e:
-      | ChangeEvent<HTMLInputElement>
-      | { target: { name: string; value: string } },
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => {
-      const updatedFormData = { ...prevFormData, [name]: value };
-      // Set default values for name and surname when idType is VKN
-      if (name === "idType" && value === "VKN") {
-        updatedFormData.name = "";
-        updatedFormData.surname = "";
-      }
-      return updatedFormData;
-    });
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
-    }
-    // Show or hide title field based on idType
-    if (name === "idType") {
-      setShowTitle(value === "VKN");
-      setShowNameSurname(value !== "VKN");
-    }
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    mode: "onChange",
+    defaultValues: {
+      identifier: "",
+      title: "",
+      tel: "",
+      mail: "",
+      annualIncome: "0",
+    },
+  });
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    if (
-      formData.idType === "TCKN" &&
-      !/^[0-9]{11}$/.test(formData.identifier)
-    ) {
-      newErrors.identifier = "Identifier must be 11 digits for TCKN";
-    } else if (
-      formData.idType === "VKN" &&
-      !/^[0-9]{10}$/.test(formData.identifier)
-    ) {
-      newErrors.identifier = "Identifier must be 10 digits for VKN";
-    } else if (!/^[0-9]{8,11}$/.test(formData.identifier)) {
-      newErrors.identifier = "Identifier must be 8-11 digits";
-    }
-    if (formData.idType === "TCKN") {
-      if (!formData.name) {
-        newErrors.name = "Name is required";
-      } else if (!/^[a-zA-Z*\s,.'\-p{L}]{1,600}$/.test(formData.name)) {
-        newErrors.name = "Invalid name format";
-      }
-      if (!formData.surname) {
-        newErrors.surname = "Surname is required";
-      } else if (!/^[a-zA-Z*\s,.'\-p{L}]{1,600}$/.test(formData.surname)) {
-        newErrors.surname = "Invalid surname format";
-      }
-    }
-    if (showTitle && !formData.title) {
-      newErrors.title = "Title is required for VKN";
-    } else if (
-      formData.title &&
-      !/^[a-zA-Z0-9*\s&,.'\-p{L}]{1,600}$/.test(formData.title)
-    ) {
-      newErrors.title = "Invalid title format";
-    }
-    if (formData.tel && !/^([+]\d{1,2})(\d{10})$/.test(formData.tel)) {
-      newErrors.tel = "Invalid telephone format";
-    }
-    if (
-      !/^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/.test(formData.mail)
-    ) {
-      newErrors.mail = "Invalid email address";
-    }
-    if (
-      formData.annualIncome &&
-      !/^([1-9][0-9]{0,19})$/.test(formData.annualIncome.toString())
-    ) {
-      newErrors.annualIncome = "Invalid annual income";
-    }
-    if (formData.mobile && !/^([+]\d{1,2})(\d{10})$/.test(formData.mobile)) {
-      newErrors.mobile = "Invalid mobile number format";
-    }
-    setErrors(newErrors);
-    console.log("Validation errors:", newErrors); // Add this line to log validation errors
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      console.log("Form validation failed", errors);
-      return;
-    }
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
       const requestBody: UpwithCrowd_Members_SaveMemberDto = {
-        type: formData.type,
-        idType: formData.idType,
-        identifier: formData.identifier,
-        title: formData.title,
-        tel: formData.tel,
-        mail: formData.mail,
-        annualIncome: formData.annualIncome,
-        mobile: formData.mobile,
+        type: "Organization",
+        idType: "VKN",
+        identifier: values.identifier,
+        title: values.title,
+        tel: values.tel || "",
+        mail: values.mail,
+        annualIncome: parseInt(values.annualIncome),
+        mobile: "",
+        isValidated: true,
       };
-      if (formData.idType !== "VKN") {
-        requestBody.name = formData.name;
-        requestBody.surname = formData.surname;
-      }
+
       const memberResult = await postApiMember({ requestBody });
+
       if (memberResult.type === "success") {
+        await postUserMembersApi({
+          requestBody: {
+            memberId: memberResult.data.memberID || "",
+            userId: currentUser || "",
+          },
+        });
+
         toast({
           title: "Success",
           description: "Your business account has been created successfully.",
@@ -178,7 +114,7 @@ export default function NewBusinessAccount() {
       });
     }
     setIsSubmitting(false);
-  };
+  }
 
   return (
     <Card className="mx-auto w-full">
@@ -190,153 +126,94 @@ export default function NewBusinessAccount() {
           Enter your business account details below to get started.
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="grid gap-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="idType">ID Type</Label>
-              <Select
-                name="idType"
-                value={formData.idType}
-                onValueChange={(value) =>
-                  handleChange({ target: { name: "idType", value } })
-                }
-              >
-                <SelectTrigger id="idType">
-                  <SelectValue placeholder="Select ID type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="NONE">NONE</SelectItem>
-                  <SelectItem value="TCKN">TCKN</SelectItem>
-                  <SelectItem value="SCL">SCL</SelectItem>
-                  <SelectItem value="YKN">YKN</SelectItem>
-                  <SelectItem value="VKN">VKN</SelectItem>
-                  <SelectItem value="MKN">MKN</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="identifier">Identifier</Label>
-              <Input
-                id="identifier"
-                name="identifier"
-                value={formData.identifier}
-                onChange={handleChange}
-                placeholder="Enter identifier"
-              />
-              {errors.identifier && (
-                <p className="text-sm text-red-500">{errors.identifier}</p>
-              )}
-            </div>
-          </div>
-          {showNameSurname && (
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="grid gap-6">
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter name"
-                />
-                {errors.name && (
-                  <p className="text-sm text-red-500">{errors.name}</p>
+              <FormField
+                control={form.control}
+                name="identifier"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>VKN (Tax Number)</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Enter your 10-digit Tax Number"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="surname">Surname</Label>
-                <Input
-                  id="surname"
-                  name="surname"
-                  value={formData.surname}
-                  onChange={handleChange}
-                  placeholder="Enter surname"
-                />
-                {errors.surname && (
-                  <p className="text-sm text-red-500">{errors.surname}</p>
-                )}
-              </div>
-            </div>
-          )}
-          {showTitle && (
-            <div className="space-y-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
+              />
+
+              <FormField
+                control={form.control}
                 name="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Enter title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter title" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.title && (
-                <p className="text-sm text-red-500">{errors.title}</p>
-              )}
             </div>
-          )}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="tel">Telephone</Label>
-              <Input
-                id="tel"
-                name="tel"
-                value={formData.tel}
-                onChange={handleChange}
-                placeholder="+12345678901"
-              />
-              {errors.tel && (
-                <p className="text-sm text-red-500">{errors.tel}</p>
+
+            <FormField
+              control={form.control}
+              name="tel"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telephone (Optional)</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="+12345678901" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="mobile">Mobile</Label>
-              <Input
-                id="mobile"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                placeholder="+12345678901"
-              />
-              {errors.mobile && (
-                <p className="text-sm text-red-500">{errors.mobile}</p>
-              )}
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="mail">Email</Label>
-            <Input
-              id="mail"
+            />
+
+            <FormField
+              control={form.control}
               name="mail"
-              type="email"
-              value={formData.mail}
-              onChange={handleChange}
-              placeholder="Enter email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="email" placeholder="Enter email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.mail && (
-              <p className="text-sm text-red-500">{errors.mail}</p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="annualIncome">Annual Income</Label>
-            <Input
-              id="annualIncome"
+
+            <FormField
+              control={form.control}
               name="annualIncome"
-              value={formData.annualIncome}
-              onChange={handleChange}
-              placeholder="Enter annual income"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Annual Income</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter annual income" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.annualIncome && (
-              <p className="text-sm text-red-500">{errors.annualIncome}</p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button className="w-full" type="submit" disabled={isSubmitting}>
-            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isSubmitting ? "Submitting..." : "Create Business Account"}
-          </Button>
-        </CardFooter>
-      </form>
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              {isSubmitting ? "Submitting..." : "Create Business Account"}
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
       <Toaster />
     </Card>
   );

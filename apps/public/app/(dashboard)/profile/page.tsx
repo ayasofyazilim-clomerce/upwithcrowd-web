@@ -40,7 +40,8 @@ export default function Page() {
   const { members } = useMember();
 
   const currentUser = session?.user;
-  console.log(currentUser);
+  const currentMember = members?.[0];
+
   const [profileImage, setProfileImage] = useState(userData.profileImage);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -90,7 +91,7 @@ export default function Page() {
                 </div>
               </div>
               <h2 className="mb-1 text-2xl font-bold">
-                {currentUser?.name || "Your Name"}
+                {currentMember?.name || "Your Name"} {currentMember?.surname}
               </h2>
               <p className="text-muted-foreground mb-4">
                 Your personal account
@@ -108,29 +109,35 @@ export default function Page() {
             <div className="space-y-4 pr-2">
               {typeof members !== "undefined" &&
                 members.length > 0 &&
-                members.map((membership) => (
-                  <Card
-                    key={membership.id}
-                    className="hover:bg-muted cursor-pointer transition-colors"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="mb-2 font-semibold">
-                            {membership.name} {membership.surname}
-                          </h3>
-                          <p className="text-muted-foreground text-sm">
-                            {membership.mail}
-                          </p>
-                          <p className="text-muted-foreground text-sm">
-                            {membership.type}
-                          </p>
+                members
+                  .filter((member) =>
+                    currentMember?.type === "Individual"
+                      ? member.type !== "Individual"
+                      : true,
+                  )
+                  .map((membership) => (
+                    <Card
+                      key={membership.id}
+                      className="hover:bg-muted cursor-pointer transition-colors"
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="mb-2 font-semibold">
+                              {membership.name} {membership.surname}
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                              {membership.mail}
+                            </p>
+                            <p className="text-muted-foreground text-sm">
+                              {membership.type}
+                            </p>
+                          </div>
+                          <ChevronRight className="text-muted-foreground h-5 w-5" />
                         </div>
-                        <ChevronRight className="text-muted-foreground h-5 w-5" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  ))}
             </div>
           </ScrollArea>
           <Card className="hover:bg-muted cursor-pointer border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
