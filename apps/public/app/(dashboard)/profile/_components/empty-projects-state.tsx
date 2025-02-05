@@ -21,7 +21,7 @@ export default function EmptyProjectsState() {
         </p>
 
         <Button asChild size="lg" className="gap-2">
-          <Link href="/projects/new/basics">
+          <Link href="/projects/new">
             <PlusCircle className="h-5 w-5" />
             Create New Project
           </Link>

@@ -19,7 +19,7 @@ export default async function Page() {
         projectsResponse.data.items.length > 0 && (
           <Link
             className="mb-4 flex w-full items-center justify-end px-6"
-            href={"/projects/new/basics"}
+            href={"/projects/new"}
           >
             <Button size={"sm"}>
               Create New Project <Plus className="ml-2 h-5 w-5" />
