@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {ScrollArea} from "@/components/ui/scroll-area";
 import {
   Bell,
   BellDot,
@@ -20,13 +20,13 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import {useState} from "react";
 
-import { handleSignOut } from "@/app/(auth)/login/action";
-import { useMember } from "@/app/providers/member";
+import {handleSignOut} from "@/app/(auth)/login/action";
+import {useMember} from "@/app/providers/member";
 
 export default function Page() {
-  const { currentMember, members, setCurrentMember } = useMember();
+  const {currentMember, members, setCurrentMember} = useMember();
   const [isCopied, setIsCopied] = useState(false);
   if (currentMember === null) return null;
 
@@ -48,19 +48,11 @@ export default function Page() {
             <CardContent className="flex flex-col items-center p-8">
               <div className="relative mb-6">
                 <div className="relative h-24 w-24">
-                  <Image
-                    src="/placeholder.svg"
-                    alt="Profile"
-                    fill
-                    className="rounded-full bg-[#e5e5e5] object-cover"
-                  />
+                  <Image src="/placeholder.svg" alt="Profile" fill className="rounded-full bg-[#e5e5e5] object-cover" />
                 </div>
                 <div
                   className="bg-primary/20 absolute bottom-0 right-0 cursor-pointer rounded-full p-1.5"
-                  onClick={() =>
-                    document.getElementById("profileImage")?.click()
-                  }
-                >
+                  onClick={() => document.getElementById("profileImage")?.click()}>
                   <Camera className="text-primary h-4 w-4" />
                 </div>
               </div>
@@ -70,9 +62,7 @@ export default function Page() {
                   : `${currentMember?.name || "Your Name"} ${currentMember?.surname}`}
               </h2>
               <p className="text-muted-foreground mb-4">
-                {currentMember?.type === "Organization"
-                  ? "Your business account"
-                  : "Your personal account"}
+                {currentMember?.type === "Organization" ? "Your business account" : "Your personal account"}
               </p>
             </CardContent>
           </Card>
@@ -86,8 +76,7 @@ export default function Page() {
                     <Card
                       key={membership.id}
                       className="hover:bg-muted cursor-pointer transition-colors"
-                      onClick={() => setCurrentMember(membership)}
-                    >
+                      onClick={() => setCurrentMember(membership)}>
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
@@ -96,12 +85,8 @@ export default function Page() {
                                 ? membership.title
                                 : `${membership.name} ${membership.surname}`}
                             </h3>
-                            <p className="text-muted-foreground text-sm">
-                              {membership.mail}
-                            </p>
-                            <p className="text-muted-foreground text-sm">
-                              {membership.type}
-                            </p>
+                            <p className="text-muted-foreground text-sm">{membership.mail}</p>
+                            <p className="text-muted-foreground text-sm">{membership.type}</p>
                           </div>
                           <ChevronRight className="text-muted-foreground h-5 w-5" />
                         </div>
@@ -115,9 +100,7 @@ export default function Page() {
               <CardContent className="flex items-center justify-between p-6">
                 <div className="flex items-center gap-4">
                   <BriefcaseBusiness className="text-primary h-8 w-8" />
-                  <span className="font-semibold">
-                    Add New Business Account
-                  </span>
+                  <span className="font-semibold">Add New Business Account</span>
                 </div>
                 <ChevronRight className="text-muted-foreground h-5 w-5" />
               </CardContent>
@@ -126,19 +109,14 @@ export default function Page() {
           <div className="text-muted-foreground flex w-full items-center justify-center gap-2 text-center">
             <p>Membership Id: {currentMember?.id}</p>
             <div className="cursor-pointer" onClick={handleCopy}>
-              {isCopied ? (
-                <CopyCheck className="h-5 w-5 " />
-              ) : (
-                <Copy className="h-5 w-5" />
-              )}
+              {isCopied ? <CopyCheck className="h-5 w-5 " /> : <Copy className="h-5 w-5" />}
             </div>
           </div>
           <div className="flex w-full items-center justify-center">
             <Button
               variant="outline"
               className="flex w-1/3 items-center justify-center rounded-full text-red-500 hover:text-red-700 "
-              onClick={() => handleSignOut()}
-            >
+              onClick={() => handleSignOut()}>
               <LogOut className="mr-2 h-4 w-4" />
               Sign out
             </Button>
@@ -152,10 +130,7 @@ export default function Page() {
                 <div>
                   <h2 className="mb-4 text-xl font-semibold">Your account</h2>
                   <div className="space-y-2">
-                    <Link
-                      href="/inbox"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                    <Link href="/inbox" className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <div className="bg-muted rounded-full p-2">
@@ -167,10 +142,7 @@ export default function Page() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    <Link
-                      href="/help"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                    <Link href="/help" className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <HelpCircle className="h-5 w-5" />
@@ -179,10 +151,7 @@ export default function Page() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    <Link
-                      href="/documents"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                    <Link href="/documents" className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <FileText className="h-5 w-5" />
@@ -199,8 +168,7 @@ export default function Page() {
                   <div className="space-y-2">
                     <Link
                       href="/settings/security"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Shield className="h-5 w-5" />
@@ -216,8 +184,7 @@ export default function Page() {
                     </Link>
                     <Link
                       href="/settings/notifications"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <BellDot className="h-5 w-5" />
@@ -225,8 +192,7 @@ export default function Page() {
                         <div className="flex flex-col">
                           <span>Display and notifications</span>
                           <span className="text-muted-foreground text-sm">
-                            Customise your app display and choose how you get
-                            updates.
+                            Customise your app display and choose how you get updates.
                           </span>
                         </div>
                       </div>
@@ -234,8 +200,7 @@ export default function Page() {
                     </Link>
                     <Link
                       href="/settings/integrations"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Link2 className="h-5 w-5" />
@@ -251,8 +216,7 @@ export default function Page() {
                     </Link>
                     <Link
                       href="/settings/payment"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                    >
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Building2 className="h-5 w-5" />
@@ -260,8 +224,7 @@ export default function Page() {
                         <div className="flex flex-col">
                           <span>Payment methods</span>
                           <span className="text-muted-foreground text-sm">
-                            Manage saved cards and bank accounts that are linked
-                            to this account.
+                            Manage saved cards and bank accounts that are linked to this account.
                           </span>
                         </div>
                       </div>

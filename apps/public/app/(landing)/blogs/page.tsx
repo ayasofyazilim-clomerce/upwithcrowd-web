@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import {Card, CardContent} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
 import LandingHero from "@/components/landing-hero";
 
 // Mock data for blog posts
@@ -9,8 +9,7 @@ const blogPosts = [
   {
     slug: "10-tips-for-successful-crowdfunding",
     title: "10 Tips for Successful Crowdfunding",
-    excerpt:
-      "Learn the secrets to running a successful crowdfunding campaign and bringing your ideas to life.",
+    excerpt: "Learn the secrets to running a successful crowdfunding campaign and bringing your ideas to life.",
     image: "/placeholder.svg",
     date: "2023-06-01",
     category: "Crowdfunding",
@@ -19,8 +18,7 @@ const blogPosts = [
   {
     slug: "the-future-of-crowdfunding",
     title: "The Future of Crowdfunding",
-    excerpt:
-      "Explore emerging trends and technologies shaping the future of crowdfunding and online fundraising.",
+    excerpt: "Explore emerging trends and technologies shaping the future of crowdfunding and online fundraising.",
     image: "/placeholder.svg",
     date: "2023-05-15",
     category: "Industry Insights",
@@ -39,8 +37,7 @@ const blogPosts = [
   {
     slug: "crowdfunding-for-nonprofits",
     title: "Crowdfunding for Nonprofits: A Complete Guide",
-    excerpt:
-      "Learn how nonprofits can effectively use crowdfunding to support their causes and expand their reach.",
+    excerpt: "Learn how nonprofits can effectively use crowdfunding to support their causes and expand their reach.",
     image: "/placeholder.svg",
     date: "2023-04-20",
     category: "Nonprofit",
@@ -70,8 +67,7 @@ const blogPosts = [
 
 export default function Page() {
   const title = "UPwithCrowd Blog";
-  const description =
-    "Insights, tips, and stories from the world of crowdfunding";
+  const description = "Insights, tips, and stories from the world of crowdfunding";
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
@@ -91,15 +87,11 @@ export default function Page() {
                 <CardContent className="p-6">
                   <div className="mb-2 flex items-center justify-between">
                     <Badge>{post.category}</Badge>
-                    <span className="text-muted-foreground text-sm">
-                      {post.readTime}
-                    </span>
+                    <span className="text-muted-foreground text-sm">{post.readTime}</span>
                   </div>
                   <h2 className="mb-2 text-xl font-semibold">{post.title}</h2>
                   <p className="text-muted-foreground mb-4">{post.excerpt}</p>
-                  <p className="text-muted-foreground text-sm">
-                    {new Date(post.date).toLocaleDateString()}
-                  </p>
+                  <p className="text-muted-foreground text-sm">{new Date(post.date).toLocaleDateString()}</p>
                 </CardContent>
               </Card>
             </Link>

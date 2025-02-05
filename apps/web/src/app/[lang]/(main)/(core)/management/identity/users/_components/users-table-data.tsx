@@ -3,34 +3,23 @@ import type {
   Volo_Abp_Identity_IdentityUserDto,
   Volo_Abp_Identity_OrganizationUnitLookupDto,
 } from "@ayasofyazilim/saas/IdentityService";
-import { $Volo_Abp_Identity_IdentityUserDto } from "@ayasofyazilim/saas/IdentityService";
+import {$Volo_Abp_Identity_IdentityUserDto} from "@ayasofyazilim/saas/IdentityService";
 import type {
   TanstackTableColumnLink,
   TanstackTableCreationProps,
   TanstackTableRowActionsType,
   TanstackTableTableActionsType,
 } from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
-import { tanstackTableCreateColumnsByRowData } from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
-import {
-  CheckCircle,
-  Eye,
-  FolderCheck,
-  Key,
-  Plus,
-  Settings,
-  ShieldCheck,
-  XCircle,
-} from "lucide-react";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import type { IdentityServiceResource } from "src/language-data/core/IdentityService";
+import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
+import {CheckCircle, Eye, FolderCheck, Key, Plus, Settings, ShieldCheck, XCircle} from "lucide-react";
+import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
 import isActionGranted from "src/utils/page-policy/action-policy";
-import type { Policy } from "src/utils/page-policy/utils";
+import type {Policy} from "src/utils/page-policy/utils";
 
 type UsersTable = TanstackTableCreationProps<Volo_Abp_Identity_IdentityUserDto>;
 
-const links: Partial<
-  Record<keyof Volo_Abp_Identity_IdentityUserDto, TanstackTableColumnLink>
-> = {};
+const links: Partial<Record<keyof Volo_Abp_Identity_IdentityUserDto, TanstackTableColumnLink>> = {};
 function usersTableActions(
   languageData: IdentityServiceResource,
   router: AppRouterInstance,
@@ -55,12 +44,9 @@ function usersRowActions(
   router: AppRouterInstance,
   grantedPolicies: Record<Policy, boolean>,
 ) {
-  const actions: TanstackTableRowActionsType<Volo_Abp_Identity_IdentityUserDto>[] =
-    [];
+  const actions: TanstackTableRowActionsType<Volo_Abp_Identity_IdentityUserDto>[] = [];
 
-  if (
-    isActionGranted(["AbpIdentity.Users.ManagePermissions"], grantedPolicies)
-  ) {
+  if (isActionGranted(["AbpIdentity.Users.ManagePermissions"], grantedPolicies)) {
     actions.push({
       type: "simple",
       actionLocation: "row",
@@ -142,55 +128,53 @@ const usersColumns = (
       iconClassName: "text-red-700",
     },
   ];
-  return tanstackTableCreateColumnsByRowData<Volo_Abp_Identity_IdentityUserDto>(
-    {
-      rows: $Volo_Abp_Identity_IdentityUserDto.properties,
-      languageData: {
-        languageData,
-        constantKey: "Form.User",
-      },
-      config: {
-        locale,
-      },
-      links,
-      badges: {
-        userName: {
-          values: [
-            {
-              position: "after",
-              label: languageData["Form.User.emailConfirmed"],
-              badgeClassName: "text-green-500 bg-green-100 border-green-500",
-              conditions: [
-                {
-                  when: (value) => value === true,
-                  conditionAccessorKey: "emailConfirmed",
-                },
-              ],
-            },
-            {
-              position: "after",
-              label: languageData["Form.User.twoFactorEnabled"],
-              badgeClassName: "text-green-500 bg-green-100 border-green-500",
-              conditions: [
-                {
-                  when: (value) => value === true,
-                  conditionAccessorKey: "twoFactorEnabled",
-                },
-              ],
-            },
-          ],
-        },
-      },
-      faceted: {
-        isActive: {
-          options: facetedStyles,
-        },
-        lockoutEnabled: {
-          options: facetedStyles,
-        },
+  return tanstackTableCreateColumnsByRowData<Volo_Abp_Identity_IdentityUserDto>({
+    rows: $Volo_Abp_Identity_IdentityUserDto.properties,
+    languageData: {
+      languageData,
+      constantKey: "Form.User",
+    },
+    config: {
+      locale,
+    },
+    links,
+    badges: {
+      userName: {
+        values: [
+          {
+            position: "after",
+            label: languageData["Form.User.emailConfirmed"],
+            badgeClassName: "text-green-500 bg-green-100 border-green-500",
+            conditions: [
+              {
+                when: (value) => value === true,
+                conditionAccessorKey: "emailConfirmed",
+              },
+            ],
+          },
+          {
+            position: "after",
+            label: languageData["Form.User.twoFactorEnabled"],
+            badgeClassName: "text-green-500 bg-green-100 border-green-500",
+            conditions: [
+              {
+                when: (value) => value === true,
+                conditionAccessorKey: "twoFactorEnabled",
+              },
+            ],
+          },
+        ],
       },
     },
-  );
+    faceted: {
+      isActive: {
+        options: facetedStyles,
+      },
+      lockoutEnabled: {
+        options: facetedStyles,
+      },
+    },
+  });
 };
 
 function usersTable(
@@ -243,13 +227,7 @@ function usersTable(
       "lastModificationTime",
     ],
     filters: {
-      textFilters: [
-        "userName",
-        "name",
-        "surname",
-        "emailAddress",
-        "phoneNumber",
-      ],
+      textFilters: ["userName", "name", "surname", "emailAddress", "phoneNumber"],
       dateFilters: [
         {
           label: languageData["Form.User.creationTime"],

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -9,32 +9,21 @@ export default function HeroSection() {
         backgroundImage: "url('/banner.png')",
         backgroundSize: "100%",
         backgroundPosition: "center",
-      }}
-    >
+      }}>
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-between md:h-full md:flex-row">
         <div className="mb-8 max-w-2xl md:mb-0">
-          <h1 className="mb-4 text-3xl font-bold md:text-6xl">
-            Fundraising for the people and cause you care
-          </h1>
+          <h1 className="mb-4 text-3xl font-bold md:text-6xl">Fundraising for the people and cause you care</h1>
           <p className="text-muted-foreground text-md mb-6 tracking-wide md:text-lg">
-            We provide a trusted donation channel for peoples of worldwide to
-            support people and organizers. Crowdfunding is a way to raise money
-            for an individual or organization by collecting donations through
+            We provide a trusted donation channel for peoples of worldwide to support people and organizers.
+            Crowdfunding is a way to raise money for an individual or organization by collecting donations through
             strangers and more.
           </p>
           <Button size="lg">Explore Projects</Button>
         </div>
         <div
           className="ring-primary/30 relative flex aspect-square
-         w-full max-w-lg items-center justify-center rounded-[25px] rounded-tl-[100px] bg-white ring-4"
-        >
-          <Image
-            src="/upwc.png"
-            alt="Crowdfunding illustration"
-            width={400}
-            height={400}
-            className="object-cover"
-          />
+         w-full max-w-lg items-center justify-center rounded-[25px] rounded-tl-[100px] bg-white ring-4">
+          <Image src="/upwc.png" alt="Crowdfunding illustration" width={400} height={400} className="object-cover" />
         </div>
       </div>
     </section>

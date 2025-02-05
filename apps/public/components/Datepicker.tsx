@@ -1,18 +1,14 @@
 "use client";
 // import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import {Calendar as CalendarIcon} from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar, CalendarProps } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { forwardRef, useState } from "react";
-import { useMediaQuery } from "@/components/ui/useMediaQuery";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
+import {Calendar, CalendarProps} from "@/components/ui/calendar";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {forwardRef, useState} from "react";
+import {useMediaQuery} from "@/components/ui/useMediaQuery";
+import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
 
 export const DatePicker = forwardRef<
   HTMLDivElement,
@@ -25,10 +21,7 @@ export const DatePicker = forwardRef<
     showIcon?: boolean;
     id?: string;
   }
->(function DatePickerCmp(
-  { date, onChange, disabled, dateRange, className, showIcon, id },
-  ref,
-) {
+>(function DatePickerCmp({date, onChange, disabled, dateRange, className, showIcon, id}, ref) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [open, setOpen] = useState(false);
 
@@ -39,12 +32,7 @@ export const DatePicker = forwardRef<
           disabled={disabled}
           variant={"outline"}
           size="icon"
-          className={cn(
-            "w-full text-left font-normal",
-            !date && "text-muted-foreground",
-            className,
-          )}
-        >
+          className={cn("w-full text-left font-normal", !date && "text-muted-foreground", className)}>
           {showIcon && <CalendarIcon className="h-4 w-4" />}
           {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
         </Button>
@@ -72,12 +60,7 @@ export const DatePicker = forwardRef<
           disabled={disabled}
           variant={"outline"}
           size="icon"
-          className={cn(
-            "w-full text-left font-normal",
-            !date && "text-muted-foreground",
-            className,
-          )}
-        >
+          className={cn("w-full text-left font-normal", !date && "text-muted-foreground", className)}>
           {showIcon && <CalendarIcon className="h-4 w-4" />}
           {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
         </Button>

@@ -1,24 +1,10 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  ChevronRight,
-  Rocket,
-  Coins,
-  BookOpen,
-  Users,
-  Layout,
-  CreditCard,
-} from "lucide-react";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {ChevronRight, Rocket, Coins, BookOpen, Users, Layout, CreditCard} from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import {useState} from "react";
 
 export default function ProjectOnboarding() {
   const [activeStep, setActiveStep] = useState<string | null>(null);
@@ -71,8 +57,7 @@ export default function ProjectOnboarding() {
       icon: <Users className="h-6 w-6" />,
       title: "People",
       description: "Project team",
-      content:
-        "Introduce yourself and your team. A complete profile helps build trust with potential supporters.",
+      content: "Introduce yourself and your team. A complete profile helps build trust with potential supporters.",
       tips: [
         "Complete your personal profile",
         "Create a custom profile URL",
@@ -115,8 +100,7 @@ export default function ProjectOnboarding() {
       <div className="mb-8 max-w-2xl">
         <h1 className="mb-2 text-3xl font-bold">Start Creating Your Project</h1>
         <p className="text-muted-foreground">
-          We'll guide you through creating a successful project. You can find
-          important points and tips at each step.
+          We'll guide you through creating a successful project. You can find important points and tips at each step.
         </p>
       </div>
 
@@ -130,27 +114,23 @@ export default function ProjectOnboarding() {
             <div
               className={`border-background absolute left-6 z-10 h-5 w-5 rounded-full border-4 transition-all duration-300 ease-in-out
                 ${activeStep === step.id ? "bg-primary scale-125" : "bg-muted"}`}
-              style={{ top: "24px" }}
+              style={{top: "24px"}}
             />
 
             <Card
               className="ml-16 transition-all duration-300 ease-in-out hover:shadow-lg"
               onMouseEnter={() => setActiveStep(step.id)}
-              onMouseLeave={() => setActiveStep(null)}
-            >
+              onMouseLeave={() => setActiveStep(null)}>
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className={`rounded-full p-2 ${activeStep === step.id ? "bg-primary text-primary-foreground" : "bg-muted"} transition-colors duration-300`}
-                  >
+                    className={`rounded-full p-2 ${activeStep === step.id ? "bg-primary text-primary-foreground" : "bg-muted"} transition-colors duration-300`}>
                     {step.icon}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <CardTitle>{step.title}</CardTitle>
-                      <span className="text-muted-foreground text-sm">
-                        Step {index + 1}
-                      </span>
+                      <span className="text-muted-foreground text-sm">Step {index + 1}</span>
                     </div>
                     <CardDescription>{step.description}</CardDescription>
                   </div>
@@ -162,10 +142,7 @@ export default function ProjectOnboarding() {
                   <h4 className="mb-2 font-medium">Important Tips:</h4>
                   <ul className="space-y-2">
                     {step.tips.map((tip, i) => (
-                      <li
-                        key={i}
-                        className="text-muted-foreground flex items-center gap-2 text-sm"
-                      >
+                      <li key={i} className="text-muted-foreground flex items-center gap-2 text-sm">
                         <div className="bg-primary h-1 w-1 rounded-full" />
                         {tip}
                       </li>

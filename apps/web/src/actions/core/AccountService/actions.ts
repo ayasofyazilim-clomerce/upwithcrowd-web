@@ -4,13 +4,9 @@ import type {
   GetApiAccountSecurityLogsData,
   GetApiAccountSessionsData,
 } from "@ayasofyazilim/saas/AccountService";
-import { isApiError } from "@repo/utils/api";
-import { signIn } from "@repo/utils/auth/next-auth";
-import {
-  getAccountServiceClient,
-  structuredError,
-  structuredResponse,
-} from "src/lib";
+import {isApiError} from "@repo/utils/api";
+import {signIn} from "@repo/utils/auth/next-auth";
+import {getAccountServiceClient, structuredError, structuredResponse} from "src/lib";
 
 export async function signInServer({
   userIdentifier,
@@ -44,15 +40,7 @@ export async function signInServer({
     };
   }
 }
-export async function signUpServer({
-  userName,
-  email,
-  password,
-}: {
-  userName: string;
-  email: string;
-  password: string;
-}) {
+export async function signUpServer({userName, email, password}: {userName: string; email: string; password: string}) {
   try {
     const client = await getAccountServiceClient();
 
@@ -69,7 +57,7 @@ export async function signUpServer({
     };
   } catch (error: unknown) {
     if (isApiError(error)) {
-      const errorBody = error.body as { error: { message: string } };
+      const errorBody = error.body as {error: {message: string}};
       return {
         status: error.status,
         description: `SignUp server error ${error.statusText}: ${errorBody.error.message.split(",").join("\n")}`,
@@ -81,13 +69,7 @@ export async function signUpServer({
     };
   }
 }
-export async function sendPasswordResetCodeServer({
-  email,
-  tenant,
-}: {
-  email: string;
-  tenant: string;
-}) {
+export async function sendPasswordResetCodeServer({email, tenant}: {email: string; tenant: string}) {
   try {
     const client = await getAccountServiceClient({
       __tenant: tenant,
@@ -118,8 +100,7 @@ export async function sendPasswordResetCodeServer({
 export async function getGrantedPoliciesApi() {
   try {
     const client = await getAccountServiceClient();
-    const response =
-      await client.abpApplicationConfiguration.getApiAbpApplicationConfiguration();
+    const response = await client.abpApplicationConfiguration.getApiAbpApplicationConfiguration();
     const grantedPolicies = response.auth?.grantedPolicies;
     return grantedPolicies;
   } catch (error) {
@@ -164,15 +145,10 @@ export async function getPersonalInfomationApi() {
     return structuredError(error);
   }
 }
-export async function getApplicationConfigurationApi(
-  data: GetApiAbpApplicationConfigurationData,
-) {
+export async function getApplicationConfigurationApi(data: GetApiAbpApplicationConfigurationData) {
   try {
     const client = await getAccountServiceClient();
-    const dataResponse =
-      await client.abpApplicationConfiguration.getApiAbpApplicationConfiguration(
-        data,
-      );
+    const dataResponse = await client.abpApplicationConfiguration.getApiAbpApplicationConfiguration(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);

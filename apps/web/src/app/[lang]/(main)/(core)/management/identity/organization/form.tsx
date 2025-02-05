@@ -1,18 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: we need to fix this*/
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import DataTable from "@repo/ayasofyazilim-ui/molecules/tables";
-import type { Row, Table } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
-import type { Role, User } from "./action";
-import { fetchRoles, fetchUsers } from "./action";
+import type {Row, Table} from "@tanstack/react-table";
+import {useEffect, useState} from "react";
+import type {Role, User} from "./action";
+import {fetchRoles, fetchUsers} from "./action";
 
 interface SelectAllCheckboxProps<T> {
   table: Table<T>;
@@ -20,15 +14,9 @@ interface SelectAllCheckboxProps<T> {
   handleToggleAll: (_value: boolean, _rows: Row<T>[]) => void;
 }
 
-function SelectAllCheckbox<T>({
-  table,
-  selectedItems,
-  handleToggleAll,
-}: SelectAllCheckboxProps<T>) {
+function SelectAllCheckbox<T>({table, selectedItems, handleToggleAll}: SelectAllCheckboxProps<T>) {
   const rows = table.getRowModel().rows;
-  const isAllSelected = rows.every((row: Row<T>) =>
-    selectedItems.has((row.original as User | Role).id),
-  );
+  const isAllSelected = rows.every((row: Row<T>) => selectedItems.has((row.original as User | Role).id));
 
   return (
     <Checkbox
@@ -48,11 +36,7 @@ interface RowCheckboxProps<T> {
   handleToggleItem: (_id: string) => void;
 }
 
-function RowCheckbox<T>({
-  row,
-  selectedItems,
-  handleToggleItem,
-}: RowCheckboxProps<T>) {
+function RowCheckbox<T>({row, selectedItems, handleToggleItem}: RowCheckboxProps<T>) {
   const id = (row.original as User | Role).id;
 
   return (
@@ -89,19 +73,11 @@ const enhancedColumns = <T,>({
 }: EnchancedColumnsProps<T>) => [
   {
     id: "select",
-    header: ({ table }: { table: Table<any> }) => (
-      <SelectAllCheckbox<T>
-        handleToggleAll={handleToggleAll}
-        selectedItems={selectedItems}
-        table={table}
-      />
+    header: ({table}: {table: Table<any>}) => (
+      <SelectAllCheckbox<T> handleToggleAll={handleToggleAll} selectedItems={selectedItems} table={table} />
     ),
-    cell: ({ row }: { row: Row<T> }) => (
-      <RowCheckbox<T>
-        handleToggleItem={handleToggleItem}
-        row={row}
-        selectedItems={selectedItems}
-      />
+    cell: ({row}: {row: Row<T>}) => (
+      <RowCheckbox<T> handleToggleItem={handleToggleItem} row={row} selectedItems={selectedItems} />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -131,7 +107,7 @@ interface GenericModalProps<T> {
   checkboxColumnKey: keyof T;
 }
 
-export function GenericModal<T extends { id: string }>({
+export function GenericModal<T extends {id: string}>({
   isOpen,
   onClose,
   onSave,
@@ -149,9 +125,7 @@ export function GenericModal<T extends { id: string }>({
     if (isOpen) {
       const loadItems = async () => {
         const _items = await fetchItems();
-        const filteredItems = _items.filter(
-          (item) => !addedItems.some((addedItem) => addedItem.id === item.id),
-        );
+        const filteredItems = _items.filter((item) => !addedItems.some((addedItem) => addedItem.id === item.id));
         setItems(filteredItems);
         setSelectedItems(new Set(addedItems.map((item) => item.id)));
         setLoading(false);
@@ -207,11 +181,7 @@ export function GenericModal<T extends { id: string }>({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <DataTable
-          columnsData={{ type: "Custom", data: { columns: columnsData } }}
-          data={items}
-          isLoading={loading}
-        />
+        <DataTable columnsData={{type: "Custom", data: {columns: columnsData}}} data={items} isLoading={loading} />
         <DialogFooter>
           <Button onClick={onClose}>Cancel</Button>
           <Button onClick={handleSave}>Save</Button>
@@ -222,10 +192,7 @@ export function GenericModal<T extends { id: string }>({
 }
 
 export const UserModal: React.FC<
-  Omit<
-    GenericModalProps<User>,
-    "fetchItems" | "columns" | "filterBy" | "title" | "checkboxColumnKey"
-  >
+  Omit<GenericModalProps<User>, "fetchItems" | "columns" | "filterBy" | "title" | "checkboxColumnKey">
 > = (props) => (
   <GenericModal
     {...props}
@@ -246,10 +213,7 @@ export const UserModal: React.FC<
 );
 
 export const RoleModal: React.FC<
-  Omit<
-    GenericModalProps<Role>,
-    "fetchItems" | "columns" | "filterBy" | "title" | "checkboxColumnKey"
-  >
+  Omit<GenericModalProps<Role>, "fetchItems" | "columns" | "filterBy" | "title" | "checkboxColumnKey">
 > = (props) => (
   <GenericModal
     {...props}
@@ -273,13 +237,7 @@ interface ConfirmDialogProps {
   description: string;
 }
 
-export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  title,
-  description,
-}) => {
+export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({isOpen, onClose, onConfirm, title, description}) => {
   return (
     <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent>

@@ -1,12 +1,6 @@
 import Link from "next/link";
-import { Briefcase, User } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import {Briefcase, User} from "lucide-react";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default function ProfileTypeSwitch() {
   return (
@@ -18,9 +12,7 @@ export default function ProfileTypeSwitch() {
             <CardTitle className="text-gray-800 ">Business Account</CardTitle>
           </CardHeader>
           <CardContent className="p-2">
-            <CardDescription className="text-center text-gray-600">
-              Manage your business profile
-            </CardDescription>
+            <CardDescription className="text-center text-gray-600">Manage your business profile</CardDescription>
           </CardContent>
         </Card>
       </Link>
@@ -31,9 +23,7 @@ export default function ProfileTypeSwitch() {
             <CardTitle className="text-gray-800">Personal Account</CardTitle>
           </CardHeader>
           <CardContent className="p-2">
-            <CardDescription className="text-center text-gray-600">
-              Manage your personal profile
-            </CardDescription>
+            <CardDescription className="text-center text-gray-600">Manage your personal profile</CardDescription>
           </CardContent>
         </Card>
       </Link>

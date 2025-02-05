@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Clock, Users, Target } from "lucide-react";
+import {Clock, Users, Target} from "lucide-react";
 
 export default function DetailsSection() {
   return (
@@ -22,22 +22,17 @@ export default function DetailsSection() {
           />
         </div>
         <div className="space-y-8">
-          <h2 className="text-2xl font-bold md:text-5xl">
-            We are the Powerful, Free Fundraising Platform
-          </h2>
+          <h2 className="text-2xl font-bold md:text-5xl">We are the Powerful, Free Fundraising Platform</h2>
           <div className="text-muted-foreground space-y-4">
             <p>
-              Amet, consectetur adipiscing elit. Etiam eu turpis molestie,
-              dictum est a, mattis tellus. Sed dignissim, metus nec fringilla
-              accumsan, risus sem sollicitudin lacus, ut interdum tellus elit
-              sed risus. Maecenas eget condimentum velit, sit amet feugiat risus
-              sem sollicitudin lectus.
+              Amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim,
+              metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas
+              eget condimentum velit, sit amet feugiat risus sem sollicitudin lectus.
             </p>
             <p>
-              Consectetur adipiscing elit. Etiam eu turpis molestie, dictum est
-              a, mattis tellus. Sed dignissim, metus nec fringilla accumsan,
-              risus sem sollicitudin lacus, ut interdum tellus elit sed risus.
-              Maecenas eget condimentum.
+              Consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
+              nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget
+              condimentum.
             </p>
           </div>
           <div className="grid gap-8">

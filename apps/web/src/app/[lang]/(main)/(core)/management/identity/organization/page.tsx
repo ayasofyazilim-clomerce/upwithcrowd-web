@@ -1,40 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument -- TODO: we need to fix this*/
 "use client";
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { toast } from "@/components/ui/sonner";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import {Card, CardContent, CardHeader} from "@/components/ui/card";
+import {DropdownMenuItem} from "@/components/ui/dropdown-menu";
+import {toast} from "@/components/ui/sonner";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {
   $Volo_Abp_Identity_OrganizationUnitCreateDto,
   $Volo_Abp_Identity_OrganizationUnitUpdateDto,
 } from "@ayasofyazilim/saas/IdentityService";
 import Button from "@repo/ayasofyazilim-ui/molecules/button";
-import type { TableActionCustomDialog } from "@repo/ayasofyazilim-ui/molecules/dialog";
+import type {TableActionCustomDialog} from "@repo/ayasofyazilim-ui/molecules/dialog";
 import AutoformDialog from "@repo/ayasofyazilim-ui/molecules/dialog";
-import { TreeView } from "@repo/ayasofyazilim-ui/molecules/tree-view";
-import { SectionNavbarBase } from "@repo/ayasofyazilim-ui/templates/section-layout";
-import { Trash2 } from "lucide-react";
-import type { TreeViewElement } from "node_modules/@repo/ayasofyazilim-ui/src/molecules/tree-view/tree-view-api";
-import { useCallback, useEffect, useState } from "react";
-import { z } from "zod";
-import { noop } from "@tanstack/react-table";
-import { createZodObject } from "@repo/ayasofyazilim-ui/lib/create-zod-object";
-import { getBaseLink } from "src/utils";
-import type { OrganizationUnit, Role, User } from "./action";
-import {
-  fetchOrganizationUnits,
-  fetchRolesForUnit,
-  fetchUsersForUnit,
-} from "./action";
-import { ConfirmDialog, RoleModal, UserModal } from "./form";
+import {TreeView} from "@repo/ayasofyazilim-ui/molecules/tree-view";
+import {SectionNavbarBase} from "@repo/ayasofyazilim-ui/templates/section-layout";
+import {Trash2} from "lucide-react";
+import type {TreeViewElement} from "node_modules/@repo/ayasofyazilim-ui/src/molecules/tree-view/tree-view-api";
+import {useCallback, useEffect, useState} from "react";
+import {z} from "zod";
+import {noop} from "@tanstack/react-table";
+import {createZodObject} from "@repo/ayasofyazilim-ui/lib/create-zod-object";
+import {getBaseLink} from "src/utils";
+import type {OrganizationUnit, Role, User} from "./action";
+import {fetchOrganizationUnits, fetchRolesForUnit, fetchUsersForUnit} from "./action";
+import {ConfirmDialog, RoleModal, UserModal} from "./form";
 
 function getChildrens(parentId: string, data: OrganizationUnit[]) {
   const childrens: TreeViewElement[] = [];
@@ -81,24 +70,16 @@ const createFormSchema = dataConfig.organization.createFormSchema;
 const editFormSchema = dataConfig.organization.editFormSchema;
 
 const App: React.FC = () => {
-  const [organizationTreeElements, setOrganizationTreeElements] = useState<
-    TreeViewElement[]
-  >([]);
-  const [organizationUnits, setOrganizationUnits] = useState<
-    OrganizationUnit[]
-  >([]);
+  const [organizationTreeElements, setOrganizationTreeElements] = useState<TreeViewElement[]>([]);
+  const [organizationUnits, setOrganizationUnits] = useState<OrganizationUnit[]>([]);
   const [selectedUnitId, setSelectedUnitId] = useState<string | undefined>();
   const [open, setOpen] = useState(false);
-  const [action, setAction] = useState<TableActionCustomDialog | undefined>(
-    undefined,
-  );
+  const [action, setAction] = useState<TableActionCustomDialog | undefined>(undefined);
   const [unitUsers, setUnitUsers] = useState<User[]>([]);
   const [unitRoles, setUnitRoles] = useState<Role[]>([]);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
-  const [triggerData, setTriggerData] = useState<
-    Record<string, any> | undefined
-  >(undefined);
+  const [triggerData, setTriggerData] = useState<Record<string, any> | undefined>(undefined);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const [confirmDialogContent, setConfirmDialogContent] = useState({
     title: "",
@@ -118,10 +99,7 @@ const App: React.FC = () => {
   const fetchUsersAndRoles = useCallback(async () => {
     if (!selectedUnitId) return;
 
-    const [users, roles] = await Promise.all([
-      fetchUsersForUnit(selectedUnitId),
-      fetchRolesForUnit(selectedUnitId),
-    ]);
+    const [users, roles] = await Promise.all([fetchUsersForUnit(selectedUnitId), fetchRolesForUnit(selectedUnitId)]);
     setUnitUsers(users);
     setUnitRoles(roles);
   }, [selectedUnitId]);
@@ -145,114 +123,91 @@ const App: React.FC = () => {
     setOrganizationUnits(units);
   }, []);
 
-  const editUnit = useCallback(
-    (formData: { displayName: string }, _triggerData: { id: string }) => {
-      async function edit() {
-        try {
-          const response = await fetch(
-            getBaseLink(`api/organization/organizationEdit`),
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                id: _triggerData.id,
-                requestBody: { displayName: formData.displayName },
-              }),
-            },
-          );
-          if (response.ok) {
-            toast.success("Organization unit updated successfully");
-            void fetchAndUpdateUnits();
-            setTriggerData({});
-            setOpen(false);
-          } else {
-            const errorData = await response.json();
-            toast.error(
-              errorData.message || "Failed to update organization unit",
-            );
-          }
-        } catch (error) {
-          toast.error("An error occurred while updating the organization unit");
+  const editUnit = useCallback((formData: {displayName: string}, _triggerData: {id: string}) => {
+    async function edit() {
+      try {
+        const response = await fetch(getBaseLink(`api/organization/organizationEdit`), {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: _triggerData.id,
+            requestBody: {displayName: formData.displayName},
+          }),
+        });
+        if (response.ok) {
+          toast.success("Organization unit updated successfully");
+          void fetchAndUpdateUnits();
+          setTriggerData({});
+          setOpen(false);
+        } else {
+          const errorData = await response.json();
+          toast.error(errorData.message || "Failed to update organization unit");
         }
+      } catch (error) {
+        toast.error("An error occurred while updating the organization unit");
       }
+    }
 
-      void edit();
-    },
-    [],
-  );
+    void edit();
+  }, []);
 
   const handleEditUnitClick = useCallback(() => {
     setAction({
       type: "Dialog",
       componentType: "Autoform",
       autoFormArgs: {
-        formSchema: createZodObject(
-          editFormSchema.schema,
-          editFormSchema.formPositions || [],
-        ),
+        formSchema: createZodObject(editFormSchema.schema, editFormSchema.formPositions || []),
       },
       callback: (e, _triggerData) => {
-        editUnit(e, _triggerData as { id: string });
+        editUnit(e, _triggerData as {id: string});
       },
       cta: "Edit Unit",
       description: "Edit the name of the organization unit",
     });
     setTriggerData({
-      displayName: organizationUnits.find((i) => i.id === selectedUnitId)
-        ?.displayName,
+      displayName: organizationUnits.find((i) => i.id === selectedUnitId)?.displayName,
       id: selectedUnitId,
     });
     setOpen(true);
   }, [selectedUnitId]);
 
-  const addNewUnit = useCallback(
-    async (
-      formData: { displayName: string },
-      _triggerData?: { id: string },
-    ) => {
-      try {
-        const response = await fetch(getBaseLink("api/admin/organization"), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            displayName: formData.displayName,
-            parentId: _triggerData?.id,
-          }),
-        });
+  const addNewUnit = useCallback(async (formData: {displayName: string}, _triggerData?: {id: string}) => {
+    try {
+      const response = await fetch(getBaseLink("api/admin/organization"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          displayName: formData.displayName,
+          parentId: _triggerData?.id,
+        }),
+      });
 
-        if (response.ok) {
-          toast.success("Organization unit added successfully");
-          void fetchAndUpdateUnits();
-          setTriggerData({});
-          setOpen(false);
-        } else {
-          const errorData = await response.json();
-          toast.error(errorData.message || "Failed to add organization unit");
-        }
-      } catch (error) {
-        toast.error("An error occurred while saving the organization unit");
+      if (response.ok) {
+        toast.success("Organization unit added successfully");
+        void fetchAndUpdateUnits();
+        setTriggerData({});
+        setOpen(false);
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Failed to add organization unit");
       }
-    },
-    [],
-  );
+    } catch (error) {
+      toast.error("An error occurred while saving the organization unit");
+    }
+  }, []);
 
   const handleAddUnitClick = useCallback(
     (_selectedUnitId: any) => {
-      const selectedUnit = _selectedUnitId
-        ? organizationUnits.find((i) => i.id === _selectedUnitId)
-        : null;
+      const selectedUnit = _selectedUnitId ? organizationUnits.find((i) => i.id === _selectedUnitId) : null;
       setAction({
         type: "Dialog",
         componentType: "Autoform",
         autoFormArgs: {
-          formSchema: createZodObject(
-            createFormSchema.schema,
-            createFormSchema.formPositions || [],
-          ),
+          formSchema: createZodObject(createFormSchema.schema, createFormSchema.formPositions || []),
           fieldConfig: {
             all: {
               withoutBorder: true,
@@ -260,24 +215,18 @@ const App: React.FC = () => {
           },
         },
         callback: (e, _triggerData) => {
-          let tableData: { id: string };
-          if (
-            typeof _triggerData === "object" &&
-            _triggerData !== null &&
-            "id" in _triggerData
-          ) {
-            tableData = _triggerData as { id: string };
-            const formData = { ...e, ParentId: selectedUnit?.id };
+          let tableData: {id: string};
+          if (typeof _triggerData === "object" && _triggerData !== null && "id" in _triggerData) {
+            tableData = _triggerData as {id: string};
+            const formData = {...e, ParentId: selectedUnit?.id};
             void addNewUnit(formData, tableData);
           }
           return true;
         },
         cta: "New organization unit",
-        description: selectedUnit
-          ? `Parent: ${selectedUnit.displayName}`
-          : "Create a new organization unit",
+        description: selectedUnit ? `Parent: ${selectedUnit.displayName}` : "Create a new organization unit",
       });
-      setTriggerData({ id: _selectedUnitId });
+      setTriggerData({id: _selectedUnitId});
       setOpen(true);
     },
     [organizationUnits],
@@ -288,9 +237,7 @@ const App: React.FC = () => {
       toast.warning("There are no users currently in this unit.");
       return;
     }
-    const availableUnits = organizationUnits.filter(
-      (u) => u.id !== selectedUnitId,
-    );
+    const availableUnits = organizationUnits.filter((u) => u.id !== selectedUnitId);
     const unitOptions = availableUnits.map((unit) => {
       const parentUnit = organizationUnits.find((u) => u.id === unit.parentId);
       return {
@@ -307,10 +254,7 @@ const App: React.FC = () => {
     const placeholder = "Select a unit";
     const DynamicEnum = z.enum([
       placeholder,
-      ...unitOptions.map(
-        (u) =>
-          `${u.displayName} ${u.parentName ? `Parent: ${u.parentName}` : ""}`,
-      ),
+      ...unitOptions.map((u) => `${u.displayName} ${u.parentName ? `Parent: ${u.parentName}` : ""}`),
     ]);
     setTriggerData({
       displayName: selectedUnit?.displayName,
@@ -324,22 +268,19 @@ const App: React.FC = () => {
           targetUnit: DynamicEnum.default(placeholder),
         }),
         fieldConfig: {
-          all: { withoutBorder: true },
+          all: {withoutBorder: true},
         },
       },
       callback: (e, _triggerData) => {
         const _selectedUnit = unitOptions.find(
-          (u) =>
-            `${u.displayName} ${
-              u.parentName ? `Parent: ${u.parentName}` : ""
-            }` === e.targetUnit,
+          (u) => `${u.displayName} ${u.parentName ? `Parent: ${u.parentName}` : ""}` === e.targetUnit,
         );
         if (!_selectedUnit) {
           toast.error("Selected unit not found");
           return false;
         }
-        const formData = { targetUnitId: _selectedUnit.id };
-        void handleMoveUsers(formData, _triggerData as { id: string });
+        const formData = {targetUnitId: _selectedUnit.id};
+        void handleMoveUsers(formData, _triggerData as {id: string});
         return true;
       },
       cta: "Move all Users",
@@ -355,13 +296,10 @@ const App: React.FC = () => {
       onConfirm: () => {
         async function confirm() {
           try {
-            const response = await fetch(
-              getBaseLink(`api/admin/organization`),
-              {
-                method: "DELETE",
-                body: JSON.stringify(unitId),
-              },
-            );
+            const response = await fetch(getBaseLink(`api/admin/organization`), {
+              method: "DELETE",
+              body: JSON.stringify(unitId),
+            });
             if (response.ok) {
               toast.success("Organization unit deleted successfully");
               void fetchAndUpdateUnits();
@@ -370,14 +308,10 @@ const App: React.FC = () => {
               setOpen(false);
             } else {
               const errorData = await response.json();
-              toast.error(
-                errorData.message || "Failed to delete organization unit",
-              );
+              toast.error(errorData.message || "Failed to delete organization unit");
             }
           } catch (error) {
-            toast.error(
-              "An error occurred while deleting the organization unit",
-            );
+            toast.error("An error occurred while deleting the organization unit");
           }
           setIsConfirmDialogOpen(false);
         }
@@ -388,35 +322,27 @@ const App: React.FC = () => {
   }, []);
 
   const handleMoveUsers = useCallback(
-    async (
-      formData: { targetUnitId: string },
-      _triggerData: { id: string },
-    ) => {
+    async (formData: {targetUnitId: string}, _triggerData: {id: string}) => {
       if (!selectedUnitId) {
         toast.error("Please select a unit");
         return;
       }
       try {
-        const targetUnit = organizationUnits.find(
-          (unit) => unit.id === formData.targetUnitId,
-        );
+        const targetUnit = organizationUnits.find((unit) => unit.id === formData.targetUnitId);
         if (!targetUnit) {
           toast.error("Target unit not found");
           return;
         }
-        const response = await fetch(
-          getBaseLink(`api/organization/MoveAllUsers`),
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: _triggerData.id,
-              organizationId: targetUnit.id,
-            }),
+        const response = await fetch(getBaseLink(`api/organization/MoveAllUsers`), {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify({
+            id: _triggerData.id,
+            organizationId: targetUnit.id,
+          }),
+        });
         if (response.ok) {
           void fetchUsersAndRoles();
           toast.success("Users moved successfully");
@@ -440,22 +366,17 @@ const App: React.FC = () => {
         <DropdownMenuItem
           onClick={() => {
             handleAddUnitClick(selectedUnitId);
-          }}
-        >
+          }}>
           Add Sub-unit
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleMoveAllUsersClick}>
-          Move all Users
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleMoveAllUsersClick}>Move all Users</DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             handleDeleteUnit(
               selectedUnitId ?? "",
-              organizationUnits.find((i) => i.id === selectedUnitId)
-                ?.displayName ?? "",
+              organizationUnits.find((i) => i.id === selectedUnitId)?.displayName ?? "",
             );
-          }}
-        >
+          }}>
           Delete
         </DropdownMenuItem>
       </>
@@ -466,26 +387,21 @@ const App: React.FC = () => {
   const handleAddUsers = useCallback(
     (selectedUsers: User[]) => {
       async function addUser() {
-        const selectedUnit = organizationUnits.find(
-          (i) => i.id === selectedUnitId,
-        );
+        const selectedUnit = organizationUnits.find((i) => i.id === selectedUnitId);
         if (selectedUnit && selectedUsers.length > 0) {
           try {
-            const response = await fetch(
-              getBaseLink(`api/organization/organizationUser`),
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  id: selectedUnit.id,
-                  requestBody: {
-                    userIds: selectedUsers.map((user) => user.id),
-                  },
-                }),
+            const response = await fetch(getBaseLink(`api/organization/organizationUser`), {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
               },
-            );
+              body: JSON.stringify({
+                id: selectedUnit.id,
+                requestBody: {
+                  userIds: selectedUsers.map((user) => user.id),
+                },
+              }),
+            });
             if (response.ok) {
               toast.success("Users added successfully");
               const updatedUsers = await fetchUsersForUnit(selectedUnit.id);
@@ -510,26 +426,21 @@ const App: React.FC = () => {
   const handleAddRoles = useCallback(
     (selectedRoles: Role[]) => {
       async function addRoles() {
-        const selectedUnit = organizationUnits.find(
-          (i) => i.id === selectedUnitId,
-        );
+        const selectedUnit = organizationUnits.find((i) => i.id === selectedUnitId);
         if (selectedUnit && selectedRoles.length > 0) {
           try {
-            const response = await fetch(
-              getBaseLink(`api/organization/organizationRole`),
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  id: selectedUnit.id,
-                  requestBody: {
-                    roleIds: selectedRoles.map((role) => role.id),
-                  },
-                }),
+            const response = await fetch(getBaseLink(`api/organization/organizationRole`), {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
               },
-            );
+              body: JSON.stringify({
+                id: selectedUnit.id,
+                requestBody: {
+                  roleIds: selectedRoles.map((role) => role.id),
+                },
+              }),
+            });
             if (response.ok) {
               toast.success("Roles added successfully");
               const updatedRoles = await fetchRolesForUnit(selectedUnit.id);
@@ -553,9 +464,7 @@ const App: React.FC = () => {
 
   const handleDeleteUser = useCallback(
     (userId: string, userName: string) => {
-      const selectedUnit = organizationUnits.find(
-        (i) => i.id === selectedUnitId,
-      );
+      const selectedUnit = organizationUnits.find((i) => i.id === selectedUnitId);
       if (selectedUnit) {
         setConfirmDialogContent({
           title: "Are You Sure",
@@ -564,24 +473,19 @@ const App: React.FC = () => {
             async function confirm() {
               if (selectedUnit) {
                 try {
-                  const response = await fetch(
-                    getBaseLink(`api/organization/organizationUser`),
-                    {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        id: selectedUnit.id,
-                        memberId: userId,
-                      }),
+                  const response = await fetch(getBaseLink(`api/organization/organizationUser`), {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
                     },
-                  );
+                    body: JSON.stringify({
+                      id: selectedUnit.id,
+                      memberId: userId,
+                    }),
+                  });
                   if (response.ok) {
                     toast.success("User deleted successfully");
-                    const updatedUsers = await fetchUsersForUnit(
-                      selectedUnit.id,
-                    );
+                    const updatedUsers = await fetchUsersForUnit(selectedUnit.id);
                     setUnitUsers(updatedUsers);
                   } else {
                     const errorData = await response.json();
@@ -604,9 +508,7 @@ const App: React.FC = () => {
 
   const handleDeleteRole = useCallback(
     (roleId: string, roleName: string) => {
-      const selectedUnit = organizationUnits.find(
-        (i) => i.id === selectedUnitId,
-      );
+      const selectedUnit = organizationUnits.find((i) => i.id === selectedUnitId);
       if (selectedUnit) {
         setConfirmDialogContent({
           title: "Are You Sure",
@@ -615,21 +517,16 @@ const App: React.FC = () => {
             async function confirm() {
               if (selectedUnit) {
                 try {
-                  const response = await fetch(
-                    getBaseLink(`api/organization/organizationRole`),
-                    {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ id: selectedUnit.id, roleId }),
+                  const response = await fetch(getBaseLink(`api/organization/organizationRole`), {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
                     },
-                  );
+                    body: JSON.stringify({id: selectedUnit.id, roleId}),
+                  });
                   if (response.ok) {
                     toast.success("Role deleted successfully");
-                    const updatedRoles = await fetchRolesForUnit(
-                      selectedUnit.id,
-                    );
+                    const updatedRoles = await fetchRolesForUnit(selectedUnit.id);
                     setUnitRoles(updatedRoles);
                   } else {
                     const errorData = await response.json();
@@ -663,8 +560,7 @@ const App: React.FC = () => {
                   setSelectedUnitId(undefined);
                   setTriggerData({});
                   handleAddUnitClick(null);
-                }}
-              >
+                }}>
                 + Add root unit
               </Button>
             </div>
@@ -692,8 +588,8 @@ const App: React.FC = () => {
                 setActiveTab(newActiveSection);
               }}
               sections={[
-                { id: "Users", name: "Users" },
-                { id: "Roles", name: "Roles" },
+                {id: "Users", name: "Users"},
+                {id: "Roles", name: "Roles"},
               ]}
               showContentInSamePage
             />
@@ -706,8 +602,7 @@ const App: React.FC = () => {
                         className="bg-primary rounded px-4 py-2 text-white"
                         onClick={() => {
                           setIsUserModalOpen(true);
-                        }}
-                      >
+                        }}>
                         + Add user
                       </Button>
                     ) : (
@@ -715,8 +610,7 @@ const App: React.FC = () => {
                         className="bg-primary rounded px-4 py-2 text-white"
                         onClick={() => {
                           setIsRoleModalOpen(true);
-                        }}
-                      >
+                        }}>
                         + Add role
                       </Button>
                     )}
@@ -747,8 +641,7 @@ const App: React.FC = () => {
                                 onClick={() => {
                                   handleDeleteUser(user.id, user.userName);
                                 }}
-                                variant="link"
-                              >
+                                variant="link">
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </TableCell>
@@ -768,8 +661,7 @@ const App: React.FC = () => {
                                 onClick={() => {
                                   handleDeleteRole(role.id, role.name);
                                 }}
-                                variant="link"
-                              >
+                                variant="link">
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </TableCell>
@@ -782,10 +674,7 @@ const App: React.FC = () => {
                         )}
                   </TableBody>
                 </Table>
-                <p className="mt-10 text-sm">
-                  {activeTab === "Users" ? unitUsers.length : unitRoles.length}{" "}
-                  total
-                </p>
+                <p className="mt-10 text-sm">{activeTab === "Users" ? unitUsers.length : unitRoles.length} total</p>
               </div>
             ) : (
               <p>Select an organization unit to view details</p>
@@ -795,12 +684,7 @@ const App: React.FC = () => {
       </div>
       {open
         ? action !== undefined && (
-            <AutoformDialog
-              action={action}
-              onOpenChange={setOpen}
-              open={open}
-              triggerData={triggerData}
-            />
+            <AutoformDialog action={action} onOpenChange={setOpen} open={open} triggerData={triggerData} />
           )
         : null}
       <ConfirmDialog

@@ -1,27 +1,16 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {ChevronDown} from "lucide-react";
 import PaymentsTable from "./_components/table";
-import { Payment } from "./types";
+import {Payment} from "./types";
 
 interface PaymentsTableProps {
   payments: Payment[];
 }
 
-export default function PaymentsPage({ payments }: PaymentsTableProps) {
+export default function PaymentsPage({payments}: PaymentsTableProps) {
   return (
     <Card className="w-full">
       <CardHeader>

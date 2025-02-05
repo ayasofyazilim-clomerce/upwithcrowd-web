@@ -1,13 +1,8 @@
 "use client";
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import {Carousel, CarouselApi, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-export default function Layout({ children }: { children: React.ReactNode }) {
+import {useEffect, useState} from "react";
+export default function Layout({children}: {children: React.ReactNode}) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(1);
   const [count, setCount] = useState(5);
@@ -32,14 +27,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           opts={{
             loop: true,
           }}
-          className="size-full [&>div.overflow-hidden]:h-full"
-        >
+          className="size-full [&>div.overflow-hidden]:h-full">
           <CarouselContent className="h-full">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem
-                key={index}
-                className="flex h-full items-center justify-center text-white"
-              >
+            {Array.from({length: 5}).map((_, index) => (
+              <CarouselItem key={index} className="flex h-full items-center justify-center text-white">
                 <span className="text-4xl font-semibold">{index + 1}</span>
               </CarouselItem>
             ))}
@@ -50,16 +41,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       <div className="m-auto flex size-full flex-wrap items-center bg-white py-4">
-        <Image
-          src="/upwc.png"
-          alt={""}
-          height={60}
-          width={60}
-          className="mx-auto"
-        />
-        <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-8 px-16">
-          {children}
-        </div>
+        <Image src="/upwc.png" alt={""} height={60} width={60} className="mx-auto" />
+        <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-8 px-16">{children}</div>
       </div>
     </section>
   );

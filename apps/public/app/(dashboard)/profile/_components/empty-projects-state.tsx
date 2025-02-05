@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { PlusCircle, FolderPlus } from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {PlusCircle, FolderPlus} from "lucide-react";
 import Link from "next/link";
 
 export default function EmptyProjectsState() {
@@ -11,13 +11,11 @@ export default function EmptyProjectsState() {
           <FolderPlus className="text-primary h-12 w-12" />
         </div>
 
-        <h3 className="mb-2 text-2xl font-semibold tracking-tight">
-          You Don't Have Any Projects Yet
-        </h3>
+        <h3 className="mb-2 text-2xl font-semibold tracking-tight">You Don't Have Any Projects Yet</h3>
 
         <p className="text-muted-foreground mb-6 max-w-md">
-          Start taking advantage of UPwithCrowd's opportunities by creating your
-          first project. Create a new project now!
+          Start taking advantage of UPwithCrowd's opportunities by creating your first project. Create a new project
+          now!
         </p>
 
         <Button asChild size="lg" className="gap-2">

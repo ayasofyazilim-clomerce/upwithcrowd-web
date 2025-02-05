@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
-import { IconWrapper } from "./IconWrapper";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Facebook, Twitter, Instagram, Linkedin} from "lucide-react";
+import {IconWrapper} from "./IconWrapper";
 
 export default function Footer() {
   return (
@@ -11,8 +11,7 @@ export default function Footer() {
       className="flex h-[60dvh] flex-col justify-center bg-slate-900 px-6 pt-12 text-white"
       style={{
         backgroundImage: "url('/footer-drop.png')",
-      }}
-    >
+      }}>
       <div className="container m-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <h3 className="mb-4 text-lg font-semibold">About Us</h3>
@@ -89,15 +88,9 @@ export default function Footer() {
         </div>
         <div>
           <h3 className="mb-4 text-lg font-semibold">Newsletter</h3>
-          <p className="mb-4">
-            Stay updated with our latest projects and news.
-          </p>
+          <p className="mb-4">Stay updated with our latest projects and news.</p>
           <form className="flex flex-col sm:flex-row">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="mb-2 sm:mb-0 sm:mr-2"
-            />
+            <Input type="email" placeholder="Enter your email" className="mb-2 sm:mb-0 sm:mr-2" />
             <Button type="submit">Subscribe</Button>
           </form>
         </div>

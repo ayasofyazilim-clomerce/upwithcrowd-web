@@ -1,67 +1,40 @@
 "use client";
-import { putProjectFundingByIdApi } from "@/actions/upwithcrowd/project/put-action";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import {putProjectFundingByIdApi} from "@/actions/upwithcrowd/project/put-action";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 import {
   $UpwithCrowd_Projects_FundCollectionType,
   UpwithCrowd_Projects_UpdateProjectFundingDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { useParams, useRouter } from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import BudgetCard from "../../new/_components/budget-card";
-import { FormContainer } from "../../new/_components/form";
-import { Section } from "../../new/_components/section";
+import {FormContainer} from "../../new/_components/form";
+import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/components/ui/sonner";
+import {Button} from "@/components/ui/button";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Checkbox} from "@/components/ui/checkbox";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {toast} from "@/components/ui/sonner";
 
 const fundingSchema = z.object({
-  fundCollectionType: z
-    .enum($UpwithCrowd_Projects_FundCollectionType.enum)
-    .optional(),
-  fundNominalAmount: z.coerce
-    .number()
-    .min(0, "Amount must be greater than or equal to 0"),
-  fundableAmount: z.coerce
-    .number()
-    .min(0, "Amount must be greater than or equal to 0"),
+  fundCollectionType: z.enum($UpwithCrowd_Projects_FundCollectionType.enum).optional(),
+  fundNominalAmount: z.coerce.number().min(0, "Amount must be greater than or equal to 0"),
+  fundableAmount: z.coerce.number().min(0, "Amount must be greater than or equal to 0"),
   additionalFundRate: z.string(),
   qualifiedFundRate: z.string(),
   overFunding: z.boolean().optional().nullable(),
   cashValue: z.number().nullable(),
   minimumFundAmount: z.number().nullable(),
-  privilege: z
-    .string()
-    .max(135, "Privilege must be less than 135 characters")
-    .optional()
-    .nullable(),
+  privilege: z.string().max(135, "Privilege must be less than 135 characters").optional().nullable(),
 });
 
 export type FundingFormValues = z.infer<typeof fundingSchema>;
-export default function ClientFunding({
-  fundingDetail,
-}: {
-  fundingDetail: UpwithCrowd_Projects_UpdateProjectFundingDto;
-}) {
-  const { id: projectId } = useParams<{ id: string }>();
+export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCrowd_Projects_UpdateProjectFundingDto}) {
+  const {id: projectId} = useParams<{id: string}>();
 
   const router = useRouter();
 
@@ -83,7 +56,7 @@ export default function ClientFunding({
       }).then((response) => {
         if (response.type === "success") {
           toast.success("Funding details updated successfully");
-          router.push(`/dashboard/projects/${projectId}/funding`);
+          router.push(`/dashboard/projects/${projectId}/story`);
         } else {
           toast.error("An unexpected error occurred");
         }
@@ -111,23 +84,16 @@ export default function ClientFunding({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {/* Privilege Section */}
-            <Section
-              title="Privilege"
-              text={["Write a clear, brief description of the privileges."]}
-            >
+            <Section title="Privilege" text={["Write a clear, brief description of the privileges."]}>
               <FormContainer>
                 <FormField
                   control={form.control}
                   name="privilege"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Privilege</FormLabel>
                       <FormControl>
-                        <Textarea
-                          {...field}
-                          value={field.value ?? ""}
-                          rows={3}
-                        />
+                        <Textarea {...field} value={field.value ?? ""} rows={3} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -137,32 +103,24 @@ export default function ClientFunding({
             </Section>
 
             {/* Fund Collection Type Section */}
-            <Section
-              title="Fund Collection Type"
-              text={["Select the funding type"]}
-            >
+            <Section title="Fund Collection Type" text={["Select the funding type"]}>
               <FormContainer>
                 <FormField
                   control={form.control}
                   name="fundCollectionType"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Fund Collection Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select fund collection type" />
                         </SelectTrigger>
                         <SelectContent>
-                          {$UpwithCrowd_Projects_FundCollectionType.enum.map(
-                            (type) => (
-                              <SelectItem key={type} value={type}>
-                                {type}
-                              </SelectItem>
-                            ),
-                          )}
+                          {$UpwithCrowd_Projects_FundCollectionType.enum.map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {type}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -178,20 +136,17 @@ export default function ClientFunding({
               title="Nominal Amount"
               text={[
                 "The minimum required funding amount for the project. This represents the base level of financing needed.",
-              ]}
-            >
+              ]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="fundNominalAmount"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Nominal Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                            €
-                          </span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                           <Input
                             type="number"
                             placeholder="0"
@@ -214,20 +169,17 @@ export default function ClientFunding({
               title="Fundable Amount"
               text={[
                 "The minimum required funding amount for the project. This represents the base level of financing needed.",
-              ]}
-            >
+              ]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="fundableAmount"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Fundable Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                            €
-                          </span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                           <Input
                             type="number"
                             placeholder="0"
@@ -249,26 +201,18 @@ export default function ClientFunding({
               title="Additional Funds Rate"
               text={[
                 "Additional funding rate. Defines the extra percentage that can be added to the total fundable amount.",
-              ]}
-            >
+              ]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="additionalFundRate"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Additional Fund Rate</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                            %
-                          </span>
-                          <Input
-                            type="text"
-                            placeholder="0"
-                            className="pl-7"
-                            {...field}
-                          />
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                          <Input type="text" placeholder="0" className="pl-7" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -280,28 +224,18 @@ export default function ClientFunding({
             <Section
               className="border-b-0"
               title="Qualified Funds Rate"
-              text={[
-                "Qualified funding rate for qualified investors who are allowed to invest in the project.",
-              ]}
-            >
+              text={["Qualified funding rate for qualified investors who are allowed to invest in the project."]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="qualifiedFundRate"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Qualified Fund Rate</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                            %
-                          </span>
-                          <Input
-                            type="text"
-                            placeholder="0"
-                            className="pl-7"
-                            {...field}
-                          />
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                          <Input type="text" placeholder="0" className="pl-7" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -313,21 +247,15 @@ export default function ClientFunding({
             <Section
               className="border-b-0"
               title="Over Funding"
-              text={[
-                "If checked, the project can exceed its target funding amount.",
-              ]}
-            >
+              text={["If checked, the project can exceed its target funding amount."]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="overFunding"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                       <FormControl>
-                        <Checkbox
-                          checked={field.value || false}
-                          onCheckedChange={field.onChange}
-                        />
+                        <Checkbox checked={field.value || false} onCheckedChange={field.onChange} />
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <FormLabel>Allow over funding</FormLabel>
@@ -338,32 +266,24 @@ export default function ClientFunding({
                 />
               </FormContainer>
             </Section>
-            <Section
-              className="border-b-0"
-              title="Cash Value"
-              text={["The cash equivalent value of the project."]}
-            >
+            <Section className="border-b-0" title="Cash Value" text={["The cash equivalent value of the project."]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="cashValue"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Cash Value</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                            €
-                          </span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                           <Input
                             type="number"
                             placeholder="0"
                             className="pl-7"
                             min="0"
                             {...field}
-                            onChange={(e) =>
-                              field.onChange(e.target.valueAsNumber)
-                            }
+                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
                             value={field.value ?? ""}
                           />
                         </div>
@@ -377,31 +297,24 @@ export default function ClientFunding({
             <Section
               className="border-b-0"
               title="Min Fund Amount"
-              text={[
-                "The minimum amount an investor can contribute to the project.",
-              ]}
-            >
+              text={["The minimum amount an investor can contribute to the project."]}>
               <FormContainer className="">
                 <FormField
                   control={form.control}
                   name="minimumFundAmount"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Min Fund Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                            €
-                          </span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                           <Input
                             type="number"
                             placeholder="0"
                             className="pl-7"
                             min="0"
                             {...field}
-                            onChange={(e) =>
-                              field.onChange(e.target.valueAsNumber)
-                            }
+                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
                             value={field.value ?? ""}
                           />
                         </div>
@@ -417,8 +330,7 @@ export default function ClientFunding({
               text={[
                 "Determine the various costs to bring your project to life with our Google Sheets template.",
                 "We’ll have access to your document, but we will never share your information with others.",
-              ]}
-            >
+              ]}>
               <FormContainer className="">
                 <BudgetCard />
               </FormContainer>

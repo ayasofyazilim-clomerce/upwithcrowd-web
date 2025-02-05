@@ -1,16 +1,12 @@
 "use server";
 
-import { signIn, signOut } from "@repo/utils/auth/next-auth";
-import { isApiError } from "@repo/utils/api";
-import { redirect, RedirectType } from "next/navigation";
-import { ApiErrorResponse } from "@/utils/client";
+import {signIn, signOut} from "@repo/utils/auth/next-auth";
+import {isApiError} from "@repo/utils/api";
+import {redirect, RedirectType} from "next/navigation";
+import {ApiErrorResponse} from "@/utils/client";
 
-export async function signInAction<State>(
-  args: { callBackURL?: string | null },
-  prevState: State,
-  formData: FormData,
-) {
-  const { callBackURL } = args;
+export async function signInAction<State>(args: {callBackURL?: string | null}, prevState: State, formData: FormData) {
+  const {callBackURL} = args;
   try {
     await signIn("credentials", {
       redirect: true,
@@ -21,20 +17,12 @@ export async function signInAction<State>(
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === "NEXT_REDIRECT") {
-        redirect(
-          callBackURL ? callBackURL.toString() : "/profile",
-          RedirectType.push,
-        );
+        redirect(callBackURL ? callBackURL.toString() : "/profile", RedirectType.push);
       }
       if (isApiError(error)) {
         const errorBody = error.body as ApiErrorResponse;
         return {
-          message:
-            error.status +
-            ": " +
-            error.statusText +
-            ", " +
-            errorBody.error.message,
+          message: error.status + ": " + error.statusText + ", " + errorBody.error.message,
         };
       }
       return {

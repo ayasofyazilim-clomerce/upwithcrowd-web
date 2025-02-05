@@ -1,48 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Loader2, Shield, Check } from "lucide-react";
-import { postApiMember } from "@/actions/upwithcrowd/member/post-action";
-import { toast } from "@/components/ui/sonner";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Button} from "@/components/ui/button";
+import {Loader2, Shield, Check} from "lucide-react";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {toast} from "@/components/ui/sonner";
 import {
   UpwithCrowd_Members_IdType,
   UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {
-  FormMessage,
-  FormControl,
-  FormItem,
-  FormLabel,
-  FormField,
-} from "@/components/ui/form";
-import { Form } from "@/components/ui/form";
-import { putMyProfileApi } from "@/actions/upwithcrowd/my-profile/put-action";
-import { postUserMembersApi } from "@/actions/upwithcrowd/user-members/post-action";
-import { useSession } from "@repo/utils/auth";
-import { getApiMemberApi } from "@/actions/upwithcrowd/member/actions";
-import { useMember } from "@/app/providers/member";
-import { useRouter } from "next/navigation";
+import {FormMessage, FormControl, FormItem, FormLabel, FormField} from "@/components/ui/form";
+import {Form} from "@/components/ui/form";
+import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
+import {postUserMembersApi} from "@/actions/upwithcrowd/user-members/post-action";
+import {useSession} from "@repo/utils/auth";
+import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
+import {useMember} from "@/app/providers/member";
+import {useRouter} from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -60,18 +41,14 @@ const formSchema = z.object({
     .min(11, "Kimlik numarası 11 haneli olmalıdır.")
     .max(11, "Kimlik numarası 11 haneli olmalıdır.")
     .regex(/^\d{11}$/, "Kimlik numarası sadece rakam içermelidir."),
-  mobile: z
-    .string()
-    .regex(/^\+?[1-9]\d{9,14}$/, "Geçerli bir telefon numarası giriniz."),
-  annualIncome: z
-    .string()
-    .regex(/^\d+$/, "Yıllık gelir sadece rakam içermelidir."),
+  mobile: z.string().regex(/^\+?[1-9]\d{9,14}$/, "Geçerli bir telefon numarası giriniz."),
+  annualIncome: z.string().regex(/^\d+$/, "Yıllık gelir sadece rakam içermelidir."),
   title: z.string().optional(),
   tel: z.string().optional(),
 });
 
 export default function NewPersonalAccount() {
-  const { setMembers, setCurrentMember } = useMember();
+  const {setMembers, setCurrentMember} = useMember();
   const currentUser = useSession()?.session?.user?.sub;
   const userName = useSession()?.session?.user?.userName || "";
   const [isVerifying, setIsVerifying] = useState(false);
@@ -114,7 +91,7 @@ export default function NewPersonalAccount() {
         isValidated: isVerified, // Change this line to use the isVerified state
       };
 
-      const memberResult = await postApiMember({ requestBody });
+      const memberResult = await postApiMember({requestBody});
       if (memberResult.type === "success") {
         await putMyProfileApi({
           requestBody: {
@@ -134,9 +111,7 @@ export default function NewPersonalAccount() {
           return;
         }
         const memberList = memberResponse.data.items || [];
-        const memberIndex = memberList.findIndex(
-          (x) => x?.id === memberResult.data.memberID,
-        );
+        const memberIndex = memberList.findIndex((x) => x?.id === memberResult.data.memberID);
 
         if (memberList.length == 0 || memberIndex == -1) {
           return;
@@ -180,9 +155,7 @@ export default function NewPersonalAccount() {
       }
     } catch (error) {
       console.error("Error creating personal account:", error);
-      toast.error(
-        "There was an error creating your personal account. Please try again.",
-      );
+      toast.error("There was an error creating your personal account. Please try again.");
     }
   }
 
@@ -197,12 +170,8 @@ export default function NewPersonalAccount() {
   return (
     <Card className="mx-auto w-full">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">
-          Create Your Personal Account
-        </CardTitle>
-        <CardDescription>
-          Enter your personal account details below to get started.
-        </CardDescription>
+        <CardTitle className="text-2xl font-bold">Create Your Personal Account</CardTitle>
+        <CardDescription>Enter your personal account details below to get started.</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -211,7 +180,7 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="idType"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>ID Type</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -235,7 +204,7 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="identifier"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Identifier</FormLabel>
                     <FormControl>
@@ -256,12 +225,9 @@ export default function NewPersonalAccount() {
                       type="button"
                       variant="outline"
                       className="w-full"
-                      disabled={!canStartVerification()}
-                    >
+                      disabled={!canStartVerification()}>
                       <Shield className="mr-2 h-4 w-4" />
-                      {canStartVerification()
-                        ? "Start E-Devlet Verification"
-                        : "Please fill required fields first"}
+                      {canStartVerification() ? "Start E-Devlet Verification" : "Please fill required fields first"}
                     </Button>
                   )}
 
@@ -283,15 +249,11 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="Enter email"
-                      />
+                      <Input {...field} type="email" placeholder="Enter email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -302,7 +264,7 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="name"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
@@ -316,7 +278,7 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="surname"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Surname</FormLabel>
                     <FormControl>
@@ -332,7 +294,7 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="mobile"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Mobile</FormLabel>
                     <FormControl>
@@ -345,15 +307,11 @@ export default function NewPersonalAccount() {
               <FormField
                 control={form.control}
                 name="annualIncome"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Annual Income</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        placeholder="Enter annual income"
-                      />
+                      <Input {...field} type="number" placeholder="Enter annual income" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -362,17 +320,9 @@ export default function NewPersonalAccount() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              type="submit"
-              disabled={form.formState.isSubmitting || !isVerified}
-            >
-              {form.formState.isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              {form.formState.isSubmitting
-                ? "Submitting..."
-                : "Create Personal Account"}
+            <Button className="w-full" type="submit" disabled={form.formState.isSubmitting || !isVerified}>
+              {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {form.formState.isSubmitting ? "Submitting..." : "Create Personal Account"}
             </Button>
           </CardFooter>
         </form>

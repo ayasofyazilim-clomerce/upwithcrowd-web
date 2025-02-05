@@ -1,11 +1,11 @@
-import { TabLayout } from "@repo/ayasofyazilim-ui/templates/tab-layout";
+import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
 
 export const metadata = {
   title: "CrowdFund - Profiles",
   description: "Empowering ideas through crowdfunding",
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({children}: {children: React.ReactNode}) {
   return (
     <TabLayout
       orientation="vertical"
@@ -30,8 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           href: "/profile/projects",
           label: "Projelerim",
         },
-      ]}
-    >
+      ]}>
       {children}
     </TabLayout>
   );

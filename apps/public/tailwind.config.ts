@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+import type {Config} from "tailwindcss";
 require("dotenv").config();
 const config: Config = {
   darkMode: ["class"],
@@ -88,13 +88,12 @@ const config: Config = {
   plugins: [require("tailwindcss-animate"), setColorFromEnvironment],
 };
 
-function setColorFromEnvironment({ addBase }: { addBase: Function }) {
+function setColorFromEnvironment({addBase}: {addBase: Function}) {
   require("dotenv").config();
 
   addBase({
     ":root": {
-      "--primary-app-color":
-        process.env.NEXT_PUBLIC_PRIMARY_COLOR || "240 100% 50%",
+      "--primary-app-color": process.env.NEXT_PUBLIC_PRIMARY_COLOR || "240 100% 50%",
     },
   });
 }

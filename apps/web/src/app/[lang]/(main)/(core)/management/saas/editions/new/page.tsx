@@ -1,16 +1,16 @@
 "use server";
 
-import { isUnauthorized } from "src/utils/page-policy/page-policy";
-import { getResourceData } from "src/language-data/core/SaasService";
+import {isUnauthorized} from "src/utils/page-policy/page-policy";
+import {getResourceData} from "src/language-data/core/SaasService";
 import Form from "./_components/form";
 
-export default async function Page({ params }: { params: { lang: string } }) {
-  const { lang } = params;
+export default async function Page({params}: {params: {lang: string}}) {
+  const {lang} = params;
   await isUnauthorized({
     requiredPolicies: ["Saas.Editions.Create"],
     lang,
   });
-  const { languageData } = await getResourceData(lang);
+  const {languageData} = await getResourceData(lang);
   return (
     <>
       <Form languageData={languageData} />

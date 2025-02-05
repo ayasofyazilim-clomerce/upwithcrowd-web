@@ -2,10 +2,10 @@ import {
   UpwithCrowd_Projects_ProjectsResponseDto,
   UpwithCrowd_Projects_ProjectsFundingResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Progress} from "@/components/ui/progress";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 import Image from "next/image";
 
 export default function ProjectSummary({
@@ -21,15 +21,11 @@ export default function ProjectSummary({
 }) {
   return (
     <>
-      <h2 className="mb-2 text-2xl font-bold md:text-3xl">
-        {basics.projectName}
-      </h2>
+      <h2 className="mb-2 text-2xl font-bold md:text-3xl">{basics.projectName}</h2>
       <p className="text-md mb-4 font-medium md:text-lg">{funding.privilege}</p>
       <p className="text-normal mb-4">
-        <span className="text-primary font-bold">
-          ${(funding.fundableAmount ?? 0).toLocaleString()}
-        </span>{" "}
-        of ${(funding.fundNominalAmount ?? 0).toLocaleString()} raised
+        <span className="text-primary font-bold">${(funding.fundableAmount ?? 0).toLocaleString()}</span> of $
+        {(funding.fundNominalAmount ?? 0).toLocaleString()} raised
       </p>
 
       <div className="relative mx-auto mb-6 w-full">
@@ -68,10 +64,7 @@ export default function ProjectSummary({
         <span>${(funding.fundableAmount ?? 0).toLocaleString()} raised</span>
         <span>
           {basics.projectEndDate
-            ? Math.ceil(
-                (new Date(basics.projectEndDate).getTime() - Date.now()) /
-                  (1000 * 60 * 60 * 24),
-              )
+            ? Math.ceil((new Date(basics.projectEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
             : "N/A"}
           days left
         </span>

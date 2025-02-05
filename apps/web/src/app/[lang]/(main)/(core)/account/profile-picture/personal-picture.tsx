@@ -1,24 +1,17 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import type { Volo_Abp_Account_ProfilePictureType } from "@ayasofyazilim/saas/AccountService";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { postProfilePictureApi } from "src/actions/core/AccountService/post-actions";
-import { handlePutResponse } from "src/actions/core/api-utils-client";
-import type { AccountServiceResource } from "src/language-data/core/AccountService";
+import {Button} from "@/components/ui/button";
+import type {Volo_Abp_Account_ProfilePictureType} from "@ayasofyazilim/saas/AccountService";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {postProfilePictureApi} from "src/actions/core/AccountService/post-actions";
+import {handlePutResponse} from "src/actions/core/api-utils-client";
+import type {AccountServiceResource} from "src/language-data/core/AccountService";
 
-export default function PersonalPicture({
-  languageData,
-}: {
-  languageData: AccountServiceResource;
-}) {
+export default function PersonalPicture({languageData}: {languageData: AccountServiceResource}) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<Blob | File | undefined>(
-    undefined,
-  );
-  const [uploadType, setUploadType] =
-    useState<Volo_Abp_Account_ProfilePictureType>(2);
+  const [selectedImage, setSelectedImage] = useState<Blob | File | undefined>(undefined);
+  const [uploadType, setUploadType] = useState<Volo_Abp_Account_ProfilePictureType>(2);
 
   const handleSaveImage = () => {
     setLoading(true);
@@ -47,9 +40,7 @@ export default function PersonalPicture({
           // alt="Selected Profile Picture"
           // className="h-full w-full object-cover"
           // />
-          <span className="text-gray-500">
-            {languageData["No.Picture.Selected"]}
-          </span>
+          <span className="text-gray-500">{languageData["No.Picture.Selected"]}</span>
         )}
       </div>
       <form>
@@ -108,8 +99,7 @@ export default function PersonalPicture({
             disabled={loading}
             onClick={() => {
               handleSaveImage();
-            }}
-          >
+            }}>
             {languageData["Edit.Save"]}
           </Button>
         </div>

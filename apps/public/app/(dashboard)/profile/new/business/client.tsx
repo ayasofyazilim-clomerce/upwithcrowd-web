@@ -1,34 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { postApiMember } from "@/actions/upwithcrowd/member/post-action";
-import { UpwithCrowd_Members_SaveMemberDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { postUserMembersApi } from "@/actions/upwithcrowd/user-members/post-action";
-import { useSession } from "@repo/utils/auth";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/components/ui/sonner";
-import { useRouter } from "next/navigation";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Loader2} from "lucide-react";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {postUserMembersApi} from "@/actions/upwithcrowd/user-members/post-action";
+import {useSession} from "@repo/utils/auth";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {toast} from "@/components/ui/sonner";
+import {useRouter} from "next/navigation";
 
 const formSchema = z.object({
   identifier: z
@@ -45,9 +31,7 @@ const formSchema = z.object({
     .optional()
     .or(z.literal("")),
   mail: z.string().email("Invalid email address"),
-  annualIncome: z
-    .string()
-    .regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
+  annualIncome: z.string().regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
   name: z.string().optional(),
   surname: z.string().optional(),
   mobile: z.string().optional(),
@@ -88,7 +72,7 @@ export default function NewBusinessAccount() {
         isValidated: true,
       };
 
-      const memberResult = await postApiMember({ requestBody });
+      const memberResult = await postApiMember({requestBody});
 
       if (memberResult.type === "success") {
         await postUserMembersApi({
@@ -106,9 +90,7 @@ export default function NewBusinessAccount() {
       }
     } catch (error) {
       console.error("Error creating business account:", error);
-      toast.error(
-        "There was an error creating your business account. Please try again.",
-      );
+      toast.error("There was an error creating your business account. Please try again.");
     }
     setIsSubmitting(false);
   }
@@ -116,12 +98,8 @@ export default function NewBusinessAccount() {
   return (
     <Card className="mx-auto w-full">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">
-          New Business Account
-        </CardTitle>
-        <CardDescription>
-          Enter your business account details below to get started.
-        </CardDescription>
+        <CardTitle className="text-2xl font-bold">New Business Account</CardTitle>
+        <CardDescription>Enter your business account details below to get started.</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -130,7 +108,7 @@ export default function NewBusinessAccount() {
               <FormField
                 control={form.control}
                 name="identifier"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>VKN (Tax Number)</FormLabel>
                     <FormControl>
@@ -155,7 +133,7 @@ export default function NewBusinessAccount() {
               <FormField
                 control={form.control}
                 name="title"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
@@ -171,7 +149,7 @@ export default function NewBusinessAccount() {
               <FormField
                 control={form.control}
                 name="tel"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Telephone (Optional)</FormLabel>
                     <FormControl>
@@ -185,7 +163,7 @@ export default function NewBusinessAccount() {
               <FormField
                 control={form.control}
                 name="annualIncome"
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem>
                     <FormLabel>Annual Income</FormLabel>
                     <FormControl>
@@ -209,7 +187,7 @@ export default function NewBusinessAccount() {
             <FormField
               control={form.control}
               name="mail"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
@@ -221,14 +199,8 @@ export default function NewBusinessAccount() {
             />
           </CardContent>
           <CardFooter>
-            <Button
-              className="w-full"
-              type="submit"
-              disabled={isSubmitting || !isFormValid}
-            >
-              {isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
+            <Button className="w-full" type="submit" disabled={isSubmitting || !isFormValid}>
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isSubmitting ? "Submitting..." : "Create Business Account"}
             </Button>
           </CardFooter>

@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import React from "react";
-import { useFormStatus } from "react-dom";
+import {useFormStatus} from "react-dom";
 
 export default function SubmitButton() {
-  const { pending } = useFormStatus();
+  const {pending} = useFormStatus();
 
   return (
     <Button disabled={pending} className="w-full" type="submit">

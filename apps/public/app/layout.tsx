@@ -1,22 +1,18 @@
-import { Inter } from "next/font/google";
+import {Inter} from "next/font/google";
 import "./globals.css";
 import Providers from "./providers/providers";
-import { getApiMemberApi } from "@/actions/upwithcrowd/member/actions";
-import { Member } from "./providers/member";
-import { auth } from "@repo/utils/auth/next-auth";
+import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
+import {Member} from "./providers/member";
+import {auth} from "@repo/utils/auth/next-auth";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({subsets: ["latin"]});
 
 export const metadata = {
   title: "UPwithCrowd",
   description: "Empowering ideas through crowdfunding",
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({children}: {children: React.ReactNode}) {
   const session = await auth();
   let member: Member | null = null;
   let members: Member[] = [];

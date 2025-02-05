@@ -1,9 +1,9 @@
 "use client";
-import { putMemberSwitchByIdApi } from "@/actions/upwithcrowd/member/put-action";
-import { toast } from "@/components/ui/sonner";
-import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { useRouter } from "next/navigation";
-import { createContext, useContext, useState } from "react";
+import {putMemberSwitchByIdApi} from "@/actions/upwithcrowd/member/put-action";
+import {toast} from "@/components/ui/sonner";
+import {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {useRouter} from "next/navigation";
+import {createContext, useContext, useState} from "react";
 export type Member = UpwithCrowd_Members_ListMemberResponseDto;
 export type MemberContent = {
   currentMember: Member | null;
@@ -29,13 +29,8 @@ export const MemberProvider = ({
   members?: Member[];
 }) => {
   let _currentMember = currentMember;
-  if (
-    typeof window !== "undefined" &&
-    window.sessionStorage.getItem("current_member")
-  ) {
-    _currentMember = JSON.parse(
-      window.sessionStorage.getItem("current_member") || "",
-    );
+  if (typeof window !== "undefined" && window.sessionStorage.getItem("current_member")) {
+    _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
   const [memberList, setMembers] = useState<Member[] | undefined>(members);
@@ -44,15 +39,13 @@ export const MemberProvider = ({
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem("current_member", JSON.stringify(member));
     }
-    void putMemberSwitchByIdApi({ id: member.id }).then((res) => {
+    void putMemberSwitchByIdApi({id: member.id}).then((res) => {
       if (res.type === "success") {
         //We refresh after a successful switch member operation so that the data is listed according to the current member.
         router.refresh();
         setCurrentMember(member);
       } else {
-        toast.error(
-          "Cannot switch member at the moment. Please try again later.",
-        );
+        toast.error("Cannot switch member at the moment. Please try again later.");
       }
     });
   };
@@ -66,8 +59,7 @@ export const MemberProvider = ({
         members: memberList,
         setCurrentMember: saveMember,
         setMembers: saveMembers,
-      }}
-    >
+      }}>
       {children}
     </MemberContext.Provider>
   );

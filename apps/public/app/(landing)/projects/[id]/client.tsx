@@ -5,19 +5,19 @@ import {
   UpwithCrowd_Payment_PaymentStatus,
   UpwithCrowd_Projects_ProjectsResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { toast } from "@/components/ui/sonner";
-import { useState } from "react";
+import {toast} from "@/components/ui/sonner";
+import {useState} from "react";
 import ProjectCreator from "../_components/project-creator";
 import SupportCard from "../_components/support-card";
 import ProjectSummary from "../_components/project-summary";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Sparkles } from "lucide-react";
-import { postApiPaymentTransaction } from "@/actions/upwithcrowd/payment/post-action";
-import { UpwithCrowd_Payment_SavePaymentTransactionDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { useParams } from "next/navigation";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {Sparkles} from "lucide-react";
+import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment/post-action";
+import {UpwithCrowd_Payment_SavePaymentTransactionDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {useParams} from "next/navigation";
 import Link from "next/link";
-import { useMember } from "@/app/providers/member";
+import {useMember} from "@/app/providers/member";
 
 export default function ProjectDetails({
   funding,
@@ -26,12 +26,12 @@ export default function ProjectDetails({
   basics: UpwithCrowd_Projects_ProjectsResponseDto;
   funding: UpwithCrowd_Projects_ProjectsFundingResponseDto;
 }) {
-  const { id: projectId } = useParams<{ id: string }>();
+  const {id: projectId} = useParams<{id: string}>();
   const [currentImageIndex] = useState(0);
   const [customAmount, setCustomAmount] = useState<string>("");
   const donationOptions = [10, 25, 50, 100, 250, 500];
   const [selectedDonation, setSelectedDonation] = useState(donationOptions[0]);
-  const { currentMember } = useMember();
+  const {currentMember} = useMember();
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     setCustomAmount(value);
@@ -69,8 +69,7 @@ export default function ProjectDetails({
     }
   };
 
-  const fundedPercentage =
-    ((funding.fundableAmount ?? 0) / (funding.fundNominalAmount ?? 1)) * 100;
+  const fundedPercentage = ((funding.fundableAmount ?? 0) / (funding.fundNominalAmount ?? 1)) * 100;
 
   const blogPost = `
     <article class="prose lg:prose-xl mx-auto">
@@ -156,9 +155,7 @@ export default function ProjectDetails({
               fundedPercentage={fundedPercentage}
             />
             {/* PROJECT DETAILS SECTION BEGIN */}
-            <h2 className="mb-2 text-xl font-bold md:text-2xl">
-              What is the {basics.projectName}?{" "}
-            </h2>
+            <h2 className="mb-2 text-xl font-bold md:text-2xl">What is the {basics.projectName}? </h2>
             <p className="mb-8 text-lg">{basics.projectDefinition}</p>
           </div>
           <div className="lg:w-1/3">
@@ -190,9 +187,7 @@ export default function ProjectDetails({
             </div>
             <div className="relative flex justify-center">
               <div className="bg-background px-6">
-                <h2 className="text-4xl font-bold tracking-tight">
-                  Project Details
-                </h2>
+                <h2 className="text-4xl font-bold tracking-tight">Project Details</h2>
               </div>
             </div>
           </div>
@@ -202,7 +197,7 @@ export default function ProjectDetails({
           <div className="flex flex-col lg:w-3/5">
             <div className="relative mb-8 w-full">
               {/* Blog post content */}
-              <div dangerouslySetInnerHTML={{ __html: blogPost }} />
+              <div dangerouslySetInnerHTML={{__html: blogPost}} />
             </div>
           </div>
           <div className="lg:w-1/3">
@@ -212,7 +207,7 @@ export default function ProjectDetails({
                 <CardTitle>Table of Contents</CardTitle>
               </CardHeader>
               <CardContent>
-                <div dangerouslySetInnerHTML={{ __html: tableOfContents }} />
+                <div dangerouslySetInnerHTML={{__html: tableOfContents}} />
               </CardContent>
             </Card>
           </div>
@@ -223,8 +218,7 @@ export default function ProjectDetails({
       <div className="fixed bottom-8 right-8 z-50">
         <Link
           href={`/projects/${projectId}/basics`}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block rounded-full shadow-lg transition-all"
-        >
+          className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block rounded-full shadow-lg transition-all">
           <button className="px-6 py-3 font-medium">Edit Project</button>
         </Link>
       </div>

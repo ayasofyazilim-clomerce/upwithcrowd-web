@@ -1,8 +1,8 @@
 "use client";
 
-import { Session, SessionProvider } from "@repo/utils/auth";
-import { Member, MemberProvider } from "./member";
-import { Toaster } from "@/components/ui/sonner";
+import {Session, SessionProvider} from "@repo/utils/auth";
+import {Member, MemberProvider} from "./member";
+import {Toaster} from "@/components/ui/sonner";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -11,12 +11,7 @@ interface ProvidersProps {
   members?: Member[];
 }
 
-export default function Providers({
-  children,
-  session,
-  currentMember,
-  members,
-}: ProvidersProps) {
+export default function Providers({children, session, currentMember, members}: ProvidersProps) {
   return (
     <SessionProvider session={session}>
       <Toaster richColors />

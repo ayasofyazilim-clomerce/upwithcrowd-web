@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { MapPin, DollarSign, Target } from "lucide-react";
+import {Card} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {Progress} from "@/components/ui/progress";
+import {MapPin, DollarSign, Target} from "lucide-react";
 
 interface Project {
   id: string;
@@ -14,9 +14,8 @@ interface Project {
   fundCollectionType: string;
 }
 
-export default function ListedProjectCard({ project }: { project: Project }) {
-  const fundedPercentage =
-    (project.fundableAmount / project.fundNominalAmount) * 100;
+export default function ListedProjectCard({project}: {project: Project}) {
+  const fundedPercentage = (project.fundableAmount / project.fundNominalAmount) * 100;
 
   // Calculate days left
   const getDaysLeft = () => {
@@ -51,30 +50,22 @@ export default function ListedProjectCard({ project }: { project: Project }) {
         </h3>
         <div className="bg-primary/5 rounded-lg p-3 md:p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium md:text-sm">
-              Funded: {fundedPercentage.toFixed(0)}%
-            </span>
-            <span className="text-muted-foreground text-xs md:text-sm">
-              {getDaysLeft()} days left
-            </span>
+            <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
+            <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} days left</span>
           </div>
           <Progress value={fundedPercentage} className="mb-3 md:mb-4" />
           <div className="flex items-center justify-between text-xs md:text-sm">
             <div className="flex items-center">
               <DollarSign className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">
-                  ${project.fundNominalAmount.toString()}
-                </p>
+                <p className="font-semibold">${project.fundNominalAmount.toString()}</p>
                 <p className="text-muted-foreground text-xs">raised</p>
               </div>
             </div>
             <div className="flex items-center">
               <Target className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">
-                  ${project.fundableAmount.toString()}
-                </p>
+                <p className="font-semibold">${project.fundableAmount.toString()}</p>
                 <p className="text-muted-foreground text-xs">goal</p>
               </div>
             </div>
