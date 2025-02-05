@@ -42,6 +42,7 @@ import { postUserMembersApi } from "@/actions/upwithcrowd/user-members/post-acti
 import { useSession } from "@repo/utils/auth";
 import { getApiMemberApi } from "@/actions/upwithcrowd/member/actions";
 import { useMember } from "@/app/providers/member";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -66,6 +67,7 @@ const formSchema = z.object({
     .string()
     .regex(/^\d+$/, "Yıllık gelir sadece rakam içermelidir."),
   title: z.string().optional(),
+  tel: z.string().optional(),
 });
 
 export default function NewPersonalAccount() {
@@ -74,6 +76,7 @@ export default function NewPersonalAccount() {
   const userName = useSession()?.session?.user?.userName || "";
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,12 +95,7 @@ export default function NewPersonalAccount() {
 
   const canStartVerification = () => {
     const values = form.getValues();
-    return (
-      values.idType !== "NONE" &&
-      values.identifier &&
-      values.name &&
-      values.surname
-    );
+    return values.idType !== "NONE" && values.identifier;
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -149,6 +147,8 @@ export default function NewPersonalAccount() {
 
       if (memberResult.type === "success") {
         toast.success("Your personal account has been created successfully.");
+        router.refresh();
+        router.push("/profile");
       } else {
         try {
           const errorMessage = memberResult.message || "";
@@ -247,6 +247,58 @@ export default function NewPersonalAccount() {
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>E-Devlet Verification</Label>
+                <div className="flex flex-col gap-4">
+                  {!isVerifying && !isVerified && (
+                    <Button
+                      onClick={startVerification}
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      disabled={!canStartVerification()}
+                    >
+                      <Shield className="mr-2 h-4 w-4" />
+                      {canStartVerification()
+                        ? "Start E-Devlet Verification"
+                        : "Please fill required fields first"}
+                    </Button>
+                  )}
+
+                  {isVerifying && (
+                    <Button disabled className="w-full" variant="outline">
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Verifying...
+                    </Button>
+                  )}
+
+                  {isVerified && (
+                    <div className="bg-primary text-muted flex items-center justify-center rounded-md p-2 text-center">
+                      <Check className="mr-2 h-5 w-5" />
+                      <span>E-Devlet Verification Successful!</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="Enter email"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -275,58 +327,8 @@ export default function NewPersonalAccount() {
                 )}
               />
             </div>
-            <div className="space-y-2">
-              <Label>E-Devlet Verification</Label>
-              <div className="flex flex-col gap-4">
-                {!isVerifying && !isVerified && (
-                  <Button
-                    onClick={startVerification}
-                    type="button"
-                    variant="outline"
-                    className="w-full"
-                    disabled={!canStartVerification()}
-                  >
-                    <Shield className="mr-2 h-4 w-4" />
-                    {canStartVerification()
-                      ? "Start E-Devlet Verification"
-                      : "Please fill required fields first"}
-                  </Button>
-                )}
 
-                {isVerifying && (
-                  <Button disabled className="w-full" variant="outline">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Verifying...
-                  </Button>
-                )}
-
-                {isVerified && (
-                  <div className="bg-primary text-muted flex items-center justify-center rounded-md p-2 text-center">
-                    <Check className="mr-2 h-5 w-5" />
-                    <span>E-Devlet Verification Successful!</span>
-                  </div>
-                )}
-              </div>
-            </div>
             <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="Enter email"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="mobile"
@@ -340,25 +342,24 @@ export default function NewPersonalAccount() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="annualIncome"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Annual Income</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        placeholder="Enter annual income"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-
-            <FormField
-              control={form.control}
-              name="annualIncome"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Annual Income</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      placeholder="Enter annual income"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </CardContent>
           <CardFooter>
             <Button
@@ -371,9 +372,7 @@ export default function NewPersonalAccount() {
               )}
               {form.formState.isSubmitting
                 ? "Submitting..."
-                : !isVerified
-                  ? "E-Devlet Verification Required"
-                  : "Create Personal Account"}
+                : "Create Personal Account"}
             </Button>
           </CardFooter>
         </form>

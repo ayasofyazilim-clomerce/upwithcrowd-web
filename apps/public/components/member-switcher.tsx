@@ -16,16 +16,16 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useMediaQuery } from "@/components/ui/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { useSession } from "@repo/utils/auth";
 import Link from "next/link";
-import { useMediaQuery } from "@/components/ui/useMediaQuery";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { useRouter } from "next/navigation";
 
 export default function MemberSwitcher() {
@@ -34,15 +34,16 @@ export default function MemberSwitcher() {
   const [open, setOpen] = React.useState(false);
   const { session } = useSession();
   const { currentMember } = useMember();
-  let _currentMember = currentMember;
+  let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
 
   if (!_currentMember || _currentMember === null) {
     if (!currentMember || currentMember.isValidated === false) {
       router.push("/profile/new/personal");
     }
-
     _currentMember = {
-      id: session?.user?.userName || "",
+      id: Array.isArray(session?.user?.member_id)
+        ? session?.user?.member_id[0]
+        : session?.user?.member_id || "",
       name: session?.user?.name || "",
       surname: session?.user?.surname || "",
       identifier: session?.user?.email || "",
@@ -107,9 +108,8 @@ function Content({
   currentMember: Member;
 }) {
   const { members } = useMember();
-
   const organizations =
-    members?.filter((x) => x.type === "Organization" && x.name) || [];
+    members?.filter((x) => x.type === "Organization" && x.title) || [];
   const individuals = members?.filter((x) => x.type === "Individual") || [];
   return (
     <Command>
@@ -190,8 +190,8 @@ function MemberItem({ member }: { member: Partial<Member> }) {
           className="grayscale"
         />
         <AvatarFallback className="bg-primary/10 text-primary text-sm">
-          <span>{member.name?.slice(0, 1)}</span>
-          <span>{member.surname?.slice(0, 1)}</span>
+          <>{member.name?.slice(0, 1).toLocaleUpperCase()}</>
+          <>{member.surname?.slice(0, 1).toLocaleUpperCase()}</>
         </AvatarFallback>
       </Avatar>
       <div className="flex items-center gap-2 overflow-hidden text-left">
