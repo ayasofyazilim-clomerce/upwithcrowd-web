@@ -56,7 +56,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
       }).then((response) => {
         if (response.type === "success") {
           toast.success("Funding details updated successfully");
-          router.push(`/dashboard/projects/${projectId}/story`);
+          router.push(`/dashboard/projects/${projectId}/funding`);
         } else {
           toast.error("An unexpected error occurred");
         }
