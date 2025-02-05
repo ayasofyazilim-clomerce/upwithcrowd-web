@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         horizontal: {
           tabs: "h-auto overflow-visible",
           tabList:
-            "w-full bg-white shadow border-t p-0 sticky top-0 rounded-none h-16 justify-start md:justify-center",
+            "w-full bg-white shadow border-t p-0 sticky top-0 rounded-none h-16 justify-start md:justify-center z-50",
           tabContent: "m-0",
           tabTrigger:
             "data-[state=active]:text-primary h-full rounded-none data-[state=active]:shadow-none min-w-24 text-center data-[state=active]:font-bold",
@@ -14,27 +14,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }}
       tabList={[
         {
-          href: "basics",
+          href: "/projects/new",
+          label: "Tips",
+        },
+        {
+          href: "/projects/new/basics",
           label: "Basics",
         },
         {
-          href: "funding",
+          href: "/projects/new/funding",
           label: "Funding",
         },
         {
-          href: "story",
+          href: "/projects/new/story",
           label: "Story",
         },
         {
-          href: "people",
+          href: "/projects/new/people",
           label: "People",
         },
         {
-          href: "blocks",
+          href: "/projects/new/blocks",
           label: "Blocks",
         },
         {
-          href: "payment",
+          href: "/projects/new/payment",
           label: "Payment",
         },
       ]}
