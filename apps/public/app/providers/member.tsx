@@ -2,6 +2,7 @@
 import { putMemberSwitchByIdApi } from "@/actions/upwithcrowd/member/put-action";
 import { toast } from "@/components/ui/sonner";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 export type Member = UpwithCrowd_Members_ListMemberResponseDto;
 export type MemberContent = {
@@ -38,12 +39,15 @@ export const MemberProvider = ({
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
   const [memberList, setMembers] = useState<Member[] | undefined>(members);
+  const router = useRouter();
   const saveMember = (member: Member) => {
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem("current_member", JSON.stringify(member));
     }
     void putMemberSwitchByIdApi({ id: member.id }).then((res) => {
       if (res.type === "success") {
+        //We refresh after a successful switch member operation so that the data is listed according to the current member.
+        router.refresh();
         setCurrentMember(member);
       } else {
         toast.error(
