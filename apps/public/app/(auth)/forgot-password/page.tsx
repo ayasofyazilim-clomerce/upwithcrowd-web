@@ -1,14 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 
 export default function Page() {
   return (
@@ -22,28 +16,17 @@ export default function Page() {
             <form>
               <div className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
                   </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    required
-                  />
+                  <Input id="email" type="email" placeholder="Enter your email" required />
                 </div>
               </div>
               <Button className="mt-4 w-full">Reset Password</Button>
             </form>
           </CardContent>
           <CardFooter>
-            <Link
-              href="/login"
-              className="text-primary text-sm hover:underline"
-            >
+            <Link href="/login" className="text-primary text-sm hover:underline">
               Remember your password? Log In
             </Link>
           </CardFooter>

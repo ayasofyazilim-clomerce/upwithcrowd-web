@@ -1,8 +1,8 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { CircleAlert, Mail } from "lucide-react";
-import { FormContainer } from "../../new/_components/form";
-import { Section } from "../../new/_components/section";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Button} from "@/components/ui/button";
+import {CircleAlert, Mail} from "lucide-react";
+import {FormContainer} from "../../new/_components/form";
+import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 import UserCard from "../../new/_components/user-card";
 import ProfileLinkInput from "../../new/_components/vanity-url";
@@ -23,10 +23,7 @@ export default function People() {
         <Section
           className="border-b-0"
           title="Your profile"
-          text={[
-            "This will appear on your project page and must include your name, photo, and biography.",
-          ]}
-        >
+          text={["This will appear on your project page and must include your name, photo, and biography."]}>
           <FormContainer className="flex flex-col gap-4">
             <UserCard />
           </FormContainer>
@@ -36,8 +33,7 @@ export default function People() {
           title="Vanity URL"
           text={[
             "Create a custom URL for your profile page with at least three characters. This will also be the beginning of your project URL—we’ll generate that later.",
-          ]}
-        >
+          ]}>
           <FormContainer className="flex flex-col p-4">
             <ProfileLinkInput />
           </FormContainer>
@@ -47,16 +43,12 @@ export default function People() {
           title="Collaborators (optional)"
           text={[
             "If you're working with others, you can grant them permission to edit this project, communicate with backers, and coordinate reward fulfillment.",
-          ]}
-        >
+          ]}>
           <FormContainer className="flex flex-col gap-2">
             <Alert className="border-l-primary bg-primary/10 border-l-4 p-4">
               <CircleAlert className="h-4 w-4" />
               <AlertTitle>Heads up!</AlertTitle>
-              <AlertDescription>
-                You can add components and dependencies to your app using the
-                cli.
-              </AlertDescription>
+              <AlertDescription>You can add components and dependencies to your app using the cli.</AlertDescription>
             </Alert>
             <Alert className="flex items-center gap-4 p-4">
               <Mail className="h-4 w-4" />

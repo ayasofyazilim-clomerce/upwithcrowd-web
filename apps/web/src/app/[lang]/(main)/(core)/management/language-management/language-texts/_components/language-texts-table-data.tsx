@@ -3,41 +3,30 @@ import type {
   Volo_Abp_LanguageManagement_Dto_LanguageResourceDto,
   Volo_Abp_LanguageManagement_Dto_LanguageTextDto,
 } from "@ayasofyazilim/saas/AdministrationService";
-import { $Volo_Abp_LanguageManagement_Dto_LanguageTextDto } from "@ayasofyazilim/saas/AdministrationService";
+import {$Volo_Abp_LanguageManagement_Dto_LanguageTextDto} from "@ayasofyazilim/saas/AdministrationService";
 import type {
   TanstackTableColumnLink,
   TanstackTableCreationProps,
 } from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
-import { tanstackTableCreateColumnsByRowData } from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
-import type { AdministrationServiceResource } from "src/language-data/core/AdministrationService";
+import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
+import type {AdministrationServiceResource} from "src/language-data/core/AdministrationService";
 
-type LanguageTextsTable =
-  TanstackTableCreationProps<Volo_Abp_LanguageManagement_Dto_LanguageTextDto>;
+type LanguageTextsTable = TanstackTableCreationProps<Volo_Abp_LanguageManagement_Dto_LanguageTextDto>;
 
-const links: Partial<
-  Record<
-    keyof Volo_Abp_LanguageManagement_Dto_LanguageTextDto,
-    TanstackTableColumnLink
-  >
-> = {};
+const links: Partial<Record<keyof Volo_Abp_LanguageManagement_Dto_LanguageTextDto, TanstackTableColumnLink>> = {};
 
-const languageTextsColumns = (
-  locale: string,
-  languageData: AdministrationServiceResource,
-) => {
-  return tanstackTableCreateColumnsByRowData<Volo_Abp_LanguageManagement_Dto_LanguageTextDto>(
-    {
-      rows: $Volo_Abp_LanguageManagement_Dto_LanguageTextDto.properties,
-      languageData: {
-        languageData,
-        constantKey: "Form.LanguageText",
-      },
-      config: {
-        locale,
-      },
-      links,
+const languageTextsColumns = (locale: string, languageData: AdministrationServiceResource) => {
+  return tanstackTableCreateColumnsByRowData<Volo_Abp_LanguageManagement_Dto_LanguageTextDto>({
+    rows: $Volo_Abp_LanguageManagement_Dto_LanguageTextDto.properties,
+    languageData: {
+      languageData,
+      constantKey: "Form.LanguageText",
     },
-  );
+    config: {
+      locale,
+    },
+    links,
+  });
 };
 function languageTextsTable(
   languageData: AdministrationServiceResource,

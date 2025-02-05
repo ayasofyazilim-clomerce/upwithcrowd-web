@@ -9,16 +9,12 @@ import type {
   GetApiOpeniddictApplicationsData,
   GetApiOpeniddictScopesData,
 } from "@ayasofyazilim/saas/IdentityService";
-import {
-  getIdentityServiceClient,
-  structuredError,
-  structuredResponse,
-} from "src/lib";
+import {getIdentityServiceClient, structuredError, structuredResponse} from "src/lib";
 
 export async function getRolesByIdClaimsApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const response = await client.role.getApiIdentityRolesByIdClaims({ id });
+    const response = await client.role.getApiIdentityRolesByIdClaims({id});
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);
@@ -36,7 +32,7 @@ export async function getAllRoleClaimsApi() {
 export async function getUsersByIdClaimsApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const response = await client.user.getApiIdentityUsersByIdClaims({ id });
+    const response = await client.user.getApiIdentityUsersByIdClaims({id});
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);
@@ -66,8 +62,7 @@ export async function getAllRolesApi() {
 export async function getUsersByIdTwoFactorEnabledApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.user.getApiIdentityUsersByIdTwoFactorEnabled({ id });
+    const dataResponse = await client.user.getApiIdentityUsersByIdTwoFactorEnabled({id});
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -87,8 +82,7 @@ export async function getSessionsApi(data: GetApiIdentitySessionsData) {
 export async function getUserOrganizationByIdApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.user.getApiIdentityUsersByIdOrganizationUnits({ id });
+    const dataResponse = await client.user.getApiIdentityUsersByIdOrganizationUnits({id});
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -98,10 +92,9 @@ export async function getUserOrganizationByIdApi(id: string) {
 export async function getAssignableRolesApi(roleId: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.assignableRole.getApiIdentityAssignableRolesAllRolesWithAssignableByRoleId(
-        { roleId },
-      );
+    const dataResponse = await client.assignableRole.getApiIdentityAssignableRolesAllRolesWithAssignableByRoleId({
+      roleId,
+    });
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -110,8 +103,7 @@ export async function getAssignableRolesApi(roleId: string) {
 export async function getAssignableRolesByCurrentUserApi() {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.role.getApiIdentityRolesAssignableRolesByCurrentUser();
+    const dataResponse = await client.role.getApiIdentityRolesAssignableRolesByCurrentUser();
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -121,21 +113,17 @@ export async function getAssignableRolesByCurrentUserApi() {
 export async function getAllOrganizationApi() {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.organizationUnit.getApiIdentityOrganizationUnitsAll();
+    const dataResponse = await client.organizationUnit.getApiIdentityOrganizationUnitsAll();
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
   }
 }
 
-export async function getIdentitySecurityLogsApi(
-  data: GetApiIdentitySecurityLogsData,
-) {
+export async function getIdentitySecurityLogsApi(data: GetApiIdentitySecurityLogsData) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.securityLog.getApiIdentitySecurityLogs(data);
+    const dataResponse = await client.securityLog.getApiIdentitySecurityLogs(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -155,7 +143,7 @@ export async function getRolesApi(data: GetApiIdentityRolesData = {}) {
 export async function getRoleDetailsByIdApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse = await client.role.getApiIdentityRolesById({ id });
+    const dataResponse = await client.role.getApiIdentityRolesById({id});
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -175,7 +163,7 @@ export async function getUsersApi(data: GetApiIdentityUsersData) {
 export async function getUserDetailsByIdApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse = await client.user.getApiIdentityUsersByIdById({ id });
+    const dataResponse = await client.user.getApiIdentityUsersByIdById({id});
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -195,8 +183,7 @@ export async function getUsersLookupRolesApi() {
 export async function getUsersLookupOrganizationUnitsApi() {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.user.getApiIdentityUsersLookupOrganizationUnits();
+    const dataResponse = await client.user.getApiIdentityUsersLookupOrganizationUnits();
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -216,8 +203,7 @@ export async function getUsersAssignableRolesApi() {
 export async function getUsersAvailableOrganizationUnitsApi() {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.user.getApiIdentityUsersAvailableOrganizationUnits();
+    const dataResponse = await client.user.getApiIdentityUsersAvailableOrganizationUnits();
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -227,7 +213,7 @@ export async function getUsersAvailableOrganizationUnitsApi() {
 export async function getUsersByIdRolesApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse = await client.user.getApiIdentityUsersByIdRoles({ id });
+    const dataResponse = await client.user.getApiIdentityUsersByIdRoles({id});
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -237,8 +223,7 @@ export async function getUsersByIdRolesApi(id: string) {
 export async function getUsersByIdOrganizationUnitsApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const dataResponse =
-      await client.user.getApiIdentityUsersByIdOrganizationUnits({ id });
+    const dataResponse = await client.user.getApiIdentityUsersByIdOrganizationUnits({id});
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
@@ -290,20 +275,17 @@ export async function getAllScopesApi() {
 export async function getScopeDetailsByIdApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const response = await client.scopes.getApiOpeniddictScopesById({ id });
+    const response = await client.scopes.getApiOpeniddictScopesById({id});
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);
   }
 }
 
-export async function getApplicationsApi(
-  data: GetApiOpeniddictApplicationsData,
-) {
+export async function getApplicationsApi(data: GetApiOpeniddictApplicationsData) {
   try {
     const client = await getIdentityServiceClient();
-    const response =
-      await client.applications.getApiOpeniddictApplications(data);
+    const response = await client.applications.getApiOpeniddictApplications(data);
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);
@@ -313,9 +295,7 @@ export async function getApplicationsApi(
 export async function getApplicationDetailsByIdApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const response = await client.applications.getApiOpeniddictApplicationsById(
-      { id },
-    );
+    const response = await client.applications.getApiOpeniddictApplicationsById({id});
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);
@@ -325,10 +305,9 @@ export async function getApplicationDetailsByIdApi(id: string) {
 export async function getApplicationsByIdTokenLifetimeApi(id: string) {
   try {
     const client = await getIdentityServiceClient();
-    const response =
-      await client.applications.getApiOpeniddictApplicationsByIdTokenLifetime({
-        id,
-      });
+    const response = await client.applications.getApiOpeniddictApplicationsByIdTokenLifetime({
+      id,
+    });
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);

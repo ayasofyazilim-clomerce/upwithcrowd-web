@@ -1,4 +1,4 @@
-import { getPublicProjectsApi } from "@/actions/upwithcrowd/public-project/actions";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
 import ListedProjectCard from "./_components/listed-project-card";
 import LandingHero from "@/components/landing-hero";
 
@@ -23,12 +23,10 @@ export default async function Page() {
                 project={{
                   id: project.id,
                   projectName: project.projectName,
-                  projectEndDate:
-                    project.projectEndDate || new Date().toISOString(), // Add default value
+                  projectEndDate: project.projectEndDate || new Date().toISOString(), // Add default value
                   fundableAmount: project.fundableAmount,
                   fundNominalAmount: project.fundNominalAmount,
-                  fundCollectionType:
-                    project.fundCollectionType?.toString() || "",
+                  fundCollectionType: project.fundCollectionType?.toString() || "",
                 }}
               />
             ))}

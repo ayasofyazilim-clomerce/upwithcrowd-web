@@ -1,7 +1,7 @@
 "use server";
-import { getUpwithcrowd } from "@/utils/client";
-import { PutApiIdentityUsersByIdData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { structuredError, structuredResponse } from "@repo/utils/api";
+import {getUpwithcrowd} from "@/utils/client";
+import {PutApiIdentityUsersByIdData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {structuredError, structuredResponse} from "@repo/utils/api";
 
 export async function putUserApi(data: PutApiIdentityUsersByIdData) {
   try {

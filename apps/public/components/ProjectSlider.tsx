@@ -1,19 +1,13 @@
 "use client";
 
-import { projects } from "@/_data/projects";
-import { Project } from "@/_types";
-import { DollarSign, MapPin, Target } from "lucide-react";
+import {projects} from "@/_data/projects";
+import {Project} from "@/_types";
+import {DollarSign, MapPin, Target} from "lucide-react";
 import Image from "next/image";
-import { Badge } from "./ui/badge";
-import { Card } from "./ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./ui/carousel";
-import { Progress } from "./ui/progress";
+import {Badge} from "./ui/badge";
+import {Card} from "./ui/card";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "./ui/carousel";
+import {Progress} from "./ui/progress";
 
 export function ProjectSlider() {
   return (
@@ -21,27 +15,18 @@ export function ProjectSlider() {
       <div className="container mx-auto">
         <div className="mb-10 flex flex-col items-center">
           <h4 className="text-2xl uppercase">Our cases</h4>
-          <h2 className="text-center text-4xl font-bold">
-            Popular causes what you should know
-          </h2>
+          <h2 className="text-center text-4xl font-bold">Popular causes what you should know</h2>
         </div>
         <Carousel
           className="mx-auto w-full max-w-6xl"
           opts={{
             loop: true,
             align: "center",
-          }}
-        >
+          }}>
           <CarouselContent className="m-0">
             {projects.map((project) => (
-              <CarouselItem
-                className="p-2 md:basis-1/2 md:p-4 lg:basis-1/3"
-                key={project.id}
-              >
-                <Card
-                  key={project.id}
-                  className="space-y-4 overflow-hidden border-none p-4 shadow-lg"
-                >
+              <CarouselItem className="p-2 md:basis-1/2 md:p-4 lg:basis-1/3" key={project.id}>
+                <Card key={project.id} className="space-y-4 overflow-hidden border-none p-4 shadow-lg">
                   <ProjectImage project={project} />
                   <ProjectDetails project={project} />
                 </Card>
@@ -58,7 +43,7 @@ export function ProjectSlider() {
   );
 }
 
-function ProjectImage({ project }: { project: Project }) {
+function ProjectImage({project}: {project: Project}) {
   return (
     <div className="relative">
       <Image
@@ -68,14 +53,12 @@ function ProjectImage({ project }: { project: Project }) {
         height={200}
         className="h-48 w-full rounded-lg object-cover"
       />
-      <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">
-        {project.badge}
-      </Badge>
+      <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">{project.badge}</Badge>
     </div>
   );
 }
 
-function ProjectDetails({ project }: { project: Project }) {
+function ProjectDetails({project}: {project: Project}) {
   const fundedPercentage = (project.raised / project.goal) * 100;
   return (
     <div>
@@ -88,12 +71,8 @@ function ProjectDetails({ project }: { project: Project }) {
       </h3>
       <div className="bg-primary/5 rounded-lg p-3 md:p-4">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs font-medium md:text-sm">
-            Funded: {fundedPercentage.toFixed(0)}%
-          </span>
-          <span className="text-muted-foreground text-xs md:text-sm">
-            30 days left
-          </span>
+          <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
+          <span className="text-muted-foreground text-xs md:text-sm">30 days left</span>
         </div>
         <Progress value={fundedPercentage} className="mb-3 md:mb-4" />
         <div className="flex items-center justify-between text-xs md:text-sm">

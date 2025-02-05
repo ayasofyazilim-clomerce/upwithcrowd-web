@@ -1,12 +1,11 @@
-import { TabLayout } from "@repo/ayasofyazilim-ui/templates/tab-layout";
-export default function Layout({ children }: { children: React.ReactNode }) {
+import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
+export default function Layout({children}: {children: React.ReactNode}) {
   return (
     <TabLayout
       classNames={{
         horizontal: {
           tabs: "h-auto overflow-visible",
-          tabList:
-            "w-full bg-white shadow border-t p-0 sticky top-0 rounded-none h-16 justify-start md:justify-center z-50",
+          tabList: "w-full bg-white shadow border-t p-0 sticky top-0 rounded-none h-16 justify-start md:justify-center",
           tabContent: "m-0",
           tabTrigger:
             "data-[state=active]:text-primary h-full rounded-none data-[state=active]:shadow-none min-w-24 text-center data-[state=active]:font-bold",
@@ -14,35 +13,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }}
       tabList={[
         {
-          href: "/projects/new",
-          label: "Tips",
-        },
-        {
-          href: "/projects/new/basics",
+          href: "basics",
           label: "Basics",
         },
         {
-          href: "/projects/new/funding",
+          href: "funding",
           label: "Funding",
         },
         {
-          href: "/projects/new/story",
+          href: "story",
           label: "Story",
         },
         {
-          href: "/projects/new/people",
+          href: "people",
           label: "People",
         },
         {
-          href: "/projects/new/blocks",
+          href: "blocks",
           label: "Blocks",
         },
         {
-          href: "/projects/new/payment",
+          href: "payment",
           label: "Payment",
         },
-      ]}
-    >
+      ]}>
       {children}
     </TabLayout>
   );

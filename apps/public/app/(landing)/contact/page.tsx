@@ -1,7 +1,7 @@
 import CallToAction from "@/components/CallToAction";
 import Map from "@/components/Map";
 import ContactInfo from "./_components/contact-card";
-import { ContactForm } from "./client";
+import {ContactForm} from "./client";
 import LandingHero from "@/components/landing-hero";
 
 export default function Page() {

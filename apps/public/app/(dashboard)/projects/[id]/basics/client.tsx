@@ -1,37 +1,30 @@
 "use client";
-import { putProjectBasicsByIdApi } from "@/actions/upwithcrowd/project/put-action";
+import {putProjectBasicsByIdApi} from "@/actions/upwithcrowd/project/put-action";
 import type {
   UpwithCrowd_Projects_CategoryType,
   UpwithCrowd_Projects_ProjectDto,
   UpwithCrowd_Projects_ProjectType,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { DatePicker } from "@/components/ui/date-picker";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {DatePicker} from "@/components/ui/date-picker";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
 import * as SheetRoot from "@/components/ui/sheet";
-import { Textarea } from "@/components/ui/textarea";
-import { Combobox } from "@repo/ayasofyazilim-ui/molecules/combobox";
-import { Search, UserPlus } from "lucide-react";
-import { useState, useEffect } from "react";
-import { FormContainer, FormField } from "../../new/_components/form";
-import { Section } from "../../new/_components/section";
+import {Textarea} from "@/components/ui/textarea";
+import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
+import {Search, UserPlus} from "lucide-react";
+import {useState, useEffect} from "react";
+import {FormContainer, FormField} from "../../new/_components/form";
+import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
-import { toast } from "@/components/ui/sonner";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField as FormFieldUI,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useParams } from "next/navigation";
+import {toast} from "@/components/ui/sonner";
+import {useRouter} from "next/navigation";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Checkbox} from "@/components/ui/checkbox";
+import {useParams} from "next/navigation";
 
 const CategoryType = {
   Technology: "Technology",
@@ -44,31 +37,20 @@ const ProjectType = {
 } as const;
 
 const projectSchema = z.object({
-  projectName: z
-    .string()
-    .min(1, "Proje adı zorunludur")
-    .max(60, "Proje adı en fazla 60 karakter olabilir"),
-  projectDefinition: z
-    .string()
-    .max(135, "Proje açıklaması en fazla 135 karakter olabilir"),
+  projectName: z.string().min(1, "Proje adı zorunludur").max(60, "Proje adı en fazla 60 karakter olabilir"),
+  projectDefinition: z.string().max(135, "Proje açıklaması en fazla 135 karakter olabilir"),
   projectStartDate: z.string(),
   projectEndDate: z.string().optional(),
-  categoryTypes: z.array(
-    z.enum([CategoryType.Technology, CategoryType.Production]),
-  ),
+  categoryTypes: z.array(z.enum([CategoryType.Technology, CategoryType.Production])),
   projectTypes: z.array(z.enum([ProjectType.Initiative, ProjectType.Project])),
   sectorId: z.string(),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
 
-export default function ClientBasics({
-  projectDetail,
-}: {
-  projectDetail: UpwithCrowd_Projects_ProjectDto;
-}) {
+export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrowd_Projects_ProjectDto}) {
   const router = useRouter();
-  const { id: projectId } = useParams<{ id: string }>();
+  const {id: projectId} = useParams<{id: string}>();
 
   const [spesifDate, setSpesifDate] = useState(false);
 
@@ -76,12 +58,8 @@ export default function ClientBasics({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       ...projectDetail,
-      categoryTypes: projectDetail.categoryTypes.map(
-        (category) => CategoryType[category as keyof typeof CategoryType],
-      ),
-      projectTypes: projectDetail.projectTypes.map(
-        (type) => ProjectType[type as keyof typeof ProjectType],
-      ),
+      categoryTypes: projectDetail.categoryTypes.map((category) => CategoryType[category as keyof typeof CategoryType]),
+      projectTypes: projectDetail.projectTypes.map((type) => ProjectType[type as keyof typeof ProjectType]),
     },
   });
 
@@ -97,9 +75,7 @@ export default function ClientBasics({
   const onSubmit = (data: ProjectFormValues) => {
     const projectEndDate = data.projectEndDate
       ? new Date(data.projectEndDate)
-      : new Date(data.projectStartDate).setDate(
-          new Date(data.projectStartDate).getDate() + 60,
-        );
+      : new Date(data.projectStartDate).setDate(new Date(data.projectStartDate).getDate() + 60);
 
     putProjectBasicsByIdApi({
       requestBody: {
@@ -158,20 +134,16 @@ export default function ClientBasics({
               text={[
                 "Projenizi hızlıca anlamalarına yardımcı olacak net ve kısa bir başlık yazın.",
                 "Potansiyel destekçiler, projeniz kategori sayfalarında, arama sonuçlarında veya topluluğumuza gönderdiğimiz e-postalarda görüntülendiğinde bunları görecektir.",
-              ]}
-            >
+              ]}>
               <FormContainer>
                 <FormFieldUI
                   control={form.control}
                   name="projectName"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Başlık</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Papercuts: A Party Game for Rude and Well-Read"
-                          {...field}
-                        />
+                        <Input placeholder="Papercuts: A Party Game for Rude and Well-Read" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -181,7 +153,7 @@ export default function ClientBasics({
                 <FormFieldUI
                   control={form.control}
                   name="projectDefinition"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Alt başlık</FormLabel>
                       <FormControl>
@@ -203,13 +175,12 @@ export default function ClientBasics({
               text={[
                 "Projenizi en iyi tanımlayan kategorileri ve türleri seçin.",
                 "Bu seçimler, destekçilerin projenizi bulmasına ve size uygun rehberlik sağlamamıza yardımcı olacaktır.",
-              ]}
-            >
+              ]}>
               <FormContainer className="grid gap-4">
                 <FormFieldUI
                   control={form.control}
                   name="categoryTypes"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Kategori Türleri</FormLabel>
                       <FormControl>
@@ -218,22 +189,13 @@ export default function ClientBasics({
                             <Button
                               key={category.value}
                               type="button"
-                              variant={
-                                field.value.includes(category.value)
-                                  ? "default"
-                                  : "outline"
-                              }
+                              variant={field.value.includes(category.value) ? "default" : "outline"}
                               onClick={() => {
-                                const newValue = field.value.includes(
-                                  category.value,
-                                )
-                                  ? field.value.filter(
-                                      (v) => v !== category.value,
-                                    )
+                                const newValue = field.value.includes(category.value)
+                                  ? field.value.filter((v) => v !== category.value)
                                   : [...field.value, category.value];
                                 field.onChange(newValue);
-                              }}
-                            >
+                              }}>
                               {category.label}
                             </Button>
                           ))}
@@ -247,7 +209,7 @@ export default function ClientBasics({
                 <FormFieldUI
                   control={form.control}
                   name="projectTypes"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <FormLabel>Proje Türleri</FormLabel>
                       <FormControl>
@@ -256,20 +218,13 @@ export default function ClientBasics({
                             <Button
                               key={type.value}
                               type="button"
-                              variant={
-                                field.value.includes(type.value)
-                                  ? "default"
-                                  : "outline"
-                              }
+                              variant={field.value.includes(type.value) ? "default" : "outline"}
                               onClick={() => {
-                                const newValue = field.value.includes(
-                                  type.value,
-                                )
+                                const newValue = field.value.includes(type.value)
                                   ? field.value.filter((v) => v !== type.value)
                                   : [...field.value, type.value];
                                 field.onChange(newValue);
-                              }}
-                            >
+                              }}>
                               {type.label}
                             </Button>
                           ))}
@@ -284,18 +239,10 @@ export default function ClientBasics({
 
             <Section title="Project leader" text="Who is leading this project?">
               <FormContainer>
-                <Combobox
-                  list={[]}
-                  onValueChange={() => {}}
-                  selectIdentifier={""}
-                  selectLabel={""}
-                />
+                <Combobox list={[]} onValueChange={() => {}} selectIdentifier={""} selectLabel={""} />
               </FormContainer>
             </Section>
-            <Section
-              title="Project members"
-              text="Who is working on this project?"
-            >
+            <Section title="Project members" text="Who is working on this project?">
               <FormContainer>
                 <SheetRoot.Sheet>
                   <SheetRoot.SheetTrigger asChild>
@@ -310,39 +257,29 @@ export default function ClientBasics({
             </Section>
             <Section
               title="Project location"
-              text="Enter the location that best describes where your project is based."
-            >
+              text="Enter the location that best describes where your project is based.">
               <FormContainer>
                 <FormField htmlFor="location">
                   <div className="relative">
-                    <Input
-                      id="location"
-                      className="peer pl-8"
-                      placeholder="Start typing your location..."
-                    />
+                    <Input id="location" className="peer pl-8" placeholder="Start typing your location..." />
                     <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
                   </div>
                 </FormField>
               </FormContainer>
             </Section>
 
-            <Section
-              title="Proje tarihleri"
-              text="Projenizin başlangıç ve bitiş tarihlerini seçin."
-            >
+            <Section title="Proje tarihleri" text="Projenizin başlangıç ve bitiş tarihlerini seçin.">
               <FormContainer>
                 <div className="flex flex-col gap-4">
                   <FormFieldUI
                     control={form.control}
                     name="projectStartDate"
-                    render={({ field }) => (
+                    render={({field}) => (
                       <FormItem className="flex-1">
                         <FormLabel>Başlangıç Tarihi</FormLabel>
                         <FormControl>
                           <DatePicker
-                            date={
-                              field.value ? new Date(field.value) : undefined
-                            }
+                            date={field.value ? new Date(field.value) : undefined}
                             setDate={(date?: Date) => {
                               field.onChange(date?.toISOString() || "");
                             }}
@@ -362,8 +299,7 @@ export default function ClientBasics({
                     />
                     <Label
                       htmlFor="overfunding"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       End Spesific Date
                     </Label>
                   </div>
@@ -371,14 +307,12 @@ export default function ClientBasics({
                   <FormFieldUI
                     control={form.control}
                     name="projectEndDate"
-                    render={({ field }) => (
+                    render={({field}) => (
                       <FormItem className="flex-1">
                         <FormLabel>Bitiş Tarihi</FormLabel>
                         <FormControl>
                           <DatePicker
-                            date={
-                              field.value ? new Date(field.value) : undefined
-                            }
+                            date={field.value ? new Date(field.value) : undefined}
                             setDate={(date?: Date) => {
                               field.onChange(date?.toISOString() || "");
                             }}

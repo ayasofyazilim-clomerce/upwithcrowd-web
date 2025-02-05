@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 import TextWithTitle from "./text-with-title";
-import { Lightbulb } from "lucide-react";
+import {Lightbulb} from "lucide-react";
 import Link from "next/link";
 
 const defaultTextWithTitleClassNames = {
@@ -19,17 +19,8 @@ export function Section({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "grid items-start gap-8 border-b py-8 md:grid-cols-3",
-        className,
-      )}
-    >
-      <TextWithTitle
-        classNames={defaultTextWithTitleClassNames}
-        title={title}
-        text={text}
-      />
+    <div className={cn("grid items-start gap-8 border-b py-8 md:grid-cols-3", className)}>
+      <TextWithTitle classNames={defaultTextWithTitleClassNames} title={title} text={text} />
       {children}
     </div>
   );

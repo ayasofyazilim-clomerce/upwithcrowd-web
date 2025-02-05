@@ -1,15 +1,15 @@
 "use server";
-import { TabLayout } from "@repo/ayasofyazilim-ui/templates/tab-layout";
-import { getResourceData } from "src/language-data/core/AccountService";
+import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
+import {getResourceData} from "src/language-data/core/AccountService";
 
 export default async function Layout({
   children,
   params,
 }: {
-  params: { lang: string; vatStatementId: string };
+  params: {lang: string; vatStatementId: string};
   children: React.ReactNode;
 }) {
-  const { languageData } = await getResourceData(params.lang);
+  const {languageData} = await getResourceData(params.lang);
   return (
     <TabLayout
       orientation="horizontal"
@@ -34,8 +34,7 @@ export default async function Layout({
           label: languageData["Profile.Picture"],
           href: "profile-picture",
         },
-      ]}
-    >
+      ]}>
       {children}
     </TabLayout>
   );

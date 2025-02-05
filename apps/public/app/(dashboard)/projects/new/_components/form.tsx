@@ -1,9 +1,9 @@
 "use client";
-import { Input, InputProps } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import React, { useState, ChangeEvent } from "react";
+import {Input, InputProps} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {cn} from "@/lib/utils";
+import React, {useState, ChangeEvent} from "react";
 
 type FormFieldProps<T> = {
   id: string;
@@ -15,23 +15,8 @@ type FormFieldProps<T> = {
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 } & T;
-export function FormContainer({
-  children,
-  className,
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "col-span-2 flex flex-col rounded-lg border bg-white p-4",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+export function FormContainer({children, className}: {children?: React.ReactNode; className?: string}) {
+  return <div className={cn("col-span-2 flex flex-col rounded-lg border bg-white p-4", className)}>{children}</div>;
 }
 export function FormInputFieldWithCounter<T = InputProps>({
   id,
@@ -44,7 +29,7 @@ export function FormInputFieldWithCounter<T = InputProps>({
   ...props
 }: FormFieldProps<T>) {
   const [textLength, setTextLength] = useState(value.length);
-  const { onChange, ...rest } = props;
+  const {onChange, ...rest} = props;
   return (
     <FormField htmlFor={id} label={label}>
       <FormElement
@@ -68,15 +53,7 @@ export function FormInputFieldWithCounter<T = InputProps>({
   );
 }
 
-export function FormField({
-  children,
-  label,
-  htmlFor,
-}: {
-  children: React.ReactNode;
-  label?: string;
-  htmlFor: string;
-}) {
+export function FormField({children, label, htmlFor}: {children: React.ReactNode; label?: string; htmlFor: string}) {
   return (
     <div className="flex flex-col gap-2">
       {label && <Label htmlFor={htmlFor}>{label}</Label>}

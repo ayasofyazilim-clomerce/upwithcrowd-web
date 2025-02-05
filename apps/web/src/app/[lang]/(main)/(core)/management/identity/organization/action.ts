@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- TODO: we need to fix this*/
-import { getBaseLink } from "src/utils";
+import {getBaseLink} from "src/utils";
 
 export interface OrganizationUnit {
   parentId: string;

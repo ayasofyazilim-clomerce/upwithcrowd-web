@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@repo/utils/auth";
+import {useSession} from "@repo/utils/auth";
 
 // Mock user data
 // const userData = {
@@ -11,7 +11,7 @@ import { useSession } from "@repo/utils/auth";
 // };
 
 export default function People() {
-  const { session } = useSession();
+  const {session} = useSession();
   const currentUser = session?.user;
   // const [profileImage, setProfileImage] = useState(userData.profileImage);
 

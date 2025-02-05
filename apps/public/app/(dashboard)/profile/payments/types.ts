@@ -1,4 +1,4 @@
-import { UpwithCrowd_Payment_ListPaymentTransactionDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {UpwithCrowd_Payment_ListPaymentTransactionDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
 export type Payment = {
   projectName: string;

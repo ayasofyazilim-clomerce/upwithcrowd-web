@@ -1,4 +1,4 @@
-import { HandCoins, Heart } from "lucide-react";
+import {HandCoins, Heart} from "lucide-react";
 
 export const services = [
   {

@@ -1,7 +1,7 @@
 "use server";
-import { getUpwithcrowd } from "@/utils/client";
-import { PutApiMemberByIdSwitchData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { structuredError, structuredResponse } from "@repo/utils/api";
+import {getUpwithcrowd} from "@/utils/client";
+import {PutApiMemberByIdSwitchData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {structuredError, structuredResponse} from "@repo/utils/api";
 
 export async function putMemberSwitchByIdApi(data: PutApiMemberByIdSwitchData) {
   try {

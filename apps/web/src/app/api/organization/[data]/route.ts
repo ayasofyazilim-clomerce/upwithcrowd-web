@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment -- TODO: we need to fix this*/
-import type { NextRequest } from "next/server";
-import { getIdentityServiceClient } from "src/lib";
-import type { Clients } from "../../util";
-import { commonDELETE, commonGET, commonPUT } from "../../util";
+import type {NextRequest} from "next/server";
+import {getIdentityServiceClient} from "src/lib";
+import type {Clients} from "../../util";
+import {commonDELETE, commonGET, commonPUT} from "../../util";
 
 const clients: Clients = {
   organizationUser: async () => {
@@ -15,18 +15,16 @@ const clients: Clients = {
           maxResultCount: page === 0 ? 10 : page,
         });
       },
-      put: async ({ id, requestBody }) => {
-        const _requestBody = requestBody as { userIds: string[] };
+      put: async ({id, requestBody}) => {
+        const _requestBody = requestBody as {userIds: string[]};
         return organization.putApiIdentityOrganizationUnitsByIdMembers({
           id,
           requestBody: _requestBody,
         });
       },
       delete: async (id) => {
-        const returnObject = id as unknown as { id: string; memberId: string };
-        return organization.deleteApiIdentityOrganizationUnitsByIdMembersByMemberId(
-          returnObject,
-        );
+        const returnObject = id as unknown as {id: string; memberId: string};
+        return organization.deleteApiIdentityOrganizationUnitsByIdMembersByMemberId(returnObject);
       },
     };
   },
@@ -41,18 +39,16 @@ const clients: Clients = {
           maxResultCount: page === 0 ? 10 : page,
         });
       },
-      put: async ({ id, requestBody }) => {
-        const _requestBody = requestBody as { roleIds: string[] };
+      put: async ({id, requestBody}) => {
+        const _requestBody = requestBody as {roleIds: string[]};
         return organization.putApiIdentityOrganizationUnitsByIdRoles({
           id,
           requestBody: _requestBody,
         });
       },
       delete: async (id) => {
-        const returnObject = id as unknown as { id: string; roleId: string };
-        return organization.deleteApiIdentityOrganizationUnitsByIdRolesByRoleId(
-          returnObject,
-        );
+        const returnObject = id as unknown as {id: string; roleId: string};
+        return organization.deleteApiIdentityOrganizationUnitsByIdRolesByRoleId(returnObject);
       },
     };
   },
@@ -61,7 +57,7 @@ const clients: Clients = {
     const client = await getIdentityServiceClient();
     const organization = client.organizationUnit;
     return {
-      put: async ({ id, requestBody }) => {
+      put: async ({id, requestBody}) => {
         return organization.putApiIdentityOrganizationUnitsByIdMoveAllUsers({
           id,
           organizationId: requestBody as string,
@@ -74,31 +70,22 @@ const clients: Clients = {
     const client = await getIdentityServiceClient();
     const organization = client.organizationUnit;
     return {
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        organization.putApiIdentityOrganizationUnitsById({ id, requestBody }),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        organization.putApiIdentityOrganizationUnitsById({id, requestBody}),
     };
   },
 };
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
+export async function GET(request: NextRequest, {params}: {params: {data: string}}) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id") || "";
-  return commonGET(request, { params }, clients, id);
+  return commonGET(request, {params}, clients, id);
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
-  return commonDELETE(request, { params }, clients);
+export async function DELETE(request: NextRequest, {params}: {params: {data: string}}) {
+  return commonDELETE(request, {params}, clients);
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
-  return commonPUT(request, { params }, clients);
+export async function PUT(request: NextRequest, {params}: {params: {data: string}}) {
+  return commonPUT(request, {params}, clients);
 }

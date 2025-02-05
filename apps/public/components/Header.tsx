@@ -1,34 +1,31 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { useSession } from "@repo/utils/auth";
-import { Menu, X } from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
+import {useSession} from "@repo/utils/auth";
+import {Menu, X} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import {usePathname} from "next/navigation";
+import {useState} from "react";
 import MemberSwitcher from "./member-switcher";
 const PublicLinks = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-  { href: "/blogs", label: "Blog" },
-  { href: "/about", label: "About" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
+  {href: "/", label: "Home"},
+  {href: "/projects", label: "Projects"},
+  {href: "/blogs", label: "Blog"},
+  {href: "/about", label: "About"},
+  {href: "/faq", label: "FAQ"},
+  {href: "/contact", label: "Contact"},
 ];
 
 export default function Header() {
   const pathName = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { session } = useSession();
+  const {session} = useSession();
   return (
     <header className="bg-background flex h-24 px-6">
       <div className="container mx-auto flex items-center justify-between">
-        <Link
-          href="/"
-          className="text-primary flex items-center text-2xl font-bold"
-        >
+        <Link href="/" className="text-primary flex items-center text-2xl font-bold">
           <Image src="/upwc.png" alt="" width={60} height={60} />
           UPwithCrowd
         </Link>
@@ -38,11 +35,7 @@ export default function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={cn(
-                    "text-foreground hover:text-primary ye",
-                    pathName === link.href && "text-primary",
-                  )}
-                >
+                  className={cn("text-foreground hover:text-primary ye", pathName === link.href && "text-primary")}>
                   {link.label}
                 </Link>
               </li>
@@ -63,11 +56,7 @@ export default function Header() {
             </>
           )}
         </div>
-        <button
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
+        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
           {isMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -81,16 +70,13 @@ export default function Header() {
                   className={cn(
                     "text-foreground hover:text-primary block py-2",
                     pathName === link.href && "text-primary",
-                  )}
-                >
+                  )}>
                   {link.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Button className="w-full">
-                {session?.user ? "Start a Project" : "Sign up"}
-              </Button>
+              <Button className="w-full">{session?.user ? "Start a Project" : "Sign up"}</Button>
             </li>
           </ul>
         </nav>

@@ -3,14 +3,10 @@ import type {
   Volo_Abp_Identity_IdentityRoleCreateDto,
   Volo_Abp_Identity_IdentityRoleUpdateDto,
 } from "@ayasofyazilim/saas/IdentityService";
-import type { NextRequest } from "next/server";
-import {
-  getAdministrationServiceClient,
-  getIdentityServiceClient,
-  getSaasServiceClient,
-} from "src/lib";
-import type { Clients } from "../../util";
-import { commonDELETE, commonGET, commonPOST, commonPUT } from "../../util";
+import type {NextRequest} from "next/server";
+import {getAdministrationServiceClient, getIdentityServiceClient, getSaasServiceClient} from "src/lib";
+import type {Clients} from "../../util";
+import {commonDELETE, commonGET, commonPOST, commonPUT} from "../../util";
 
 const clients: Clients = {
   role: async () => {
@@ -27,16 +23,16 @@ const clients: Clients = {
         });
       },
       post: async (requestBody: unknown) => {
-        return role.postApiIdentityRoles({ requestBody } as {
+        return role.postApiIdentityRoles({requestBody} as {
           requestBody: Volo_Abp_Identity_IdentityRoleCreateDto;
         });
       },
-      put: async ({ id, requestBody }: { id: string; requestBody: unknown }) =>
-        role.putApiIdentityRolesById({ id, requestBody } as {
+      put: async ({id, requestBody}: {id: string; requestBody: unknown}) =>
+        role.putApiIdentityRolesById({id, requestBody} as {
           id: string;
           requestBody: Volo_Abp_Identity_IdentityRoleUpdateDto;
         }),
-      delete: async (id: string) => role.deleteApiIdentityRolesById({ id }),
+      delete: async (id: string) => role.deleteApiIdentityRolesById({id}),
     };
   },
   user: async () => {
@@ -80,11 +76,9 @@ const clients: Clients = {
         });
       },
 
-      post: async (requestBody: any) =>
-        user.postApiIdentityUsers({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        user.putApiIdentityUsersById({ id, requestBody }),
-      delete: async (id: string) => user.deleteApiIdentityUsersById({ id }),
+      post: async (requestBody: any) => user.postApiIdentityUsers({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) => user.putApiIdentityUsersById({id, requestBody}),
+      delete: async (id: string) => user.deleteApiIdentityUsersById({id}),
     };
   },
   edition: async () => {
@@ -101,11 +95,10 @@ const clients: Clients = {
           filter,
         });
       },
-      post: async (requestBody: any) =>
-        edition.postApiSaasEditions({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        edition.putApiSaasEditionsById({ id, requestBody }),
-      delete: async (id: string) => edition.deleteApiSaasEditionsById({ id }),
+      post: async (requestBody: any) => edition.postApiSaasEditions({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        edition.putApiSaasEditionsById({id, requestBody}),
+      delete: async (id: string) => edition.deleteApiSaasEditionsById({id}),
     };
   },
   tenant: async () => {
@@ -134,11 +127,9 @@ const clients: Clients = {
           activationEndDateMax,
         });
       },
-      post: async (requestBody: any) =>
-        tenant.postApiSaasTenants({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        tenant.putApiSaasTenantsById({ id, requestBody }),
-      delete: async (id: string) => tenant.deleteApiSaasTenantsById({ id }),
+      post: async (requestBody: any) => tenant.postApiSaasTenants({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) => tenant.putApiSaasTenantsById({id, requestBody}),
+      delete: async (id: string) => tenant.deleteApiSaasTenantsById({id}),
     };
   },
   "claim-type": async () => {
@@ -155,12 +146,10 @@ const clients: Clients = {
           filter,
         });
       },
-      post: async (requestBody: any) =>
-        claimType.postApiIdentityClaimTypes({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        claimType.putApiIdentityClaimTypesById({ id, requestBody }),
-      delete: async (id: string) =>
-        claimType.deleteApiIdentityClaimTypesById({ id }),
+      post: async (requestBody: any) => claimType.postApiIdentityClaimTypes({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        claimType.putApiIdentityClaimTypesById({id, requestBody}),
+      delete: async (id: string) => claimType.deleteApiIdentityClaimTypesById({id}),
     };
   },
   applications: async () => {
@@ -177,12 +166,10 @@ const clients: Clients = {
           filter,
         });
       },
-      post: async (requestBody: any) =>
-        applications.postApiOpeniddictApplications({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        applications.putApiOpeniddictApplicationsById({ id, requestBody }),
-      delete: async (id: string) =>
-        applications.deleteApiOpeniddictApplications({ id }),
+      post: async (requestBody: any) => applications.postApiOpeniddictApplications({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        applications.putApiOpeniddictApplicationsById({id, requestBody}),
+      delete: async (id: string) => applications.deleteApiOpeniddictApplications({id}),
     };
   },
   scopes: async () => {
@@ -200,11 +187,10 @@ const clients: Clients = {
         });
       },
 
-      post: async (requestBody: any) =>
-        scopes.postApiOpeniddictScopes({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        scopes.putApiOpeniddictScopesById({ id, requestBody }),
-      delete: async (id: string) => scopes.deleteApiOpeniddictScopes({ id }),
+      post: async (requestBody: any) => scopes.postApiOpeniddictScopes({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        scopes.putApiOpeniddictScopesById({id, requestBody}),
+      delete: async (id: string) => scopes.deleteApiOpeniddictScopes({id}),
     };
   },
   languages: async () => {
@@ -221,12 +207,10 @@ const clients: Clients = {
           filter,
         });
       },
-      post: async (requestBody: any) =>
-        languages.postApiLanguageManagementLanguages({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        languages.putApiLanguageManagementLanguagesById({ id, requestBody }),
-      delete: async (id: string) =>
-        languages.deleteApiLanguageManagementLanguagesById({ id }),
+      post: async (requestBody: any) => languages.postApiLanguageManagementLanguages({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        languages.putApiLanguageManagementLanguagesById({id, requestBody}),
+      delete: async (id: string) => languages.deleteApiLanguageManagementLanguagesById({id}),
     };
   },
   culture: async () => {
@@ -240,11 +224,10 @@ const clients: Clients = {
     const client = await getAdministrationServiceClient();
     const languages = client.languages;
     return {
-      put: async ({ id }: { id: string }) => {
-        const result =
-          await languages.putApiLanguageManagementLanguagesByIdSetAsDefault({
-            id,
-          });
+      put: async ({id}: {id: string}) => {
+        const result = await languages.putApiLanguageManagementLanguagesByIdSetAsDefault({
+          id,
+        });
         if (result === undefined) {
           return "success";
         }
@@ -337,12 +320,7 @@ const clients: Clients = {
     const languageTexts = client.languageTexts;
 
     return {
-      get: async (
-        page: number,
-        _filter: string,
-        _baseCultureName = "en",
-        _targetCultureName = "tr",
-      ) => {
+      get: async (page: number, _filter: string, _baseCultureName = "en", _targetCultureName = "tr") => {
         const baseCultureName = _baseCultureName as string;
         const targetCultureName = _targetCultureName as string;
         const parsedFilter = JSON.parse(_filter || "{}");
@@ -363,40 +341,26 @@ const clients: Clients = {
     const organization = client.organizationUnit;
     return {
       get: async () => organization.getApiIdentityOrganizationUnitsAll(),
-      post: async (requestBody: any) =>
-        organization.postApiIdentityOrganizationUnits({ requestBody }),
-      put: async ({ id, requestBody }: { id: string; requestBody: any }) =>
-        organization.putApiIdentityOrganizationUnitsById({ id, requestBody }),
-      delete: async (id: string) =>
-        organization.deleteApiIdentityOrganizationUnits({ id }),
+      post: async (requestBody: any) => organization.postApiIdentityOrganizationUnits({requestBody}),
+      put: async ({id, requestBody}: {id: string; requestBody: any}) =>
+        organization.putApiIdentityOrganizationUnitsById({id, requestBody}),
+      delete: async (id: string) => organization.deleteApiIdentityOrganizationUnits({id}),
     };
   },
 };
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
-  return commonGET(request, { params }, clients);
+export async function GET(request: NextRequest, {params}: {params: {data: string}}) {
+  return commonGET(request, {params}, clients);
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
-  return commonPOST(request, { params }, clients);
+export async function POST(request: NextRequest, {params}: {params: {data: string}}) {
+  return commonPOST(request, {params}, clients);
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
-  return commonDELETE(request, { params }, clients);
+export async function DELETE(request: NextRequest, {params}: {params: {data: string}}) {
+  return commonDELETE(request, {params}, clients);
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { data: string } },
-) {
-  return commonPUT(request, { params }, clients);
+export async function PUT(request: NextRequest, {params}: {params: {data: string}}) {
+  return commonPUT(request, {params}, clients);
 }

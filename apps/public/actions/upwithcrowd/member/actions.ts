@@ -1,8 +1,8 @@
 "use server";
 
-import { getUpwithcrowd } from "@/utils/client";
-import { GetApiMemberData } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { structuredError, structuredResponse } from "@repo/utils/api";
+import {getUpwithcrowd} from "@/utils/client";
+import {GetApiMemberData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {structuredError, structuredResponse} from "@repo/utils/api";
 
 export async function getApiMemberApi(data?: GetApiMemberData) {
   const api_client = await getUpwithcrowd();

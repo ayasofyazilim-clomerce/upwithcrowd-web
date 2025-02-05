@@ -1,9 +1,4 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import LandingHero from "@/components/landing-hero";
 
 const faqItems = [
@@ -46,24 +41,17 @@ const faqItems = [
 
 export default function Page() {
   const title = "Frequently Asked Questions";
-  const description =
-    "Find answers to common questions about UPwithCrowd, how it works, and how you can get involved.";
+  const description = "Find answers to common questions about UPwithCrowd, how it works, and how you can get involved.";
 
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
         <LandingHero title={title} description={description} />
 
-        <Accordion
-          type="single"
-          collapsible
-          className="mx-auto w-full max-w-3xl"
-        >
+        <Accordion type="single" collapsible className="mx-auto w-full max-w-3xl">
           {faqItems.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left">
-                {item.question}
-              </AccordionTrigger>
+              <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
               <AccordionContent>{item.answer}</AccordionContent>
             </AccordionItem>
           ))}
