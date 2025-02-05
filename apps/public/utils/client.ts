@@ -13,11 +13,12 @@ export async function getUpwithcrowd(session?: Session | null) {
     userData?.user && "access_token" in userData?.user
       ? userData?.user.access_token
       : ""; //userData?.user;
-  return new UPWCServiceClient({
+  const x = {
     TOKEN: token,
     BASE: process.env.BASE_URL,
     HEADERS,
-  });
+  };
+  return new UPWCServiceClient(x);
 }
 
 export async function getAccountServiceClient(session?: Session | null) {

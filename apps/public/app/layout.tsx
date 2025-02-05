@@ -24,7 +24,14 @@ export default async function RootLayout({
     const memberResponse = await getApiMemberApi();
     if (memberResponse.type === "success") {
       members = memberResponse.data.items || [];
-      member = members.find((x) => x?.id === session?.user?.member_id) || null;
+      member =
+        members.find((x) => {
+          if (Array.isArray(session?.user?.member_id)) {
+            return session.user.member_id.find((y) => y === x.id);
+          } else {
+            return x.id === session?.user?.member_id;
+          }
+        }) || null;
     }
   }
 
