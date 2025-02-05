@@ -1,5 +1,8 @@
 "use client";
+import { putMemberSwitchByIdApi } from "@/actions/upwithcrowd/member/put-action";
+import { toast } from "@/components/ui/sonner";
 import { UpwithCrowd_Members_ListMemberResponseDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 export type Member = UpwithCrowd_Members_ListMemberResponseDto;
 export type MemberContent = {
@@ -35,13 +38,23 @@ export const MemberProvider = ({
     );
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [memberList, setMembers] = useState<Member[] | undefined>(members);
+  const router = useRouter();
   const saveMember = (member: Member) => {
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem("current_member", JSON.stringify(member));
     }
-    setCurrentMember(member);
+    void putMemberSwitchByIdApi({ id: member.id }).then((res) => {
+      if (res.type === "success") {
+        //We refresh after a successful switch member operation so that the data is listed according to the current member.
+        router.refresh();
+        setCurrentMember(member);
+      } else {
+        toast.error(
+          "Cannot switch member at the moment. Please try again later.",
+        );
+      }
+    });
   };
   const saveMembers = (members: Member[]) => {
     setMembers(members);
@@ -50,7 +63,7 @@ export const MemberProvider = ({
     <MemberContext.Provider
       value={{
         currentMember: member,
-        members,
+        members: memberList,
         setCurrentMember: saveMember,
         setMembers: saveMembers,
       }}

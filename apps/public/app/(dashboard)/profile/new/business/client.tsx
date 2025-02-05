@@ -28,6 +28,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   identifier: z
@@ -47,11 +48,15 @@ const formSchema = z.object({
   annualIncome: z
     .string()
     .regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
+  name: z.string().optional(),
+  surname: z.string().optional(),
+  mobile: z.string().optional(),
 });
 
 export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const currentUser = useSession()?.session?.user?.sub;
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,6 +69,9 @@ export default function NewBusinessAccount() {
       annualIncome: "0",
     },
   });
+
+  // Check if the form is valid
+  const isFormValid = form.formState.isValid;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -91,6 +99,8 @@ export default function NewBusinessAccount() {
         });
 
         toast.success("Your business account has been created successfully.");
+        router.refresh();
+        router.push("/profile");
       } else {
         toast.error(memberResult.message);
       }
@@ -126,6 +136,14 @@ export default function NewBusinessAccount() {
                     <FormControl>
                       <Input
                         {...field}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength={10}
+                        onInput={(e) => {
+                          const input = e.currentTarget;
+                          input.value = input.value.replace(/[^0-9]/g, "");
+                        }}
                         placeholder="Enter your 10-digit Tax Number"
                       />
                     </FormControl>
@@ -149,20 +167,45 @@ export default function NewBusinessAccount() {
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="tel"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Telephone (Optional)</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="+12345678901" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="tel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Telephone (Optional)</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="+12345678901" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
+              <FormField
+                control={form.control}
+                name="annualIncome"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Annual Income</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        onInput={(e) => {
+                          const input = e.currentTarget;
+                          input.value = input.value.replace(/[^0-9]/g, "");
+                        }}
+                        placeholder="Enter annual income"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="mail"
@@ -176,23 +219,13 @@ export default function NewBusinessAccount() {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="annualIncome"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Annual Income</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Enter annual income" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </CardContent>
           <CardFooter>
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={isSubmitting || !isFormValid}
+            >
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

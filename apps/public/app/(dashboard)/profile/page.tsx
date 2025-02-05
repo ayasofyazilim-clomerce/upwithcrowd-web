@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Bell,
@@ -24,41 +23,16 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { handleSignOut } from "@/app/(auth)/login/action";
-import { useSession } from "@repo/utils/auth";
 import { useMember } from "@/app/providers/member";
 
-// Mock user data
-const userData = {
-  name: "John",
-  surname: "Doe",
-  email: "john.doe@example.com",
-  profileImage: "/placeholder.svg",
-};
-
 export default function Page() {
-  const { session } = useSession();
-  const { members } = useMember();
-
-  const currentUser = session?.user;
-  const currentMember = members?.[0];
-
-  const [profileImage, setProfileImage] = useState(userData.profileImage);
+  const { currentMember, members, setCurrentMember } = useMember();
   const [isCopied, setIsCopied] = useState(false);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  if (currentMember === null) return null;
 
   const handleCopy = () => {
-    if (currentUser?.member_id) {
-      navigator.clipboard.writeText(currentUser.member_id);
+    if (currentMember.id) {
+      navigator.clipboard.writeText(currentMember.id);
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
@@ -75,7 +49,7 @@ export default function Page() {
               <div className="relative mb-6">
                 <div className="relative h-24 w-24">
                   <Image
-                    src={profileImage || "/placeholder.svg"}
+                    src="/placeholder.svg"
                     alt="Profile"
                     fill
                     className="rounded-full bg-[#e5e5e5] object-cover"
@@ -91,18 +65,15 @@ export default function Page() {
                 </div>
               </div>
               <h2 className="mb-1 text-2xl font-bold">
-                {currentMember?.name || "Your Name"} {currentMember?.surname}
+                {currentMember?.type === "Organization"
+                  ? currentMember.title
+                  : `${currentMember?.name || "Your Name"} ${currentMember?.surname}`}
               </h2>
               <p className="text-muted-foreground mb-4">
-                Your personal account
+                {currentMember?.type === "Organization"
+                  ? "Your business account"
+                  : "Your personal account"}
               </p>
-              <Input
-                id="profileImage"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-              />
             </CardContent>
           </Card>
           <ScrollArea className="mb-2 h-72">
@@ -110,21 +81,20 @@ export default function Page() {
               {typeof members !== "undefined" &&
                 members.length > 0 &&
                 members
-                  .filter((member) =>
-                    currentMember?.type === "Individual"
-                      ? member.type !== "Individual"
-                      : true,
-                  )
+                  .filter((member) => member.id !== currentMember.id)
                   .map((membership) => (
                     <Card
                       key={membership.id}
                       className="hover:bg-muted cursor-pointer transition-colors"
+                      onClick={() => setCurrentMember(membership)}
                     >
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
                             <h3 className="mb-2 font-semibold">
-                              {membership.name} {membership.surname}
+                              {membership.type === "Organization"
+                                ? membership.title
+                                : `${membership.name} ${membership.surname}`}
                             </h3>
                             <p className="text-muted-foreground text-sm">
                               {membership.mail}
@@ -140,7 +110,7 @@ export default function Page() {
                   ))}
             </div>
           </ScrollArea>
-          <Card className="hover:bg-muted cursor-pointer border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
+          <Card className="hover:bg-muted cursor-pointer text-nowrap border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
             <Link href={"/profile/new/business"}>
               <CardContent className="flex items-center justify-between p-6">
                 <div className="flex items-center gap-4">
@@ -154,7 +124,7 @@ export default function Page() {
             </Link>
           </Card>
           <div className="text-muted-foreground flex w-full items-center justify-center gap-2 text-center">
-            <p>Membership Id: {currentUser?.member_id}</p>
+            <p>Membership Id: {currentMember?.id}</p>
             <div className="cursor-pointer" onClick={handleCopy}>
               {isCopied ? (
                 <CopyCheck className="h-5 w-5 " />

@@ -15,9 +15,9 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 import { postApiPaymentTransaction } from "@/actions/upwithcrowd/payment/post-action";
 import { UpwithCrowd_Payment_SavePaymentTransactionDto } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { useSession } from "@repo/utils/auth";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useMember } from "@/app/providers/member";
 
 export default function ProjectDetails({
   funding,
@@ -31,6 +31,7 @@ export default function ProjectDetails({
   const [customAmount, setCustomAmount] = useState<string>("");
   const donationOptions = [10, 25, 50, 100, 250, 500];
   const [selectedDonation, setSelectedDonation] = useState(donationOptions[0]);
+  const { currentMember } = useMember();
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
     setCustomAmount(value);
@@ -38,9 +39,6 @@ export default function ProjectDetails({
       setSelectedDonation(Number(value));
     }
   };
-
-  // const session: Session | null = null;
-  const { session } = useSession();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +48,7 @@ export default function ProjectDetails({
       const paymentResponse = await postApiPaymentTransaction({
         requestBody: {
           projectID: projectId,
-          memberID: session?.user?.member_id,
+          memberID: currentMember?.id,
           amount: amount,
           paymentType: "CreditCard",
           type: "Increase",
