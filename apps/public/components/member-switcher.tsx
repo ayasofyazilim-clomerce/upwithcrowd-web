@@ -155,30 +155,32 @@ function ListItem({
 
 function MemberItem({member}: {member: Partial<Member>}) {
   return (
-    <>
-      <Avatar className="mr-2 size-10">
-        <AvatarImage
-          // src={`https://avatar.vercel.sh/${member.value}.png`}
-          alt={member.id}
-          className="grayscale"
-        />
-        <AvatarFallback className="bg-primary/10 text-primary text-sm">
-          <>{member.name?.slice(0, 1).toLocaleUpperCase()}</>
-          <>{member.surname?.slice(0, 1).toLocaleUpperCase()}</>
-        </AvatarFallback>
-      </Avatar>
-      <div className="flex items-center gap-2 overflow-hidden text-left">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-1 overflow-hidden text-ellipsis">
-            <span className="overflow-hidden text-ellipsis text-nowrap">
-              {member.type === "Organization" ? member.title : `${member.name} ${member.surname}`}
-            </span>
-            {member.isValidated && <BadgeCheck className="text-primary size-4 min-w-4" />}
+    <React.Suspense fallback={"loading"}>
+      <>
+        <Avatar className="mr-2 size-10">
+          <AvatarImage
+            // src={`https://avatar.vercel.sh/${member.value}.png`}
+            alt={member.id}
+            className="grayscale"
+          />
+          <AvatarFallback className="bg-primary/10 text-primary text-sm">
+            <>{member.name?.slice(0, 1).toUpperCase()}</>
+            <>{member.surname?.slice(0, 1).toUpperCase()}</>
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex items-center gap-2 overflow-hidden text-left">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1 overflow-hidden text-ellipsis">
+              <p className="overflow-hidden text-ellipsis text-nowrap">
+                {member.type === "Organization" ? member.title : `${member.name}${member.surname}`}
+              </p>
+              {member.isValidated && <BadgeCheck className="text-primary size-4 min-w-4" />}
+            </div>
+            <span className="text-xs text-gray-500">{member.identifier}</span>
           </div>
-          <span className="text-xs text-gray-500">{member.identifier}</span>
         </div>
-      </div>
-    </>
+      </>
+    </React.Suspense>
   );
 }
 

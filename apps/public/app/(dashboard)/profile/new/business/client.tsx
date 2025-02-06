@@ -1,20 +1,21 @@
 "use client";
-
+import {PhoneInput} from "react-international-phone";
+import "react-international-phone/style.css";
+import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {useMember} from "@/app/providers/member";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {toast} from "@/components/ui/sonner";
+import {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Loader2} from "lucide-react";
+import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Loader2} from "lucide-react";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
-import {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {postUserMembersApi} from "@/actions/upwithcrowd/user-members/post-action";
-import {useSession} from "@repo/utils/auth";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {toast} from "@/components/ui/sonner";
-import {useRouter} from "next/navigation";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
@@ -40,18 +41,17 @@ const formSchema = z.object({
 
 export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const currentUser = useSession()?.session?.user?.sub;
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
+  const {setMembers, currentMember} = useMember();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
       identifier: "",
       title: "",
-      tel: "",
-      mail: "",
+      tel: currentMember?.mobile || "",
+      mail: currentMember?.mail || "",
       annualIncome: "0",
     },
   });
@@ -77,13 +77,12 @@ export default function NewBusinessAccount() {
       const memberResult = await postApiMember({requestBody});
 
       if (memberResult.type === "success") {
-        await postUserMembersApi({
-          requestBody: {
-            memberId: memberResult.data.memberID || "",
-            userId: currentUser || "",
-          },
-        });
-
+        const memberResponse = await getApiMemberApi();
+        if (memberResponse.type !== "success") {
+          return;
+        }
+        const memberList = memberResponse.data.items || [];
+        setMembers(memberList);
         setShowSuccessModal(true);
       } else {
         toast.error(memberResult.message);
@@ -97,8 +96,8 @@ export default function NewBusinessAccount() {
 
   const handleModalClose = () => {
     setShowSuccessModal(false);
-    router.push("/profile");
-    router.refresh();
+    router.replace("/profile");
+    // router.refresh();
   };
 
   return (
@@ -160,7 +159,13 @@ export default function NewBusinessAccount() {
                     <FormItem>
                       <FormLabel>Telephone (Optional)</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="+12345678901" />
+                        <PhoneInput
+                          {...field}
+                          className="w-full"
+                          inputClassName="w-full"
+                          countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
+                          defaultCountry="tr"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -198,7 +203,12 @@ export default function NewBusinessAccount() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} type="email" placeholder="Enter email" />
+                      <Input
+                        {...field}
+                        type="email"
+                        defaultValue={currentMember?.mail || ""}
+                        placeholder="Enter email"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -1,5 +1,6 @@
 "use client";
-// import { PhoneInput } from 'react-international-phone';
+import {PhoneInput} from "react-international-phone";
+import "react-international-phone/style.css";
 import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
 import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
 import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
@@ -61,7 +62,7 @@ export default function NewPersonalAccount() {
     defaultValues: {
       name: "",
       surname: "",
-      email: "",
+      email: session?.user?.email || "",
       idType: "NONE",
       identifier: "",
       mobile: "",
@@ -286,8 +287,14 @@ export default function NewPersonalAccount() {
                   <FormItem>
                     <FormLabel>Mobile</FormLabel>
                     <FormControl>
-                      {/* <PhoneInput {...field} /> */}
-                      <Input {...field} placeholder="+12345678901" />
+                      <PhoneInput
+                        {...field}
+                        className="w-full"
+                        inputClassName="w-full"
+                        countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
+                        defaultCountry="tr"
+                      />
+                      {/* <Input {...field} placeholder="+12345678901" /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>

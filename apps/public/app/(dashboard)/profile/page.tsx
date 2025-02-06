@@ -26,10 +26,9 @@ import {handleSignOut} from "@/app/(auth)/login/action";
 import {useMember} from "@/app/providers/member";
 
 export default function Page() {
-  const {currentMember, members, setCurrentMember} = useMember();
+  const {currentMember, members, setCurrentMember, setMembers} = useMember();
   const [isCopied, setIsCopied] = useState(false);
   if (currentMember === null) return null;
-
   const handleCopy = () => {
     if (currentMember.id) {
       navigator.clipboard.writeText(currentMember.id);
@@ -76,7 +75,10 @@ export default function Page() {
                     <Card
                       key={membership.id}
                       className="hover:bg-muted cursor-pointer transition-colors"
-                      onClick={() => setCurrentMember(membership)}>
+                      onClick={() => {
+                        setCurrentMember(membership);
+                        setMembers(members);
+                      }}>
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div>
