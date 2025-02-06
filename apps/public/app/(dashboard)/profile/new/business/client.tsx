@@ -26,7 +26,7 @@ const formSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")
-    .regex(/^[a-zA-Z0-9*\s&,.'\-p{L}]{1,600}$/, "Invalid title format"),
+    .regex(/^[a-zA-Z0-9*\s&,.'\-\p{L}]{1,600}$/u, "Invalid title format"),
   tel: z
     .string()
     .regex(/^([+]\d{1,2})(\d{10})$/, "Invalid telephone format")

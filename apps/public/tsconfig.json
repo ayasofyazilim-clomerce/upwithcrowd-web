@@ -3,6 +3,7 @@
   "compilerOptions": {
     "plugins": [{"name": "next"}],
     "baseUrl": ".",
+    "target": "ES6",
     "paths": {
       "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./*"],
       "@tiptap-location/*": ["../../packages/ayasofyazilim-ui/tiptap/*"]
