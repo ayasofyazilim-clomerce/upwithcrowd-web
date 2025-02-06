@@ -18,7 +18,13 @@ import {useParams} from "next/navigation";
 import Link from "next/link";
 import {useMember} from "@/app/providers/member";
 
-export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_ProjectsDetailResponseDto}) {
+export default function ProjectDetails({
+  data,
+  isEditable,
+}: {
+  data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
+  isEditable?: boolean;
+}) {
   const {id: projectId} = useParams<{id: string}>();
   const [currentImageIndex] = useState(0);
   const [customAmount, setCustomAmount] = useState<string>("");
@@ -208,13 +214,15 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
       </main>
 
       {/* Fixed bottom-right link component */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <Link
-          href={`/projects/${projectId}/basics`}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block rounded-full shadow-lg transition-all">
-          <button className="px-6 py-3 font-medium">Edit Project</button>
-        </Link>
-      </div>
+      {isEditable && (
+        <div className="fixed bottom-8 right-8 z-50">
+          <Link
+            href={`/projects/${projectId}/basics`}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block rounded-full shadow-lg transition-all">
+            <button className="px-6 py-3 font-medium">Edit Project</button>
+          </Link>
+        </div>
+      )}
     </>
   );
 }
