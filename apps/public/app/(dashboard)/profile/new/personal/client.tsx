@@ -1,29 +1,27 @@
 "use client";
-
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import * as z from "zod";
+// import { PhoneInput } from 'react-international-phone';
+import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
+import {useMember} from "@/app/providers/member";
+import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Button} from "@/components/ui/button";
-import {Loader2, Shield, Check} from "lucide-react";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
 import {toast} from "@/components/ui/sonner";
 import {
   UpwithCrowd_Members_IdType,
   UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {FormMessage, FormControl, FormItem, FormLabel, FormField} from "@/components/ui/form";
-import {Form} from "@/components/ui/form";
-import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
-import {postUserMembersApi} from "@/actions/upwithcrowd/user-members/post-action";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {useSession} from "@repo/utils/auth";
-import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
-import {useMember} from "@/app/providers/member";
+import {Check, Loader2, Shield} from "lucide-react";
 import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z
@@ -48,12 +46,14 @@ const formSchema = z.object({
 });
 
 export default function NewPersonalAccount() {
-  const {setMembers, setCurrentMember} = useMember();
-  const currentUser = useSession()?.session?.user?.sub;
-  const userName = useSession()?.session?.user?.userName || "";
+  const router = useRouter();
+  const {session} = useSession();
+  const {setMembers, setCurrentMember, currentMember} = useMember();
+  if (currentMember) {
+    router.push("/profile");
+  }
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,13 +97,7 @@ export default function NewPersonalAccount() {
           requestBody: {
             name: values.name,
             surname: values.surname,
-            userName: userName,
-          },
-        });
-        await postUserMembersApi({
-          requestBody: {
-            memberId: memberResult.data.memberID || "",
-            userId: currentUser || "",
+            userName: session?.user?.name || "",
           },
         });
         const memberResponse = await getApiMemberApi();
@@ -111,19 +105,13 @@ export default function NewPersonalAccount() {
           return;
         }
         const memberList = memberResponse.data.items || [];
+        setMembers(memberList);
         const memberIndex = memberList.findIndex((x) => x?.id === memberResult.data.memberID);
-
         if (memberList.length == 0 || memberIndex == -1) {
           return;
         }
-        setMembers(memberResponse.data.items || []);
         setCurrentMember(memberList[memberIndex]);
-      }
-
-      if (memberResult.type === "success") {
         toast.success("Your personal account has been created successfully.");
-        router.refresh();
-        router.push("/profile");
       } else {
         try {
           const errorMessage = memberResult.message || "";
@@ -298,6 +286,7 @@ export default function NewPersonalAccount() {
                   <FormItem>
                     <FormLabel>Mobile</FormLabel>
                     <FormControl>
+                      {/* <PhoneInput {...field} /> */}
                       <Input {...field} placeholder="+12345678901" />
                     </FormControl>
                     <FormMessage />

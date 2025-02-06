@@ -1,9 +1,8 @@
 "use client";
 
 import {
-  UpwithCrowd_Projects_ProjectsFundingResponseDto,
   UpwithCrowd_Payment_PaymentStatus,
-  UpwithCrowd_Projects_ProjectsResponseDto,
+  UpwithCrowd_Projects_ProjectsDetailResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {toast} from "@/components/ui/sonner";
 import {useState} from "react";
@@ -19,13 +18,7 @@ import {useParams} from "next/navigation";
 import Link from "next/link";
 import {useMember} from "@/app/providers/member";
 
-export default function ProjectDetails({
-  funding,
-  basics,
-}: {
-  basics: UpwithCrowd_Projects_ProjectsResponseDto;
-  funding: UpwithCrowd_Projects_ProjectsFundingResponseDto;
-}) {
+export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_ProjectsDetailResponseDto}) {
   const {id: projectId} = useParams<{id: string}>();
   const [currentImageIndex] = useState(0);
   const [customAmount, setCustomAmount] = useState<string>("");
@@ -69,7 +62,7 @@ export default function ProjectDetails({
     }
   };
 
-  const fundedPercentage = ((funding.fundableAmount ?? 0) / (funding.fundNominalAmount ?? 1)) * 100;
+  const fundedPercentage = ((data.fundableAmount ?? 0) / (data.fundNominalAmount ?? 1)) * 100;
 
   const blogPost = `
     <article class="prose lg:prose-xl mx-auto">
@@ -149,14 +142,14 @@ export default function ProjectDetails({
         <div className="flex flex-col gap-8 md:gap-20 lg:flex-row">
           <div className="lg:w-3/5">
             <ProjectSummary
-              basics={basics}
-              funding={funding}
+              basics={data}
+              funding={data}
               currentImageIndex={currentImageIndex}
               fundedPercentage={fundedPercentage}
             />
             {/* PROJECT DETAILS SECTION BEGIN */}
-            <h2 className="mb-2 text-xl font-bold md:text-2xl">What is the {basics.projectName}? </h2>
-            <p className="mb-8 text-lg">{basics.projectDefinition}</p>
+            <h2 className="mb-2 text-xl font-bold md:text-2xl">What is the {data.projectName}? </h2>
+            <p className="mb-8 text-lg">{data.projectDefinition}</p>
           </div>
           <div className="lg:w-1/3">
             <ProjectCreator />

@@ -15,6 +15,7 @@ import {useSession} from "@repo/utils/auth";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {toast} from "@/components/ui/sonner";
 import {useRouter} from "next/navigation";
+import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
   identifier: z
@@ -41,6 +42,7 @@ export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const currentUser = useSession()?.session?.user?.sub;
   const router = useRouter();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,9 +84,7 @@ export default function NewBusinessAccount() {
           },
         });
 
-        toast.success("Your business account has been created successfully.");
-        router.refresh();
-        router.push("/profile");
+        setShowSuccessModal(true);
       } else {
         toast.error(memberResult.message);
       }
@@ -95,117 +95,126 @@ export default function NewBusinessAccount() {
     setIsSubmitting(false);
   }
 
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
+    router.push("/profile");
+    router.refresh();
+  };
+
   return (
-    <Card className="mx-auto w-full">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">New Business Account</CardTitle>
-        <CardDescription>Enter your business account details below to get started.</CardDescription>
-      </CardHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="grid gap-6">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="identifier"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>VKN (Tax Number)</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        maxLength={10}
-                        onInput={(e) => {
-                          const input = e.currentTarget;
-                          input.value = input.value.replace(/[^0-9]/g, "");
-                        }}
-                        placeholder="Enter your 10-digit Tax Number"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <>
+      <Card className="mx-auto w-full">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">New Business Account</CardTitle>
+          <CardDescription>Enter your business account details below to get started.</CardDescription>
+        </CardHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="grid gap-6">
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="identifier"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>VKN (Tax Number)</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          maxLength={10}
+                          onInput={(e) => {
+                            const input = e.currentTarget;
+                            input.value = input.value.replace(/[^0-9]/g, "");
+                          }}
+                          placeholder="Enter your 10-digit Tax Number"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="title"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter title" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter title" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="tel"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Telephone (Optional)</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="+12345678901" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="tel"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Telephone (Optional)</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="+12345678901" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
+                <FormField
+                  control={form.control}
+                  name="annualIncome"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Annual Income</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          onInput={(e) => {
+                            const input = e.currentTarget;
+                            input.value = input.value.replace(/[^0-9]/g, "");
+                          }}
+                          placeholder="Enter annual income"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
-                name="annualIncome"
+                name="mail"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Annual Income</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        onInput={(e) => {
-                          const input = e.currentTarget;
-                          input.value = input.value.replace(/[^0-9]/g, "");
-                        }}
-                        placeholder="Enter annual income"
-                      />
+                      <Input {...field} type="email" placeholder="Enter email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <FormField
-              control={form.control}
-              name="mail"
-              render={({field}) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="email" placeholder="Enter email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-          <CardFooter>
-            <Button className="w-full" type="submit" disabled={isSubmitting || !isFormValid}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isSubmitting ? "Submitting..." : "Create Business Account"}
-            </Button>
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" type="submit" disabled={isSubmitting || !isFormValid}>
+                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {isSubmitting ? "Submitting..." : "Create Business Account"}
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
+      </Card>
+      <BusinessAccountModal isOpen={showSuccessModal} onClose={handleModalClose} />
+    </>
   );
 }

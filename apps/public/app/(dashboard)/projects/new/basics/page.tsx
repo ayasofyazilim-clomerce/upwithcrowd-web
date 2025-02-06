@@ -1,9 +1,5 @@
 "use client";
 import {postProjectApi} from "@/actions/upwithcrowd/project/post-action";
-import type {
-  UpwithCrowd_Projects_CategoryType,
-  UpwithCrowd_Projects_ProjectType,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {DatePicker} from "@/components/ui/date-picker";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
