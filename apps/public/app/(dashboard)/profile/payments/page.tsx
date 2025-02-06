@@ -1,4 +1,5 @@
 import PaymentsPage from "./client";
+import EmptyPaymentsState from "../_components/empty-payments-state";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment/action";
 import {getProjectApi} from "@/actions/upwithcrowd/project/action";
 
@@ -26,6 +27,11 @@ export default async function Page() {
         projectName: project?.projectName || "Unknown Project",
       };
     }) ?? [];
+
+  // Show empty state if there are no payments
+  if (payments.length === 0) {
+    return <EmptyPaymentsState />;
+  }
 
   return <PaymentsPage payments={payments} />;
 }

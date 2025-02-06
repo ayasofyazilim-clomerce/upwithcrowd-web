@@ -17,6 +17,7 @@ import {
   LogOut,
   Shield,
   CopyCheck,
+  Settings,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -141,6 +142,19 @@ export default function Page() {
                           <div className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-red-500" />
                         </div>
                         <span>Inbox</span>
+                      </div>
+                      <ChevronRight className="text-muted-foreground h-5 w-5" />
+                    </Link>
+                    <Link
+                      href="/profile/settings"
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <div className="bg-muted rounded-full p-2">
+                            <Settings className="h-5 w-5" />
+                          </div>
+                        </div>
+                        <span>Settings</span>
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
