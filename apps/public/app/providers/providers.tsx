@@ -8,7 +8,7 @@ interface ProvidersProps {
   children: React.ReactNode;
   session: Session | null;
   currentMember: Member | null;
-  members?: Member[];
+  members: Member[];
 }
 
 export default function Providers({children, session, currentMember, members}: ProvidersProps) {

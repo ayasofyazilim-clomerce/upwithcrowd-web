@@ -16,7 +16,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   const session = await auth();
   let member: Member | null = null;
   let members: Member[] = [];
-  if (session && session?.user?.member_id) {
+  if (session) {
     const memberResponse = await getApiMemberApi();
     if (memberResponse.type === "success") {
       members = memberResponse.data.items || [];

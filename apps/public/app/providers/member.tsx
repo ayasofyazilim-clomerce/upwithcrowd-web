@@ -7,7 +7,7 @@ import {createContext, useContext, useState} from "react";
 export type Member = UpwithCrowd_Members_ListMemberResponseDto;
 export type MemberContent = {
   currentMember: Member | null;
-  members?: Member[];
+  members: Member[];
   setCurrentMember: (c: Member) => void;
   setMembers: (m: Member[]) => void;
 };
@@ -26,14 +26,14 @@ export const MemberProvider = ({
 }: {
   children: React.ReactNode;
   currentMember: Member | null;
-  members?: Member[];
+  members: Member[];
 }) => {
   let _currentMember = currentMember;
   if (typeof window !== "undefined" && window.sessionStorage.getItem("current_member")) {
     _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
-  const [memberList, setMembers] = useState<Member[] | undefined>(members);
+  const [memberList, setMemberList] = useState<Member[]>(members);
   const router = useRouter();
   const saveMember = (member: Member) => {
     if (typeof window !== "undefined") {
@@ -41,16 +41,15 @@ export const MemberProvider = ({
     }
     void putMemberSwitchByIdApi({id: member.id}).then((res) => {
       if (res.type === "success") {
-        //We refresh after a successful switch member operation so that the data is listed according to the current member.
-        router.refresh();
         setCurrentMember(member);
+        router.refresh();
       } else {
         toast.error("Cannot switch member at the moment. Please try again later.");
       }
     });
   };
   const saveMembers = (members: Member[]) => {
-    setMembers(members);
+    setMemberList(members);
   };
   return (
     <MemberContext.Provider
