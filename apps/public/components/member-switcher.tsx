@@ -164,7 +164,7 @@ function MemberItem({member}: {member: Partial<Member>}) {
             className="grayscale"
           />
           <AvatarFallback className="bg-primary/10 text-primary text-sm">
-            <>{member.name?.slice(0, 1).toUpperCase()}</>
+            <>{member.name?.slice(0, 1).toUpperCase()} </>
             <>{member.surname?.slice(0, 1).toUpperCase()}</>
           </AvatarFallback>
         </Avatar>
@@ -172,7 +172,7 @@ function MemberItem({member}: {member: Partial<Member>}) {
           <div className="flex flex-col">
             <div className="flex items-center gap-1 overflow-hidden text-ellipsis">
               <p className="overflow-hidden text-ellipsis text-nowrap">
-                {member.type === "Organization" ? member.title : `${member.name}${member.surname}`}
+                {member.type === "Organization" ? member.title : `${member.name} ${member.surname}`}
               </p>
               {member.isValidated && <BadgeCheck className="text-primary size-4 min-w-4" />}
             </div>
