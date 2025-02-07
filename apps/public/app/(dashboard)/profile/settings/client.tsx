@@ -5,11 +5,9 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {toast} from "@/components/ui/sonner";
 import {IndividualForm} from "../_components/indiviual-form";
 import {OrganizationForm} from "../_components/organization-form";
-import {useSession} from "@repo/utils/auth";
 import {putMemberApiById} from "@/actions/upwithcrowd/member/put-action";
 
 export default function EditPersonalAccount() {
-  const {session} = useSession();
   const {setCurrentMember, currentMember} = useMember();
   //eslint-disable-next-line
   async function onSubmit(values: any) {
@@ -19,7 +17,6 @@ export default function EditPersonalAccount() {
         requestBody: {
           ...values,
           type: currentMember?.type || "Organization",
-          userName: session?.user?.name || "",
           isValidated: true,
         },
       });
