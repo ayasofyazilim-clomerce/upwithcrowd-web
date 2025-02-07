@@ -8,27 +8,12 @@ import "react-international-phone/style.css";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {UpwithCrowd_Members_IdType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {Loader2} from "lucide-react";
 import {useMember} from "@/app/providers/member";
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, "İsim en az 2 karakter olmalıdır.")
-    .regex(/^[a-zA-ZığüşöçİĞÜŞÖÇ\s]+$/, "İsim yalnızca harf içermelidir."),
-  surname: z
-    .string()
-    .min(2, "Soyisim en az 2 karakter olmalıdır.")
-    .regex(/^[a-zA-ZığüşöçİĞÜŞÖÇ\s]+$/, "Soyisim yalnızca harf içermelidir."),
-  mail: z.string().email("Geçerli bir e-posta adresi giriniz."), // Changed from email to mail
-  idType: z.enum(["NONE", "TCKN", "YKN", "MKN"]) as z.ZodType<UpwithCrowd_Members_IdType>,
-  identifier: z
-    .string()
-    .min(11, "Kimlik numarası 11 haneli olmalıdır.")
-    .max(11, "Kimlik numarası 11 haneli olmalıdır.")
-    .regex(/^\d{11}$/, "Kimlik numarası sadece rakam içermelidir."),
+  identifier: z.string(),
+  mail: z.string().email("Geçerli bir e-posta adresi giriniz."),
   mobile: z.string().regex(/^\+?[1-9]\d{9,14}$/, "Geçerli bir telefon numarası giriniz."),
   annualIncome: z.string().regex(/^\d+$/, "Yıllık gelir sadece rakam içermelidir."),
   title: z.string().optional(),
@@ -47,11 +32,8 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
-      name: currentMember?.name || "",
-      surname: currentMember?.surname || "",
-      mail: currentMember?.mail || "", // Changed from email to mail
-      idType: (currentMember?.idType as UpwithCrowd_Members_IdType) || "NONE",
       identifier: currentMember?.identifier || "",
+      mail: currentMember?.mail || "",
       mobile: currentMember?.mobile || "",
       annualIncome: String(currentMember?.annualIncome || "0"),
       title: currentMember?.title || "",
@@ -63,30 +45,10 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="idType"
-            render={({field}) => (
-              <FormItem>
-                <FormLabel>ID Type</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select ID type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="NONE">NONE</SelectItem>
-                    <SelectItem value="TCKN">TCKN</SelectItem>
-                    <SelectItem value="YKN">YKN</SelectItem>
-                    <SelectItem value="VKN">VKN</SelectItem>
-                    <SelectItem value="MKN">MKN</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormItem>
+            <FormLabel>ID Type</FormLabel>
+            <Input value={currentMember?.idType || ""} disabled readOnly />
+          </FormItem>
           <FormField
             control={form.control}
             name="identifier"
@@ -94,7 +56,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
               <FormItem>
                 <FormLabel>Identifier</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter identifier" />
+                  <Input {...field} disabled readOnly />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -102,32 +64,14 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
           />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({field}) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter name" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="surname"
-            render={({field}) => (
-              <FormItem>
-                <FormLabel>Surname</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter surname" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormItem>
+            <FormLabel>Name</FormLabel>
+            <Input value={currentMember?.name || ""} disabled readOnly />
+          </FormItem>
+          <FormItem>
+            <FormLabel>Surname</FormLabel>
+            <Input value={currentMember?.surname || ""} disabled readOnly />
+          </FormItem>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -166,7 +110,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
         </div>
         <FormField
           control={form.control}
-          name="mail" // Changed from email to mail
+          name="mail"
           render={({field}) => (
             <FormItem>
               <FormLabel>Email</FormLabel>

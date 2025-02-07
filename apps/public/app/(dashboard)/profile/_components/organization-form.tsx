@@ -12,15 +12,7 @@ import {Loader2} from "lucide-react";
 import {useMember} from "@/app/providers/member";
 
 const formSchema = z.object({
-  identifier: z
-    .string()
-    .length(10, "VKN must be exactly 10 digits")
-    .regex(/^[0-9]+$/, "VKN must contain only numbers"),
   idType: z.literal("VKN").optional(),
-  title: z
-    .string()
-    .min(1, "Title is required")
-    .regex(/^[a-zA-Z0-9*\s&,.'\-\p{L}]{1,600}$/u, "Invalid title format"),
   tel: z
     .string()
     .regex(/^([+]\d{1,2})(\d{10})$/, "Invalid telephone format")
@@ -28,8 +20,6 @@ const formSchema = z.object({
     .or(z.literal("")),
   mail: z.string().email("Invalid email address"),
   annualIncome: z.string().regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
-  name: z.string().optional(),
-  surname: z.string().optional(),
   mobile: z.string().optional(),
 });
 
@@ -45,23 +35,21 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
-      identifier: currentMember?.identifier || "",
       idType: "VKN",
-      title: currentMember?.title || "",
       tel: currentMember?.tel || "",
       mail: currentMember?.mail || "",
       annualIncome: String(currentMember?.annualIncome || "0"),
-      name: currentMember?.name || "",
-      surname: currentMember?.surname || "",
       mobile: currentMember?.mobile || "",
     },
   });
+
+  console.log("form", form);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     // Ensure idType is VKN before submitting
     const submitData = {
       ...values,
-      idType: "VKN" as const, // Add type assertion here
+      idType: "VKN" as const,
     };
     await onSubmit(submitData);
   };
@@ -70,32 +58,14 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="identifier"
-            render={({field}) => (
-              <FormItem>
-                <FormLabel>Identifier</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter identifier" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="title"
-            render={({field}) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Enter organization title" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <FormItem>
+            <FormLabel>Identifier</FormLabel>
+            <Input value={currentMember?.identifier || ""} readOnly disabled />
+          </FormItem>
+          <FormItem>
+            <FormLabel>Title</FormLabel>
+            <Input value={currentMember?.title || ""} readOnly disabled />
+          </FormItem>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
