@@ -1,7 +1,7 @@
 import PaymentsPage from "./client";
 import EmptyPaymentsState from "../_components/empty-payments-state";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment/action";
-import {getProjectApi} from "@/actions/upwithcrowd/project/action";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
 
 export default async function Page() {
   const paymentsResponse = await getApiPaymentTransactionApi({
@@ -10,7 +10,7 @@ export default async function Page() {
 
   if (paymentsResponse.type !== "success") return <>{paymentsResponse.message}</>;
 
-  const projectsResponse = await getProjectApi();
+  const projectsResponse = await getPublicProjectsApi();
 
   if (projectsResponse.type !== "success") {
     return <>{projectsResponse.message}</>;
