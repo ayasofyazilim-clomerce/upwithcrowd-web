@@ -43,8 +43,6 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
     },
   });
 
-  console.log("form", form);
-
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     // Ensure idType is VKN before submitting
     const submitData = {

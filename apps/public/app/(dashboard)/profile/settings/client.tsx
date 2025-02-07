@@ -20,8 +20,6 @@ export default function EditPersonalAccount() {
           isValidated: true,
         },
       });
-      console.log("result:", result);
-      console.log("req", values);
 
       if (result.type === "success") {
         // Update the current member in the context
