@@ -1,5 +1,6 @@
 "use client";
 
+import {useState, useTransition} from "react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {ScrollArea} from "@/components/ui/scroll-area";
@@ -21,14 +22,18 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {useState} from "react";
-
+import {postProfileImageApi} from "@/actions/upwithcrowd/member/post-action";
 import {handleSignOut} from "@/app/(auth)/login/action";
 import {useMember} from "@/app/providers/member";
+import {toast} from "@/components/ui/sonner";
+import {useRouter} from "next/navigation";
 
-export default function Page() {
+export default function ProfileClient() {
   const {currentMember, members, setCurrentMember, setMembers} = useMember();
+  const [isPending, startTransition] = useTransition();
   const [isCopied, setIsCopied] = useState(false);
+  const router = useRouter();
+
   if (currentMember === null) return null;
   const handleCopy = () => {
     if (currentMember.id) {
@@ -40,6 +45,39 @@ export default function Page() {
     }
   };
 
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result as string;
+        // Remove data:image/[type];base64, prefix
+        const base64Content = base64String.split(",")[1];
+
+        try {
+          startTransition(() => {
+            void postProfileImageApi({
+              requestBody: base64Content,
+            })
+              .then((response) => {
+                if (response.type === "success") {
+                  toast.success("Profile image uploaded successfully.");
+                } else {
+                  toast.error("Error uploading image.");
+                }
+              })
+              .finally(() => {
+                router.push("/profile");
+              });
+          });
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="bg-background min-h-screen">
       <div className="flex flex-col gap-8 md:flex-row">
@@ -48,13 +86,23 @@ export default function Page() {
             <CardContent className="flex flex-col items-center p-8">
               <div className="relative mb-6">
                 <div className="relative h-24 w-24">
-                  <Image src="/placeholder.svg" alt="Profile" fill className="rounded-full bg-[#e5e5e5] object-cover" />
+                  <Image
+                    src={
+                      currentMember.profileImage
+                        ? `data:image/jpeg;base64,${currentMember.profileImage}`
+                        : "/placeholder.svg"
+                    }
+                    alt="Profile"
+                    fill
+                    className="rounded-full bg-[#e5e5e5] object-cover"
+                  />
                 </div>
-                <div
-                  className="bg-primary/20 absolute bottom-0 right-0 cursor-pointer rounded-full p-1.5"
+                <Button
+                  className="bg-primary absolute bottom-0 right-0 cursor-pointer rounded-full p-1.5"
+                  disabled={isPending}
                   onClick={() => document.getElementById("profileImage")?.click()}>
-                  <Camera className="text-primary h-4 w-4" />
-                </div>
+                  <Camera className="text-muted h-4 w-4" />
+                </Button>
               </div>
               <h2 className="mb-1 text-2xl font-bold">
                 {currentMember?.type === "Organization"
@@ -253,6 +301,7 @@ export default function Page() {
           </Card>
         </div>
       </div>
+      <input type="file" id="profileImage" accept="image/*" className="hidden" onChange={handleImageChange} />
     </div>
   );
 }

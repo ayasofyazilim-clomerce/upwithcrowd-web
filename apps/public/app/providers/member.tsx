@@ -4,7 +4,9 @@ import {toast} from "@/components/ui/sonner";
 import {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {useRouter} from "next/navigation";
 import {createContext, useContext, useState} from "react";
-export type Member = UpwithCrowd_Members_ListMemberResponseDto;
+export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
+  profileImage?: string;
+};
 export type MemberContent = {
   currentMember: Member | null;
   members: Member[];
