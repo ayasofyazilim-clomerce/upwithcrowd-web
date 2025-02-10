@@ -12,13 +12,14 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {toast} from "@/components/ui/sonner";
+import Image from "next/image";
 import {
   UpwithCrowd_Members_IdType,
   UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useSession} from "@repo/utils/auth";
-import {Check, Loader2, Shield} from "lucide-react";
+import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -213,10 +214,13 @@ export default function NewPersonalAccount() {
                       onClick={startVerification}
                       type="button"
                       variant="outline"
-                      className="w-full"
+                      className="w-full gap-2 bg-red-300 hover:bg-red-400"
                       disabled={!canStartVerification()}>
-                      <Shield className="mr-2 h-4 w-4" />
-                      {canStartVerification() ? "Start E-Devlet Verification" : "Please fill required fields first"}
+                      {/* <Shield className="mr-2 h-4 w-4" /> */}
+                      <Image className="rounded-full" src="/e-devlet-icon.png" width={24} height={24} alt="E-Devlet" />
+                      {canStartVerification()
+                        ? "Start E-Devlet Verification"
+                        : "You must verify your E-Devlet account!"}
                     </Button>
                   )}
 
@@ -228,8 +232,15 @@ export default function NewPersonalAccount() {
                   )}
 
                   {isVerified && (
-                    <div className="bg-primary text-muted flex items-center justify-center rounded-md p-2 text-center">
-                      <Check className="mr-2 h-5 w-5" />
+                    <div className="text-muted flex items-center justify-center gap-2 rounded-md bg-red-700 p-2 text-center">
+                      {/* <Check className="mr-2 h-5 w-5" /> */}
+                      <Image
+                        className="rounded-full"
+                        src="/e-devlet-white-icon.png"
+                        width={24}
+                        height={24}
+                        alt="E-Devlet"
+                      />
                       <span>E-Devlet Verification Successful!</span>
                     </div>
                   )}
