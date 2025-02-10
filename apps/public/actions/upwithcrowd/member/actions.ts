@@ -13,3 +13,13 @@ export async function getApiMemberApi(data?: GetApiMemberData) {
     return structuredError(error);
   }
 }
+
+export async function getProfileImageApi() {
+  const api_client = await getUpwithcrowd();
+  try {
+    const response = await api_client.profile.getApiProfileGetProfilePicture();
+    return structuredResponse(response);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
