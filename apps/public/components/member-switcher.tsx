@@ -135,6 +135,7 @@ function ListItem({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {setCurrentMember} = useMember();
+
   return (
     <CommandItem
       key={member.id}
@@ -154,19 +155,20 @@ function ListItem({
 }
 
 function MemberItem({member}: {member: Partial<Member>}) {
+  const {currentMember} = useMember();
+
   return (
     <React.Suspense fallback={"loading"}>
       <>
         <Avatar className="mr-2 size-10">
-          <AvatarImage
-            // src={`https://avatar.vercel.sh/${member.value}.png`}
-            alt={member.id}
-            className="grayscale"
-          />
-          <AvatarFallback className="bg-primary/10 text-primary text-sm">
-            <>{member.name?.slice(0, 1).toUpperCase()} </>
-            <>{member.surname?.slice(0, 1).toUpperCase()}</>
-          </AvatarFallback>
+          {currentMember?.profileImage && currentMember.id === member.id ? (
+            <AvatarImage src={`data:image/jpeg;base64,${currentMember.profileImage}`} alt={member.id} />
+          ) : (
+            <AvatarFallback className="bg-primary/10 text-primary text-sm">
+              <>{member.name?.slice(0, 1).toUpperCase()}</>
+              <>{member.surname?.slice(0, 1).toUpperCase()}</>
+            </AvatarFallback>
+          )}
         </Avatar>
         <div className="flex items-center gap-2 overflow-hidden text-left">
           <div className="flex flex-col">

@@ -3,7 +3,7 @@
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {useSession} from "@repo/utils/auth";
-import {Menu, X} from "lucide-react";
+import {Menu, PlusCircle, X} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -44,7 +44,13 @@ export default function Header() {
         </nav>
         <div className="space-x-4">
           {session !== null ? (
-            <MemberSwitcher />
+            <div className="flex items-center space-x-6">
+              <Link className="flex items-center justify-center gap-2" href="/projects/new">
+                <PlusCircle className="text-primary size-5" />
+                Start a Project
+              </Link>
+              <MemberSwitcher />
+            </div>
           ) : (
             <>
               <Button asChild variant="outline">
