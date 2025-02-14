@@ -142,7 +142,7 @@ function findActiveTab(tabList: {href: string}[], path: string) {
   return tabList.find((i) => i.href === path.split("/").slice(0, -indexOfActiveTab).join("/"))?.href;
 }
 
-export function TabLayout({
+export default function TabLayout({
   tabList,
   children,
   orientation = "vertical",

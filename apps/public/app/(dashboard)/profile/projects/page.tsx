@@ -57,7 +57,6 @@ export default async function Page({
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-6">
         <div className="jy-between mb-6 flex items-center">
-          mt-2
           <div className="mt-2 flex items-center gap-4">
             <ProjectSearch />
             <FilterSelector />

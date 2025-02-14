@@ -36,8 +36,10 @@ export function MemberProvider({
   members: Member[];
 }) {
   let _currentMember = currentMember;
-  if (window.sessionStorage.getItem("current_member")) {
-    _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
+  if (typeof window !== "undefined") {
+    if (window.sessionStorage.getItem("current_member")) {
+      _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
+    }
   }
   const [member, setCurrentMember] = useState<Member | null>(_currentMember);
   const [memberList, setMemberList] = useState<Member[]>(members);
