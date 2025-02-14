@@ -1,6 +1,11 @@
 "use server";
 
-import {getIdentityServiceClient, structuredError, structuredResponse} from "src/lib";
+import type {
+  DeleteApiIdentityOrganizationUnitsByIdMembersByMemberIdData,
+  DeleteApiIdentityOrganizationUnitsByIdRolesByRoleIdData,
+} from "@ayasofyazilim/core-saas/IdentityService";
+import {structuredError, structuredResponse} from "@repo/utils/api";
+import {getIdentityServiceClient} from "src/lib";
 
 export async function deleteUserSessionsApi(id: string) {
   try {
@@ -80,6 +85,42 @@ export async function deleteApplicationByIdApi(id: string) {
     const dataResponse = await client.applications.deleteApiOpeniddictApplications({
       id,
     });
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function deleteOrganizationUnitsApi(id: string) {
+  try {
+    const client = await getIdentityServiceClient();
+    const dataResponse = await client.organizationUnit.deleteApiIdentityOrganizationUnits({
+      id,
+    });
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function deleteOrganizationUnitsByIdMembersByMemberIdApi(
+  data: DeleteApiIdentityOrganizationUnitsByIdMembersByMemberIdData,
+) {
+  try {
+    const client = await getIdentityServiceClient();
+    const dataResponse = await client.organizationUnit.deleteApiIdentityOrganizationUnitsByIdMembersByMemberId(data);
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function deleteOrganizationUnitsByIdRolesByRoleIdApi(
+  data: DeleteApiIdentityOrganizationUnitsByIdRolesByRoleIdData,
+) {
+  try {
+    const client = await getIdentityServiceClient();
+    const dataResponse = await client.organizationUnit.deleteApiIdentityOrganizationUnitsByIdRolesByRoleId(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);

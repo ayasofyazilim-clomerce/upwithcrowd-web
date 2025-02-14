@@ -2,14 +2,20 @@
 
 import type {
   GetApiIdentityClaimTypesData,
+  GetApiIdentityOrganizationUnitsAvailableRolesData,
+  GetApiIdentityOrganizationUnitsAvailableUsersData,
+  GetApiIdentityOrganizationUnitsByIdMembersData,
+  GetApiIdentityOrganizationUnitsByIdRolesData,
   GetApiIdentityRolesData,
   GetApiIdentitySecurityLogsData,
   GetApiIdentitySessionsData,
   GetApiIdentityUsersData,
   GetApiOpeniddictApplicationsData,
   GetApiOpeniddictScopesData,
-} from "@ayasofyazilim/saas/IdentityService";
-import {getIdentityServiceClient, structuredError, structuredResponse} from "src/lib";
+} from "@ayasofyazilim/core-saas/IdentityService";
+import {structuredSuccessResponse, structuredError, structuredResponse} from "@repo/utils/api";
+import type {Session} from "@repo/utils/auth";
+import {getIdentityServiceClient} from "src/lib";
 
 export async function getRolesByIdClaimsApi(id: string) {
   try {
@@ -100,23 +106,13 @@ export async function getAssignableRolesApi(roleId: string) {
     return structuredError(error);
   }
 }
-export async function getAssignableRolesByCurrentUserApi() {
+export async function getAssignableRolesByCurrentUserApi(session?: Session | null) {
   try {
-    const client = await getIdentityServiceClient();
+    const client = await getIdentityServiceClient(session);
     const dataResponse = await client.role.getApiIdentityRolesAssignableRolesByCurrentUser();
-    return structuredResponse(dataResponse);
+    return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    return structuredError(error);
-  }
-}
-
-export async function getAllOrganizationApi() {
-  try {
-    const client = await getIdentityServiceClient();
-    const dataResponse = await client.organizationUnit.getApiIdentityOrganizationUnitsAll();
-    return structuredResponse(dataResponse);
-  } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
   }
 }
 
@@ -308,6 +304,56 @@ export async function getApplicationsByIdTokenLifetimeApi(id: string) {
     const response = await client.applications.getApiOpeniddictApplicationsByIdTokenLifetime({
       id,
     });
+    return structuredResponse(response);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function getAllOrganizationUnitsApi() {
+  try {
+    const client = await getIdentityServiceClient();
+    const response = await client.organizationUnit.getApiIdentityOrganizationUnitsAll();
+    return structuredResponse(response);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function getOrganizationUnitsAvailableRolesApi(data: GetApiIdentityOrganizationUnitsAvailableRolesData) {
+  try {
+    const client = await getIdentityServiceClient();
+    const response = await client.organizationUnit.getApiIdentityOrganizationUnitsAvailableRoles(data);
+    return structuredResponse(response);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function getOrganizationUnitsAvailableUsersApi(data: GetApiIdentityOrganizationUnitsAvailableUsersData) {
+  try {
+    const client = await getIdentityServiceClient();
+    const response = await client.organizationUnit.getApiIdentityOrganizationUnitsAvailableUsers(data);
+    return structuredResponse(response);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function getOrganizationUnitsByIdMembersApi(data: GetApiIdentityOrganizationUnitsByIdMembersData) {
+  try {
+    const client = await getIdentityServiceClient();
+    const response = await client.organizationUnit.getApiIdentityOrganizationUnitsByIdMembers(data);
+    return structuredResponse(response);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function getOrganizationUnitsByIdRolesApi(data: GetApiIdentityOrganizationUnitsByIdRolesData) {
+  try {
+    const client = await getIdentityServiceClient();
+    const response = await client.organizationUnit.getApiIdentityOrganizationUnitsByIdRoles(data);
     return structuredResponse(response);
   } catch (error) {
     return structuredError(error);

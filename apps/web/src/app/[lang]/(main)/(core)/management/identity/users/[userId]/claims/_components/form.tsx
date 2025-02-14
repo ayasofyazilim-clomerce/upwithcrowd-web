@@ -6,15 +6,15 @@ import {toast} from "@/components/ui/sonner";
 import type {
   Volo_Abp_Identity_ClaimTypeDto,
   Volo_Abp_Identity_IdentityUserClaimDto,
-} from "@ayasofyazilim/saas/IdentityService";
-import {$Volo_Abp_Identity_IdentityUserClaimDto} from "@ayasofyazilim/saas/IdentityService";
+} from "@ayasofyazilim/core-saas/IdentityService";
+import {$Volo_Abp_Identity_IdentityUserClaimDto} from "@ayasofyazilim/core-saas/IdentityService";
 import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
 import {CustomComboboxWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
 import {Trash2} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
-import {useState} from "react";
-import {handlePutResponse} from "src/actions/core/api-utils-client";
+import {useState, useTransition} from "react";
+import {handlePutResponse} from "@repo/utils/api";
 import {putUserClaimsByIdApi} from "src/actions/core/IdentityService/put-actions";
 import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
 
@@ -29,7 +29,7 @@ export default function Claims({
 }) {
   const {userId} = useParams<{userId: string}>();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [userClaimsData, setUserClaimsData] = useState(initialUserClaimsData);
   const [newClaim, setNewClaim] = useState<Volo_Abp_Identity_IdentityUserClaimDto>({
     claimType: "",
@@ -133,19 +133,17 @@ export default function Claims({
       <div className="mt-8 flex justify-end">
         <Button
           className="ml-4"
-          disabled={loading}
-          onClick={() =>
-            void putUserClaimsByIdApi({
-              id: userId,
-              requestBody: userClaimsData,
-            })
-              .then((res) => {
-                handlePutResponse(res, router);
-              })
-              .finally(() => {
-                setLoading(false);
-              })
-          }>
+          disabled={isPending}
+          onClick={() => {
+            startTransition(() => {
+              void putUserClaimsByIdApi({
+                id: userId,
+                requestBody: userClaimsData,
+              }).then((res) => {
+                handlePutResponse(res, router, "..");
+              });
+            });
+          }}>
           {languageData["Edit.Save"]}
         </Button>
       </div>

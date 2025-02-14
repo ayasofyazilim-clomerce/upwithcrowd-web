@@ -1,10 +1,13 @@
 "use server";
 import type {
   PutApiLanguageManagementLanguagesByIdData,
+  PutApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameData,
+  PutApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameRestoreData,
   PutApiPermissionManagementPermissionsData,
   UniRefund_AdministrationService_CountrySettings_SetCountrySettingsByListDto,
-} from "@ayasofyazilim/saas/AdministrationService";
-import {getAdministrationServiceClient, structuredError, structuredResponse} from "src/lib";
+} from "@ayasofyazilim/core-saas/AdministrationService";
+import {structuredError, structuredResponse} from "@repo/utils/api";
+import {getAdministrationServiceClient} from "src/lib";
 
 export async function putPermissionsApi(data: PutApiPermissionManagementPermissionsData) {
   try {
@@ -45,6 +48,32 @@ export async function putLanguagesByIdSetAsDefaultApi(id: string) {
     const dataResponse = await client.languages.putApiLanguageManagementLanguagesByIdSetAsDefault({
       id,
     });
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function putLanguageTextsByResourceNameByCultureNameByNameApi(
+  data: PutApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameData,
+) {
+  try {
+    const client = await getAdministrationServiceClient();
+    const dataResponse =
+      await client.languageTexts.putApiLanguageManagementLanguageTextsByResourceNameByCultureNameByName(data);
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function putLanguageTextsByResourceNameByCultureNameByNameRestoreApi(
+  data: PutApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameRestoreData,
+) {
+  try {
+    const client = await getAdministrationServiceClient();
+    const dataResponse =
+      await client.languageTexts.putApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameRestore(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);

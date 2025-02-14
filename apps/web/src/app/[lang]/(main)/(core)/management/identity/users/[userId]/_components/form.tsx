@@ -1,27 +1,25 @@
 "use client";
 
 import type {
-  UniRefund_IdentityService_AssignableRoles_AssignableRoleDto,
   Volo_Abp_Identity_IdentityRoleDto,
   Volo_Abp_Identity_IdentityUserDto,
   Volo_Abp_Identity_OrganizationUnitDto,
   Volo_Abp_Identity_OrganizationUnitLookupDto,
-} from "@ayasofyazilim/saas/IdentityService";
-import {$Volo_Abp_Identity_IdentityUserUpdateDto} from "@ayasofyazilim/saas/IdentityService";
+} from "@ayasofyazilim/core-saas/IdentityService";
+import {$Volo_Abp_Identity_IdentityUserUpdateDto} from "@ayasofyazilim/core-saas/IdentityService";
 import {ActionList} from "@repo/ayasofyazilim-ui/molecules/action-button";
 import ConfirmDialog from "@repo/ayasofyazilim-ui/molecules/confirm-dialog";
 import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
 import {CustomMultiSelectWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
+import {handleDeleteResponse, handlePutResponse} from "@repo/utils/api";
+import {isActionGranted, useGrantedPolicies} from "@repo/utils/policies";
 import {Trash2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
-import {useGrantedPolicies} from "@repo/utils/policies";
-import {handleDeleteResponse, handlePutResponse} from "src/actions/core/api-utils-client";
+import {useTransition} from "react";
 import {deleteUserByIdApi} from "src/actions/core/IdentityService/delete-actions";
 import {putUserApi} from "src/actions/core/IdentityService/put-actions";
 import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
-import isActionGranted from "src/utils/page-policy/action-policy";
 
 type UserFormDto = Volo_Abp_Identity_IdentityUserDto & {
   organizationUnitIds?: string[] | null;
@@ -37,14 +35,15 @@ export default function Form({
 }: {
   languageData: IdentityServiceResource;
   userDetailsData: Volo_Abp_Identity_IdentityUserDto;
-  roleList: UniRefund_IdentityService_AssignableRoles_AssignableRoleDto[];
+  roleList: Volo_Abp_Identity_IdentityRoleDto[];
   organizationList: Volo_Abp_Identity_OrganizationUnitLookupDto[];
   userRoles: Volo_Abp_Identity_IdentityRoleDto[];
   userOrganizationUnits: Volo_Abp_Identity_OrganizationUnitDto[];
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const {grantedPolicies} = useGrantedPolicies();
+
   const uiSchema = createUiSchemaWithResource({
     schema: $Volo_Abp_Identity_IdentityUserUpdateDto,
     resources: languageData,
@@ -56,21 +55,24 @@ export default function Form({
       organizationUnitIds: {
         "ui:widget": "OrganizationUnit",
       },
+      userName: {
+        "ui:className": "md:col-span-2",
+      },
+      email: {
+        "ui:widget": "email",
+      },
+      phoneNumber: {
+        "ui:widget": "phone",
+      },
       isActive: {
         "ui:widget": "switch",
-        "ui:className": "md:col-span-2",
       },
       lockoutEnabled: {
         "ui:widget": "switch",
-        "ui:className": "md:col-span-2",
       },
-      phoneNumberConfirmed: {
-        "ui:widget": "switch",
-        "ui:className": "md:col-span-2",
-      },
+
       shouldChangePasswordOnNextLogin: {
         "ui:widget": "switch",
-        "ui:className": "md:col-span-2",
       },
       "ui:className": "md:grid md:grid-cols-2 md:gap-2",
     },
@@ -87,14 +89,11 @@ export default function Form({
               variant: "destructive",
               children: languageData.Delete,
               onConfirm: () => {
-                setLoading(true);
-                void deleteUserByIdApi(userDetailsData.id || "")
-                  .then((res) => {
+                startTransition(() => {
+                  void deleteUserByIdApi(userDetailsData.id || "").then((res) => {
                     handleDeleteResponse(res, router, "../users");
-                  })
-                  .finally(() => {
-                    setLoading(false);
                   });
+                });
               },
               closeAfterConfirm: true,
             }}
@@ -107,6 +106,7 @@ export default function Form({
                 </>
               ),
               variant: "outline",
+              disabled: isPending,
             }}
             type="with-trigger"
           />
@@ -114,7 +114,7 @@ export default function Form({
       </ActionList>
       <SchemaForm<UserFormDto>
         className="flex flex-col gap-4"
-        disabled={loading}
+        disabled={isPending}
         filter={{
           type: "include",
           sort: true,
@@ -123,12 +123,11 @@ export default function Form({
             "name",
             "surname",
             "email",
+            "phoneNumber",
             "roleNames",
             "organizationUnitIds",
-            "phoneNumber",
             "isActive",
             "lockoutEnabled",
-            "phoneNumberConfirmed",
             "shouldChangePasswordOnNextLogin",
           ],
         }}
@@ -137,23 +136,19 @@ export default function Form({
           roleNames: userRoles.map((role) => role.name || ""),
           organizationUnitIds: userOrganizationUnits.map((org) => org.id || ""),
         }}
-        onSubmit={(data) => {
-          setLoading(true);
-          const formData = data.formData;
-          void putUserApi({
-            id: userDetailsData.id || "",
-            requestBody: {
-              ...formData,
-              userName: formData?.userName || "",
-              email: formData?.email || "",
-            },
-          })
-            .then((res) => {
-              handlePutResponse(res, router);
-            })
-            .finally(() => {
-              setLoading(false);
+        onSubmit={({formData}) => {
+          startTransition(() => {
+            void putUserApi({
+              id: userDetailsData.id || "",
+              requestBody: {
+                ...formData,
+                userName: formData?.userName || "",
+                email: formData?.email || "",
+              },
+            }).then((res) => {
+              handlePutResponse(res, router, "../users");
             });
+          });
         }}
         schema={$Volo_Abp_Identity_IdentityUserUpdateDto}
         submitText={languageData["Edit.Save"]}
@@ -161,8 +156,8 @@ export default function Form({
         widgets={{
           Role: CustomMultiSelectWidget({
             optionList: roleList.map((role) => ({
-              label: role.roleName || "",
-              value: role.roleName || "",
+              label: role.name || "",
+              value: role.name || "",
             })),
           }),
           OrganizationUnit: CustomMultiSelectWidget({
