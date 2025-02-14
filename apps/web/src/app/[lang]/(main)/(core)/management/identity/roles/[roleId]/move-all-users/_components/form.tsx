@@ -1,12 +1,12 @@
 "use client";
 
-import type {Volo_Abp_Identity_IdentityRoleDto} from "@ayasofyazilim/saas/IdentityService";
+import type {Volo_Abp_Identity_IdentityRoleDto} from "@ayasofyazilim/core-saas/IdentityService";
 import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
 import {CustomComboboxWidget} from "@repo/ayasofyazilim-ui/organisms/schema-form/widgets";
 import {useParams, useRouter} from "next/navigation";
-import {useState} from "react";
-import {handlePutResponse} from "src/actions/core/api-utils-client";
+import {useTransition} from "react";
+import {handlePutResponse} from "@repo/utils/api";
 import {putRolesByIdMoveAllUsersApi} from "src/actions/core/IdentityService/put-actions";
 import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
 
@@ -35,7 +35,7 @@ export default function Form({
 }) {
   const router = useRouter();
   const {roleId} = useParams<{roleId: string}>();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const uiSchema = createUiSchemaWithResource({
     schema: $Volo_Abp_Identity_UpdateMoveAllUsersDto,
     resources: languageData,
@@ -49,24 +49,19 @@ export default function Form({
   return (
     <SchemaForm<RoleParams>
       className="flex flex-col gap-4"
-      disabled={loading}
-      onSubmit={(data) => {
-        setLoading(true);
-        const formData = data.formData;
-        if (!formData) return;
-        void putRolesByIdMoveAllUsersApi({
-          id: roleId,
-          roleId: formData.roleId,
-        })
-          .then((res) => {
-            handlePutResponse(res, router);
-          })
-          .finally(() => {
-            setLoading(false);
+      disabled={isPending}
+      onSubmit={({formData}) => {
+        startTransition(() => {
+          void putRolesByIdMoveAllUsersApi({
+            id: roleId,
+            roleId: formData?.roleId,
+          }).then((res) => {
+            handlePutResponse(res, router, "..");
           });
+        });
       }}
       schema={$Volo_Abp_Identity_UpdateMoveAllUsersDto}
-      submitText={languageData.Save}
+      submitText={languageData["Edit.Save"]}
       uiSchema={uiSchema}
       widgets={{
         RoleWidget: CustomComboboxWidget<Volo_Abp_Identity_IdentityRoleDto>({

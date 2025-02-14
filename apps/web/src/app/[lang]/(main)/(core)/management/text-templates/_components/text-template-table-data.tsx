@@ -1,5 +1,5 @@
-import type {Volo_Abp_TextTemplateManagement_TextTemplates_TemplateDefinitionDto} from "@ayasofyazilim/saas/AdministrationService";
-import {$Volo_Abp_TextTemplateManagement_TextTemplates_TemplateDefinitionDto} from "@ayasofyazilim/saas/AdministrationService";
+import type {Volo_Abp_TextTemplateManagement_TextTemplates_TemplateDefinitionDto} from "@ayasofyazilim/core-saas/AdministrationService";
+import {$Volo_Abp_TextTemplateManagement_TextTemplates_TemplateDefinitionDto} from "@ayasofyazilim/core-saas/AdministrationService";
 import type {
   TanstackTableColumnLink,
   TanstackTableCreationProps,
@@ -47,16 +47,24 @@ const textTemplateColumns = (locale: string, languageData: AdministrationService
       isInlineLocalized: {
         options: [
           {
+            label: "Yes",
+            when: (value) => {
+              return Boolean(value);
+            },
             value: "true",
-            label: "",
             icon: CheckCircle,
             iconClassName: "text-green-700",
+            hideColumnValue: true,
           },
           {
+            label: "No",
+            when: (value) => {
+              return !value;
+            },
             value: "false",
-            label: "",
             icon: XCircle,
             iconClassName: "text-red-700",
+            hideColumnValue: true,
           },
         ],
       },

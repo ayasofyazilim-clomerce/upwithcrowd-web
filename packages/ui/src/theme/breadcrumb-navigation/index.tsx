@@ -6,7 +6,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@repo/ayasofyazilim-ui/atoms/breadcrumb";
-import { Button } from "@repo/ayasofyazilim-ui/atoms/button";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,8 +32,8 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import { Fragment } from "react";
-import type { NavbarItemType } from "../types";
+import {Fragment} from "react";
+import type {NavbarItemType} from "../types";
 
 const icons = {
   home: <Home className="mr-1 size-4 text-gray-600" />,
@@ -49,7 +49,7 @@ const icons = {
   building: <Building2 className="mr-1 size-4 text-gray-600" />,
 };
 
-function BreadcrumbIcon({ item }: { item: NavbarItemType }) {
+function BreadcrumbIcon({item}: {item: NavbarItemType}) {
   return item.icon in icons ? icons[item.icon as keyof typeof icons] : null;
 }
 export function BreadcrumbDropdown({
@@ -69,8 +69,7 @@ export function BreadcrumbDropdown({
       <DropdownMenuTrigger className="flex items-center gap-1" asChild>
         <Button
           variant="ghost"
-          className={`px-2 text-gray-600 outline-none ring-0 focus-visible:ring-0 ${isLastNavbarItem ? "bg-accent" : ""}`}
-        >
+          className={`px-2 text-gray-600 outline-none ring-0 focus-visible:ring-0 ${isLastNavbarItem ? "bg-accent" : ""}`}>
           <BreadcrumbIcon item={item} />
           {item.displayName}
           <ChevronDown className="ml-1 h-4 w-4" />
@@ -90,10 +89,7 @@ export function BreadcrumbDropdown({
                     {subItem.subNavbarItems
                       ?.filter((i) => i.href)
                       .map((subSubItem) => (
-                        <Link
-                          key={subSubItem.key}
-                          href={subSubItem.href || "#"}
-                        >
+                        <Link key={subSubItem.key} href={subSubItem.href || "#"}>
                           <DropdownMenuItem>
                             <BreadcrumbIcon item={subSubItem} />
                             {subSubItem.displayName}
@@ -115,23 +111,10 @@ export function BreadcrumbDropdown({
     </DropdownMenu>
   );
 }
-function BreadcrumbSingleItem({
-  item,
-  isActive,
-}: {
-  item: NavbarItemType;
-  isActive: boolean;
-}) {
+function BreadcrumbSingleItem({item, isActive}: {item: NavbarItemType; isActive: boolean}) {
   return (
-    <Button
-      variant="ghost"
-      className={`px-2 text-gray-600 ${isActive ? "bg-accent" : ""}`}
-      asChild
-    >
-      <BreadcrumbLink
-        href={item.href || "#"}
-        className="flex flex-row items-center gap-1 px-2 text-gray-600"
-      >
+    <Button variant="ghost" className={`px-2 text-gray-600 ${isActive ? "bg-accent" : ""}`} asChild>
+      <BreadcrumbLink href={item.href || "#"} className="flex flex-row items-center gap-1 px-2 text-gray-600">
         <>
           {item.icon in icons ? icons[item.icon as keyof typeof icons] : null}
           {item.displayName}
@@ -141,11 +124,7 @@ function BreadcrumbSingleItem({
   );
 }
 
-export function BreadcrumbNavigation({
-  navigation,
-}: {
-  navigation: NavbarItemType[];
-}) {
+export function BreadcrumbNavigation({navigation}: {navigation: NavbarItemType[]}) {
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -156,12 +135,8 @@ export function BreadcrumbNavigation({
             {/* Eğer önceki elemanın subNavbarItems'ı yoksa veya subNavbarItems'ı var ama içinde href'i olan eleman yoksa breadcrumbSingleItem render edilsin aksi takdirde dropdown render edilsin */}
             <BreadcrumbItem>
               {!navigation[index - 1]?.subNavbarItems ||
-              navigation[index - 1]?.subNavbarItems?.filter((i) => i.href)
-                ?.length === 1 ? (
-                <BreadcrumbSingleItem
-                  item={item}
-                  isActive={index === navigation.length - 1}
-                />
+              navigation[index - 1]?.subNavbarItems?.filter((i) => i.href)?.length === 1 ? (
+                <BreadcrumbSingleItem item={item} isActive={index === navigation.length - 1} />
               ) : (
                 <BreadcrumbDropdown
                   item={item}

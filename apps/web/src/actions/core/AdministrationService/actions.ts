@@ -1,12 +1,16 @@
 "use server";
 import type {
   GetApiAuditLoggingAuditLogsData,
+  GetApiAuditLoggingAuditLogsEntityChangesData,
   GetApiLanguageManagementLanguagesData,
+  GetApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameData,
   GetApiLanguageManagementLanguageTextsData,
   GetApiPermissionManagementPermissionsData,
   GetApiTextTemplateManagementTemplateDefinitionsData,
-} from "@ayasofyazilim/saas/AdministrationService";
-import {getAdministrationServiceClient, structuredError, structuredResponse} from "src/lib";
+} from "@ayasofyazilim/core-saas/AdministrationService";
+import {structuredSuccessResponse, structuredError, structuredResponse} from "@repo/utils/api";
+import type {Session} from "next-auth";
+import {getAdministrationServiceClient} from "src/lib";
 
 export async function getPermissionsApi(data: GetApiPermissionManagementPermissionsData) {
   try {
@@ -38,13 +42,26 @@ export async function getTextTemplateApi(data: GetApiTextTemplateManagementTempl
   }
 }
 
-export async function getAuditLogsApi(data: GetApiAuditLoggingAuditLogsData) {
+export async function getAuditLogsApi(data: GetApiAuditLoggingAuditLogsData, session: Session | null) {
   try {
-    const client = await getAdministrationServiceClient();
+    const client = await getAdministrationServiceClient(session);
     const dataResponse = await client.auditLogs.getApiAuditLoggingAuditLogs(data);
-    return structuredResponse(dataResponse);
+    return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
+  }
+}
+
+export async function getAuditLogsEntityChangesApi(
+  data: GetApiAuditLoggingAuditLogsEntityChangesData,
+  session: Session | null,
+) {
+  try {
+    const client = await getAdministrationServiceClient(session);
+    const dataResponse = await client.auditLogs.getApiAuditLoggingAuditLogsEntityChanges(data);
+    return structuredSuccessResponse(dataResponse);
+  } catch (error) {
+    throw structuredError(error);
   }
 }
 
@@ -92,6 +109,18 @@ export async function getLanguageTextsApi(data: GetApiLanguageManagementLanguage
   try {
     const client = await getAdministrationServiceClient();
     const dataResponse = await client.languageTexts.getApiLanguageManagementLanguageTexts(data);
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+export async function getLanguageTextsDetailsByResourceNameByCultureNameByNameApi(
+  data: GetApiLanguageManagementLanguageTextsByResourceNameByCultureNameByNameData,
+) {
+  try {
+    const client = await getAdministrationServiceClient();
+    const dataResponse =
+      await client.languageTexts.getApiLanguageManagementLanguageTextsByResourceNameByCultureNameByName(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);

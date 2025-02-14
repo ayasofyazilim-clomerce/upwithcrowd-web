@@ -1,20 +1,19 @@
 "use client";
 
-import type {Volo_Saas_Host_Dtos_EditionDto} from "@ayasofyazilim/saas/SaasService";
-import {$Volo_Saas_Host_Dtos_EditionUpdateDto} from "@ayasofyazilim/saas/SaasService";
+import type {Volo_Saas_Host_Dtos_EditionDto} from "@ayasofyazilim/core-saas/SaasService";
+import {$Volo_Saas_Host_Dtos_EditionUpdateDto} from "@ayasofyazilim/core-saas/SaasService";
 import {ActionList} from "@repo/ayasofyazilim-ui/molecules/action-button";
 import ConfirmDialog from "@repo/ayasofyazilim-ui/molecules/confirm-dialog";
 import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
+import {useGrantedPolicies, isActionGranted} from "@repo/utils/policies";
 import {Trash2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
-import {useGrantedPolicies} from "@repo/utils/policies";
-import {handleDeleteResponse, handlePutResponse} from "src/actions/core/api-utils-client";
+import {useTransition} from "react";
+import {handleDeleteResponse, handlePutResponse} from "@repo/utils/api";
 import {deleteEditionByIdApi} from "src/actions/core/SaasService/delete-actions";
 import {putEditionApi} from "src/actions/core/SaasService/put-actions";
 import type {SaasServiceResource} from "src/language-data/core/SaasService";
-import isActionGranted from "src/utils/page-policy/action-policy";
 
 export default function Form({
   languageData,
@@ -24,7 +23,7 @@ export default function Form({
   response: Volo_Saas_Host_Dtos_EditionDto;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const {grantedPolicies} = useGrantedPolicies();
 
   const uiSchema = createUiSchemaWithResource({
@@ -44,14 +43,11 @@ export default function Form({
               variant: "destructive",
               children: languageData.Delete,
               onConfirm: () => {
-                setLoading(true);
-                void deleteEditionByIdApi(response.id || "")
-                  .then((res) => {
+                startTransition(() => {
+                  void deleteEditionByIdApi(response.id || "").then((res) => {
                     handleDeleteResponse(res, router, "../editions");
-                  })
-                  .finally(() => {
-                    setLoading(false);
                   });
+                });
               },
               closeAfterConfirm: true,
             }}
@@ -64,6 +60,7 @@ export default function Form({
                 </>
               ),
               variant: "outline",
+              disabled: isPending,
             }}
             type="with-trigger"
           />
@@ -71,28 +68,24 @@ export default function Form({
       </ActionList>
       <SchemaForm
         className="flex flex-col gap-4"
-        disabled={loading}
+        disabled={isPending}
         filter={{
           type: "exclude",
           keys: ["planId", "concurrencyStamp"],
         }}
         formData={response}
-        onSubmit={(data) => {
-          setLoading(true);
-          const formData = data.formData;
-          void putEditionApi({
-            id: response.id || "",
-            requestBody: {
-              ...formData,
-              displayName: formData?.displayName || "",
-            },
-          })
-            .then((res) => {
-              handlePutResponse(res, router);
-            })
-            .finally(() => {
-              setLoading(false);
+        onSubmit={({formData}) => {
+          startTransition(() => {
+            void putEditionApi({
+              id: response.id || "",
+              requestBody: {
+                ...formData,
+                displayName: formData?.displayName || "",
+              },
+            }).then((res) => {
+              handlePutResponse(res, router, "../editions");
             });
+          });
         }}
         schema={$Volo_Saas_Host_Dtos_EditionUpdateDto}
         submitText={languageData["Edit.Save"]}

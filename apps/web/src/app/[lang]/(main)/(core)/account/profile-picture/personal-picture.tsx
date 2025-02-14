@@ -1,32 +1,29 @@
 "use client";
 import {Button} from "@/components/ui/button";
-import type {Volo_Abp_Account_ProfilePictureType} from "@ayasofyazilim/saas/AccountService";
+import type {Volo_Abp_Account_ProfilePictureType} from "@ayasofyazilim/core-saas/AccountService";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useState, useTransition} from "react";
+import {handlePutResponse} from "@repo/utils/api";
 import {postProfilePictureApi} from "src/actions/core/AccountService/post-actions";
-import {handlePutResponse} from "src/actions/core/api-utils-client";
 import type {AccountServiceResource} from "src/language-data/core/AccountService";
 
 export default function PersonalPicture({languageData}: {languageData: AccountServiceResource}) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState<Blob | File | undefined>(undefined);
   const [uploadType, setUploadType] = useState<Volo_Abp_Account_ProfilePictureType>(2);
 
   const handleSaveImage = () => {
-    setLoading(true);
-    void postProfilePictureApi({
-      formData: {
-        ImageContent: selectedImage,
-      },
-      type: uploadType,
-    })
-      .then((response) => {
+    startTransition(() => {
+      void postProfilePictureApi({
+        formData: {
+          ImageContent: selectedImage,
+        },
+        type: uploadType,
+      }).then((response) => {
         handlePutResponse(response, router);
-      })
-      .finally(() => {
-        setLoading(false);
       });
+    });
   };
 
   return (
@@ -96,7 +93,7 @@ export default function PersonalPicture({languageData}: {languageData: AccountSe
         )}
         <div className="flex justify-end pr-72 pt-8">
           <Button
-            disabled={loading}
+            disabled={isPending}
             onClick={() => {
               handleSaveImage();
             }}>
