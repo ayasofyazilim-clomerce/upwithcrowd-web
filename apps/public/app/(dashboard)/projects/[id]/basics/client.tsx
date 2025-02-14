@@ -1,30 +1,23 @@
 "use client";
-import {putProjectBasicsByIdApi} from "@/actions/upwithcrowd/project/put-action";
-import type {
-  UpwithCrowd_Projects_CategoryType,
-  UpwithCrowd_Projects_ProjectDto,
-  UpwithCrowd_Projects_ProjectType,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {DatePicker} from "@/components/ui/date-picker";
 import {Button} from "@/components/ui/button";
+import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
 import * as SheetRoot from "@/components/ui/sheet";
+import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
+import type {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
-import {Search, UserPlus} from "lucide-react";
-import {useState, useEffect} from "react";
+import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import {Globe, Instagram, Linkedin, Search, Twitter, UserPlus} from "lucide-react";
+import {useParams, useRouter} from "next/navigation";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {putProjectBasicsByIdApi} from "@/actions/upwithcrowd/project/put-action";
 import {FormContainer, FormField} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
-import {toast} from "@/components/ui/sonner";
-import {useRouter} from "next/navigation";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Checkbox} from "@/components/ui/checkbox";
-import {useParams} from "next/navigation";
 
 const CategoryType = {
   Technology: "Technology",
@@ -38,112 +31,85 @@ const ProjectType = {
 
 const projectSchema = z.object({
   projectName: z.string().min(1, "Proje adı zorunludur").max(60, "Proje adı en fazla 60 karakter olabilir"),
-  projectDefinition: z.string().max(135, "Proje açıklaması en fazla 135 karakter olabilir"),
-  projectStartDate: z.string(),
-  projectEndDate: z.string().optional(),
+  projectDefinition: z.string().max(135, "Proje açıklaması en fazla 135 karakter olabilir").nullable(),
+  sectorId: z.string().nullable(),
   categoryTypes: z.array(z.enum([CategoryType.Technology, CategoryType.Production])),
   projectTypes: z.array(z.enum([ProjectType.Initiative, ProjectType.Project])),
-  sectorId: z.string(),
+  projectLogo: z.string().optional(),
+  projectImage: z.string().optional(),
+  projectVideo: z.string().optional(),
+  websiteUrl: z.string().optional(),
+  instagramUrl: z.string().optional(),
+  twitterUrl: z.string().optional(),
+  linkedinUrl: z.string().optional(),
+  projectContent: z.string().optional(), // Sadece story field'ı yeterli
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
 
-export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrowd_Projects_ProjectDto}) {
+export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrowd_Projects_ProjectsDetailResponseDto}) {
   const router = useRouter();
   const {id: projectId} = useParams<{id: string}>();
-
-  const [spesifDate, setSpesifDate] = useState(false);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      ...projectDetail,
-      categoryTypes: projectDetail.categoryTypes.map((category) => CategoryType[category as keyof typeof CategoryType]),
-      projectTypes: projectDetail.projectTypes.map((type) => ProjectType[type as keyof typeof ProjectType]),
+      projectName: projectDetail.projectName ?? "",
+      projectDefinition: projectDetail.projectDefinition ?? "",
+      sectorId: projectDetail.sectorId ?? "",
+      categoryTypes:
+        projectDetail.categoryTypes?.map((category: string) => CategoryType[category as keyof typeof CategoryType]) ??
+        [],
+      projectTypes:
+        projectDetail.projectTypes?.map((type: string) => ProjectType[type as keyof typeof ProjectType]) ?? [],
+      projectContent: projectDetail.projectContent ?? "",
     },
   });
 
-  useEffect(() => {
-    if (!spesifDate) {
-      const startDate = form.getValues("projectStartDate");
-      const endDate = new Date(startDate);
-      endDate.setDate(endDate.getDate() + 60);
-      form.setValue("projectEndDate", endDate.toISOString());
-    }
-  }, [spesifDate, form]);
-
   const onSubmit = (data: ProjectFormValues) => {
-    const projectEndDate = data.projectEndDate
-      ? new Date(data.projectEndDate)
-      : new Date(data.projectStartDate).setDate(new Date(data.projectStartDate).getDate() + 60);
-
-    putProjectBasicsByIdApi({
-      requestBody: {
-        ...data,
-        projectEndDate: new Date(projectEndDate).toISOString(),
-      },
+    void putProjectBasicsByIdApi({
+      requestBody: data,
       id: projectId,
     }).then((res) => {
       if (res.type === "success") {
         toast.success("Proje başarıyla kaydedildi");
-        router.push(`/projects/${res.data.projectId}/basics`);
+        router.push(`/projects/${res.data.projectId}/funding`);
       } else {
         toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
       }
     });
   };
 
-  const categoryOptions = [
-    {
-      label: "Technology",
-      value: CategoryType.Technology as UpwithCrowd_Projects_CategoryType,
-    },
-    {
-      label: "Production",
-      value: CategoryType.Production as UpwithCrowd_Projects_CategoryType,
-    },
-  ];
-
-  const projectTypeOptions = [
-    {
-      label: "Initiative",
-      value: ProjectType.Initiative as UpwithCrowd_Projects_ProjectType,
-    },
-    {
-      label: "Project",
-      value: ProjectType.Project as UpwithCrowd_Projects_ProjectType,
-    },
-  ];
-
   return (
-    <div className="bg-muted w-full">
-      <section className="mx-auto w-full max-w-6xl p-4 md:p-8">
+    <div className="bg-muted w-full overflow-auto">
+      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <TextWithTitle
-          title="Temel bilgilerle başlayın"
-          text="İnsanların projeniz hakkında bilgi edinmesini kolaylaştırın."
           classNames={{
             container: "mb-8",
             title: "text-3xl",
             text: "text-lg",
           }}
+          text="Projenizin kimliğini oluşturacak temel bilgileri ekleyin ve potansiyel destekçilerinize projenizi tanıtın."
+          title="Projenizin Temel Bilgileri"
         />
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
+            {/* Proje Özeti Section */}
             <Section
-              title="Proje başlığı"
               text={[
-                "Projenizi hızlıca anlamalarına yardımcı olacak net ve kısa bir başlık yazın.",
-                "Potansiyel destekçiler, projeniz kategori sayfalarında, arama sonuçlarında veya topluluğumuza gönderdiğimiz e-postalarda görüntülendiğinde bunları görecektir.",
-              ]}>
+                "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
+                "Bu bilgiler, projenizin ilk izlenimini oluşturacak ve destekçilerinizin dikkatini çekecektir.",
+              ]}
+              title="Proje Özeti">
               <FormContainer>
                 <FormFieldUI
                   control={form.control}
                   name="projectName"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Başlık</FormLabel>
+                      <FormLabel>Proje Adı</FormLabel>
                       <FormControl>
-                        <Input placeholder="Papercuts: A Party Game for Rude and Well-Read" {...field} />
+                        <Input placeholder="Örnek: Sürdürülebilir Tarım Teknolojileri" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -155,12 +121,13 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
                   name="projectDefinition"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Alt başlık</FormLabel>
+                      <FormLabel>Proje Açıklaması</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Papercuts is a rowdy card game about books and writing brougth to you by Electric Literature."
+                          placeholder="Projenizin amacını ve hedeflerini kısaca açıklayın..."
                           {...field}
                           rows={3}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -171,11 +138,147 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
             </Section>
 
             <Section
-              title="Proje kategorisi"
               text={[
-                "Projenizi en iyi tanımlayan kategorileri ve türleri seçin.",
-                "Bu seçimler, destekçilerin projenizi bulmasına ve size uygun rehberlik sağlamamıza yardımcı olacaktır.",
-              ]}>
+                "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
+                "Bu bilgiler, projenizin ilk izlenimini oluşturacak ve destekçilerinizin dikkatini çekecektir.",
+              ]}
+              title="Proje Hikayesi">
+              <FormContainer className="w-full">
+                <FormFieldUI
+                  control={form.control}
+                  name="projectContent"
+                  render={({field}) => {
+                    return (
+                      <FormItem className="w-full">
+                        <FormLabel>Proje Hikayesi</FormLabel>
+                        <FormControl>
+                          <TiptapEditor
+                            canEditable
+                            editOnStart
+                            editorClassName="overflow-y-auto max-h-[500px]"
+                            editorContent={(field.value && (JSON.parse(field.value) as JSONContent)) || {}}
+                            editorId="story"
+                            minWordCount={1}
+                            onSaveFunction={async (id, content) => {
+                              field.onChange(content);
+                              return await Promise.resolve(id);
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+              </FormContainer>
+            </Section>
+
+            {/* Görsel Kimlik Section */}
+            <Section
+              text={[
+                "Projenizi görsel olarak temsil edecek logo ve görselleri ekleyin.",
+                "Kaliteli görseller, projenizin profesyonelliğini artırır ve destekçilerinizin güvenini kazanmanıza yardımcı olur.",
+              ]}
+              title="Görsel Kimlik">
+              <FormContainer>
+                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
+                  <p>
+                    Not: Görsel yükleme özelliği şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş
+                    bırakabilirsiniz.
+                  </p>
+                </div>
+                <FormFieldUI
+                  control={form.control}
+                  name="projectLogo"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Proje Logo (1:1)</FormLabel>
+                      <FormControl>
+                        <Input
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            field.onChange(file ? URL.createObjectURL(file) : "");
+                          }}
+                          type="file"
+                        />
+                      </FormControl>
+                      {field.value ? (
+                        <div className="mt-2 h-32 w-32 overflow-hidden rounded-lg border">
+                          <img alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
+                        </div>
+                      ) : null}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormFieldUI
+                  control={form.control}
+                  name="projectImage"
+                  render={({field}) => (
+                    <FormItem className="mt-2">
+                      <FormLabel>Proje Görseli (16:9)</FormLabel>
+                      <FormControl>
+                        <Input
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            field.onChange(file ? URL.createObjectURL(file) : "");
+                          }}
+                          type="file"
+                        />
+                      </FormControl>
+                      {field.value ? (
+                        <div className="mt-2 h-[180px] w-[320px] overflow-hidden rounded-lg border">
+                          <img alt="Project preview" className="h-full w-full object-cover" src={field.value} />
+                        </div>
+                      ) : null}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormFieldUI
+                  control={form.control}
+                  name="projectVideo"
+                  render={({field}) => (
+                    <FormItem className="mt-2">
+                      <FormLabel>Proje Videosu (URL)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://youtube.com/... (Opsiyonel)" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </FormContainer>
+            </Section>
+
+            {/* Proje Konumu Section */}
+            <Section text="Projenizin yürütüleceği veya etki edeceği lokasyonu belirtin." title="Proje Konumu">
+              <FormContainer>
+                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
+                  <p>
+                    Not: Konum entegrasyonu şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş bırakabilirsiniz.
+                  </p>
+                </div>
+                <FormField htmlFor="location">
+                  <div className="relative">
+                    <Input className="peer pl-8" id="location" placeholder="Şehir veya bölge adı girin..." />
+                    <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
+                  </div>
+                </FormField>
+              </FormContainer>
+            </Section>
+
+            {/* Proje Sınıflandırması Section */}
+            <Section
+              text={[
+                "Projenizin kategorisini seçin.",
+                "Doğru sınıflandırma, projenizin hedef kitlesine ulaşmasını kolaylaştırır.",
+              ]}
+              title="Proje Sınıflandırması">
               <FormContainer className="grid gap-4">
                 <FormFieldUI
                   control={form.control}
@@ -185,47 +288,18 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
                       <FormLabel>Kategori Türleri</FormLabel>
                       <FormControl>
                         <div className="flex flex-wrap gap-2">
-                          {categoryOptions.map((category) => (
+                          {Object.entries(CategoryType).map(([key, value]) => (
                             <Button
-                              key={category.value}
-                              type="button"
-                              variant={field.value.includes(category.value) ? "default" : "outline"}
+                              key={key}
                               onClick={() => {
-                                const newValue = field.value.includes(category.value)
-                                  ? field.value.filter((v) => v !== category.value)
-                                  : [...field.value, category.value];
+                                const newValue = field.value.includes(value)
+                                  ? field.value.filter((v) => v !== value)
+                                  : [...field.value, value];
                                 field.onChange(newValue);
-                              }}>
-                              {category.label}
-                            </Button>
-                          ))}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormFieldUI
-                  control={form.control}
-                  name="projectTypes"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Proje Türleri</FormLabel>
-                      <FormControl>
-                        <div className="flex flex-wrap gap-2">
-                          {projectTypeOptions.map((type) => (
-                            <Button
-                              key={type.value}
+                              }}
                               type="button"
-                              variant={field.value.includes(type.value) ? "default" : "outline"}
-                              onClick={() => {
-                                const newValue = field.value.includes(type.value)
-                                  ? field.value.filter((v) => v !== type.value)
-                                  : [...field.value, type.value];
-                                field.onChange(newValue);
-                              }}>
-                              {type.label}
+                              variant={field.value.includes(value) ? "default" : "outline"}>
+                              {key}
                             </Button>
                           ))}
                         </div>
@@ -237,87 +311,120 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
               </FormContainer>
             </Section>
 
-            <Section title="Project leader" text="Who is leading this project?">
+            <Section text="Projeyi yönetecek ve temsil edecek kişiyi belirleyin." title="Proje Lideri">
               <FormContainer>
-                <Combobox list={[]} onValueChange={() => {}} selectIdentifier={""} selectLabel={""} />
+                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
+                  <p>
+                    Not: Proje liderleri seçimi şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş
+                    bırakabilirsiniz.
+                  </p>
+                </div>
+                <Combobox
+                  list={[]}
+                  onValueChange={() => {
+                    //
+                  }}
+                  selectIdentifier=""
+                  selectLabel=""
+                />
               </FormContainer>
             </Section>
-            <Section title="Project members" text="Who is working on this project?">
+
+            <Section text="Projenin gerçekleştirilmesinde görev alacak ekip üyelerini ekleyin." title="Proje Ekibi">
               <FormContainer>
+                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
+                  <p>
+                    Not: Proje ekibi seçimi şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş bırakabilirsiniz.
+                  </p>
+                </div>
                 <SheetRoot.Sheet>
                   <SheetRoot.SheetTrigger asChild>
-                    <Button variant={"outline"}>
+                    <Button variant="outline">
                       <UserPlus className="mr-2 h-4 w-4" />
                       Add member
                     </Button>
                   </SheetRoot.SheetTrigger>
-                  <SheetRoot.SheetContent></SheetRoot.SheetContent>
+                  <SheetRoot.SheetContent />
                 </SheetRoot.Sheet>
               </FormContainer>
             </Section>
-            <Section
-              title="Project location"
-              text="Enter the location that best describes where your project is based.">
-              <FormContainer>
-                <FormField htmlFor="location">
-                  <div className="relative">
-                    <Input id="location" className="peer pl-8" placeholder="Start typing your location..." />
-                    <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
-                  </div>
-                </FormField>
-              </FormContainer>
-            </Section>
 
-            <Section title="Proje tarihleri" text="Projenizin başlangıç ve bitiş tarihlerini seçin.">
+            <Section
+              text={[
+                "Projenizin web sitesini ve sosyal medya hesaplarını ekleyin.",
+                "Bu bilgiler, destekçilerinizin sizinle iletişim kurmasını ve projenizi takip etmesini sağlar.",
+              ]}
+              title="İletişim ve Sosyal Medya">
               <FormContainer>
-                <div className="flex flex-col gap-4">
+                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
+                  <p>
+                    Not: Sosyal medya entegrasyonu şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş
+                    bırakabilirsiniz.
+                  </p>
+                </div>
+                <div className="space-y-6">
                   <FormFieldUI
                     control={form.control}
-                    name="projectStartDate"
+                    name="websiteUrl"
                     render={({field}) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Başlangıç Tarihi</FormLabel>
+                      <FormItem>
+                        <FormLabel>Website </FormLabel>
                         <FormControl>
-                          <DatePicker
-                            date={field.value ? new Date(field.value) : undefined}
-                            setDate={(date?: Date) => {
-                              field.onChange(date?.toISOString() || "");
-                            }}
-                          />
+                          <div className="relative">
+                            <Globe className="text-muted-foreground absolute left-2 top-2 h-5 w-5" />
+                            <Input className="pl-9" placeholder="https://www.example.com" {...field} />
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="overfunding"
-                      checked={spesifDate}
-                      onCheckedChange={(checked) => {
-                        setSpesifDate(checked as boolean);
-                      }}
-                    />
-                    <Label
-                      htmlFor="overfunding"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      End Spesific Date
-                    </Label>
-                  </div>
 
                   <FormFieldUI
                     control={form.control}
-                    name="projectEndDate"
+                    name="instagramUrl"
                     render={({field}) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Bitiş Tarihi</FormLabel>
+                      <FormItem>
+                        <FormLabel>Instagram </FormLabel>
                         <FormControl>
-                          <DatePicker
-                            date={field.value ? new Date(field.value) : undefined}
-                            setDate={(date?: Date) => {
-                              field.onChange(date?.toISOString() || "");
-                            }}
-                            disabled={!spesifDate}
-                          />
+                          <div className="relative">
+                            <Instagram className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
+                            <Input className="pl-9" placeholder="https://instagram.com/username" {...field} />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormFieldUI
+                    control={form.control}
+                    name="twitterUrl"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Twitter </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Twitter className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
+                            <Input className="pl-9" placeholder="https://twitter.com/username" {...field} />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormFieldUI
+                    control={form.control}
+                    name="linkedinUrl"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>LinkedIn </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Linkedin className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
+                            <Input className="pl-9" placeholder="https://linkedin.com/in/username" {...field} />
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -327,8 +434,11 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
               </FormContainer>
             </Section>
 
-            <Button type="submit" className="w-full">
-              Kaydet
+            {/* Continue with other sections from the new version */}
+            {/* ... */}
+
+            <Button className="w-full" type="submit">
+              Değişiklikleri Kaydet
             </Button>
           </form>
         </Form>

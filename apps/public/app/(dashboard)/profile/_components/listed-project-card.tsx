@@ -1,47 +1,55 @@
-import Link from "next/link";
-import Image from "next/image";
-import {Card} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
+import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
-import {MapPin, DollarSign, Target} from "lucide-react";
-import {UpwithCrowd_Projects_ListProjectsResponseDto as Project} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {UpwithCrowd_Projects_ListProjectsResponseDto as Project} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {DollarSign, Target} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function ListedProjectCard({project}: {project: Project}) {
-  const fundedPercentage = (project.fundableAmount / project.fundNominalAmount) * 100;
+  const fundedPercentage = 0;
+
+  const getDaysLeft = () => {
+    const endDate = new Date(project.projectEndDate ?? Date.now());
+    const now = new Date();
+    const diffTime = endDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
 
   return (
-    <Link href={`/projects/${project.id}`} className="pointer">
+    <Link className="pointer" href={`/projects/${project.id}`}>
       <Card className="space-y-2 overflow-hidden border-none p-4 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
         <div className="relative">
           <Image
-            src={"https://placehold.co/200x300"}
             alt={project.projectName}
-            width={300}
-            height={300}
             className="h-64 w-full rounded-lg object-cover"
+            height={300}
+            src="https://placehold.co/200x300"
+            width={300}
           />
           <Badge className="bg-primary text-primary-foreground absolute bottom-2 left-2 font-medium">
             {project.fundCollectionType}
           </Badge>
         </div>
-        <div className="text-muted-foreground flex items-center text-xs md:text-sm">
+        {/* <div className="text-muted-foreground flex items-center text-xs md:text-sm">
           <MapPin className="mr-1 h-3 w-3 md:h-4 md:w-4" />
           California, Bay Area
-        </div>
+        </div> */}
         <h3 className="mb-4 w-full overflow-hidden text-ellipsis text-nowrap text-lg font-semibold md:text-xl">
           {project.projectName}
         </h3>
         <div className="bg-primary/5 rounded-lg p-3 md:p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
-            <span className="text-muted-foreground text-xs md:text-sm">30 days left</span>
+            <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} days left</span>
           </div>
-          <Progress value={fundedPercentage} className="mb-3 md:mb-4" />
+          <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
           <div className="flex items-center justify-between text-xs md:text-sm">
             <div className="flex items-center">
               <DollarSign className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">${project.fundNominalAmount.toString()}</p>
+                <p className="font-semibold">$0</p>
                 <p className="text-muted-foreground text-xs">raised</p>
               </div>
             </div>

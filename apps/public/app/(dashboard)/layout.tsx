@@ -1,10 +1,10 @@
-import Header from "@/components/Header";
+import Header from "@/components/header";
 
 export default function Layout({children}: {children: React.ReactNode}) {
   return (
-    <section className="h-screen overflow-auto">
+    <section className="min-h-screen">
       <Header />
-      {children}
+      <div className="h-full overflow-auto">{children}</div>
     </section>
   );
 }

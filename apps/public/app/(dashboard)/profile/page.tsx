@@ -22,11 +22,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {toast} from "@/components/ui/sonner";
+import {useRouter} from "next/navigation";
 import {postProfileImageApi} from "@/actions/upwithcrowd/member/post-action";
 import {handleSignOut} from "@/app/(auth)/login/action";
 import {useMember} from "@/app/providers/member";
-import {toast} from "@/components/ui/sonner";
-import {useRouter} from "next/navigation";
 
 export default function ProfileClient() {
   const {currentMember, members, setCurrentMember, setMembers} = useMember();
@@ -37,7 +37,7 @@ export default function ProfileClient() {
   if (currentMember === null) return null;
   const handleCopy = () => {
     if (currentMember.id) {
-      navigator.clipboard.writeText(currentMember.id);
+      void navigator.clipboard.writeText(currentMember.id);
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
@@ -45,34 +45,30 @@ export default function ProfileClient() {
     }
   };
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = async () => {
+      reader.onloadend = () => {
         const base64String = reader.result as string;
         // Remove data:image/[type];base64, prefix
         const base64Content = base64String.split(",")[1];
 
-        try {
-          startTransition(() => {
-            void postProfileImageApi({
-              requestBody: base64Content,
+        startTransition(() => {
+          void postProfileImageApi({
+            requestBody: base64Content,
+          })
+            .then((response) => {
+              if (response.type === "success") {
+                toast.success("Profile image uploaded successfully.");
+              } else {
+                toast.error("Error uploading image.");
+              }
             })
-              .then((response) => {
-                if (response.type === "success") {
-                  toast.success("Profile image uploaded successfully.");
-                } else {
-                  toast.error("Error uploading image.");
-                }
-              })
-              .finally(() => {
-                router.push("/profile");
-              });
-          });
-        } catch (error) {
-          console.error("Error uploading image:", error);
-        }
+            .finally(() => {
+              router.push("/profile");
+            });
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -87,14 +83,14 @@ export default function ProfileClient() {
               <div className="relative mb-6">
                 <div className="relative h-24 w-24">
                   <Image
+                    alt="Profile"
+                    className="rounded-full bg-[#e5e5e5] object-cover"
+                    fill
                     src={
                       currentMember.profileImage
                         ? `data:image/jpeg;base64,${currentMember.profileImage}`
                         : "/placeholder.svg"
                     }
-                    alt="Profile"
-                    fill
-                    className="rounded-full bg-[#e5e5e5] object-cover"
                   />
                 </div>
                 <Button
@@ -105,12 +101,12 @@ export default function ProfileClient() {
                 </Button>
               </div>
               <h2 className="mb-1 text-2xl font-bold">
-                {currentMember?.type === "Organization"
+                {currentMember.type === "Organization"
                   ? currentMember.title
-                  : `${currentMember?.name || "Your Name"} ${currentMember?.surname}`}
+                  : `${currentMember.name || "Your Name"} ${currentMember.surname}`}
               </h2>
               <p className="text-muted-foreground mb-4">
-                {currentMember?.type === "Organization" ? "Your business account" : "Your personal account"}
+                {currentMember.type === "Organization" ? "Your business account" : "Your personal account"}
               </p>
             </CardContent>
           </Card>
@@ -122,8 +118,8 @@ export default function ProfileClient() {
                   .filter((member) => member.id !== currentMember.id)
                   .map((membership) => (
                     <Card
-                      key={membership.id}
                       className="hover:bg-muted cursor-pointer transition-colors"
+                      key={membership.id}
                       onClick={() => {
                         setCurrentMember(membership);
                         setMembers(members);
@@ -147,7 +143,7 @@ export default function ProfileClient() {
             </div>
           </ScrollArea>
           <Card className="hover:bg-muted cursor-pointer text-nowrap border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
-            <Link href={"/profile/new/business"}>
+            <Link href="/profile/new/business">
               <CardContent className="flex items-center justify-between p-6">
                 <div className="flex items-center gap-4">
                   <BriefcaseBusiness className="text-primary h-8 w-8" />
@@ -158,16 +154,16 @@ export default function ProfileClient() {
             </Link>
           </Card>
           <div className="text-muted-foreground flex w-full items-center justify-center gap-2 text-center">
-            <p>Membership Id: {currentMember?.id}</p>
-            <div className="cursor-pointer" onClick={handleCopy}>
+            <p>Membership Id: {currentMember.id}</p>
+            <Button className="cursor-pointer" onClick={handleCopy} type="button">
               {isCopied ? <CopyCheck className="h-5 w-5 " /> : <Copy className="h-5 w-5" />}
-            </div>
+            </Button>
           </div>
           <div className="flex w-full items-center justify-center">
             <Button
-              variant="outline"
               className="flex w-1/3 items-center justify-center rounded-full text-red-500 hover:text-red-700 "
-              onClick={() => handleSignOut()}>
+              onClick={() => void handleSignOut()}
+              variant="outline">
               <LogOut className="mr-2 h-4 w-4" />
               Sign out
             </Button>
@@ -181,7 +177,7 @@ export default function ProfileClient() {
                 <div>
                   <h2 className="mb-4 text-xl font-semibold">Your account</h2>
                   <div className="space-y-2">
-                    <Link href="/inbox" className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                    <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/inbox">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <div className="bg-muted rounded-full p-2">
@@ -194,8 +190,8 @@ export default function ProfileClient() {
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
                     <Link
-                      href="/profile/settings"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      href="/profile/settings">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <div className="bg-muted rounded-full p-2">
@@ -206,7 +202,7 @@ export default function ProfileClient() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    <Link href="/help" className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                    <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/help">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <HelpCircle className="h-5 w-5" />
@@ -215,7 +211,7 @@ export default function ProfileClient() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    <Link href="/documents" className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                    <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/documents">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <FileText className="h-5 w-5" />
@@ -231,8 +227,8 @@ export default function ProfileClient() {
                   <h2 className="mb-4 text-xl font-semibold">Settings</h2>
                   <div className="space-y-2">
                     <Link
-                      href="/settings/security"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      href="/settings/security">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Shield className="h-5 w-5" />
@@ -247,8 +243,8 @@ export default function ProfileClient() {
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
                     <Link
-                      href="/settings/notifications"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      href="/settings/notifications">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <BellDot className="h-5 w-5" />
@@ -263,8 +259,8 @@ export default function ProfileClient() {
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
                     <Link
-                      href="/settings/integrations"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      href="/settings/integrations">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Link2 className="h-5 w-5" />
@@ -279,8 +275,8 @@ export default function ProfileClient() {
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
                     <Link
-                      href="/settings/payment"
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2">
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      href="/settings/payment">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Building2 className="h-5 w-5" />
@@ -301,7 +297,7 @@ export default function ProfileClient() {
           </Card>
         </div>
       </div>
-      <input type="file" id="profileImage" accept="image/*" className="hidden" onChange={handleImageChange} />
+      <input accept="image/*" className="hidden" id="profileImage" onChange={handleImageChange} type="file" />
     </div>
   );
 }

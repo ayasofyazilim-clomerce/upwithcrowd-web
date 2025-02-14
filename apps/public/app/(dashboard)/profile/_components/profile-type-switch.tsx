@@ -8,7 +8,7 @@ export default function ProfileTypeSwitch() {
       <Link href="/profile/new/business">
         <Card className="border border-gray-200 p-2 transition-shadow duration-300 hover:shadow-xl">
           <CardHeader className="flex flex-col items-center p-2 pb-0">
-            <Briefcase size={40} className="mb-2 text-gray-700" />
+            <Briefcase className="mb-2 text-gray-700" size={40} />
             <CardTitle className="text-gray-800 ">Business Account</CardTitle>
           </CardHeader>
           <CardContent className="p-2">
@@ -19,7 +19,7 @@ export default function ProfileTypeSwitch() {
       <Link href="/profile/new/personal">
         <Card className="border border-gray-200 p-2 transition-shadow duration-300 hover:shadow-xl">
           <CardHeader className="flex flex-col items-center p-2 pb-0">
-            <User size={40} className="mb-2 text-gray-700" />
+            <User className="mb-2 text-gray-700" size={40} />
             <CardTitle className="text-gray-800">Personal Account</CardTitle>
           </CardHeader>
           <CardContent className="p-2">

@@ -1,21 +1,21 @@
 "use client";
 import {PhoneInput} from "react-international-phone";
 import "react-international-phone/style.css";
-import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
-import {useMember} from "@/app/providers/member";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {toast} from "@/components/ui/sonner";
-import {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
+import {useMember} from "@/app/providers/member";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
@@ -29,11 +29,11 @@ const formSchema = z.object({
     .regex(/^[a-zA-Z0-9*\s&,.'\-\p{L}]{1,600}$/u, "Invalid title format"),
   tel: z
     .string()
-    .regex(/^([+]\d{1,2})(\d{10})$/, "Invalid telephone format")
+    .regex(/^(?:[+]\d{1,2})(?:\d{10})$/, "Invalid telephone format")
     .optional()
     .or(z.literal("")),
   mail: z.string().email("Invalid email address"),
-  annualIncome: z.string().regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
+  annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Invalid annual income"),
   name: z.string().optional(),
   surname: z.string().optional(),
   mobile: z.string().optional(),
@@ -88,7 +88,6 @@ export default function NewBusinessAccount() {
         toast.error(memberResult.message);
       }
     } catch (error) {
-      console.error("Error creating business account:", error);
       toast.error("There was an error creating your business account. Please try again.");
     }
     setIsSubmitting(false);
@@ -108,7 +107,7 @@ export default function NewBusinessAccount() {
           <CardDescription>Enter your business account details below to get started.</CardDescription>
         </CardHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={() => void form.handleSubmit(onSubmit)}>
             <CardContent className="grid gap-6">
               <div className="grid grid-cols-2 gap-4">
                 <FormField
@@ -120,15 +119,15 @@ export default function NewBusinessAccount() {
                       <FormControl>
                         <Input
                           {...field}
-                          type="text"
                           inputMode="numeric"
-                          pattern="[0-9]*"
                           maxLength={10}
                           onInput={(e) => {
                             const input = e.currentTarget;
                             input.value = input.value.replace(/[^0-9]/g, "");
                           }}
+                          pattern="[0-9]*"
                           placeholder="Enter your 10-digit Tax Number"
+                          type="text"
                         />
                       </FormControl>
                       <FormMessage />
@@ -162,9 +161,9 @@ export default function NewBusinessAccount() {
                         <PhoneInput
                           {...field}
                           className="w-full"
-                          inputClassName="w-full"
                           countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
                           defaultCountry="tr"
+                          inputClassName="w-full"
                         />
                       </FormControl>
                       <FormMessage />
@@ -181,14 +180,14 @@ export default function NewBusinessAccount() {
                       <FormControl>
                         <Input
                           {...field}
-                          type="text"
                           inputMode="numeric"
-                          pattern="[0-9]*"
                           onInput={(e) => {
                             const input = e.currentTarget;
                             input.value = input.value.replace(/[^0-9]/g, "");
                           }}
+                          pattern="[0-9]*"
                           placeholder="Enter annual income"
+                          type="text"
                         />
                       </FormControl>
                       <FormMessage />
@@ -205,9 +204,9 @@ export default function NewBusinessAccount() {
                     <FormControl>
                       <Input
                         {...field}
-                        type="email"
                         defaultValue={currentMember?.mail || ""}
                         placeholder="Enter email"
+                        type="email"
                       />
                     </FormControl>
                     <FormMessage />
@@ -216,8 +215,8 @@ export default function NewBusinessAccount() {
               />
             </CardContent>
             <CardFooter>
-              <Button className="w-full" type="submit" disabled={isSubmitting || !isFormValid}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button className="w-full" disabled={isSubmitting || !isFormValid} type="submit">
+                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 {isSubmitting ? "Submitting..." : "Create Business Account"}
               </Button>
             </CardFooter>

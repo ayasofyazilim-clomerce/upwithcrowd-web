@@ -8,6 +8,7 @@ import {useSearchParams} from "next/navigation";
 import {useFormState} from "react-dom";
 import {signInAction} from "./action";
 import SubmitButton from "./loading";
+
 const initialState = {
   message: "",
 };
@@ -25,18 +26,18 @@ export default function Page() {
       <form action={formAction} className="w-full space-y-4">
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="text" name="email" placeholder="Enter your email" required />
+          <Input id="email" name="email" placeholder="Enter your email" required type="text" />
         </div>
         <div>
           <Label htmlFor="password">Password</Label>
-          <PasswordInput id="password" type="password" name="password" placeholder="Enter your password" required />
+          <PasswordInput id="password" name="password" placeholder="Enter your password" required type="password" />
         </div>
         <SubmitButton />
-        {state.message && state.message.length > 1 && <div className="mt-4 text-sm text-red-500">{state.message}</div>}
+        {state.message && state.message.length > 1 ? <div className="mt-4 text-sm text-red-500">{state.message}</div> : null}
       </form>
       <span className="text-muted-foreground text-sm">
         Don&apos;t have an account?
-        <Button variant="link" asChild className="ml-2 p-0 underline">
+        <Button asChild className="ml-2 p-0 underline" variant="link">
           <Link href="/signup">Sign up</Link>
         </Button>
       </span>

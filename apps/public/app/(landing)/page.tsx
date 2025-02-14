@@ -1,13 +1,13 @@
-import {ProjectSlider} from "@/components/ProjectSlider";
-import BlogPreview from "../../components/BlogPreview";
-import CallToAction from "../../components/CallToAction";
-import DetailsSection from "../../components/DetailsSection";
-import ExpertTeam from "../../components/ExpertTeam";
-import HeroSection from "../../components/HeroSection";
-import MissionsSection from "../../components/MissionSection";
-import OrganizationNumbers from "../../components/OrganizationNumbers";
-import ServicesSection from "../../components/ServicesSection";
-import Testimonials from "../../components/Testimonials";
+import {ProjectSlider} from "@/components/project-slider";
+import BlogPreview from "../../components/blog-preview";
+import CallToAction from "../../components/call-to-action";
+import DetailsSection from "../../components/details-section";
+import ExpertTeam from "../../components/expert-team";
+import HeroSection from "../../components/hero-section";
+import MissionsSection from "../../components/mission-section";
+import OrganizationNumbers from "../../components/organization-numbers";
+import ServicesSection from "../../components/services-section";
+import Testimonials from "../../components/testimonials";
 
 export default function Page() {
   return (

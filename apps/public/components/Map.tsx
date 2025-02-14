@@ -1,5 +1,6 @@
 "use client";
-import {FC, useEffect} from "react";
+import type {FC} from "react";
+import { useEffect} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -48,7 +49,7 @@ const Map: FC<MapProps> = ({latitude, longitude, zoom}) => {
     };
   }, [latitude, longitude, zoom]);
 
-  return <div id="map" style={{height: "500px", width: "100%", borderRadius: "24px"}}></div>;
+  return <div id="map" style={{height: "500px", width: "100%", borderRadius: "24px"}} />;
 };
 
 export default Map;

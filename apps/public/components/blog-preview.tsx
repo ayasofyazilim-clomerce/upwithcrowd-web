@@ -33,9 +33,9 @@ export default function BlogPreview() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post, index) => (
             <div
-              key={index}
-              className="bg-background flex flex-col justify-between overflow-hidden rounded-lg shadow-md">
-              <Image src={post.image} alt={post.title} width={300} height={200} className="h-48 w-full object-cover" />
+              className="bg-background flex flex-col justify-between overflow-hidden rounded-lg shadow-md"
+              key={index}>
+              <Image alt={post.title} className="h-48 w-full object-cover" height={200} src={post.image} width={300} />
               <div className="grid grid-rows-[auto_1fr_auto] p-6">
                 <h3 className="mb-2 text-xl font-semibold">{post.title}</h3>
                 <p className="text-muted-foreground mb-4 line-clamp-3">{post.excerpt}</p>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useState} from "react";
 import MemberSwitcher from "./member-switcher";
+
 const PublicLinks = [
   {href: "/", label: "Home"},
   {href: "/projects", label: "Projects"},
@@ -25,8 +26,8 @@ export default function Header() {
   return (
     <header className="bg-background flex h-24 px-6">
       <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="text-primary flex items-center text-2xl font-bold">
-          <Image src="/upwc.png" alt="" width={60} height={60} />
+        <Link className="text-primary flex items-center text-2xl font-bold" href="/">
+          <Image alt="" height={60} src="/upwc.png" width={60} />
           UPwithCrowd
         </Link>
         <nav className="hidden md:block">
@@ -34,8 +35,8 @@ export default function Header() {
             {PublicLinks.map((link) => (
               <li key={link.href}>
                 <Link
-                  href={link.href}
-                  className={cn("text-foreground hover:text-primary ye", pathName === link.href && "text-primary")}>
+                  className={cn("text-foreground hover:text-primary ye", pathName === link.href && "text-primary")}
+                  href={link.href}>
                   {link.label}
                 </Link>
               </li>
@@ -62,21 +63,25 @@ export default function Header() {
             </>
           )}
         </div>
-        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
+        <button
+          aria-label="Toggle menu"
+          className="md:hidden"
+          onClick={() => {
+            setIsMenuOpen(!isMenuOpen);
+          }}>
           {isMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
-      {isMenuOpen && (
-        <nav className="mt-4 md:hidden">
+      {isMenuOpen ? <nav className="mt-4 md:hidden">
           <ul className="flex flex-col space-y-2">
             {PublicLinks.map((link) => (
               <li key={link.href}>
                 <Link
-                  href={link.href}
                   className={cn(
                     "text-foreground hover:text-primary block py-2",
                     pathName === link.href && "text-primary",
-                  )}>
+                  )}
+                  href={link.href}>
                   {link.label}
                 </Link>
               </li>
@@ -85,8 +90,7 @@ export default function Header() {
               <Button className="w-full">{session?.user ? "Start a Project" : "Sign up"}</Button>
             </li>
           </ul>
-        </nav>
-      )}
+        </nav> : null}
     </header>
   );
 }

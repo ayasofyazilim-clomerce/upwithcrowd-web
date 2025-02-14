@@ -1,7 +1,5 @@
 "use client";
 
-import {projects} from "@/_data";
-import {Project} from "@/_types";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {Card} from "@/components/ui/card";
@@ -10,6 +8,8 @@ import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@t
 import {DollarSign, MapPin, Target} from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import type {Project} from "@/_types";
+import {projects} from "@/_data";
 
 const columnHelper = createColumnHelper<Project>();
 
@@ -19,11 +19,11 @@ const columns = [
     cell: (info) => (
       <div className="relative">
         <Image
-          src={info.getValue()}
           alt={info.row.original.title}
-          width={300}
-          height={200}
           className="h-48 w-full rounded-t-lg object-cover"
+          height={200}
+          src={info.getValue()}
+          width={300}
         />
         <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">{info.row.original.badge}</Badge>
       </div>
@@ -46,7 +46,7 @@ const columns = [
               <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
               <span className="text-muted-foreground text-xs md:text-sm">30 days left</span>
             </div>
-            <Progress value={fundedPercentage} className="mb-3 md:mb-4" />
+            <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
             <div className="flex items-center justify-between text-xs md:text-sm">
               <div className="flex items-center">
                 <DollarSign className="text-primary mr-2 h-5 w-5" />
@@ -84,7 +84,7 @@ export default function FeaturedProjects() {
         <h2 className="mb-10 text-center text-3xl font-bold">Featured Projects</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {table.getRowModel().rows.map((row) => (
-            <Card key={row.id} className="overflow-hidden">
+            <Card className="overflow-hidden" key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <React.Fragment key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

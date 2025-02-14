@@ -2,9 +2,6 @@
 
 import {BadgeCheck, LogOut, PlusCircle, UserIcon} from "lucide-react";
 import * as React from "react";
-
-import {handleSignOut} from "@/app/(auth)/login/action";
-import {Member, useMember} from "@/app/providers/member";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import {
@@ -23,6 +20,9 @@ import {cn} from "@/lib/utils";
 import {useSession} from "@repo/utils/auth";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import { useMember} from "@/app/providers/member";
+import type {Member} from "@/app/providers/member";
+import {handleSignOut} from "@/app/(auth)/login/action";
 
 export default function MemberSwitcher() {
   const router = useRouter();
@@ -32,12 +32,12 @@ export default function MemberSwitcher() {
   const {currentMember} = useMember();
   let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
 
-  if (!_currentMember || _currentMember === null) {
+  if (!_currentMember) {
     if (!currentMember || currentMember.isValidated === false) {
       router.push("/profile/new/personal");
     }
     _currentMember = {
-      id: Array.isArray(session?.user?.member_id) ? session?.user?.member_id[0] : session?.user?.member_id || "",
+      id: Array.isArray(session?.user?.member_id) ? session.user.member_id[0] : session?.user?.member_id || "",
       name: session?.user?.name || "",
       surname: session?.user?.surname || "",
       identifier: session?.user?.email || "",
@@ -48,38 +48,38 @@ export default function MemberSwitcher() {
   }
 
   const DesktopContent = (
-    <Popover open={open} onOpenChange={setOpen} modal>
+    <Popover modal onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           aria-label="Select a member"
-          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}>
+          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
+          role="combobox"
+          variant="outline">
           <MemberItem member={_currentMember} />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Content setOpen={setOpen} currentMember={_currentMember} />
+        <Content currentMember={_currentMember} setOpen={setOpen} />
       </PopoverContent>
     </Popover>
   );
 
   const MobileContent = (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer onOpenChange={setOpen} open={open}>
       <DrawerTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           aria-label="Select a member"
-          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}>
+          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
+          role="combobox"
+          variant="outline">
           <MemberItem member={_currentMember} />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <Content setOpen={setOpen} currentMember={_currentMember} />
+          <Content currentMember={_currentMember} setOpen={setOpen} />
         </div>
       </DrawerContent>
     </Drawer>
@@ -96,8 +96,8 @@ function Content({
   currentMember: Member;
 }) {
   const {members} = useMember();
-  const organizations = members?.filter((x) => x.type === "Organization" && x.title) || [];
-  const individuals = members?.filter((x) => x.type === "Individual") || [];
+  const organizations = members.filter((x) => x.type === "Organization" && x.title);
+  const individuals = members.filter((x) => x.type === "Individual");
   return (
     <Command>
       <CommandInput placeholder="Search member..." />
@@ -105,16 +105,16 @@ function Content({
       <CommandList>
         <CommandEmpty>No member found.</CommandEmpty>
         {individuals.length > 0 && (
-          <CommandGroup key="individuals" heading="Individuals">
+          <CommandGroup heading="Individuals" key="individuals">
             {individuals.map((ind) => (
-              <ListItem key={ind.id} member={ind} currentMember={currentMember} setOpen={setOpen} />
+              <ListItem currentMember={currentMember} key={ind.id} member={ind} setOpen={setOpen} />
             ))}
           </CommandGroup>
         )}
         {organizations.length > 0 && (
-          <CommandGroup key="organizations" heading="Organizations">
+          <CommandGroup heading="Organizations" key="organizations">
             {organizations.map((org) => (
-              <ListItem key={org.id} member={org} currentMember={currentMember} setOpen={setOpen} />
+              <ListItem currentMember={currentMember} key={org.id} member={org} setOpen={setOpen} />
             ))}
           </CommandGroup>
         )}
@@ -138,17 +138,17 @@ function ListItem({
 
   return (
     <CommandItem
-      key={member.id}
-      value={member.id}
-      onSelect={() => {
-        setCurrentMember(member);
-        setOpen(false);
-      }}
       className={cn(
         "hover:bg-primary/20 text-sm",
 
         member.id === currentMember.id && "bg-primary/10 aria-selected:bg-primary/20",
-      )}>
+      )}
+      key={member.id}
+      onSelect={() => {
+        setCurrentMember(member);
+        setOpen(false);
+      }}
+      value={member.id}>
       <MemberItem member={member} />
     </CommandItem>
   );
@@ -158,11 +158,11 @@ function MemberItem({member}: {member: Partial<Member>}) {
   const {currentMember} = useMember();
 
   return (
-    <React.Suspense fallback={"loading"}>
+    <React.Suspense fallback="loading">
       <>
         <Avatar className="mr-2 size-10">
           {currentMember?.profileImage && currentMember.id === member.id ? (
-            <AvatarImage src={`data:image/jpeg;base64,${currentMember.profileImage}`} alt={member.id} />
+            <AvatarImage alt={member.id} src={`data:image/jpeg;base64,${currentMember.profileImage}`} />
           ) : (
             <AvatarFallback className="bg-primary/10 text-primary text-sm">
               <>{member.name?.slice(0, 1).toUpperCase()}</>
@@ -176,7 +176,7 @@ function MemberItem({member}: {member: Partial<Member>}) {
               <p className="overflow-hidden text-ellipsis text-nowrap">
                 {member.type === "Organization" ? member.title : `${member.name} ${member.surname}`}
               </p>
-              {member.isValidated && <BadgeCheck className="text-primary size-4 min-w-4" />}
+              {member.isValidated ? <BadgeCheck className="text-primary size-4 min-w-4" /> : null}
             </div>
             <span className="text-xs text-gray-500">{member.identifier}</span>
           </div>
@@ -192,21 +192,21 @@ function Commands() {
       <CommandList>
         <CommandGroup>
           <CommandItem>
-            <Link href="/profile/new/business" className="flex items-center gap-2">
+            <Link className="flex items-center gap-2" href="/profile/new/business">
               <PlusCircle className="size-4" />
               Create business account
             </Link>
           </CommandItem>
           <CommandSeparator />
           <CommandItem>
-            <Link href="/profile" className="flex items-center gap-2">
+            <Link className="flex items-center gap-2" href="/profile">
               <UserIcon className="size-4" />
               Profile
             </Link>
           </CommandItem>
           <CommandItem
-            onSelect={() => handleSignOut()}
-            className="flex items-center gap-2 text-red-500 hover:cursor-pointer aria-selected:text-red-500">
+            className="flex items-center gap-2 text-red-500 hover:cursor-pointer aria-selected:text-red-500"
+            onSelect={() => void handleSignOut()}>
             <LogOut className="size-4" />
             Sign out
           </CommandItem>

@@ -1,7 +1,7 @@
 import {cn} from "@/lib/utils";
-import TextWithTitle from "./text-with-title";
 import {Lightbulb} from "lucide-react";
 import Link from "next/link";
+import TextWithTitle from "./text-with-title";
 
 const defaultTextWithTitleClassNames = {
   title: "text-black/80",
@@ -20,7 +20,7 @@ export function Section({
 }) {
   return (
     <div className={cn("grid items-start gap-8 border-b py-8 md:grid-cols-3", className)}>
-      <TextWithTitle classNames={defaultTextWithTitleClassNames} title={title} text={text} />
+      <TextWithTitle classNames={defaultTextWithTitleClassNames} text={text} title={title} />
       {children}
     </div>
   );
@@ -40,7 +40,7 @@ export function SectionHint({
     <div className="text-primary mt-auto flex items-center gap-2 text-sm">
       <Lightbulb />
       {message}
-      {link && <Link href={link.href}> {link.text}</Link>}
+      {link ? <Link href={link.href}> {link.text}</Link> : null}
     </div>
   );
 }

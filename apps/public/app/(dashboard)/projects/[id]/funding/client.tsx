@@ -1,16 +1,9 @@
 "use client";
-import {putProjectFundingByIdApi} from "@/actions/upwithcrowd/project/put-action";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
-import {
-  $UpwithCrowd_Projects_FundCollectionType,
-  UpwithCrowd_Projects_UpdateProjectFundingDto,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {UpwithCrowd_Projects_UpdateProjectFundingDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {$UpwithCrowd_Projects_FundCollectionType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {useParams, useRouter} from "next/navigation";
-import BudgetCard from "../../new/_components/budget-card";
-import {FormContainer} from "../../new/_components/form";
-import {Section} from "../../new/_components/section";
-import TextWithTitle from "../../new/_components/text-with-title";
 import {Button} from "@/components/ui/button";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Checkbox} from "@/components/ui/checkbox";
@@ -19,6 +12,14 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {toast} from "@/components/ui/sonner";
+import {DatePicker} from "@/components/ui/date-picker";
+import {Label} from "@/components/ui/label";
+import {useState, useEffect} from "react";
+import {putProjectFundingByIdApi} from "@/actions/upwithcrowd/project/put-action";
+import TextWithTitle from "../../new/_components/text-with-title";
+import {Section} from "../../new/_components/section";
+import {FormContainer} from "../../new/_components/form";
+import BudgetCard from "../../new/_components/budget-card";
 
 const fundingSchema = z.object({
   fundCollectionType: z.enum($UpwithCrowd_Projects_FundCollectionType.enum).optional(),
@@ -27,9 +28,11 @@ const fundingSchema = z.object({
   additionalFundRate: z.string(),
   qualifiedFundRate: z.string(),
   overFunding: z.boolean().optional().nullable(),
-  cashValue: z.number().nullable(),
   minimumFundAmount: z.number().nullable(),
   privilege: z.string().max(135, "Privilege must be less than 135 characters").optional().nullable(),
+  projectStartDate: z.string(),
+  projectEndDate: z.string().optional(),
+  cashValue: z.coerce.number().min(0, "Cash value must be greater than or equal to 0"),
 });
 
 export type FundingFormValues = z.infer<typeof fundingSchema>;
@@ -40,9 +43,47 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
   const form = useForm<FundingFormValues>({
     resolver: zodResolver(fundingSchema),
-    defaultValues: fundingDetail,
+    defaultValues: {
+      ...fundingDetail,
+      cashValue: fundingDetail.cashValue ?? 0,
+    },
   });
-  const onSubmit = async (data: FundingFormValues) => {
+
+  const [spesifDate, setSpesifDate] = useState(false);
+
+  const fundCollectionType = form.watch("fundCollectionType");
+  const showCashValue = fundCollectionType === "DBIT" || fundCollectionType === "SHRE_DBIT";
+
+  useEffect(() => {
+    if (!spesifDate) {
+      const startDate = form.getValues("projectStartDate");
+      if (!startDate) {
+        // Set current date as start date
+        const currentDate = new Date();
+        form.setValue("projectStartDate", currentDate.toISOString());
+
+        // Set end date as 30 days from now
+        const endDate = new Date(currentDate);
+        endDate.setDate(endDate.getDate() + 30);
+        form.setValue("projectEndDate", endDate.toISOString());
+      } else {
+        const startDateTime = new Date(startDate);
+        if (!isNaN(startDateTime.getTime())) {
+          const endDate = new Date(startDateTime);
+          endDate.setDate(endDate.getDate() + 60);
+          form.setValue("projectEndDate", endDate.toISOString());
+        }
+      }
+    }
+  }, [spesifDate, form]);
+
+  useEffect(() => {
+    if (!showCashValue) {
+      form.setValue("cashValue", 1000);
+    }
+  }, [showCashValue, form]);
+
+  const onSubmit = (data: FundingFormValues) => {
     try {
       // The values are already converted to numbers by the schema
       const formattedData = {
@@ -50,13 +91,13 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
         overFunding: Boolean(data.overFunding),
       };
 
-      putProjectFundingByIdApi({
+      void putProjectFundingByIdApi({
         requestBody: formattedData,
         id: projectId,
       }).then((response) => {
         if (response.type === "success") {
           toast.success("Funding details updated successfully");
-          router.push(`/dashboard/projects/${projectId}/funding`);
+          router.push(`/projects/${projectId}`);
         } else {
           toast.error("An unexpected error occurred");
         }
@@ -70,40 +111,23 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
   return (
     <div className="bg-muted w-full">
-      <section className="mx-auto w-full max-w-6xl p-4 md:p-8">
+      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <TextWithTitle
-          title="Let's talk about money"
-          text="Plan and manage your project's finances."
           classNames={{
             container: "mb-8",
             title: "text-2xl font-medium",
             text: "text-lg",
           }}
+          text="Plan and manage your project's finances."
+          title="Let's talk about money"
         />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
             {/* Privilege Section */}
-            <Section title="Privilege" text={["Write a clear, brief description of the privileges."]}>
-              <FormContainer>
-                <FormField
-                  control={form.control}
-                  name="privilege"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Privilege</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} value={field.value ?? ""} rows={3} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </FormContainer>
-            </Section>
 
             {/* Fund Collection Type Section */}
-            <Section title="Fund Collection Type" text={["Select the funding type"]}>
+            <Section text={["Select the funding type"]} title="Fund Collection Type">
               <FormContainer>
                 <FormField
                   control={form.control}
@@ -130,46 +154,104 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
               </FormContainer>
             </Section>
 
-            {/* Continue with other form fields similarly... */}
-            <Section
-              className="border-b-0"
-              title="Nominal Amount"
-              text={[
-                "The minimum required funding amount for the project. This represents the base level of financing needed.",
-              ]}>
-              <FormContainer className="">
-                <FormField
-                  control={form.control}
-                  name="fundNominalAmount"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Nominal Amount</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            className="pl-7"
-                            min="0"
-                            {...field}
-                            value={field.value?.toString() ?? ""}
+            <Section text="Projenizin başlangıç ve bitiş tarihlerini seçin." title="Proje tarihleri">
+              <FormContainer>
+                <div className="flex flex-col gap-4">
+                  <FormField
+                    control={form.control}
+                    name="projectStartDate"
+                    render={({field}) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>Başlangıç Tarihi</FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            date={field.value ? new Date(field.value) : undefined}
+                            setDate={(date?: Date) => {
+                              field.onChange(date?.toISOString() || "");
+                            }}
                           />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={spesifDate}
+                      id="spesificDate"
+                      onCheckedChange={(checked) => {
+                        setSpesifDate(checked as boolean);
+                      }}
+                    />
+                    <Label
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      htmlFor="spesificDate">
+                      End Spesific Date
+                    </Label>
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="projectEndDate"
+                    render={({field}) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>Bitiş Tarihi</FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            date={field.value ? new Date(field.value) : undefined}
+                            disabled={!spesifDate}
+                            setDate={(date?: Date) => {
+                              field.onChange(date?.toISOString() || "");
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </FormContainer>
             </Section>
+
+            {showCashValue ? (
+              <Section className="border-b-0" text={["Enter the cash value for the debit type."]} title="Cash Value">
+                <FormContainer className="">
+                  <FormField
+                    control={form.control}
+                    name="cashValue"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Cash Value</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+                            <Input
+                              className="pl-7"
+                              min="0"
+                              placeholder="0"
+                              type="number"
+                              {...field}
+                              value={field.value.toString()}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </FormContainer>
+              </Section>
+            ) : null}
+
+            {/* Continue with other form fields similarly... */}
+
             {/* Funding Goals Section Begin */}
             <Section
               className="border-b-0"
-              title="Fundable Amount"
               text={[
                 "The minimum required funding amount for the project. This represents the base level of financing needed.",
-              ]}>
+              ]}
+              title="Fundable Amount">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -181,12 +263,12 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                         <div className="relative">
                           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
                           <Input
-                            type="number"
-                            placeholder="0"
                             className="pl-7"
                             min="0"
+                            placeholder="0"
+                            type="number"
                             {...field}
-                            value={field.value?.toString() ?? ""}
+                            value={field.value.toString()}
                           />
                         </div>
                       </FormControl>
@@ -196,23 +278,65 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                 />
               </FormContainer>
             </Section>
+
             <Section
               className="border-b-0"
-              title="Additional Funds Rate"
+              text={["The minimum amount an investor can contribute to the project."]}
+              title="Min Fund Amount">
+              <FormContainer className="">
+                <FormField
+                  control={form.control}
+                  name="minimumFundAmount"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Min Fund Amount</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+                          <Input
+                            className="pl-7"
+                            min="0"
+                            placeholder="0"
+                            type="number"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e.target.valueAsNumber);
+                            }}
+                            value={field.value ?? ""}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </FormContainer>
+            </Section>
+
+            <Section
+              className="border-b-0"
               text={[
-                "Additional funding rate. Defines the extra percentage that can be added to the total fundable amount.",
-              ]}>
+                "The minimum required funding amount for the project. This represents the base level of financing needed.",
+              ]}
+              title="Nominal Amount">
               <FormContainer className="">
                 <FormField
                   control={form.control}
-                  name="additionalFundRate"
+                  name="fundNominalAmount"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Additional Fund Rate</FormLabel>
+                      <FormLabel>Nominal Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
-                          <Input type="text" placeholder="0" className="pl-7" {...field} />
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+                          <Input
+                            className="pl-7"
+                            min="0"
+                            placeholder="0"
+                            type="number"
+                            {...field}
+                            value={field.value.toString() }
+                          />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -221,33 +345,11 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                 />
               </FormContainer>
             </Section>
+
             <Section
               className="border-b-0"
-              title="Qualified Funds Rate"
-              text={["Qualified funding rate for qualified investors who are allowed to invest in the project."]}>
-              <FormContainer className="">
-                <FormField
-                  control={form.control}
-                  name="qualifiedFundRate"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Qualified Fund Rate</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
-                          <Input type="text" placeholder="0" className="pl-7" {...field} />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </FormContainer>
-            </Section>
-            <Section
-              className="border-b-0"
-              title="Over Funding"
-              text={["If checked, the project can exceed its target funding amount."]}>
+              text={["If checked, the project can exceed its target funding amount."]}
+              title="Over Funding">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -266,26 +368,24 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                 />
               </FormContainer>
             </Section>
-            <Section className="border-b-0" title="Cash Value" text={["The cash equivalent value of the project."]}>
+
+            <Section
+              className="border-b-0"
+              text={[
+                "Additional funding rate. Defines the extra percentage that can be added to the total fundable amount.",
+              ]}
+              title="Additional Funds Rate">
               <FormContainer className="">
                 <FormField
                   control={form.control}
-                  name="cashValue"
+                  name="additionalFundRate"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Cash Value</FormLabel>
+                      <FormLabel>Additional Fund Rate</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            className="pl-7"
-                            min="0"
-                            {...field}
-                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                            value={field.value ?? ""}
-                          />
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                          <Input className="pl-7" placeholder="0" type="text" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -296,27 +396,19 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
             </Section>
             <Section
               className="border-b-0"
-              title="Min Fund Amount"
-              text={["The minimum amount an investor can contribute to the project."]}>
+              text={["Qualified funding rate for qualified investors who are allowed to invest in the project."]}
+              title="Qualified Funds Rate">
               <FormContainer className="">
                 <FormField
                   control={form.control}
-                  name="minimumFundAmount"
+                  name="qualifiedFundRate"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Min Fund Amount</FormLabel>
+                      <FormLabel>Qualified Fund Rate</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            className="pl-7"
-                            min="0"
-                            {...field}
-                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                            value={field.value ?? ""}
-                          />
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                          <Input className="pl-7" placeholder="0" type="text" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -325,17 +417,36 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                 />
               </FormContainer>
             </Section>
+
+            <Section text={["Write a clear, brief description of the privileges."]} title="Privilege">
+              <FormContainer>
+                <FormField
+                  control={form.control}
+                  name="privilege"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Privilege</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} rows={3} value={field.value ?? ""} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </FormContainer>
+            </Section>
+
             <Section
-              title="Project budget BETA(optional)"
               text={[
                 "Determine the various costs to bring your project to life with our Google Sheets template.",
                 "We’ll have access to your document, but we will never share your information with others.",
-              ]}>
+              ]}
+              title="Project budget BETA(optional)">
               <FormContainer className="">
                 <BudgetCard />
               </FormContainer>
             </Section>
-            <Button type="submit" className="w-full">
+            <Button className="w-full" type="submit">
               Submit
             </Button>
           </form>

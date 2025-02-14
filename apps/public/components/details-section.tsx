@@ -7,18 +7,18 @@ export default function DetailsSection() {
       <div className="container mx-auto flex flex-col justify-between md:flex-row md:gap-8 lg:gap-16">
         <div className="grid w-full grid-cols-2 gap-4 lg:gap-8">
           <Image
-            src="https://placehold.co/290x525"
             alt="Project details"
-            width={290}
-            height={525}
             className="-translate-y-10 rounded-lg shadow-lg"
+            height={525}
+            src="https://placehold.co/290x525"
+            width={290}
           />
           <Image
-            src="https://placehold.co/290x525"
             alt="Project details"
-            width={290}
-            height={525}
             className="rounded-lg shadow-lg"
+            height={525}
+            src="https://placehold.co/290x525"
+            width={290}
           />
         </div>
         <div className="space-y-8">

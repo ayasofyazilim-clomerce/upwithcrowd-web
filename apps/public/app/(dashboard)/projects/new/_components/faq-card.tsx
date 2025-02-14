@@ -36,37 +36,37 @@ export default function FAQBuilder() {
   return (
     <div className="flex  max-w-6xl flex-col items-center space-y-6">
       {faqs.map((faq) => (
-        <Card key={faq.id} className="w-full bg-white shadow-sm">
+        <Card className="w-full bg-white shadow-sm" key={faq.id}>
           <CardContent className="w-full space-y-4 p-4">
             <div className="space-y-2">
-              <label htmlFor={`question-${faq.id}`} className="text-sm font-medium">
+              <label className="text-sm font-medium" htmlFor={`question-${faq.id}`}>
                 Question
               </label>
               <Input
                 id={`question-${faq.id}`}
-                value={faq.question}
-                onChange={(e) => updateFAQ(faq.id, "question", e.target.value)}
+                onChange={(e) => { updateFAQ(faq.id, "question", e.target.value); }}
                 placeholder="Enter your question"
+                value={faq.question}
               />
             </div>
             <div className="space-y-2">
-              <label htmlFor={`answer-${faq.id}`} className="text-sm font-medium">
+              <label className="text-sm font-medium" htmlFor={`answer-${faq.id}`}>
                 Answer
               </label>
               <Textarea
-                id={`answer-${faq.id}`}
-                value={faq.answer}
-                onChange={(e) => updateFAQ(faq.id, "answer", e.target.value)}
-                placeholder="Enter your answer"
                 className="min-h-[100px]"
+                id={`answer-${faq.id}`}
+                onChange={(e) => { updateFAQ(faq.id, "answer", e.target.value); }}
+                placeholder="Enter your answer"
+                value={faq.answer}
               />
             </div>
             <div className="flex justify-end">
               <Button
-                variant="destructive"
+                className="bg-muted hover:bg-muted/90 text-red-600 hover:text-red-700"
+                onClick={() => { deleteFAQ(faq.id); }}
                 size="lg"
-                onClick={() => deleteFAQ(faq.id)}
-                className="bg-muted hover:bg-muted/90 text-red-600 hover:text-red-700">
+                variant="destructive">
                 <Trash2 className="mr-1 h-4 w-4" />
                 Delete
               </Button>
@@ -75,7 +75,7 @@ export default function FAQBuilder() {
         </Card>
       ))}
 
-      <Button onClick={addFAQ} className="bg-black text-white hover:bg-black/90">
+      <Button className="bg-black text-white hover:bg-black/90" onClick={addFAQ}>
         Add another FAQ
       </Button>
     </div>

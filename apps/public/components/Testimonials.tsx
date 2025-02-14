@@ -1,7 +1,7 @@
 import {Card, CardContent} from "@/components/ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "./ui/carousel";
 import {Star} from "lucide-react";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "./ui/carousel";
 
 const testimonials = [
   {
@@ -45,13 +45,13 @@ export default function Testimonials() {
                   <CardContent className="relative flex h-full flex-col justify-evenly p-4 md:p-6">
                     <div className="mb-2 flex w-max items-center gap-1 rounded-3xl bg-yellow-400 p-2 md:mb-4">
                       {Array.from({length: 5}).map((_, index) => (
-                        <Star key={index} className="size-3 text-white md:size-4" />
+                        <Star className="size-3 text-white md:size-4" key={index} />
                       ))}
                     </div>
                     <p className="text-muted-foreground text-sm md:text-base">&quot;{testimonial.comment}&quot;</p>
                     <div className="mt-4 flex items-center">
                       <Avatar className="mr-3 size-10 md:mr-4 md:size-12">
-                        <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                        <AvatarImage alt={testimonial.name} src={testimonial.avatar} />
                         <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
                       </Avatar>
                       <div>

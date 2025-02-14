@@ -1,7 +1,7 @@
-import PaymentsPage from "./client";
-import EmptyPaymentsState from "../_components/empty-payments-state";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment/action";
 import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
+import EmptyPaymentsState from "../_components/empty-payments-state";
+import PaymentsPage from "./client";
 
 export default async function Page() {
   const paymentsResponse = await getApiPaymentTransactionApi({
@@ -20,7 +20,7 @@ export default async function Page() {
 
   const payments =
     paymentsResponse.data.items?.map((payment) => {
-      const project = projects.find((project) => project.id === payment.projectID);
+      const project = projects.find((projectItem) => projectItem.id === payment.projectID);
 
       return {
         ...payment,

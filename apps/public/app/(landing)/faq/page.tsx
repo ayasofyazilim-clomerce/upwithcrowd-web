@@ -46,9 +46,9 @@ export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <LandingHero title={title} description={description} />
+        <LandingHero description={description} title={title} />
 
-        <Accordion type="single" collapsible className="mx-auto w-full max-w-3xl">
+        <Accordion className="mx-auto w-full max-w-3xl" collapsible type="single">
           {faqItems.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>

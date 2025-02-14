@@ -11,7 +11,7 @@ export default function OrganizationNumbers() {
       <div className="container mx-auto">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((stat, index) => (
-            <div key={index} className="text-center">
+            <div className="text-center" key={index}>
               <p className="mb-2 text-3xl font-bold md:text-6xl">{stat.value}</p>
               <p className="text-muted text-sm md:text-lg">{stat.label}</p>
             </div>

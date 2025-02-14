@@ -1,53 +1,32 @@
-import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
+"use client"; // Add this line at the top
+
+import {TabLayout} from "./_components/tab-layout-new";
+
 export default function Layout({children}: {children: React.ReactNode}) {
   return (
     <TabLayout
       classNames={{
-        horizontal: {
-          tabs: "h-auto overflow-visible",
-          tabList:
-            "w-full z-50 bg-white shadow border-t p-0 sticky top-0 rounded-none h-16 justify-start md:justify-center",
-          tabContent: "m-0",
+        vertical: {
+          tabs: "h-screen rounded-none bg-white",
+          tabList: "w-full shadow-lg rounded-none bg-gray-50/50 backdrop-blur-sm sticky top-0 overflow-hidden",
+          tabContent: "m-0 pb-8",
           tabTrigger:
-            "data-[state=active]:text-primary h-full rounded-none data-[state=active]:shadow-none min-w-24 text-center data-[state=active]:font-bold",
+            "data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm min-w-24 text-center data-[state=active]:font-semibold transition-all duration-200 gap-2",
         },
       }}
+      orientation="vertical"
       tabList={[
-        {
-          href: "/projects/new",
-          label: "Tips",
-        },
-        {
-          href: "/projects/new/basics",
-          label: "Basics",
-        },
-        {
-          href: "funding",
-          label: "Funding",
-          disabled: true,
-        },
-        {
-          href: "story",
-          label: "Story",
-          disabled: true,
-        },
-        {
-          href: "people",
-          label: "People",
-          disabled: true,
-        },
-        {
-          href: "blocks",
-          label: "Blocks",
-          disabled: true,
-        },
-        {
-          href: "payment",
-          label: "Payment",
-          disabled: true,
-        },
+        {label: "Proje Başlat", href: "/projects/new"},
+        {label: "Proje Detayları", href: "/projects/new/basics", disabled: true},
+        {label: "Hakkımızda", href: "about", disabled: true},
+        {label: "Fonlama Bilgilerim", href: "funding", disabled: true},
+        {label: "Dökümanlar", href: "documents", disabled: true},
+        {label: "Görseller", href: "images", disabled: true},
+        {label: "S.S.S.", href: "faq", disabled: true},
+        {label: "Şartlar ve Koşullar", href: "terms-conditions", disabled: true},
+        {label: "Bitir", href: "finish-project", disabled: true},
       ]}>
-      {children}
+      <div className="bg-muted mb-10 h-screen w-full overflow-auto pb-10">{children}</div>
     </TabLayout>
   );
 }

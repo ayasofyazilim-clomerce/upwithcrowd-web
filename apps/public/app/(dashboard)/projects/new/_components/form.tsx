@@ -1,9 +1,11 @@
 "use client";
-import {Input, InputProps} from "@/components/ui/input";
+import type { InputProps} from "@/components/ui/input";
+import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import {Textarea} from "@/components/ui/textarea";
+import type {Textarea} from "@/components/ui/textarea";
 import {cn} from "@/lib/utils";
-import React, {useState, ChangeEvent} from "react";
+import type { ChangeEvent} from "react";
+import React, {useState} from "react";
 
 type FormFieldProps<T> = {
   id: string;
@@ -33,22 +35,20 @@ export function FormInputFieldWithCounter<T = InputProps>({
   return (
     <FormField htmlFor={id} label={label}>
       <FormElement
-        maxLength={maxLength}
-        id={id}
-        placeholder={placeholder}
         defaultValue={value}
+        id={id}
+        maxLength={maxLength}
         onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
           setTextLength(e.target.value.length);
           if (onChange) onChange(e);
         }}
+        placeholder={placeholder}
         {...rest}
       />
       {children}
-      {maxLength && (
-        <p className="text-muted-foreground text-right text-sm">
+      {maxLength ? <p className="text-muted-foreground text-right text-sm">
           {textLength}/{maxLength}
-        </p>
-      )}
+        </p> : null}
     </FormField>
   );
 }
@@ -56,7 +56,7 @@ export function FormInputFieldWithCounter<T = InputProps>({
 export function FormField({children, label, htmlFor}: {children: React.ReactNode; label?: string; htmlFor: string}) {
   return (
     <div className="flex flex-col gap-2">
-      {label && <Label htmlFor={htmlFor}>{label}</Label>}
+      {label ? <Label htmlFor={htmlFor}>{label}</Label> : null}
       {children}
     </div>
   );

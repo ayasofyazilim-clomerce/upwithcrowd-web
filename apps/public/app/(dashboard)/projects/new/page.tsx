@@ -96,73 +96,85 @@ export default function ProjectOnboarding() {
   ];
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="mb-8 max-w-2xl">
-        <h1 className="mb-2 text-3xl font-bold">Start Creating Your Project</h1>
-        <p className="text-muted-foreground">
-          We'll guide you through creating a successful project. You can find important points and tips at each step.
-        </p>
-      </div>
+    <div className="bg-muted w-full pb-8">
+      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
+        <div className="mb-8 max-w-2xl">
+          {/* <Link href="/projects/new/basics/?type=project">Project</Link>
+          <Link href="/projects/new/basics/?type=girisim">Girişim</Link> */}
+          <h1 className="mb-2 text-3xl font-bold">Start Creating Your Project</h1>
+          <p className="text-muted-foreground">
+            We'll guide you through creating a successful project. You can find important points and tips at each step.
+          </p>
+        </div>
 
-      <div className="relative">
-        {/* Vertical Timeline Line */}
-        <div className="from-primary/0 via-primary/50 to-primary/0 absolute bottom-0 left-8 top-0 z-0 w-0.5 bg-gradient-to-b" />
+        <div className="relative">
+          {/* Vertical Timeline Line */}
+          <div className="from-primary/0 via-primary/50 to-primary/0 absolute bottom-0 left-8 top-0 z-0 w-0.5 bg-gradient-to-b" />
 
-        {steps.map((step, index) => (
-          <div key={step.id} className="relative mb-8 last:mb-0">
-            {/* Timeline Dot */}
-            <div
-              className={`border-background absolute left-6 z-10 h-5 w-5 rounded-full border-4 transition-all duration-300 ease-in-out
+          {steps.map((step, index) => (
+            <div className="relative mb-8 last:mb-0" key={step.id}>
+              {/* Timeline Dot */}
+              <div
+                className={`border-background absolute left-6 z-10 h-5 w-5 rounded-full border-4 transition-all duration-300 ease-in-out
                 ${activeStep === step.id ? "bg-primary scale-125" : "bg-muted"}`}
-              style={{top: "24px"}}
-            />
+                style={{top: "24px"}}
+              />
 
-            <Card
-              className="ml-16 transition-all duration-300 ease-in-out hover:shadow-lg"
-              onMouseEnter={() => setActiveStep(step.id)}
-              onMouseLeave={() => setActiveStep(null)}>
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`rounded-full p-2 ${activeStep === step.id ? "bg-primary text-primary-foreground" : "bg-muted"} transition-colors duration-300`}>
-                    {step.icon}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <CardTitle>{step.title}</CardTitle>
-                      <span className="text-muted-foreground text-sm">Step {index + 1}</span>
+              <Card
+                className="ml-16 transition-all duration-300 ease-in-out hover:shadow-lg"
+                onMouseEnter={() => {
+                  setActiveStep(step.id);
+                }}
+                onMouseLeave={() => {
+                  setActiveStep(null);
+                }}>
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`rounded-full p-2 ${activeStep === step.id ? "bg-primary text-primary-foreground" : "bg-muted"} transition-colors duration-300`}>
+                      {step.icon}
                     </div>
-                    <CardDescription>{step.description}</CardDescription>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <CardTitle>{step.title}</CardTitle>
+                        <span className="text-muted-foreground text-sm">Step {index + 1}</span>
+                      </div>
+                      <CardDescription>{step.description}</CardDescription>
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p>{step.content}</p>
-                <div className="bg-muted rounded-lg p-4">
-                  <h4 className="mb-2 font-medium">Important Tips:</h4>
-                  <ul className="space-y-2">
-                    {step.tips.map((tip, i) => (
-                      <li key={i} className="text-muted-foreground flex items-center gap-2 text-sm">
-                        <div className="bg-primary h-1 w-1 rounded-full" />
-                        {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p>{step.content}</p>
+                  <div className="bg-muted rounded-lg p-4">
+                    <h4 className="mb-2 font-medium">Important Tips:</h4>
+                    <ul className="space-y-2">
+                      {step.tips.map((tip, i) => (
+                        <li className="text-muted-foreground flex items-center gap-2 text-sm" key={i}>
+                          <div className="bg-primary h-1 w-1 rounded-full" />
+                          {tip}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
 
-        <div className="ml-16 flex pt-4">
-          <Link href="/projects/new/basics">
-            <Button className="gap-2" size="lg">
-              Start Creating Project
+          <div className="ml-16 flex gap-4 pt-4">
+            <Link href="/projects/new/basics/?type=project">
+              <Button className="bg-primary hover:bg-primary/90 gap-2" size="lg">
+                Start Creating Project
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Button className="gap-2" disabled size="lg" variant="outline">
+              Start Creating Enterprise
               <ChevronRight className="h-4 w-4" />
             </Button>
-          </Link>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

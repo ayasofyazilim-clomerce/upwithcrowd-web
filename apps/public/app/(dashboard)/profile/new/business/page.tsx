@@ -1,6 +1,6 @@
-import NewBusinessAccount from "../business/client";
+import NewBusinessAccount from "./client";
 
-export default async function NewBusinessAccountServer() {
+export default function NewBusinessAccountServer() {
   return (
     <div>
       <NewBusinessAccount />

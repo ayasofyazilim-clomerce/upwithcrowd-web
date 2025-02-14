@@ -18,7 +18,7 @@ export default function EmptyPaymentsState() {
           match your interests.
         </p>
 
-        <Button asChild size="lg" className="gap-2">
+        <Button asChild className="gap-2" size="lg">
           <Link href="/projects">
             <ArrowRight className="h-5 w-5" />
             Explore Projects

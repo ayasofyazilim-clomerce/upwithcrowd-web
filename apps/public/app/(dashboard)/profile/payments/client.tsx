@@ -4,7 +4,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {ChevronDown} from "lucide-react";
 import PaymentsTable from "./_components/table";
-import {Payment} from "./types";
+import type {Payment} from "./types";
 
 interface PaymentsTableProps {
   payments: Payment[];
@@ -21,7 +21,7 @@ export default function PaymentsPage({payments}: PaymentsTableProps) {
         <div className="mb-4 flex items-center justify-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="">
+              <Button className="" variant="outline">
                 Filtreler <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>

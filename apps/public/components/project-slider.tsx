@@ -1,9 +1,9 @@
 "use client";
 
-import {projects} from "@/_data/projects";
-import {Project} from "@/_types";
 import {DollarSign, MapPin, Target} from "lucide-react";
 import Image from "next/image";
+import {projects} from "@/_data/projects";
+import type {Project} from "@/_types";
 import {Badge} from "./ui/badge";
 import {Card} from "./ui/card";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "./ui/carousel";
@@ -26,7 +26,7 @@ export function ProjectSlider() {
           <CarouselContent className="m-0">
             {projects.map((project) => (
               <CarouselItem className="p-2 md:basis-1/2 md:p-4 lg:basis-1/3" key={project.id}>
-                <Card key={project.id} className="space-y-4 overflow-hidden border-none p-4 shadow-lg">
+                <Card className="space-y-4 overflow-hidden border-none p-4 shadow-lg" key={project.id}>
                   <ProjectImage project={project} />
                   <ProjectDetails project={project} />
                 </Card>
@@ -47,11 +47,11 @@ function ProjectImage({project}: {project: Project}) {
   return (
     <div className="relative">
       <Image
-        src={project.image}
         alt={project.title}
-        width={300}
-        height={200}
         className="h-48 w-full rounded-lg object-cover"
+        height={200}
+        src={project.image}
+        width={300}
       />
       <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">{project.badge}</Badge>
     </div>
@@ -74,7 +74,7 @@ function ProjectDetails({project}: {project: Project}) {
           <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
           <span className="text-muted-foreground text-xs md:text-sm">30 days left</span>
         </div>
-        <Progress value={fundedPercentage} className="mb-3 md:mb-4" />
+        <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
         <div className="flex items-center justify-between text-xs md:text-sm">
           <div className="flex items-center">
             <DollarSign className="text-primary mr-2 h-5 w-5" />

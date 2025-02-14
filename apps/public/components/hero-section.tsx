@@ -23,7 +23,7 @@ export default function HeroSection() {
         <div
           className="ring-primary/30 relative flex aspect-square
          w-full max-w-lg items-center justify-center rounded-[25px] rounded-tl-[100px] bg-white ring-4">
-          <Image src="/upwc.png" alt="Crowdfunding illustration" width={400} height={400} className="object-cover" />
+          <Image alt="Crowdfunding illustration" className="object-cover" height={400} src="/upwc.png" width={400} />
         </div>
       </div>
     </section>
