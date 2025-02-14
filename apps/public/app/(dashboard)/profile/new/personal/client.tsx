@@ -119,6 +119,7 @@ export default function NewPersonalAccount() {
           const errorMessage = memberResult.message || "";
           // First try to parse as JSON
           try {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- This is safe
             const errorMessages: Record<string, string> = JSON.parse(errorMessage);
             Object.keys(errorMessages).forEach((key) => {
               if (key in form.getValues()) {
@@ -150,7 +151,11 @@ export default function NewPersonalAccount() {
   const startVerification = async () => {
     setIsVerifying(true);
     // Simulate verification process
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((res) => {
+      setTimeout(() => {
+        res(true);
+      }, 2000);
+    });
     setIsVerifying(false);
     setIsVerified(true); // This will now control both the UI state and the isValidated value in the request
   };

@@ -1,13 +1,12 @@
 "use client";
 
-import {DollarSign, MapPin, Target} from "lucide-react";
+import {Badge, DollarSign, MapPin, Target} from "lucide-react";
 import Image from "next/image";
-import {projects} from "@/_data/projects";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import {Card} from "@/components/ui/card";
+import {Progress} from "@/components/ui/progress";
 import type {Project} from "@/_types";
-import {Badge} from "./ui/badge";
-import {Card} from "./ui/card";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "./ui/carousel";
-import {Progress} from "./ui/progress";
+import {projects} from "@/_data/projects";
 
 export function ProjectSlider() {
   return (

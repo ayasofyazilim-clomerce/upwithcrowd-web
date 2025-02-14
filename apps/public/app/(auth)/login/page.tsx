@@ -1,46 +1,20 @@
-"use client";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {PasswordInput} from "@repo/ayasofyazilim-ui/molecules/password-input";
-import Link from "next/link";
-import {useSearchParams} from "next/navigation";
-import {useFormState} from "react-dom";
-import {signInAction} from "./action";
-import SubmitButton from "./loading";
+"use server";
 
-const initialState = {
-  message: "",
-};
+import LoginForm from "@repo/ui/theme/auth/login";
+import {getTenantByNameApi, signInServerApi} from "@/actions/core/AccountService/actions";
+import {getResourceData} from "@/language/core/AccountService";
 
-export default function Page() {
-  const search = useSearchParams();
-  const loginWithCallbackURL = signInAction.bind(null, {
-    callBackURL: search.get("callbackUrl"),
-  });
-  if (typeof window !== "undefined") window.sessionStorage.removeItem("current_member");
-  const [state, formAction] = useFormState(loginWithCallbackURL, initialState);
+export default async function Page({params}: {params: {lang: string}}) {
+  const {lang} = params;
+  const {languageData} = await getResourceData(lang);
+  const isTenantDisabled = process.env.FETCH_TENANT !== "true";
+
   return (
-    <>
-      <h2 className="text-primary mb-4 text-center text-2xl font-bold md:text-3xl">Welcome back</h2>
-      <form action={formAction} className="w-full space-y-4">
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" placeholder="Enter your email" required type="text" />
-        </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <PasswordInput id="password" name="password" placeholder="Enter your password" required type="password" />
-        </div>
-        <SubmitButton />
-        {state.message && state.message.length > 1 ? <div className="mt-4 text-sm text-red-500">{state.message}</div> : null}
-      </form>
-      <span className="text-muted-foreground text-sm">
-        Don&apos;t have an account?
-        <Button asChild className="ml-2 p-0 underline" variant="link">
-          <Link href="/signup">Sign up</Link>
-        </Button>
-      </span>
-    </>
+    <LoginForm
+      isTenantDisabled={isTenantDisabled}
+      languageData={languageData}
+      onSubmitAction={signInServerApi}
+      onTenantSearchAction={getTenantByNameApi}
+    />
   );
 }

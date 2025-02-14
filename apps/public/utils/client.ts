@@ -9,7 +9,7 @@ const HEADERS = {
 };
 export async function getUpwithcrowd(session?: Session | null) {
   const userData = session || (await auth());
-  const token = userData?.user && "access_token" in userData?.user ? userData?.user.access_token : ""; //userData?.user;
+  const token = userData?.user && "access_token" in userData.user ? userData.user.access_token : ""; //userData?.user;
   return new UPWCServiceClient({
     TOKEN: token,
     BASE: process.env.BASE_URL,
@@ -17,22 +17,12 @@ export async function getUpwithcrowd(session?: Session | null) {
   });
 }
 
-export async function getAccountServiceClient(session?: Session | null) {
+export async function getAccountServiceClient(session?: Session | null, customHeaders?: Record<string, string>) {
   const userData = session || (await auth());
-  const token = userData?.user && "access_token" in userData?.user ? userData?.user.access_token : ""; //userData?.user;
+  const token = userData?.user && "access_token" in userData.user ? userData.user.access_token : ""; //userData?.user;
   return new AccountServiceClient({
     TOKEN: token,
     BASE: process.env.TOKEN_URL,
-    HEADERS,
+    HEADERS: {...HEADERS, ...customHeaders},
   });
 }
-
-export type ApiErrorResponse = {
-  error: {
-    code: string;
-    message: string;
-    details: string;
-    data: string;
-    validationErrors: string;
-  };
-};

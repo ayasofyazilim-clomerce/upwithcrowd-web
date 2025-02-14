@@ -38,6 +38,7 @@ export function MemberProvider({
   let _currentMember = currentMember;
   if (typeof window !== "undefined") {
     if (window.sessionStorage.getItem("current_member")) {
+      //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- we know it's a Member
       _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
     }
   }

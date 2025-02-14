@@ -135,7 +135,7 @@ export default function Page() {
           title="Projenizin Temel Bilgileri"
         />
         <Form {...form}>
-          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
             <Section
               text={[
                 "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
@@ -197,9 +197,7 @@ export default function Page() {
                             canEditable
                             editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
-                            editorContent={
-                              ((field.value && field.value.length > 0 && JSON.parse(field.value)) as JSONContent) || {}
-                            }
+                            editorContent={JSON.parse(field.value || "{}") as JSONContent}
                             editorId="story"
                             minWordCount={1}
                             onSaveFunction={async (id, content) => {

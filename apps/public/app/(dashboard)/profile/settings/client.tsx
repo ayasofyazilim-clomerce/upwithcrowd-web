@@ -2,6 +2,7 @@
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {toast} from "@/components/ui/sonner";
+import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {useMember} from "@/app/providers/member";
 import {putMemberApiById} from "@/actions/upwithcrowd/member/put-action";
 import {IndividualForm} from "../_components/indiviual-form";
@@ -9,20 +10,20 @@ import {OrganizationForm} from "../_components/organization-form";
 
 export default function EditPersonalAccount() {
   const {setCurrentMember, currentMember} = useMember();
-  //eslint-disable-next-line
-  async function onSubmit(values: any) {
+  async function onSubmit(values: unknown) {
     try {
       const result = await putMemberApiById({
         id: currentMember?.id || "",
         requestBody: {
-          ...values,
+          ...(values as UpwithCrowd_Members_SaveMemberDto),
           type: currentMember?.type || "Organization",
           isValidated: true,
         },
       });
 
       if (result.type === "success") {
-        // Update the current member in the context
+        //@ts-expect-error we know it's a Member
+        //eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- This is safe
         setCurrentMember({...currentMember, ...values});
         toast.success("Your account has been updated successfully.");
       } else {

@@ -25,7 +25,8 @@ export function BusinessAccountModal({isOpen, onClose}: BusinessAccountModalProp
             Business Account Created
           </DialogTitle>
           <DialogDescription>
-            Your business account has been successfully created. You're all set to start managing your business with our tools.
+            Your business account has been successfully created. You&apos;re all set to start managing your business
+            with our tools.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
