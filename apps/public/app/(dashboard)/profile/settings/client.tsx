@@ -1,11 +1,11 @@
 "use client";
 
-import {useMember} from "@/app/providers/member";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {toast} from "@/components/ui/sonner";
+import {useMember} from "@/app/providers/member";
+import {putMemberApiById} from "@/actions/upwithcrowd/member/put-action";
 import {IndividualForm} from "../_components/indiviual-form";
 import {OrganizationForm} from "../_components/organization-form";
-import {putMemberApiById} from "@/actions/upwithcrowd/member/put-action";
 
 export default function EditPersonalAccount() {
   const {setCurrentMember, currentMember} = useMember();
@@ -29,7 +29,6 @@ export default function EditPersonalAccount() {
         toast.error(result.message || "An error occurred while updating your account.");
       }
     } catch (error) {
-      console.error("Error updating account:", error);
       toast.error("There was an error updating your account. Please try again.");
     }
   }

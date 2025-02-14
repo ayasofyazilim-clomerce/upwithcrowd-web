@@ -1,8 +1,8 @@
-import CallToAction from "@/components/CallToAction";
-import Map from "@/components/Map";
+import CallToAction from "@/components/call-to-action";
+import Map from "@/components/map";
+import LandingHero from "@/components/landing-hero";
 import ContactInfo from "./_components/contact-card";
 import {ContactForm} from "./client";
-import LandingHero from "@/components/landing-hero";
 
 export default function Page() {
   const title = "Contact Us";
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <LandingHero title={title} description={description} />
+        <LandingHero description={description} title={title} />
 
         <ContactInfo />
 

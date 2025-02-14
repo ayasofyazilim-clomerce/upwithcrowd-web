@@ -1,5 +1,5 @@
-import {services} from "@/_data/services";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {services} from "@/_data/services";
 
 export default function ServicesSection() {
   return (
@@ -9,8 +9,8 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {services.map((service, index) => (
             <Card
-              key={index}
-              className="from-primary/10 hover:to-primary hover:from-primary transition-color group rounded-2xl border-none bg-gradient-to-b to-white p-8 text-center text-black shadow-lg hover:text-white">
+              className="from-primary/10 hover:to-primary hover:from-primary transition-color group rounded-2xl border-none bg-gradient-to-b to-white p-8 text-center text-black shadow-lg hover:text-white"
+              key={index}>
               <CardHeader className="flex items-center">
                 <div className="bg-primary flex h-max w-max rounded-full p-4 group-hover:bg-white/10">
                   <service.icon className="h-12 w-12 text-white" />

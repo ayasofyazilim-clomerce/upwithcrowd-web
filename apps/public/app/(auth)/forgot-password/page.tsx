@@ -16,28 +16,28 @@ export default function Page() {
             <form>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700" htmlFor="email">
                     Email
                   </label>
-                  <Input id="email" type="email" placeholder="Enter your email" required />
+                  <Input id="email" placeholder="Enter your email" required type="email" />
                 </div>
               </div>
               <Button className="mt-4 w-full">Reset Password</Button>
             </form>
           </CardContent>
           <CardFooter>
-            <Link href="/login" className="text-primary text-sm hover:underline">
+            <Link className="text-primary text-sm hover:underline" href="/login">
               Remember your password? Log In
             </Link>
           </CardFooter>
         </Card>
         <div className="hidden flex-1 md:block">
           <Image
-            src="/placeholder.svg"
             alt="Forgot password illustration"
-            width={600}
-            height={600}
             className="h-full w-full rounded-lg object-cover"
+            height={600}
+            src="/placeholder.svg"
+            width={600}
           />
         </div>
       </div>

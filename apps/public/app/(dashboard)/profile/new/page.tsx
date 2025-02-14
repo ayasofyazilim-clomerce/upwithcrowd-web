@@ -1,4 +1,4 @@
-import ProfileTypeSwitch from "../_components/ProfileTypeSwitch";
+import ProfileTypeSwitch from "../_components/profile-type-switch";
 
 function Page() {
   return <ProfileTypeSwitch />;

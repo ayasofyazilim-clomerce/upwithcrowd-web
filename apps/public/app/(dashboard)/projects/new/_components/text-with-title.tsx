@@ -19,7 +19,7 @@ export default function TextWithTitle({
       <div className="flex flex-col gap-4">
         {Array.isArray(text) ? (
           text.map((t, index) => (
-            <p key={index} className={cn("text-sm", classNames?.text)}>
+            <p className={cn("text-sm", classNames?.text)} key={index}>
               {t}
             </p>
           ))

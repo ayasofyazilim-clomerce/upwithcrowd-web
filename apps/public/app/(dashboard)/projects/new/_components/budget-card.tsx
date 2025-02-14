@@ -5,7 +5,8 @@ import {Pie, PieChart} from "recharts";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
+import type {ChartConfig} from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
 
 const chartData = [
   {browser: "chrome", visitors: 275, fill: "var(--color-chrome)"},
@@ -55,10 +56,10 @@ export default function BudgetCard() {
         {/* Recharts Pie Chart */}
         <div className="flex justify-center">
           <div className="h-48 w-48">
-            <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
+            <ChartContainer className="mx-auto aspect-square max-h-[250px]" config={chartConfig}>
               <PieChart>
-                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={60} strokeWidth={5}></Pie>
+                <ChartTooltip content={<ChartTooltipContent hideLabel />} cursor={false} />
+                <Pie data={chartData} dataKey="visitors" innerRadius={60} nameKey="browser" strokeWidth={5} />
               </PieChart>
             </ChartContainer>
           </div>
@@ -70,10 +71,10 @@ export default function BudgetCard() {
         </p>
 
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium">
+          <label className="text-sm font-medium" htmlFor="email">
             Your email
           </label>
-          <Input id="email" type="email" placeholder="name@example.com" className="w-full p-4 text-sm" />
+          <Input className="w-full p-4 text-sm" id="email" placeholder="name@example.com" type="email" />
         </div>
       </CardContent>
       <CardFooter className="flex justify-start">

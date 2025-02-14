@@ -71,18 +71,18 @@ export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <LandingHero title={title} description={description} />
+        <LandingHero description={description} title={title} />
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post) => (
             <Link href={`/blogs/${post.slug}`} key={post.slug}>
               <Card className="h-full transition-shadow duration-300 hover:shadow-lg">
                 <Image
-                  src={post.image}
                   alt={post.title}
-                  width={300}
-                  height={200}
                   className="h-48 w-full rounded-t-lg object-cover"
+                  height={200}
+                  src={post.image}
+                  width={300}
                 />
                 <CardContent className="p-6">
                   <div className="mb-2 flex items-center justify-between">

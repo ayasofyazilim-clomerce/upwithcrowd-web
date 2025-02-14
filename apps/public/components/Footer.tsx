@@ -3,7 +3,7 @@ import Link from "next/link";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Facebook, Twitter, Instagram, Linkedin} from "lucide-react";
-import {IconWrapper} from "./IconWrapper";
+import {IconWrapper} from "./icon-wrapper";
 
 export default function Footer() {
   return (
@@ -17,17 +17,17 @@ export default function Footer() {
           <h3 className="mb-4 text-lg font-semibold">About Us</h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/about" className="hover:text-primary">
+              <Link className="hover:text-primary" href="/about">
                 Our Story
               </Link>
             </li>
             <li>
-              <Link href="/team" className="hover:text-primary">
+              <Link className="hover:text-primary" href="/team">
                 Team
               </Link>
             </li>
             <li>
-              <Link href="/careers" className="hover:text-primary">
+              <Link className="hover:text-primary" href="/careers">
                 Careers
               </Link>
             </li>
@@ -37,17 +37,17 @@ export default function Footer() {
           <h3 className="mb-4 text-lg font-semibold">Support</h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/faq" className="hover:text-primary">
+              <Link className="hover:text-primary" href="/faq">
                 FAQ
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-primary">
+              <Link className="hover:text-primary" href="/contact">
                 Contact Us
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="hover:text-primary">
+              <Link className="hover:text-primary" href="/terms">
                 Terms of Service
               </Link>
             </li>
@@ -58,29 +58,29 @@ export default function Footer() {
           <div className="flex space-x-4">
             <Link href="#">
               <IconWrapper
+                className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Facebook}
-                className="size-10 bg-slate-800 hover:border hover:border-white"
                 iconClassName="size-4 text-white"
               />
             </Link>
             <Link href="#">
               <IconWrapper
+                className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Twitter}
-                className="size-10 bg-slate-800 hover:border hover:border-white"
                 iconClassName="size-4 text-white"
               />
             </Link>
             <Link href="#">
               <IconWrapper
+                className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Instagram}
-                className="size-10 bg-slate-800 hover:border hover:border-white"
                 iconClassName="size-4 text-white"
               />
             </Link>
             <Link href="#">
               <IconWrapper
-                icon={Linkedin}
                 className="size-10 bg-slate-800 hover:border hover:border-white"
+                icon={Linkedin}
                 iconClassName="size-4 text-white"
               />
             </Link>
@@ -90,7 +90,7 @@ export default function Footer() {
           <h3 className="mb-4 text-lg font-semibold">Newsletter</h3>
           <p className="mb-4">Stay updated with our latest projects and news.</p>
           <form className="flex flex-col sm:flex-row">
-            <Input type="email" placeholder="Enter your email" className="mb-2 sm:mb-0 sm:mr-2" />
+            <Input className="mb-2 sm:mb-0 sm:mr-2" placeholder="Enter your email" type="email" />
             <Button type="submit">Subscribe</Button>
           </form>
         </div>

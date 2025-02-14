@@ -43,7 +43,7 @@ export default function People() {
         </div>
       </div>
 
-      <div></div>
+      <div />
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import {signIn, signOut} from "@repo/utils/auth/next-auth";
 import {isApiError} from "@repo/utils/api";
 import {redirect, RedirectType} from "next/navigation";
-import {ApiErrorResponse} from "@/utils/client";
+import type {ApiErrorResponse} from "@/utils/client";
 
 export async function signInAction<State>(args: {callBackURL?: string | null}, prevState: State, formData: FormData) {
   const {callBackURL} = args;
@@ -22,11 +22,11 @@ export async function signInAction<State>(args: {callBackURL?: string | null}, p
       if (isApiError(error)) {
         const errorBody = error.body as ApiErrorResponse;
         return {
-          message: error.status + ": " + error.statusText + ", " + errorBody.error.message,
+          message: `${error.status  }: ${  error.statusText  }, ${  errorBody.error.message}`,
         };
       }
       return {
-        message: error.name + ": " + error.message.split("Read more")[0],
+        message: `${error.name  }: ${  error.message.split("Read more")[0]}`,
       };
     }
   }

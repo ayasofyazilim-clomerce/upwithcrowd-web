@@ -1,10 +1,10 @@
 "use client";
 // import { format } from "date-fns";
 import {Calendar as CalendarIcon} from "lucide-react";
-
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
-import {Calendar, CalendarProps} from "@/components/ui/calendar";
+import type { CalendarProps} from "@/components/ui/calendar";
+import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {forwardRef, useState} from "react";
 import {useMediaQuery} from "@/components/ui/useMediaQuery";
@@ -26,42 +26,42 @@ export const DatePicker = forwardRef<
   const [open, setOpen] = useState(false);
 
   const DesktopContent = (
-    <Popover open={open} onOpenChange={setOpen} modal>
+    <Popover modal onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <Button
+          className={cn("w-full text-left font-normal", !date && "text-muted-foreground", className)}
           disabled={disabled}
-          variant={"outline"}
           size="icon"
-          className={cn("w-full text-left font-normal", !date && "text-muted-foreground", className)}>
-          {showIcon && <CalendarIcon className="h-4 w-4" />}
+          variant="outline">
+          {showIcon ? <CalendarIcon className="h-4 w-4" /> : null}
           {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="min-w-max p-0" ref={ref}>
         <Calendar
-          mode="single"
-          id={id}
           classNames={{
             table: "w-max mx-auto",
           }}
-          selected={date}
-          onSelect={onChange}
           disabled={dateRange}
+          id={id}
           initialFocus
+          mode="single"
+          onSelect={onChange}
+          selected={date}
         />
       </PopoverContent>
     </Popover>
   );
 
   const MobileContent = (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer onOpenChange={setOpen} open={open}>
       <DrawerTrigger asChild>
         <Button
+          className={cn("w-full text-left font-normal", !date && "text-muted-foreground", className)}
           disabled={disabled}
-          variant={"outline"}
           size="icon"
-          className={cn("w-full text-left font-normal", !date && "text-muted-foreground", className)}>
-          {showIcon && <CalendarIcon className="h-4 w-4" />}
+          variant="outline">
+          {showIcon ? <CalendarIcon className="h-4 w-4" /> : null}
           {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
         </Button>
       </DrawerTrigger>
@@ -71,12 +71,12 @@ export const DatePicker = forwardRef<
             classNames={{
               table: "w-max mx-auto",
             }}
-            id={id}
-            mode="single"
-            selected={date}
-            onSelect={onChange}
             disabled={dateRange}
+            id={id}
             initialFocus
+            mode="single"
+            onSelect={onChange}
+            selected={date}
           />
         </div>
       </DrawerContent>

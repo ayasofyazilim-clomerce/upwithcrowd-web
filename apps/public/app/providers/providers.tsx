@@ -1,8 +1,10 @@
 "use client";
 
-import {Session, SessionProvider} from "@repo/utils/auth";
-import {Member, MemberProvider} from "./member";
+import type {Session} from "@repo/utils/auth";
+import { SessionProvider} from "@repo/utils/auth";
 import {Toaster} from "@/components/ui/sonner";
+import type {Member} from "./member";
+import { MemberProvider} from "./member";
 
 interface ProvidersProps {
   children: React.ReactNode;

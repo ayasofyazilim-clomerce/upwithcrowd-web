@@ -29,8 +29,10 @@ export default function SupportCard({
           {donationOptions.map((amount) => (
             <Button
               key={amount}
-              variant={selectedDonation === amount ? "default" : "outline"}
-              onClick={() => setSelectedDonation(amount)}>
+              onClick={() => {
+                setSelectedDonation(amount);
+              }}
+              variant={selectedDonation === amount ? "default" : "outline"}>
               ${amount}
             </Button>
           ))}
@@ -38,16 +40,16 @@ export default function SupportCard({
         <div className="relative mb-4">
           <DollarSign className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
           <Input
-            type="text"
-            placeholder="Enter custom amount"
-            value={customAmount}
-            onChange={handleCustomAmountChange}
             className="pl-9"
+            onChange={handleCustomAmountChange}
+            placeholder="Enter custom amount"
+            type="text"
+            value={customAmount}
           />
         </div>
       </CardContent>
       <CardFooter className="p-0">
-        <Button className="w-full" onClick={() => onDonate(selectedDonation)} disabled={isLoading}>
+        <Button className="w-full" disabled={isLoading} onClick={() => void onDonate(selectedDonation)}>
           {isLoading ? "Processing..." : `Donate $${selectedDonation} Now`}
         </Button>
       </CardFooter>

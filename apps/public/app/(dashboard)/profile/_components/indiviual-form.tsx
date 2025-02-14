@@ -20,10 +20,10 @@ const formSchema = z.object({
   tel: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type IndividualFormValues = z.infer<typeof formSchema>;
 
 interface IndividualFormProps {
-  onSubmit: (values: FormValues) => Promise<void>;
+  onSubmit: (values: IndividualFormValues) => Promise<void>;
 }
 
 export function IndividualForm({onSubmit}: IndividualFormProps) {
@@ -43,11 +43,11 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form className="space-y-6" onSubmit={()=> void form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-2 gap-4">
           <FormItem>
             <FormLabel>ID Type</FormLabel>
-            <Input value={currentMember?.idType || ""} disabled readOnly />
+            <Input disabled readOnly value={currentMember?.idType || ""} />
           </FormItem>
           <FormField
             control={form.control}
@@ -66,11 +66,11 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
         <div className="grid grid-cols-2 gap-4">
           <FormItem>
             <FormLabel>Name</FormLabel>
-            <Input value={currentMember?.name || ""} disabled readOnly />
+            <Input disabled readOnly value={currentMember?.name || ""} />
           </FormItem>
           <FormItem>
             <FormLabel>Surname</FormLabel>
-            <Input value={currentMember?.surname || ""} disabled readOnly />
+            <Input disabled readOnly value={currentMember?.surname || ""} />
           </FormItem>
         </div>
 
@@ -85,9 +85,9 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
                   <PhoneInput
                     {...field}
                     className="w-full"
-                    inputClassName="w-full"
                     countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
                     defaultCountry="tr"
+                    inputClassName="w-full"
                   />
                 </FormControl>
                 <FormMessage />
@@ -101,7 +101,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
               <FormItem>
                 <FormLabel>Annual Income</FormLabel>
                 <FormControl>
-                  <Input {...field} type="number" placeholder="Enter annual income" />
+                  <Input {...field} placeholder="Enter annual income" type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -115,14 +115,14 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} type="email" placeholder="Enter email" />
+                <Input {...field} placeholder="Enter email" type="email" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           {form.formState.isSubmitting ? "Updating..." : "Update Personal Account"}
         </Button>
       </form>

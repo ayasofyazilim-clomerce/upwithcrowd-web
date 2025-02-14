@@ -2,10 +2,10 @@ import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Lightbulb, Users, Target, Heart} from "lucide-react";
-import ExpertTeam from "@/components/ExpertTeam";
-import Testimonials from "@/components/Testimonials";
-import BlogPreview from "@/components/BlogPreview";
-import CallToAction from "@/components/CallToAction";
+import ExpertTeam from "@/components/expert-team";
+import Testimonials from "@/components/testimonials";
+import BlogPreview from "@/components/blog-preview";
+import CallToAction from "@/components/call-to-action";
 import LandingHero from "@/components/landing-hero";
 
 const goals = [
@@ -43,7 +43,7 @@ export default function Page() {
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">
-        <LandingHero title={title} description={description} />
+        <LandingHero description={description} title={title} />
         <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {goals.map((goal, index) => (
             <Card key={index}>
@@ -59,19 +59,17 @@ export default function Page() {
         <div className="mb-16 flex flex-col items-center gap-8 lg:flex-row">
           <div className="lg:w-1/2">
             <Image
-              src="/placeholder.svg"
               alt="UPwithCrowd in action"
-              width={600}
-              height={400}
               className="rounded-lg shadow-lg"
+              height={400}
+              src="/placeholder.svg"
+              width={600}
             />
           </div>
           <div className="lg:w-1/2">
             <h2 className="mb-4 text-2xl font-bold md:text-3xl">Join Our Mission</h2>
             <p className="mb-6 text-lg">
-              At UPwithCrowd, we believe in the power of collective support to bring innovative ideas to life. Whether
-              you're a creator with a groundbreaking project or a backer looking to support the next big thing, you're
-              in the right place. Join us in shaping the future, one project at a time.
+              At UPwithCrowd, we believe in the power of collective support to bring innovative ideas to life. Whether you're a creator with a groundbreaking project or a backer looking to support the next big thing, you're in the right place. Join us in shaping the future, one project at a time.
             </p>
             <Button size="lg">Start Your Project</Button>
           </div>

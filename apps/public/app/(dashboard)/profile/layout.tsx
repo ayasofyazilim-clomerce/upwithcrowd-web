@@ -8,7 +8,6 @@ export const metadata = {
 export default function Layout({children}: {children: React.ReactNode}) {
   return (
     <TabLayout
-      orientation="vertical"
       classNames={{
         vertical: {
           tabs: "container mx-auto h-auto",
@@ -17,6 +16,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             "rounded-full items-center data-[state=active]:bg-muted shadow-none hover:text-black data-[state=active]:shadow-none",
         },
       }}
+      orientation="vertical"
       tabList={[
         {
           href: "/profile",

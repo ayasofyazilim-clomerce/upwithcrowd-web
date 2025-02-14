@@ -31,13 +31,13 @@ export default function ExpertTeam() {
         <h2 className="text-center text-4xl font-bold">Meet Our Expert Team</h2>
         <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member, index) => (
-            <div key={index} className="text-center">
+            <div className="text-center" key={index}>
               <Image
-                src={member.image}
                 alt={member.name}
-                width={300}
-                height={300}
                 className="mx-auto mb-4 h-32 w-32 rounded-3xl object-cover md:h-48 md:w-48"
+                height={300}
+                src={member.image}
+                width={300}
               />
               <h3 className="text-xl font-semibold">{member.name}</h3>
               <p className="text-muted-foreground">{member.role}</p>

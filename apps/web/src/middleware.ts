@@ -87,7 +87,7 @@ export const middleware = auth((request: NextAuthRequest) => {
     if (isPathHasLocale(request.nextUrl.pathname)) {
       return allowURL(locale, request);
     }
-    // console.error(
+    //error(
     //   `(No locale provided type 1) Wrong redirection to pathName:${pathName}`
     // );
     const {search} = request.nextUrl;
@@ -100,7 +100,7 @@ export const middleware = auth((request: NextAuthRequest) => {
       return allowURL(locale, request);
     }
 
-    // console.error(
+    //error(
     //   `(No locale provided type 2) Wrong redirection to pathName:${pathName}`
     // );
     return NextResponse.redirect(new URL(`/${locale}${request.nextUrl.pathname}`, hostURL));

@@ -22,16 +22,16 @@ export default function Page() {
             </div>
             <h1 className="mb-4 text-3xl font-bold md:text-4xl">{blogPost.title}</h1>
             <Image
-              src={blogPost.image}
               alt={blogPost.title}
-              width={800}
-              height={400}
               className="mb-6 h-auto w-full rounded-lg"
+              height={400}
+              src={blogPost.image}
+              width={800}
             />
             <div className="bg-muted mb-8 flex items-center justify-between rounded-lg p-4">
               <div className="flex items-center">
                 <Avatar className="mr-4">
-                  <AvatarImage src={blogPost.author.avatar} alt={blogPost.author.name} />
+                  <AvatarImage alt={blogPost.author.name} src={blogPost.author.avatar} />
                   <AvatarFallback>{blogPost.author.name[0]}</AvatarFallback>
                 </Avatar>
                 <div>
@@ -61,16 +61,16 @@ export default function Page() {
           <div className="mb-8 flex items-center justify-between border-b border-t py-4">
             <div className="text-muted-foreground text-sm">Share this article:</div>
             <div className="flex space-x-4">
-              <Button variant="outline" size="icon">
+              <Button size="icon" variant="outline">
                 <Facebook className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon">
+              <Button size="icon" variant="outline">
                 <Twitter className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon">
+              <Button size="icon" variant="outline">
                 <Linkedin className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon">
+              <Button size="icon" variant="outline">
                 <LinkIcon className="h-4 w-4" />
               </Button>
             </div>
@@ -80,16 +80,16 @@ export default function Page() {
 
       {/* Floating share buttons on the left side */}
       <div className="fixed left-4 top-1/2 hidden -translate-y-1/2 transform flex-col space-y-4 lg:flex">
-        <Button variant="outline" size="icon">
+        <Button size="icon" variant="outline">
           <Facebook className="h-4 w-4" />
         </Button>
-        <Button variant="outline" size="icon">
+        <Button size="icon" variant="outline">
           <Twitter className="h-4 w-4" />
         </Button>
-        <Button variant="outline" size="icon">
+        <Button size="icon" variant="outline">
           <Linkedin className="h-4 w-4" />
         </Button>
-        <Button variant="outline" size="icon">
+        <Button size="icon" variant="outline">
           <LinkIcon className="h-4 w-4" />
         </Button>
       </div>

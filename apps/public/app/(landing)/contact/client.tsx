@@ -36,39 +36,39 @@ export function ContactForm() {
       <div className="w-4/5 rounded-3xl py-24">
         <h2 className="mb-4 text-center text-3xl font-semibold">CONTACT US</h2>
         <h3 className="mb-8 text-center text-5xl font-bold text-[#0E3025]">Get in Touch With Us</h3>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Name and Email Fields */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Input
-              name="name"
-              placeholder="Enter Your Name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
               className="rounded-lg bg-white px-4 py-6 text-black shadow-sm"
+              name="name"
+              onChange={handleInputChange}
+              placeholder="Enter Your Name"
+              required
+              value={formData.name}
             />
             <Input
-              name="email"
-              type="email"
-              placeholder="Enter Your Email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
               className="-gray-300  rounded-lg bg-white px-4 py-6 text-black shadow-sm "
+              name="email"
+              onChange={handleInputChange}
+              placeholder="Enter Your Email"
+              required
+              type="email"
+              value={formData.email}
             />
           </div>
 
           {/* Phone and Topic Fields */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Input
-              name="phone"
-              type="tel"
-              placeholder="Enter Phone Number"
-              value={formData.phone}
-              onChange={handleInputChange}
               className="-gray-300  rounded-lg bg-white px-4 py-6 text-black shadow-sm "
+              name="phone"
+              onChange={handleInputChange}
+              placeholder="Enter Phone Number"
+              type="tel"
+              value={formData.phone}
             />
-            <Select value={formData.topic} onValueChange={handleSelectChange} required>
+            <Select onValueChange={handleSelectChange} required value={formData.topic}>
               <SelectTrigger className="-gray-300  rounded-lg bg-white px-4 py-6 text-black shadow-sm ">
                 <SelectValue placeholder="Choose Subject" />
               </SelectTrigger>
@@ -83,17 +83,17 @@ export function ContactForm() {
           </div>
 
           <Textarea
-            name="message"
-            placeholder="Write Your Message"
-            value={formData.message}
-            onChange={handleInputChange}
-            required
             className="-gray-300 h-32  rounded-lg bg-white px-4 py-2 text-black shadow-sm "
+            name="message"
+            onChange={handleInputChange}
+            placeholder="Write Your Message"
+            required
+            value={formData.message}
           />
 
           {/* Submit Button */}
           <div className="text-left">
-            <Button type="submit" className="px-8 py-6">
+            <Button className="px-8 py-6" type="submit">
               Send Message
             </Button>
           </div>

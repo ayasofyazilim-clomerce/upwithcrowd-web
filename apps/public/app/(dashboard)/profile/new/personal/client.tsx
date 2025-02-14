@@ -1,10 +1,6 @@
 "use client";
 import {PhoneInput} from "react-international-phone";
 import "react-international-phone/style.css";
-import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
-import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
-import {useMember} from "@/app/providers/member";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -13,7 +9,7 @@ import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {toast} from "@/components/ui/sonner";
 import Image from "next/image";
-import {
+import type {
   UpwithCrowd_Members_IdType,
   UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
@@ -24,6 +20,10 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
+import {useMember} from "@/app/providers/member";
+import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
 
 const formSchema = z.object({
   name: z
@@ -51,7 +51,7 @@ export default function NewPersonalAccount() {
   const router = useRouter();
   const {session} = useSession();
   const {setMembers, setCurrentMember, currentMember} = useMember();
-  if (currentMember) {
+  if (currentMember !== null) {
     router.push("/profile");
   }
   const [isVerifying, setIsVerifying] = useState(false);
@@ -108,8 +108,8 @@ export default function NewPersonalAccount() {
         }
         const memberList = memberResponse.data.items || [];
         setMembers(memberList);
-        const memberIndex = memberList.findIndex((x) => x?.id === memberResult.data.memberID);
-        if (memberList.length == 0 || memberIndex == -1) {
+        const memberIndex = memberList.findIndex((x) => x.id === memberResult.data.memberID);
+        if (memberList.length === 0 || memberIndex === -1) {
           return;
         }
         setCurrentMember(memberList[memberIndex]);
@@ -119,7 +119,7 @@ export default function NewPersonalAccount() {
           const errorMessage = memberResult.message || "";
           // First try to parse as JSON
           try {
-            const errorMessages = JSON.parse(errorMessage);
+            const errorMessages: Record<string, string> = JSON.parse(errorMessage);
             Object.keys(errorMessages).forEach((key) => {
               if (key in form.getValues()) {
                 form.setError(key as keyof z.infer<typeof formSchema>, {
@@ -141,10 +141,8 @@ export default function NewPersonalAccount() {
         } catch (errorMessage) {
           toast.error(String(errorMessage));
         }
-        return;
       }
     } catch (error) {
-      console.error("Error creating personal account:", error);
       toast.error("There was an error creating your personal account. Please try again.");
     }
   }
@@ -164,7 +162,7 @@ export default function NewPersonalAccount() {
         <CardDescription>Enter your personal account details below to get started.</CardDescription>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={() => void form.handleSubmit(onSubmit)}>
           <CardContent className="grid gap-6">
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -211,39 +209,39 @@ export default function NewPersonalAccount() {
                 <div className="flex flex-col gap-4">
                   {!isVerifying && !isVerified && (
                     <Button
-                      onClick={startVerification}
-                      type="button"
-                      variant="outline"
                       className="w-full gap-2 bg-red-300 hover:bg-red-400"
-                      disabled={!canStartVerification()}>
+                      disabled={!canStartVerification()}
+                      onClick={() => void startVerification()}
+                      type="button"
+                      variant="outline">
                       {/* <Shield className="mr-2 h-4 w-4" /> */}
-                      <Image className="rounded-full" src="/e-devlet-icon.png" width={24} height={24} alt="E-Devlet" />
+                      <Image alt="E-Devlet" className="rounded-full" height={24} src="/e-devlet-icon.png" width={24} />
                       {canStartVerification()
                         ? "Start E-Devlet Verification"
                         : "You must verify your E-Devlet account!"}
                     </Button>
                   )}
 
-                  {isVerifying && (
-                    <Button disabled className="w-full" variant="outline">
+                  {isVerifying ? (
+                    <Button className="w-full" disabled variant="outline">
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Verifying...
                     </Button>
-                  )}
+                  ) : null}
 
-                  {isVerified && (
+                  {isVerified ? (
                     <div className="text-muted flex items-center justify-center gap-2 rounded-md bg-red-700 p-2 text-center">
                       {/* <Check className="mr-2 h-5 w-5" /> */}
                       <Image
+                        alt="E-Devlet"
                         className="rounded-full"
+                        height={24}
                         src="/e-devlet-white-icon.png"
                         width={24}
-                        height={24}
-                        alt="E-Devlet"
                       />
                       <span>E-Devlet Verification Successful!</span>
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
               <FormField
@@ -253,7 +251,7 @@ export default function NewPersonalAccount() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} type="email" placeholder="Enter email" />
+                      <Input {...field} placeholder="Enter email" type="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -301,9 +299,9 @@ export default function NewPersonalAccount() {
                       <PhoneInput
                         {...field}
                         className="w-full"
-                        inputClassName="w-full"
                         countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
                         defaultCountry="tr"
+                        inputClassName="w-full"
                       />
                       {/* <Input {...field} placeholder="+12345678901" /> */}
                     </FormControl>
@@ -318,7 +316,7 @@ export default function NewPersonalAccount() {
                   <FormItem>
                     <FormLabel>Annual Income</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" placeholder="Enter annual income" />
+                      <Input {...field} placeholder="Enter annual income" type="number" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -327,8 +325,8 @@ export default function NewPersonalAccount() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full" type="submit" disabled={form.formState.isSubmitting || !isVerified}>
-              {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button className="w-full" disabled={form.formState.isSubmitting || !isVerified} type="submit">
+              {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               {form.formState.isSubmitting ? "Submitting..." : "Create Personal Account"}
             </Button>
           </CardFooter>

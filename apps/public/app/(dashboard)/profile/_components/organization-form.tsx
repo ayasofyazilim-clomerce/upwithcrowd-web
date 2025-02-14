@@ -15,15 +15,15 @@ const formSchema = z.object({
   idType: z.literal("VKN").optional(),
   tel: z
     .string()
-    .regex(/^([+]\d{1,2})(\d{10})$/, "Invalid telephone format")
+    .regex(/^(?:[+]\d{1,2})(?:\d{10})$/, "Invalid telephone format")
     .optional()
     .or(z.literal("")),
   mail: z.string().email("Invalid email address"),
-  annualIncome: z.string().regex(/^([1-9][0-9]{0,19})$/, "Invalid annual income"),
+  annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Invalid annual income"),
   mobile: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 interface OrganizationFormProps {
   onSubmit: (values: FormValues) => Promise<void>;
@@ -54,15 +54,23 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form
+        className="space-y-6"
+        onSubmit={(e) => {
+          e.preventDefault();
+          void form.handleSubmit(async (values) => {
+            await handleSubmit(values);
+          })(e);
+        }}
+      >
         <div className="grid grid-cols-2 gap-4">
           <FormItem>
             <FormLabel>Identifier</FormLabel>
-            <Input value={currentMember?.identifier || ""} readOnly disabled />
+            <Input disabled readOnly value={currentMember?.identifier || ""} />
           </FormItem>
           <FormItem>
             <FormLabel>Title</FormLabel>
-            <Input value={currentMember?.title || ""} readOnly disabled />
+            <Input disabled readOnly value={currentMember?.title || ""} />
           </FormItem>
         </div>
 
@@ -75,12 +83,14 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
                 <FormLabel>Telephone</FormLabel>
                 <FormControl>
                   <PhoneInput
-                    value={field.value}
-                    onChange={(value) => field.onChange(value)}
                     className="w-full"
-                    inputClassName="w-full"
                     countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
                     defaultCountry="tr"
+                    inputClassName="w-full"
+                    onChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    value={field.value}
                   />
                 </FormControl>
                 <FormMessage />
@@ -94,7 +104,7 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
               <FormItem>
                 <FormLabel>Annual Income</FormLabel>
                 <FormControl>
-                  <Input {...field} type="number" placeholder="Enter annual income" />
+                  <Input {...field} placeholder="Enter annual income" type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,14 +118,14 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} type="email" placeholder="Enter email" />
+                <Input {...field} placeholder="Enter email" type="email" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           {form.formState.isSubmitting ? "Updating..." : "Update Organization Account"}
         </Button>
       </form>

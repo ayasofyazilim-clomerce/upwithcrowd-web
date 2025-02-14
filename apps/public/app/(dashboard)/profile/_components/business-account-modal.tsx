@@ -17,7 +17,7 @@ interface BusinessAccountModalProps {
 
 export function BusinessAccountModal({isOpen, onClose}: BusinessAccountModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
@@ -25,8 +25,7 @@ export function BusinessAccountModal({isOpen, onClose}: BusinessAccountModalProp
             Business Account Created
           </DialogTitle>
           <DialogDescription>
-            Your business account has been successfully created. You're all set to start managing your business with our
-            tools.
+            Your business account has been successfully created. You're all set to start managing your business with our tools.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
@@ -35,7 +34,7 @@ export function BusinessAccountModal({isOpen, onClose}: BusinessAccountModalProp
           </p>
         </div>
         <DialogFooter>
-          <Button onClick={onClose} className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto" onClick={onClose}>
             Explore Dashboard
           </Button>
         </DialogFooter>
