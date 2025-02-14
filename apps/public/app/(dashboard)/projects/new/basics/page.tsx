@@ -9,7 +9,7 @@ import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
-import type { JSONContent } from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {Globe, Instagram, Linkedin, Search, Twitter, UserPlus} from "lucide-react";
 import {useRouter, useSearchParams} from "next/navigation";
@@ -135,7 +135,7 @@ export default function Page() {
           title="Projenizin Temel Bilgileri"
         />
         <Form {...form}>
-          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
+          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
             <Section
               text={[
                 "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
@@ -198,7 +198,7 @@ export default function Page() {
                             editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
                             editorContent={
-                              (field.value && field.value.length > 0 && JSON.parse(field.value )) as JSONContent  || {}
+                              ((field.value && field.value.length > 0 && JSON.parse(field.value)) as JSONContent) || {}
                             }
                             editorId="story"
                             minWordCount={1}

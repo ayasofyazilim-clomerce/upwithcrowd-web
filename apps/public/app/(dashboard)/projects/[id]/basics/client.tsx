@@ -81,8 +81,8 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
   };
 
   return (
-    <div className="bg-muted w-full overflow-auto">
-      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
+    <div className="bg-muted w-full overflow-auto pb-8">
+      <section className="mx-auto w-full max-w-7xl p-4  md:p-8">
         <TextWithTitle
           classNames={{
             container: "mb-8",
@@ -93,7 +93,7 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
           title="Projenizin Temel Bilgileri"
         />
         <Form {...form}>
-          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
+          <form className="space-y-8"  onSubmit={form.handleSubmit(onSubmit)}>
             {/* Proje Özeti Section */}
             <Section
               text={[

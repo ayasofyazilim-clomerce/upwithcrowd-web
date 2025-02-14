@@ -123,7 +123,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
         />
 
         <Form {...form}>
-          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
+          <form className="space-y-8"  onSubmit={form.handleSubmit(onSubmit)}>
             {/* Privilege Section */}
 
             {/* Fund Collection Type Section */}
