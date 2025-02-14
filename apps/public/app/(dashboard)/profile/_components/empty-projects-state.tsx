@@ -11,10 +11,11 @@ export default function EmptyProjectsState() {
           <FolderPlus className="text-primary h-12 w-12" />
         </div>
 
-        <h3 className="mb-2 text-2xl font-semibold tracking-tight">You Don't Have Any Projects Yet</h3>
+        <h3 className="mb-2 text-2xl font-semibold tracking-tight">You Don&apos;t Have Any Projects Yet</h3>
 
         <p className="text-muted-foreground mb-6 max-w-md">
-          Start taking advantage of UPwithCrowd's opportunities by creating your first project. Create a new project now!
+          Start taking advantage of UPwithCrowd&aops;s opportunities by creating your first project. Create a new
+          project now!
         </p>
 
         <Button asChild className="gap-2" size="lg">

@@ -103,7 +103,8 @@ export default function ProjectOnboarding() {
           <Link href="/projects/new/basics/?type=girisim">Girişim</Link> */}
           <h1 className="mb-2 text-3xl font-bold">Start Creating Your Project</h1>
           <p className="text-muted-foreground">
-            We'll guide you through creating a successful project. You can find important points and tips at each step.
+            We&apos;ll guide you through creating a successful project. You can find important points and tips at each
+            step.
           </p>
         </div>
 

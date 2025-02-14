@@ -24,8 +24,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {toast} from "@/components/ui/sonner";
 import {useRouter} from "next/navigation";
+import {signOutServer} from "@repo/utils/auth";
 import {postProfileImageApi} from "@/actions/upwithcrowd/member/post-action";
-import {handleSignOut} from "@/app/(auth)/login/action";
 import {useMember} from "@/app/providers/member";
 
 export default function ProfileClient() {
@@ -162,7 +162,7 @@ export default function ProfileClient() {
           <div className="flex w-full items-center justify-center">
             <Button
               className="flex w-1/3 items-center justify-center rounded-full text-red-500 hover:text-red-700 "
-              onClick={() => void handleSignOut()}
+              onClick={() => void signOutServer()}
               variant="outline">
               <LogOut className="mr-2 h-4 w-4" />
               Sign out

@@ -17,12 +17,11 @@ import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {useMediaQuery} from "@/components/ui/useMediaQuery";
 import {cn} from "@/lib/utils";
-import {useSession} from "@repo/utils/auth";
+import {signOutServer, useSession} from "@repo/utils/auth";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import { useMember} from "@/app/providers/member";
+import {useMember} from "@/app/providers/member";
 import type {Member} from "@/app/providers/member";
-import {handleSignOut} from "@/app/(auth)/login/action";
 
 export default function MemberSwitcher() {
   const router = useRouter();
@@ -206,7 +205,7 @@ function Commands() {
           </CommandItem>
           <CommandItem
             className="flex items-center gap-2 text-red-500 hover:cursor-pointer aria-selected:text-red-500"
-            onSelect={() => void handleSignOut()}>
+            onSelect={() => void signOutServer()}>
             <LogOut className="size-4" />
             Sign out
           </CommandItem>

@@ -94,11 +94,13 @@ export default function LoginForm({
         userName: values.username,
         password: values.password,
       }).then((response) => {
-        if (response.type !== "success") {
-          toast.error(response?.message);
-          return;
+        if (response) {
+          if (response.type !== "success") {
+            toast.error(response?.message);
+            return;
+          }
+          router.replace(`/${location.pathname.split("/").slice(1).join("/")}/${location.search}`);
         }
-        router.replace(`/${location.pathname.split("/").slice(1).join("/")}/${location.search}`);
       });
     });
   }

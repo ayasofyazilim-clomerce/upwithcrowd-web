@@ -93,7 +93,11 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
           title="Projenizin Temel Bilgileri"
         />
         <Form {...form}>
-          <form className="space-y-8"  onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            className="space-y-8"
+            onSubmit={() => {
+              void form.handleSubmit(onSubmit);
+            }}>
             {/* Proje Özeti Section */}
             <Section
               text={[
@@ -156,7 +160,7 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
                             canEditable
                             editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
-                            editorContent={(field.value && (JSON.parse(field.value) as JSONContent)) || {}}
+                            editorContent={JSON.parse(field.value || "{}") as JSONContent}
                             editorId="story"
                             minWordCount={1}
                             onSaveFunction={async (id, content) => {

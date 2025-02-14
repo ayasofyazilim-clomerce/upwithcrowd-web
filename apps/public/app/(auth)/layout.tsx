@@ -1,5 +1,5 @@
 "use client";
-import type { CarouselApi} from "@/components/ui/carousel";
+import type {CarouselApi} from "@/components/ui/carousel";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import Image from "next/image";
 import {useEffect, useState} from "react";
@@ -32,7 +32,9 @@ export default function Layout({children}: {children: React.ReactNode}) {
           setApi={setApi}>
           <CarouselContent className="h-full">
             {Array.from({length: 5}).map((_, index) => (
-              <CarouselItem className="flex h-full items-center justify-center text-white" key={index}>
+              <CarouselItem
+                className="flex h-full items-center justify-center text-white"
+                key={new Date().getTime() + index}>
                 <span className="text-4xl font-semibold">{index + 1}</span>
               </CarouselItem>
             ))}
