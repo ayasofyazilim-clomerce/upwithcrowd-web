@@ -1,20 +1,19 @@
 "use client";
 
-import type {Volo_Abp_OpenIddict_Scopes_Dtos_ScopeDto} from "@ayasofyazilim/saas/IdentityService";
-import {$Volo_Abp_OpenIddict_Scopes_Dtos_UpdateScopeInput} from "@ayasofyazilim/saas/IdentityService";
+import type {Volo_Abp_OpenIddict_Scopes_Dtos_ScopeDto} from "@ayasofyazilim/core-saas/IdentityService";
+import {$Volo_Abp_OpenIddict_Scopes_Dtos_UpdateScopeInput} from "@ayasofyazilim/core-saas/IdentityService";
 import {ActionList} from "@repo/ayasofyazilim-ui/molecules/action-button";
 import ConfirmDialog from "@repo/ayasofyazilim-ui/molecules/confirm-dialog";
 import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {createUiSchemaWithResource} from "@repo/ayasofyazilim-ui/organisms/schema-form/utils";
+import {useGrantedPolicies, isActionGranted} from "@repo/utils/policies";
 import {Trash2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
-import {useGrantedPolicies} from "@repo/utils/policies";
-import {handleDeleteResponse, handlePutResponse} from "src/actions/core/api-utils-client";
+import {useTransition} from "react";
+import {handleDeleteResponse, handlePutResponse} from "@repo/utils/api";
 import {deleteScopeByIdApi} from "src/actions/core/IdentityService/delete-actions";
 import {putScopeApi} from "src/actions/core/IdentityService/put-actions";
 import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
-import isActionGranted from "src/utils/page-policy/action-policy";
 
 export default function Form({
   languageData,
@@ -24,7 +23,7 @@ export default function Form({
   response: Volo_Abp_OpenIddict_Scopes_Dtos_ScopeDto;
 }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const {grantedPolicies} = useGrantedPolicies();
   const uiSchema = createUiSchemaWithResource({
     schema: $Volo_Abp_OpenIddict_Scopes_Dtos_UpdateScopeInput,
@@ -44,14 +43,11 @@ export default function Form({
               variant: "destructive",
               children: languageData.Delete,
               onConfirm: () => {
-                setLoading(true);
-                void deleteScopeByIdApi(response.id || "")
-                  .then((res) => {
+                startTransition(() => {
+                  void deleteScopeByIdApi(response.id || "").then((res) => {
                     handleDeleteResponse(res, router, "../scopes");
-                  })
-                  .finally(() => {
-                    setLoading(false);
                   });
+                });
               },
               closeAfterConfirm: true,
             }}
@@ -64,6 +60,7 @@ export default function Form({
                 </>
               ),
               variant: "outline",
+              disabled: isPending,
             }}
             type="with-trigger"
           />
@@ -71,21 +68,17 @@ export default function Form({
       </ActionList>
       <SchemaForm<Volo_Abp_OpenIddict_Scopes_Dtos_ScopeDto>
         className="flex flex-col gap-4"
-        disabled={loading}
+        disabled={isPending}
         formData={response}
-        onSubmit={(data) => {
-          setLoading(true);
-          const formData = data.formData;
-          void putScopeApi({
-            id: response.id || "",
-            requestBody: {...formData, name: formData?.name || ""},
-          })
-            .then((res) => {
-              handlePutResponse(res);
-            })
-            .finally(() => {
-              setLoading(false);
+        onSubmit={({formData}) => {
+          startTransition(() => {
+            void putScopeApi({
+              id: response.id || "",
+              requestBody: {...formData, name: formData?.name || ""},
+            }).then((res) => {
+              handlePutResponse(res, router, "../scopes");
             });
+          });
         }}
         schema={$Volo_Abp_OpenIddict_Scopes_Dtos_UpdateScopeInput}
         submitText={languageData["Edit.Save"]}

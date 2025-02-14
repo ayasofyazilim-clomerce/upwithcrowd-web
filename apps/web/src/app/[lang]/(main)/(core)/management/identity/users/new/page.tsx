@@ -1,13 +1,10 @@
 "use server";
 
-import {
-  getAssignableRolesByCurrentUserApi,
-  getUsersAvailableOrganizationUnitsApi,
-} from "src/actions/core/IdentityService/actions";
+import {isUnauthorized} from "@repo/utils/policies";
+import {isErrorOnRequest} from "@repo/utils/api";
+import {getAllRolesApi, getUsersAvailableOrganizationUnitsApi} from "src/actions/core/IdentityService/actions";
 import ErrorComponent from "src/app/[lang]/(main)/_components/error-component";
 import {getResourceData} from "src/language-data/core/IdentityService";
-import {isUnauthorized} from "src/utils/page-policy/page-policy";
-import {isErrorOnRequest} from "src/utils/page-policy/utils";
 import Form from "./_components/form";
 
 export default async function Page({params}: {params: {lang: string}}) {
@@ -18,7 +15,7 @@ export default async function Page({params}: {params: {lang: string}}) {
     lang,
   });
 
-  const rolesResponse = await getAssignableRolesByCurrentUserApi();
+  const rolesResponse = await getAllRolesApi();
   if (isErrorOnRequest(rolesResponse, lang, false)) {
     return <ErrorComponent languageData={languageData} message={rolesResponse.message} />;
   }
@@ -33,7 +30,7 @@ export default async function Page({params}: {params: {lang: string}}) {
       <Form
         languageData={languageData}
         organizationList={organizationResponse.data.items || []}
-        roleList={rolesResponse.data}
+        roleList={rolesResponse.data.items || []}
       />
       <div className="hidden" id="page-description">
         {languageData["User.Create.Description"]}

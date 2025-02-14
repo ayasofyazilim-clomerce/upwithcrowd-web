@@ -1,7 +1,9 @@
 "use server";
 
+import {isUnauthorized} from "@repo/utils/policies";
+import {isErrorOnRequest} from "@repo/utils/api";
 import {
-  getAssignableRolesByCurrentUserApi,
+  getAllRolesApi,
   getUserDetailsByIdApi,
   getUsersAvailableOrganizationUnitsApi,
   getUsersByIdOrganizationUnitsApi,
@@ -9,8 +11,6 @@ import {
 } from "src/actions/core/IdentityService/actions";
 import ErrorComponent from "src/app/[lang]/(main)/_components/error-component";
 import {getResourceData} from "src/language-data/core/IdentityService";
-import {isUnauthorized} from "src/utils/page-policy/page-policy";
-import {isErrorOnRequest} from "src/utils/page-policy/utils";
 import Form from "./_components/form";
 
 export default async function Page({params}: {params: {lang: string; userId: string}}) {
@@ -26,7 +26,7 @@ export default async function Page({params}: {params: {lang: string; userId: str
     return <ErrorComponent languageData={languageData} message={userDetailsResponse.message} />;
   }
 
-  const rolesResponse = await getAssignableRolesByCurrentUserApi();
+  const rolesResponse = await getAllRolesApi();
   if (isErrorOnRequest(rolesResponse, lang, false)) {
     return <ErrorComponent languageData={languageData} message={rolesResponse.message} />;
   }
@@ -51,7 +51,7 @@ export default async function Page({params}: {params: {lang: string; userId: str
       <Form
         languageData={languageData}
         organizationList={organizationResponse.data.items || []}
-        roleList={rolesResponse.data}
+        roleList={rolesResponse.data.items || []}
         userDetailsData={userDetailsResponse.data}
         userOrganizationUnits={userOrganizationResponse.data}
         userRoles={userRolesResponse.data.items || []}

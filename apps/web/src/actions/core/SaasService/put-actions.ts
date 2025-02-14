@@ -4,7 +4,11 @@ import type {
   PutApiSaasEditionsByIdMoveAllTenantsData,
   PutApiSaasTenantsByIdData,
 } from "@ayasofyazilim/saas/SaasService";
-import {getSaasServiceClient, structuredError, structuredResponse} from "src/lib";
+import {
+  getSaasServiceClient,
+  structuredError,
+  structuredResponse,
+} from "src/lib";
 
 export async function putEditionApi(data: PutApiSaasEditionsByIdData) {
   try {
