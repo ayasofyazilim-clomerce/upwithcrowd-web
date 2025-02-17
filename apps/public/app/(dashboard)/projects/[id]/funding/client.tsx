@@ -125,8 +125,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
         <Form {...form}>
           <form
             className="space-y-8"
-            onSubmit={() => {
-              void form.handleSubmit(onSubmit);
+            onSubmit={(e) => {
+              void form.handleSubmit(onSubmit)(e);
             }}>
             {/* Privilege Section */}
 
