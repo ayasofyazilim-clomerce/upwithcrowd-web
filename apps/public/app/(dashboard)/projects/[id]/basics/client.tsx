@@ -14,6 +14,7 @@ import {Globe, Instagram, Linkedin, Search, Twitter, UserPlus} from "lucide-reac
 import {useParams, useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import Image from "next/image";
 import {putProjectBasicsByIdApi} from "@/actions/upwithcrowd/project/put-action";
 import {FormContainer, FormField} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
@@ -95,8 +96,8 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
         <Form {...form}>
           <form
             className="space-y-8"
-            onSubmit={() => {
-              void form.handleSubmit(onSubmit);
+            onSubmit={(e) => {
+              void form.handleSubmit(onSubmit)(e);
             }}>
             {/* Proje Özeti Section */}
             <Section
@@ -209,7 +210,7 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
                       </FormControl>
                       {field.value ? (
                         <div className="mt-2 h-32 w-32 overflow-hidden rounded-lg border">
-                          <img alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
+                          <Image alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
                       <FormMessage />
@@ -235,7 +236,7 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
                       </FormControl>
                       {field.value ? (
                         <div className="mt-2 h-[180px] w-[320px] overflow-hidden rounded-lg border">
-                          <img alt="Project preview" className="h-full w-full object-cover" src={field.value} />
+                          <Image alt="Project preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
                       <FormMessage />
