@@ -1,21 +1,23 @@
 "use client";
+import React from "react";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import * as SheetRoot from "@/components/ui/sheet";
 import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import {Globe, Instagram, Linkedin, Search, Twitter, UserPlus} from "lucide-react";
+import {Globe, Instagram, Linkedin, Search, Twitter} from "lucide-react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {postProjectApi} from "@/actions/upwithcrowd/project/post-action";
+import {signUpServerApi} from "@/actions/core/AccountService/actions";
 import {FormContainer, FormField} from "../_components/form";
 import {Section} from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
@@ -77,6 +79,73 @@ export default function Page() {
     },
   });
 
+  const [memberType, setMemberType] = React.useState<"existing" | "invite">("existing");
+  const [selectedMember, setSelectedMember] = React.useState<string>("");
+  const [inviteEmail, setInviteEmail] = React.useState<string>("");
+  const generateUsername = (email: string) => {
+    // Remove domain and special characters, keep only the local part
+    const localPart = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
+    // Add random numbers to ensure uniqueness
+    const randomSuffix = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, "0");
+    return `${localPart}${randomSuffix}`;
+  };
+
+  const generatePassword = () => {
+    const lowercase = "abcdefghijklmnopqrstuvwxyz";
+    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    const special = "!@#$%^&*";
+
+    // Ensure at least one of each character type
+    const password = [
+      lowercase[Math.floor(Math.random() * lowercase.length)],
+      lowercase[Math.floor(Math.random() * lowercase.length)],
+      uppercase[Math.floor(Math.random() * uppercase.length)],
+      numbers[Math.floor(Math.random() * numbers.length)],
+      special[Math.floor(Math.random() * special.length)],
+    ];
+
+    // Add 3 more random characters
+    for (let i = 0; i < 3; i++) {
+      const allChars = lowercase + uppercase + numbers + special;
+      password.push(allChars[Math.floor(Math.random() * allChars.length)]);
+    }
+
+    // Shuffle the password array
+    return password.sort(() => Math.random() - 0.5).join("");
+  };
+
+  const handleAddMember = async () => {
+    if (memberType === "existing" && selectedMember) {
+      // Add existing member logic
+      toast.success("Üye eklendi");
+    } else if (memberType === "invite" && inviteEmail) {
+      try {
+        const username = generateUsername(inviteEmail);
+        const password = generatePassword();
+
+        const result = await signUpServerApi({
+          tenantId: "", // Add appropriate tenant ID
+          userName: username,
+          email: inviteEmail,
+          password,
+        });
+
+        if (result.type === "success") {
+          toast.success("Davetiye gönderildi");
+          // You might want to save or send these credentials securely to the user
+        } else {
+          toast.error(result.message || "Üye daveti başarısız oldu");
+        }
+      } catch (error) {
+        toast.error("Üye daveti sırasında bir hata oluştu");
+      }
+      setInviteEmail("");
+    }
+  };
+
   if (type !== "project") {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center">
@@ -123,8 +192,8 @@ export default function Page() {
   ];
 
   return (
-    <div className="bg-muted w-full overflow-auto">
-      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
+    <div className="container">
+      <div className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <TextWithTitle
           classNames={{
             container: "mb-8",
@@ -135,7 +204,12 @@ export default function Page() {
           title="Projenizin Temel Bilgileri"
         />
         <Form {...form}>
-          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
+          <form
+            className="space-y-8"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void form.handleSubmit(onSubmit)(e); // void kullanımı
+            }}>
             <Section
               text={[
                 "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
@@ -197,7 +271,7 @@ export default function Page() {
                             canEditable
                             editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
-                            editorContent={JSON.parse(field.value || "{}") as JSONContent}
+                            editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                             editorId="story"
                             minWordCount={1}
                             onSaveFunction={async (id, content) => {
@@ -350,7 +424,7 @@ export default function Page() {
                 <Combobox
                   list={[]}
                   onValueChange={() => {
-                    //
+                    return undefined;
                   }}
                   selectIdentifier=""
                   selectLabel=""
@@ -360,15 +434,73 @@ export default function Page() {
 
             <Section text="Projenin gerçekleştirilmesinde görev alacak ekip üyelerini ekleyin." title="Proje Ekibi">
               <FormContainer>
-                <SheetRoot.Sheet>
-                  <SheetRoot.SheetTrigger asChild>
-                    <Button variant="outline">
-                      <UserPlus className="mr-2 h-4 w-4" />
-                      Add member
-                    </Button>
-                  </SheetRoot.SheetTrigger>
-                  <SheetRoot.SheetContent />
-                </SheetRoot.Sheet>
+                <div className="space-y-6">
+                  <RadioGroup
+                    defaultValue="existing"
+                    onValueChange={(value) => {
+                      setMemberType(value as "existing" | "invite");
+                    }}
+                    value={memberType}>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem id="existing" value="existing" />
+                      <Label htmlFor="existing">Mevcut Üye</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem id="invite" value="invite" />
+                      <Label htmlFor="invite">Yeni Üye Davet Et</Label>
+                    </div>
+                  </RadioGroup>
+
+                  {memberType === "existing" ? (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="existing-email">Email</Label>
+                        <Input
+                          id="existing-email"
+                          onChange={(e) => {
+                            setSelectedMember(e.target.value);
+                          }}
+                          placeholder="ornek@email.com"
+                          type="email"
+                          value={selectedMember}
+                        />
+                      </div>
+                      <Button
+                        className="w-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedMember("");
+                        }}
+                        type="button">
+                        Üyeyi Ekle
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          onChange={(e) => {
+                            setInviteEmail(e.target.value);
+                          }}
+                          placeholder="ornek@email.com"
+                          type="email"
+                          value={inviteEmail}
+                        />
+                      </div>
+                      <Button
+                        className="w-full"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          void handleAddMember();
+                        }}
+                        type="button">
+                        Davet Gönder
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </FormContainer>
             </Section>
 
@@ -462,7 +594,7 @@ export default function Page() {
             </Button>
           </form>
         </Form>
-      </section>
+      </div>
     </div>
   );
 }
