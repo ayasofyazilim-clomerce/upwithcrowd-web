@@ -111,7 +111,9 @@ export default function ProfileClient() {
             </CardContent>
           </Card>
           <ScrollArea className="mb-2 h-72">
-            <div className="space-y-4 pr-2">
+            <div
+              className="space-y-4
+            ">
               {typeof members !== "undefined" &&
                 members.length > 0 &&
                 members

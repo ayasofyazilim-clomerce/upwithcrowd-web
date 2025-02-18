@@ -96,7 +96,7 @@ export default function ProjectOnboarding() {
   ];
 
   return (
-    <div className="bg-muted w-full pb-8">
+    <div className="container mx-auto flex h-auto">
       <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <div className="mb-8 max-w-2xl">
           {/* <Link href="/projects/new/basics/?type=project">Project</Link>

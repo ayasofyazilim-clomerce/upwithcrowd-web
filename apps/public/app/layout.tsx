@@ -44,7 +44,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
 
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen overflow-hidden`}>
+      <body className={inter.className}>
         <Providers currentMember={member} members={members} session={session}>
           {children}
         </Providers>

@@ -72,7 +72,8 @@ export default function Header() {
           {isMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
-      {isMenuOpen ? <nav className="mt-4 md:hidden">
+      {isMenuOpen ? (
+        <nav className="mt-4 md:hidden">
           <ul className="flex flex-col space-y-2">
             {PublicLinks.map((link) => (
               <li key={link.href}>
@@ -90,7 +91,8 @@ export default function Header() {
               <Button className="w-full">{session?.user ? "Start a Project" : "Sign up"}</Button>
             </li>
           </ul>
-        </nav> : null}
+        </nav>
+      ) : null}
     </header>
   );
 }
