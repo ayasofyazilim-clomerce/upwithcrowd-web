@@ -39,9 +39,8 @@ export default function ClientAbout({aboutDetail}: {aboutDetail: AboutFormValues
 
   const onSubmit = () => {
     // Mock API response
-    // console.log("Form submitted:", data);
     toast.success("Ekip bilgileri başarıyla kaydedildi");
-    router.push(`/projects/${projectId}/about`);
+    router.push(`/projects/${projectId}/finish-project`);
   };
 
   return (

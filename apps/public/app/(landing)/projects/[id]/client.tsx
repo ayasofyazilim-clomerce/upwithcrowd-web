@@ -155,6 +155,7 @@ export default function ProjectDetails({
             <TipTapEditor
               editorClassName="mt-8"
               editorContent={data.projectContent ? (JSON.parse(data.projectContent) as JSONContent) : {}}
+              mode="live"
             />
           </div>
           <div className="lg:w-1/3">
