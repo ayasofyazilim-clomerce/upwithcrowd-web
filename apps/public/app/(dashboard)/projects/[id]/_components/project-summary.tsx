@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import {ChevronLeft, ChevronRight, Info} from "lucide-react";
 import Image from "next/image";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {useRouter} from "next/navigation";
 
 // Info button component
@@ -15,24 +15,22 @@ function InfoButton({href}: {href: string}) {
   const router = useRouter();
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            className="h-4 w-4"
-            onClick={() => {
-              router.push(href);
-            }}
-            size="icon"
-            variant="ghost">
-            <Info className="h-4 w-4" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Click to edit this section</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          className="h-4 w-4"
+          onClick={() => {
+            router.push(href);
+          }}
+          size="icon"
+          variant="ghost">
+          <Info className="h-4 w-4" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Click to edit this section</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -76,17 +74,17 @@ export default function ProjectSummary({
           {funding.fundCollectionType}
         </Badge>
         <Button
+          className="absolute left-4 top-1/2 -translate-y-1/2 transform"
           size="icon"
           variant="outline"
-          className="absolute left-4 top-1/2 -translate-y-1/2 transform"
           // onClick={prevImage}
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
         <Button
+          className="absolute right-4 top-1/2 -translate-y-1/2 transform"
           size="icon"
           variant="outline"
-          className="absolute right-4 top-1/2 -translate-y-1/2 transform"
           // onClick={nextImage}
         >
           <ChevronRight className="h-4 w-4" />

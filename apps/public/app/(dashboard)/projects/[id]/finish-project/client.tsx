@@ -8,13 +8,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {Info} from "lucide-react";
 import type {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {useParams, useRouter} from "next/navigation";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import FundingTable from "../_components/funding-card";
 import ProjectSummary from "../_components/project-summary";
@@ -27,10 +27,6 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
   const [dialogOpen, setDialogOpen] = useState(false);
   const [welcomeModalOpen, setWelcomeModalOpen] = useState(true);
   const fundedPercentage = 0;
-
-  useEffect(() => {
-    setWelcomeModalOpen(true);
-  }, []);
 
   const handleFinishProject = () => {
     router.push(`/projects/${projectId}`);
@@ -68,24 +64,22 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
                 <div className="mb-8">
                   <div className="flex items-start gap-2">
                     <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            className="h-4 w-4"
-                            onClick={() => {
-                              router.push(`/projects/${projectId}/funding`);
-                            }}
-                            size="icon"
-                            variant="ghost">
-                            <Info className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Click to edit this section</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          className="h-4 w-4"
+                          onClick={() => {
+                            router.push(`/projects/${projectId}/funding`);
+                          }}
+                          size="icon"
+                          variant="ghost">
+                          <Info className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Click to edit this section</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                   <p>{data.privilege}</p>
                 </div>

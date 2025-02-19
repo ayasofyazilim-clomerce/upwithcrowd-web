@@ -4,31 +4,29 @@ import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import {DollarSign, Info} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {useRouter} from "next/navigation";
 
 function InfoButton({href}: {href: string}) {
   const router = useRouter();
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            className="h-4 w-4"
-            onClick={() => {
-              router.push(href);
-            }}
-            size="icon"
-            variant="ghost">
-            <Info className="h-4 w-4" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Click to edit this section</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          className="h-4 w-4"
+          onClick={() => {
+            router.push(href);
+          }}
+          size="icon"
+          variant="ghost">
+          <Info className="h-4 w-4" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Click to edit this section</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
