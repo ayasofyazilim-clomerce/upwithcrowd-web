@@ -97,7 +97,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
       }).then((response) => {
         if (response.type === "success") {
           toast.success("Funding details updated successfully");
-          router.push(`/projects/${projectId}`);
+          router.push(`/projects/${projectId}/finish-project`);
         } else {
           toast.error("An unexpected error occurred");
         }
@@ -115,7 +115,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
         <TextWithTitle
           classNames={{
             container: "mb-8",
-            title: "text-2xl font-medium",
+            title: "text-3xl",
             text: "text-lg",
           }}
           text="Plan and manage your project's finances."

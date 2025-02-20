@@ -1,17 +1,17 @@
 "use client";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/sonner";
-import { Textarea } from "@/components/ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { FormContainer } from "../../new/_components/form";
-import { Section } from "../../new/_components/section";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
+import {Button} from "@/components/ui/button";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {toast} from "@/components/ui/sonner";
+import {Textarea} from "@/components/ui/textarea";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {FormContainer} from "../../new/_components/form";
+import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
 const faqSchema = z.object({
@@ -44,7 +44,7 @@ export default function ClientFAQ({faqList}: {faqList: {question: string; answer
   };
 
   return (
-    <div>
+    <div className="h-full">
       <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <TextWithTitle
           classNames={{
@@ -57,7 +57,7 @@ export default function ClientFAQ({faqList}: {faqList: {question: string; answer
         />
 
         <Form {...form}>
-          <form className="mt-8 space-y-8" onSubmit={()=> void form.handleSubmit(onSubmit)}>
+          <form className="mt-8 space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
             <Section text="Projenize yeni bir sıkça sorulan soru ekleyin" title="Yeni SSS Ekle">
               <FormContainer>
                 <FormField

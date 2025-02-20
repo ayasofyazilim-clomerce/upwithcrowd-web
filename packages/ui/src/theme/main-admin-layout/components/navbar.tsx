@@ -1,9 +1,8 @@
 "use client";
 
-import {IdCardIcon} from "@radix-ui/react-icons";
-import {Tooltip, TooltipContent, TooltipTrigger} from "@repo/ayasofyazilim-ui/atoms/tooltip";
-import {ISection} from "@repo/ayasofyazilim-ui/templates/section-layout-v2";
-import {BreadcrumbItemType, NavbarItemsFromDB} from "@repo/ui/theme/types";
+import { IdCardIcon } from "@radix-ui/react-icons";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ayasofyazilim-ui/atoms/tooltip";
+import { BreadcrumbItemType, NavbarItemsFromDB } from "@repo/ui/theme/types";
 import {
   BookA,
   Box,
@@ -44,25 +43,22 @@ import BreadcrumbNavigation from "./breadcrumb";
 import LanguageSelector from "./language-selector";
 import Logo from "./logo";
 import SearchBar from "./navbar-searchbar";
-import NotificationsDropdown from "./notifications";
 import ProfileMenu from "./profile-menu";
 
 export default function Navbar({
   prefix,
   navbarItems,
-  sectionLayoutItems,
-  activeSectionLayoutItem,
   navigation,
   lang,
   tenantData,
+  notification
 }: {
   prefix: string;
   lang: string;
   navbarItems: NavbarItemsFromDB[];
   navigation: BreadcrumbItemType[];
-  sectionLayoutItems: ISection[];
-  activeSectionLayoutItem: string;
-  tenantData?: {tenantId: string; tenantName: string};
+  tenantData?: { tenantId: string; tenantName: string };
+  notification?: JSX.Element
 }) {
   return (
     <div className="sticky left-0 right-0 top-0 z-50">
@@ -92,7 +88,7 @@ export default function Navbar({
           <div className="flex items-center lg:order-2">
             <SearchBar navbarItems={navbarItems} prefix={prefix} />
             <LanguageSelector lang={lang} />
-            <NotificationsDropdown />
+            {notification && notification}
             <ProfileMenu />
           </div>
         </div>
@@ -100,47 +96,6 @@ export default function Navbar({
       <div className="border-y border-gray-200 bg-white py-1">
         <BreadcrumbNavigation navigation={navigation} navbarItems={navbarItems} />
       </div>
-      {/* <SectionLayoutNavbar
-        sections={sectionLayoutItems}
-        activeSectionId={activeSectionLayoutItem}
-        linkElement={Link}
-      /> */}
-      {/* 
-      eğer ihtiyaç duyarsak ikincil menü tasarımı 
-      <div className="relative flex border-b bg-white py-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="-my-1 mr-2 border-0 border-r-2 bg-white px-3 outline-none outline-0 ring-0 hover:bg-gray-200">
-              <div className="flex items-center gap-1 text-gray-800">
-                <Home className="mr-1 size-4" /> Dashboard
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {navbarData
-                .filter((i) => i.parentNavbarItemKey === prefix)
-                .map((i) => (
-                  <DropdownMenuItem key={i.key}>
-                    {i.displayName}
-                  </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <div className="md:flex ">
-            {navbarData
-              .filter((i) => i.parentNavbarItemKey === prefix + "/dashboard")
-              .map((i) => (
-                <Button
-                  variant="ghost"
-                  className={`inline-flex items-center justify-center rounded-lg p-2 text-sm font-medium leading-none text-gray-600 hover:bg-white hover:text-red-600 focus-visible:ring-0 ${i.key === "en/app/new-layout/dashboard/identity" ? "text-red-600" : ""}`}
-                  onClick={() => setNavOpen(!navOpen)}
-                  key={i.key}
-                >
-                  {i.displayName}
-                </Button>
-              ))}
-          </div>
-        </div> */}
     </div>
   );
 }
