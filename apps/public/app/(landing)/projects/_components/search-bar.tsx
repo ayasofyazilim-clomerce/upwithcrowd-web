@@ -11,9 +11,9 @@ export default function SearchBar() {
   const handleSearch = (term: string) => {
     const params = new URLSearchParams(searchParams);
     if (term) {
-      params.set("search", term);
+      params.set("projectName", term);
     } else {
-      params.delete("search");
+      params.delete("projectName");
     }
     router.replace(`${pathname}?${params.toString()}`);
   };
@@ -21,7 +21,7 @@ export default function SearchBar() {
   return (
     <Input
       className="max-w-sm"
-      defaultValue={searchParams.get("search")?.toString()}
+      defaultValue={searchParams.get("projectName")?.toString()}
       onChange={(e) => {
         handleSearch(e.target.value);
       }}
