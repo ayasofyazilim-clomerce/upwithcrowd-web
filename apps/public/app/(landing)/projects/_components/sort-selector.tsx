@@ -17,10 +17,8 @@ export default function SortSelector() {
   const searchParams = useSearchParams();
 
   const handleSort = (value: string) => {
-    const [field, order] = value.split(" ");
     const params = new URLSearchParams(searchParams);
-    params.set("sortField", field);
-    params.set("sortOrder", order);
+    params.set("sorting", value);
     router.push(`?${params.toString()}`);
   };
 

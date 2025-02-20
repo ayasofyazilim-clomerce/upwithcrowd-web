@@ -10,21 +10,25 @@ export default async function Page({
   searchParams,
 }: {
   searchParams: {
-    sortField?: string;
-    sortOrder?: string;
+    sorting?: string;
     fundCollectionType?: UpwithCrowd_Projects_FundCollectionType;
     dateFilter?: string;
-    search?: string;
+    projectName?: string;
   };
 }) {
   const title = "Discover Innovative Projects";
   const description =
     "Explore a world of creativity and innovation. Support projects that are shaping the future and making a difference in communities around the globe.";
 
-  const projectsResponse = await getPublicProjectsApi({
-    sorting: `${searchParams.sortField} ${searchParams.sortOrder}`,
-    projectName: searchParams.search,
+  const reqBody = {};
+
+  Object.keys(searchParams).forEach((key) => {
+    if (searchParams[key as keyof typeof searchParams]) {
+      Object.assign(reqBody, {[key]: searchParams[key as keyof typeof searchParams]});
+    }
   });
+
+  const projectsResponse = await getPublicProjectsApi(reqBody);
 
   if (projectsResponse.type !== "success") return <>Sonuç bulunamadı.</>;
   const projects = projectsResponse.data.items || [];
