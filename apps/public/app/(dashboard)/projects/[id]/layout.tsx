@@ -20,14 +20,15 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             label: "Temel Bilgiler",
             disabled: false,
           },
-          {
-            href: `/projects/${id}/funding`,
-            label: "Fonlama Bilgilerim",
-            disabled: false,
-          },
+
           {
             href: `/projects/${id}/about`,
             label: "Hakkımızda",
+            disabled: false,
+          },
+          {
+            href: `/projects/${id}/funding`,
+            label: "Fonlama Bilgilerim",
             disabled: false,
           },
           {

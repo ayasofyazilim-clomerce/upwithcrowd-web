@@ -10,7 +10,6 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Search, UserPlus} from "lucide-react";
-import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
 import type {
   PagedResultDto_ListCustomRolesDto,
   PagedResultDto_ListProjectsMembersResponseDto,
@@ -18,30 +17,29 @@ import type {
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {postProjectAffiliationApi} from "@/actions/upwithcrowd/project/post-action";
 import {getMemberMailApi} from "@/actions/upwithcrowd/member/actions";
+import {useMember} from "@/app/providers/member";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
 const aboutSchema = z.object({
-  nationality: z.string().min(1, "Uyruk zorunludur"),
-  education: z.string().min(1, "Öğrenim durumu zorunludur"),
-  workExperience: z.string().min(1, "İş deneyimi zorunludur"),
-  expertise: z.string().min(1, "Uzmanlık alanları zorunludur"),
+  nationality: z.string().optional(),
+  education: z.string().optional(),
+  workExperience: z.string().optional(),
+  expertise: z.string().optional(),
   cv: z.string().optional(),
-  linkedin: z.string().url("Geçerli bir LinkedIn URL'si girin").optional(),
-  twitter: z.string().url("Geçerli bir Twitter URL'si girin").optional(),
-  website: z.string().url("Geçerli bir website URL'si girin").optional(),
+  linkedin: z.string().url("Geçerli bir LinkedIn URL'si girin").optional().or(z.literal("")),
+  twitter: z.string().url("Geçerli bir Twitter URL'si girin").optional().or(z.literal("")),
+  website: z.string().url("Geçerli bir website URL'si girin").optional().or(z.literal("")),
 });
 
 type AboutFormValues = z.infer<typeof aboutSchema>;
 
 export default function ClientAbout({
   projectMember,
-  aboutDetail,
   roles,
 }: {
   projectMember: PagedResultDto_ListProjectsMembersResponseDto;
-  aboutDetail: AboutFormValues;
   roles: PagedResultDto_ListCustomRolesDto;
 }) {
   const router = useRouter();
@@ -49,13 +47,12 @@ export default function ClientAbout({
 
   const form = useForm<AboutFormValues>({
     resolver: zodResolver(aboutSchema),
-    defaultValues: aboutDetail,
   });
 
   const onSubmit = () => {
     // Mock API response
     toast.success("Ekip bilgileri başarıyla kaydedildi");
-    router.push(`/projects/${projectId}/finish-project`);
+    router.push(`/projects/${projectId}/funding`);
   };
 
   // Add team management state and functions
@@ -63,6 +60,7 @@ export default function ClientAbout({
   const [selectedRoleName, setSelectedRoleName] = useState<string>("");
   const [selectedRoleType, setSelectedRoleType] = useState<string>("");
   const [roleId, setRoleId] = useState<string>("");
+  const {currentMember} = useMember();
 
   const formatRoleName = useCallback((name: string) => {
     return name
@@ -127,6 +125,55 @@ export default function ClientAbout({
     }
   };
 
+  // Replace the single selectedLeader state with an array
+  const [selectedLeaders, setSelectedLeaders] = useState<
+    {
+      id: string;
+      name?: string;
+      surname?: string;
+      title?: string;
+      mail?: string;
+    }[]
+  >([]);
+
+  const leaderOptions = useMemo(() => {
+    const options = [];
+
+    // Add current member
+    if (currentMember) {
+      const displayName =
+        currentMember.name && currentMember.surname
+          ? `${currentMember.name} ${currentMember.surname}`
+          : currentMember.title || currentMember.mail;
+
+      options.push({
+        id: currentMember.id,
+        name: currentMember.name || undefined,
+        surname: currentMember.surname || undefined,
+        title: currentMember.title || undefined,
+        mail: currentMember.mail || undefined,
+        label: displayName,
+      });
+    }
+
+    // Add project members
+    if (projectMember.items) {
+      projectMember.items.forEach((member) => {
+        const displayName = member.name && member.surname ? `${member.name} ${member.surname}` : member.mail;
+
+        options.push({
+          id: member.customRoleID,
+          name: member.name || undefined,
+          surname: member.surname || undefined,
+          mail: member.mail || undefined,
+          label: displayName,
+        });
+      });
+    }
+
+    return options;
+  }, [currentMember, projectMember.items]);
+
   return (
     <div>
       <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
@@ -140,17 +187,65 @@ export default function ClientAbout({
           title="Ekip Bilgileri"
         />
         <Form {...form}>
-          <form className="space-y-8" onSubmit={() => void form.handleSubmit(onSubmit)}>
-            <Section text="Who is leading this project?" title="Project leader">
+          <form
+            className="space-y-8"
+            onSubmit={(e) => {
+              void form.handleSubmit(onSubmit)(e);
+            }}>
+            <Section text="Who is leading this project?" title="Project Leaders">
               <FormContainer>
-                <Combobox
-                  list={[]}
-                  onValueChange={() => {
-                    //
-                  }}
-                  selectIdentifier=""
-                  selectLabel=""
-                />
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-2">
+                      <select
+                        className="w-full rounded-md border p-2"
+                        onChange={(e) => {
+                          const leader = leaderOptions.find((option) => option.id === e.target.value);
+                          if (leader && !selectedLeaders.some((l) => l.id === leader.id)) {
+                            setSelectedLeaders([...selectedLeaders, leader]);
+                          }
+                        }}
+                        value="">
+                        <option value="">Add a leader</option>
+                        {leaderOptions
+                          .filter((option) => !selectedLeaders.some((leader) => leader.id === option.id))
+                          .map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.label}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+
+                    <div className="grid gap-3">
+                      {selectedLeaders.map((leader) => (
+                        <div className="flex items-center justify-between rounded-md border p-4" key={leader.id}>
+                          <div>
+                            <h4 className="font-medium">
+                              {leader.name && leader.surname ? `${leader.name} ${leader.surname}` : leader.title}
+                            </h4>
+                            <p className="text-sm text-gray-600">{leader.mail}</p>
+                          </div>
+                          <Button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => {
+                              setSelectedLeaders(selectedLeaders.filter((l) => l.id !== leader.id));
+                            }}
+                            size="sm"
+                            variant="ghost">
+                            Remove
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {selectedLeaders.length === 0 && (
+                      <p className="py-4 text-center text-sm text-gray-500">
+                        No project leaders selected. Please add at least one leader.
+                      </p>
+                    )}
+                  </div>
+                </div>
               </FormContainer>
             </Section>
 
@@ -245,7 +340,7 @@ export default function ClientAbout({
                                   {member.name} {member.surname}
                                 </TableCell>
                                 <TableCell>{member.mail}</TableCell>
-                                <TableCell>{member.customRoleName}</TableCell>
+                                <TableCell>{formatRoleName(member.customRoleName ?? "")}</TableCell>
                                 <TableCell>{member.customRoleType}</TableCell>
                                 <TableCell>
                                   {member.status === "Draft" && (

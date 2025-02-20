@@ -26,14 +26,15 @@ export default function Layout({children}: {children: React.ReactNode}) {
           },
           {
             href: `/projects/new/about`,
-            label: "Fonlama Bilgilerim",
+            label: "Hakkımızda",
             disabled: true,
           },
           {
             href: `/projects/new/about`,
-            label: "Hakkımızda",
+            label: "Fonlama Bilgilerim",
             disabled: true,
           },
+
           {
             href: `/projects/new/documents`,
             label: "Dökümanlar",
