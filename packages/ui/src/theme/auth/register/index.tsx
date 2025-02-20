@@ -1,9 +1,9 @@
 "use client";
 
-import {useEffect, useState, useTransition} from "react";
+import { useEffect, useState, useTransition } from "react";
 
-import {Volo_Abp_AspNetCore_Mvc_MultiTenancy_FindTenantResultDto} from "@ayasofyazilim/core-saas/AccountService";
-import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import { Volo_Abp_AspNetCore_Mvc_MultiTenancy_FindTenantResultDto } from "@ayasofyazilim/core-saas/AccountService";
+import { Button } from "@repo/ayasofyazilim-ui/atoms/button";
 import {
   FormControl,
   FormDescription,
@@ -12,14 +12,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@repo/ayasofyazilim-ui/atoms/form";
-import {Input} from "@repo/ayasofyazilim-ui/atoms/input";
-import {toast} from "@repo/ayasofyazilim-ui/atoms/sonner";
-import {z, zodResolver} from "@repo/ayasofyazilim-ui/lib/create-zod-object";
-import {PasswordInput} from "@repo/ayasofyazilim-ui/molecules/password-input";
-import {XIcon} from "lucide-react";
+import { Input } from "@repo/ayasofyazilim-ui/atoms/input";
+import { toast } from "@repo/ayasofyazilim-ui/atoms/sonner";
+import { z, zodResolver } from "@repo/ayasofyazilim-ui/lib/create-zod-object";
+import { PasswordInput } from "@repo/ayasofyazilim-ui/molecules/password-input";
+import { XIcon } from "lucide-react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import {FormProvider, useForm} from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { FormProvider, useForm } from "react-hook-form";
 
 const formSchema = z.object({
   username: z.string().min(5),
@@ -34,7 +34,9 @@ export interface RegisterCredentials {
   email: string;
   password: string;
 }
-
+function getCountryCode(code: string) {
+  return new Intl.Locale(code).region || null
+}
 export default function RegisterForm({
   languageData,
   defaultTenant = "",
@@ -76,7 +78,7 @@ export default function RegisterForm({
     startTransition(() => {
       onTenantSearchAction(name).then((response) => {
         if (response.type !== "success" || !response.data.success) {
-          form.setError("tenant", {type: "manual", message: "Tenant not found."}, {shouldFocus: true});
+          form.setError("tenant", { type: "manual", message: "Tenant not found." }, { shouldFocus: true });
           return;
         }
         form.clearErrors("tenant");
@@ -87,6 +89,7 @@ export default function RegisterForm({
     });
   }
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const hasLocale = getCountryCode(location.pathname.split("/").slice(1)[0]) !== null
     startTransition(() => {
       onSubmitAction({
         tenantId: tenantData.tenantId || "",
@@ -99,7 +102,11 @@ export default function RegisterForm({
           return;
         }
         toast.success("You can now log in to your account.");
-        router.replace(`/${location.pathname.split("/").slice(1)}/login/${location.search}`);
+        if (hasLocale) {
+          router.replace(`/${location.pathname.split("/").slice(1)}/login/${location.search}`);
+        } else {
+          router.replace(`/login/${location.search}`);
+        }
       });
     });
   }
@@ -124,7 +131,7 @@ export default function RegisterForm({
                 control={form.control}
                 name="tenant"
                 disabled={isPending}
-                render={({field}) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tenant</FormLabel>
                     <FormControl>
@@ -166,7 +173,7 @@ export default function RegisterForm({
             <FormField
               control={form.control}
               name="email"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
@@ -179,7 +186,7 @@ export default function RegisterForm({
             <FormField
               control={form.control}
               name="username"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
@@ -193,7 +200,7 @@ export default function RegisterForm({
             <FormField
               control={form.control}
               name="password"
-              render={({field}) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
