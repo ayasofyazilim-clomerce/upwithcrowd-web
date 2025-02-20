@@ -1,5 +1,5 @@
-import type { UpwithCrowd_Projects_FundCollectionType } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { getPublicProjectsApi } from "@/actions/upwithcrowd/public-project/actions";
+import type {UpwithCrowd_Projects_FundCollectionType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
 import LandingHero from "@/components/landing-hero";
 import FilterSelector from "./_components/filter-selector";
 import ListedProjectCard from "./_components/listed-project-card";
@@ -15,25 +15,18 @@ export default async function Page({
     fundCollectionType?: UpwithCrowd_Projects_FundCollectionType;
     dateFilter?: string;
     search?: string;
-    page?: string;
   };
 }) {
   const title = "Discover Innovative Projects";
   const description =
     "Explore a world of creativity and innovation. Support projects that are shaping the future and making a difference in communities around the globe.";
- 
-
-  const currentPage = Number(searchParams.page) || 1;
-  const itemsPerPage = 12;
 
   const projectsResponse = await getPublicProjectsApi({
-    maxResultCount: itemsPerPage,
-    skipCount: (currentPage - 1) * itemsPerPage,
-    sorting:
-      searchParams.sortField && searchParams.sortOrder
+    sorting: `${searchParams.sortField} ${searchParams.sortOrder}`,
+    projectName: searchParams.search,
   });
 
-  if (projectsResponse.type !== "success") return <>yok</>;
+  if (projectsResponse.type !== "success") return <>Sonuç bulunamadı.</>;
   const projects = projectsResponse.data.items || [];
 
   return (
