@@ -1,22 +1,9 @@
 "use client";
-import {Trash2} from "lucide-react";
-import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
-import {z} from "zod";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import {DropdownMenuItem} from "@/components/ui/dropdown-menu";
 import {toast} from "@/components/ui/sonner";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {
-  $Volo_Abp_Identity_OrganizationUnitCreateDto,
-  $Volo_Abp_Identity_OrganizationUnitUpdateDto,
-} from "@ayasofyazilim/core-saas/IdentityService";
-import {createZodObject} from "@repo/ayasofyazilim-ui/lib/create-zod-object";
-import CustomTableActionDialog, {default as AutoformDialog} from "@repo/ayasofyazilim-ui/molecules/dialog";
-import {TreeView} from "@repo/ayasofyazilim-ui/molecules/tree-view";
-import {SectionNavbarBase} from "@repo/ayasofyazilim-ui/templates/section-layout";
-import {handleDeleteResponse, handlePostResponse, handlePutResponse} from "@repo/utils/api";
 import type {
   PagedResultDto_IdentityRoleDto,
   PagedResultDto_IdentityUserDto,
@@ -25,25 +12,37 @@ import type {
   Volo_Abp_Identity_IdentityUserDto,
   Volo_Abp_Identity_OrganizationUnitWithDetailsDto,
 } from "@ayasofyazilim/core-saas/IdentityService";
-import type {TableActionCustomDialog} from "@repo/ayasofyazilim-ui/molecules/dialog";
-import type {TreeViewElement} from "node_modules/@repo/ayasofyazilim-ui/src/molecules/tree-view/tree-view-api";
 import {
-  putOrganizationUnitsByIdApi,
-  putOrganizationUnitsByIdMoveAllUsersApi,
-} from "src/actions/core/IdentityService/put-actions";
-import {postOrganizationUnitsApi} from "src/actions/core/IdentityService/post-actions";
+  $Volo_Abp_Identity_OrganizationUnitCreateDto,
+  $Volo_Abp_Identity_OrganizationUnitUpdateDto,
+} from "@ayasofyazilim/core-saas/IdentityService";
+import {createZodObject} from "@repo/ayasofyazilim-ui/lib/create-zod-object";
+import type {TableActionCustomDialog} from "@repo/ayasofyazilim-ui/molecules/dialog";
+import {default as AutoformDialog, default as CustomTableActionDialog} from "@repo/ayasofyazilim-ui/molecules/dialog";
+import {TreeView} from "@repo/ayasofyazilim-ui/molecules/tree-view";
+import {SectionNavbarBase} from "@repo/ayasofyazilim-ui/templates/section-layout";
+import {handleDeleteResponse, handlePostResponse, handlePutResponse} from "@repo/utils/api";
+import {Trash2} from "lucide-react";
+import {useRouter} from "next/navigation";
+import type {TreeViewElement} from "node_modules/@repo/ayasofyazilim-ui/src/molecules/tree-view/tree-view-api";
+import {useEffect, useState} from "react";
+import {
+  getOrganizationUnitsByIdMembersApi,
+  getOrganizationUnitsByIdRolesApi,
+} from "src/actions/core/IdentityService/actions";
 import {
   deleteOrganizationUnitsApi,
   deleteOrganizationUnitsByIdMembersByMemberIdApi,
   deleteOrganizationUnitsByIdRolesByRoleIdApi,
 } from "src/actions/core/IdentityService/delete-actions";
+import {postOrganizationUnitsApi} from "src/actions/core/IdentityService/post-actions";
 import {
-  getOrganizationUnitsByIdMembersApi,
-  getOrganizationUnitsByIdRolesApi,
-} from "src/actions/core/IdentityService/actions";
+  putOrganizationUnitsByIdApi,
+  putOrganizationUnitsByIdMoveAllUsersApi,
+} from "src/actions/core/IdentityService/put-actions";
 import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
-import OrganizationUsersTable from "./_components/users/table";
 import OrganizationRolesTable from "./_components/roles/table";
+import OrganizationUsersTable from "./_components/users/table";
 
 function getChildrens(parentId: string, data: Volo_Abp_Identity_OrganizationUnitWithDetailsDto[]) {
   const childrens: TreeViewElement[] = [];
@@ -236,13 +235,6 @@ export default function OrganizationComponent({
       return;
     }
     const selectedUnit = organizationUnits.find((i) => i.id === selectedUnitId);
-    const placeholder = languageData["Organization.Select"];
-    const DynamicEnum = z.enum([
-      placeholder,
-      ...unitOptions.map(
-        (u) => `${u.displayName} ${u.parentName ? `${languageData["Organization.Parent"]}: ${u.parentName}` : ""}`,
-      ),
-    ]);
     setTriggerData({
       displayName: selectedUnit?.displayName || "",
       id: selectedUnitId || "",
@@ -253,9 +245,20 @@ export default function OrganizationComponent({
       cta: languageData["Organization.Move.Users"],
       description: `${languageData["Organization.Move.Users.Description"]} ${organizationName}:`,
       autoFormArgs: {
-        // @ts-expect-error zod
-        formSchema: z.object({
-          targetUnit: DynamicEnum.default(placeholder),
+        formSchema: createZodObject({
+          type: "object",
+          properties: {
+            targetUnit: {
+              type: "string",
+              enum: [
+                "Please select a unit",
+                ...unitOptions.map(
+                  (u) =>
+                    `${u.displayName} ${u.parentName ? `${languageData["Organization.Parent"]}: ${u.parentName}` : ""}`,
+                ),
+              ],
+            },
+          },
         }),
         fieldConfig: {
           all: {withoutBorder: true},
