@@ -1,7 +1,10 @@
 "use client";
 
 import {toast} from "@/components/ui/sonner";
+import {Avatar, AvatarFallback} from "@/components/ui/avatar";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
+  PagedResultDto_ListProjectsMembersResponseDto,
   UpwithCrowd_Payment_PaymentStatus,
   UpwithCrowd_Payment_SavePaymentTransactionDto,
   UpwithCrowd_Projects_ProjectsDetailResponseDto,
@@ -10,7 +13,7 @@ import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import Link from "next/link";
 import {useParams} from "next/navigation";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {useMember} from "@/app/providers/member";
 import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment/post-action";
 import FundingTable from "../_components/funding-card";
@@ -20,12 +23,14 @@ import SupportCard from "../_components/support-card";
 export default function ProjectDetails({
   data,
   isEditable,
+  projectsMember,
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
+  projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
 }) {
   const {id: projectId} = useParams<{id: string}>();
-  const [currentImageIndex] = useState(0);
+  const [currentImageIndex, _setCurrentImageIndex] = useState(0);
   const [customAmount, setCustomAmount] = useState<string>("");
   const donationOptions = [10, 25, 50, 100, 250, 500];
   const [selectedDonation, setSelectedDonation] = useState(donationOptions[0]);
@@ -68,77 +73,13 @@ export default function ProjectDetails({
 
   const fundedPercentage = 0;
 
-  // const blogPost = `
-  //   <article class="prose lg:prose-xl mx-auto">
-  //     <header class="mb-8">
-  //       <h1 id="evolution-of-our-vision" class="text-3xl font-extrabold leading-tight mb-4">The Evolution of Our Vision</h1>
-  //       <p class="text-lg text-gray-600">January 15, 2025 · 7 min read</p>
-  //     </header>
-
-  //     <section class="mb-12">
-  //       <h2 id="introduction" class="text-3xl font-semibold mb-3">Introduction</h2>
-  //       <p class="text-lg leading-relaxed text-gray-700">
-  //         Embarking on a journey to create something meaningful is never an easy task. In this article, we delve into the story behind our project — its inception, challenges, and aspirations for the future.
-  //       </p>
-  //     </section>
-
-  //     <figure class="mb-10 flex items-center justify-center flex-col">
-  //       <img class="w-2/3 rounded-lg shadow-md" src="https://placehold.co/600x200" alt="Team Collaboration">
-  //       <figcaption class="text-sm text-center mt-2 text-gray-500">Collaboration is at the heart of our progress.</figcaption>
-  //     </figure>
-
-  //     <section class="mb-12">
-  //       <h2 id="our-inspiration" class="text-3xl font-semibold mb-3">Our Inspiration</h2>
-  //       <p class="text-lg leading-relaxed text-gray-700 mb-4">
-  //         The idea for our project was born out of a simple realization: technology is evolving faster than ever, yet its potential remains untapped in many areas. We aimed to bridge this gap with an innovative solution.
-  //       </p>
-  //       <blockquote class="italic border-l-4 border-blue-500 pl-4 text-gray-600 mb-6">
-  //         "Innovation distinguishes between a leader and a follower." – Steve Jobs
-  //       </blockquote>
-  //     </section>
-
-  //     <section class="mb-12">
-  //       <h2 id="development-phase" class="text-3xl font-semibold mb-3">The Development Phase</h2>
-  //       <p class="text-lg leading-relaxed text-gray-700">
-  //         The development journey has been an enlightening experience for our team. From brainstorming sessions to rigorous testing, each step taught us something new. We faced challenges, celebrated small victories, and kept moving forward.
-  //       </p>
-  //       <ul class="list-disc pl-6 mt-4 space-y-2">
-  //         <li>Collaborative design workshops to refine the user interface.</li>
-  //         <li>Implementing cutting-edge technologies for scalability.</li>
-  //         <li>Extensive testing to ensure a seamless user experience.</li>
-  //       </ul>
-  //     </section>
-
-  //     <figure class="mb-10 flex items-center justify-center flex-col">
-  //       <img class="w-2/3 rounded-lg shadow-md" src="https://placehold.co/600x200" alt="Development Progress">
-  //       <figcaption class="text-sm text-center mt-2 text-gray-500">Early prototypes of our project in action.</figcaption>
-  //     </figure>
-
-  //     <section class="mb-12">
-  //       <h2 id="looking-to-the-future" class="text-3xl font-semibold mb-3">Looking to the Future</h2>
-  //       <p class="text-lg leading-relaxed text-gray-700 mb-4">
-  //         The journey doesn't end here. We have ambitious plans to expand the scope of our project, integrate user feedback, and explore new possibilities. Here's a sneak peek at what's next:
-  //       </p>
-  //       <ol class="list-decimal pl-6 mt-4 space-y-2">
-  //         <li>Launching a beta version to gather real-world insights.</li>
-  //         <li>Introducing AI-driven features to enhance functionality.</li>
-  //         <li>Building partnerships to reach a broader audience.</li>
-  //       </ol>
-  //     </section>
-  //   </article>
-  // `;
-
-  // const tableOfContents = `
-  //   <div class="sticky top-0 max-h-screen overflow-y-auto">
-  //     <h2 class="text-xl font-bold mb-4">Table of Contents</h2>
-  //     <ul class="list-disc pl-4 space-y-2">
-  //       <li><a href="#introduction" class="text-blue-500 hover:underline">Introduction</a></li>
-  //       <li><a href="#our-inspiration" class="text-blue-500 hover:underline">Our Inspiration</a></li>
-  //       <li><a href="#development-phase" class="text-blue-500 hover:underline">The Development Phase</a></li>
-  //       <li><a href="#looking-to-the-future" class="text-blue-500 hover:underline">Looking to the Future</a></li>
-  //     </ul>
-  //   </div>
-  // `;
+  const formatRoleName = useCallback((name: string) => {
+    return name
+      .replace("UpwithCrowd:CustomRoles:", "")
+      .split(/(?=[A-Z])/)
+      .join(" ")
+      .trim();
+  }, []);
 
   return (
     <>
@@ -159,7 +100,6 @@ export default function ProjectDetails({
             />
           </div>
           <div className="lg:w-1/3">
-            {/* <ProjectCreator /> */}
             <SupportCard
               customAmount={customAmount}
               donationOptions={donationOptions}
@@ -178,6 +118,32 @@ export default function ProjectDetails({
                 </div>
               ) : null}
             </div>
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold md:text-2xl">Project Team</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {projectsMember.items?.map((member) => (
+                    <div className="flex items-center space-x-4" key={member.customRoleID}>
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="font-medium">
+                          {member.name} {member.surname}
+                        </p>
+                        <p className="text-muted-foreground text-sm">{member.mail}</p>
+                        <div className="flex flex-col text-sm">
+                          <span className="text-primary">{formatRoleName(member.customRoleName || "")}</span>{" "}
+                          <span>{member.customRoleType}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
         <div className="my-12 space-y-4">
@@ -229,7 +195,9 @@ export default function ProjectDetails({
           <Link
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block rounded-full shadow-lg transition-all"
             href={`/projects/${projectId}/basics`}>
-            <button className="px-6 py-3 font-medium">Edit Project</button>
+            <button className="px-6 py-3 font-medium" type="button">
+              Edit Project
+            </button>
           </Link>
         </div>
       ) : null}
