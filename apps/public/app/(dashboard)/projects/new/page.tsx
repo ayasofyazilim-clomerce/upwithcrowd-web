@@ -24,6 +24,14 @@ export default function ProjectOnboarding() {
       ],
     },
     {
+      id: "about",
+      icon: <BookOpen className="h-6 w-6" />,
+      title: "About Us",
+      description: "Team and background",
+      content: "Tell your story and introduce your team to potential supporters.",
+      tips: ["Present your team members", "Share your experience", "Highlight achievements", "Explain your motivation"],
+    },
+    {
       id: "funding",
       icon: <Coins className="h-6 w-6" />,
       title: "Funding Details",
@@ -36,14 +44,7 @@ export default function ProjectOnboarding() {
         "Plan reward tiers",
       ],
     },
-    {
-      id: "about",
-      icon: <BookOpen className="h-6 w-6" />,
-      title: "About Us",
-      description: "Team and background",
-      content: "Tell your story and introduce your team to potential supporters.",
-      tips: ["Present your team members", "Share your experience", "Highlight achievements", "Explain your motivation"],
-    },
+
     {
       id: "documents",
       icon: <Layout className="h-6 w-6" />,

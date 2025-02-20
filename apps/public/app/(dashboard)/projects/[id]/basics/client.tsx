@@ -74,7 +74,7 @@ export default function ClientBasics({projectDetail}: {projectDetail: UpwithCrow
     }).then((res) => {
       if (res.type === "success") {
         toast.success("Proje başarıyla kaydedildi");
-        router.push(`/projects/${res.data.projectId}/funding`);
+        router.push(`/projects/${res.data.projectId}/about`);
       } else {
         toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
       }
