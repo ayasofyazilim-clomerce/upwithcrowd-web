@@ -5,12 +5,38 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {Badge} from "@/components/ui/badge";
 import type {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {Button} from "@/components/ui/button";
+import {useRouter} from "next/navigation";
+
+function InfoButton({href}: {href: string}) {
+  const router = useRouter();
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          className="h-4 w-4"
+          onClick={() => {
+            router.push(href);
+          }}
+          size="icon"
+          variant="ghost">
+          <Info className="h-4 w-4" />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Click to edit this section</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
 
 interface FundingTableProps {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
+  editLink: string;
 }
 
-export default function FundingTable({data}: FundingTableProps) {
+export default function FundingTable({data, editLink}: FundingTableProps) {
   const formatCurrency = (value: number | null | undefined) => {
     if (value === null || value === undefined) return "-";
     return new Intl.NumberFormat("en-US", {
@@ -41,7 +67,10 @@ export default function FundingTable({data}: FundingTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-xl font-semibold text-black">Investment Information</TableHead>
+            <div className="flex items-start">
+              <TableHead className="text-xl font-semibold text-black">Investment Information</TableHead>
+              <InfoButton href={editLink} />
+            </div>
           </TableRow>
         </TableHeader>
         <TableBody>

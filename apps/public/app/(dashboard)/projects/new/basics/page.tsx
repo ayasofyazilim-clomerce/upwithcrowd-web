@@ -8,16 +8,13 @@ import {Label} from "@/components/ui/label";
 import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {Globe, Instagram, Linkedin, Search, Twitter} from "lucide-react";
 import {useRouter, useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {postProjectApi} from "@/actions/upwithcrowd/project/post-action";
-import {signUpServerApi} from "@/actions/core/AccountService/actions";
 import {FormContainer, FormField} from "../_components/form";
 import {Section} from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
@@ -57,11 +54,10 @@ const projectSchema = z.object({
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
 
-export default function Page() {
+export default function BasicsClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
-
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
@@ -79,73 +75,6 @@ export default function Page() {
     },
   });
 
-  const [memberType, setMemberType] = React.useState<"existing" | "invite">("existing");
-  const [selectedMember, setSelectedMember] = React.useState<string>("");
-  const [inviteEmail, setInviteEmail] = React.useState<string>("");
-  const generateUsername = (email: string) => {
-    // Remove domain and special characters, keep only the local part
-    const localPart = email.split("@")[0].replace(/[^a-zA-Z0-9]/g, "");
-    // Add random numbers to ensure uniqueness
-    const randomSuffix = Math.floor(Math.random() * 1000)
-      .toString()
-      .padStart(3, "0");
-    return `${localPart}${randomSuffix}`;
-  };
-
-  const generatePassword = () => {
-    const lowercase = "abcdefghijklmnopqrstuvwxyz";
-    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
-    const special = "!@#$%^&*";
-
-    // Ensure at least one of each character type
-    const password = [
-      lowercase[Math.floor(Math.random() * lowercase.length)],
-      lowercase[Math.floor(Math.random() * lowercase.length)],
-      uppercase[Math.floor(Math.random() * uppercase.length)],
-      numbers[Math.floor(Math.random() * numbers.length)],
-      special[Math.floor(Math.random() * special.length)],
-    ];
-
-    // Add 3 more random characters
-    for (let i = 0; i < 3; i++) {
-      const allChars = lowercase + uppercase + numbers + special;
-      password.push(allChars[Math.floor(Math.random() * allChars.length)]);
-    }
-
-    // Shuffle the password array
-    return password.sort(() => Math.random() - 0.5).join("");
-  };
-
-  const handleAddMember = async () => {
-    if (memberType === "existing" && selectedMember) {
-      // Add existing member logic
-      toast.success("Üye eklendi");
-    } else if (memberType === "invite" && inviteEmail) {
-      try {
-        const username = generateUsername(inviteEmail);
-        const password = generatePassword();
-
-        const result = await signUpServerApi({
-          tenantId: "", // Add appropriate tenant ID
-          userName: username,
-          email: inviteEmail,
-          password,
-        });
-
-        if (result.type === "success") {
-          toast.success("Davetiye gönderildi");
-          // You might want to save or send these credentials securely to the user
-        } else {
-          toast.error(result.message || "Üye daveti başarısız oldu");
-        }
-      } catch (error) {
-        toast.error("Üye daveti sırasında bir hata oluştu");
-      }
-      setInviteEmail("");
-    }
-  };
-
   if (type !== "project") {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center">
@@ -161,8 +90,6 @@ export default function Page() {
       </div>
     );
   }
-
-  // const [spesifDate, setSpesifDate] = useState(false);
 
   const onSubmit = (data: ProjectFormValues) => {
     void postProjectApi({
@@ -192,8 +119,8 @@ export default function Page() {
   ];
 
   return (
-    <div className="container">
-      <div className="mx-auto w-full max-w-7xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-7xl p-4 md:p-8">
+      <div className="container">
         <TextWithTitle
           classNames={{
             container: "mb-8",
@@ -230,7 +157,6 @@ export default function Page() {
                     </FormItem>
                   )}
                 />
-
                 <FormFieldUI
                   control={form.control}
                   name="projectDefinition"
@@ -250,7 +176,6 @@ export default function Page() {
                 />
               </FormContainer>
             </Section>
-
             {/* Add Project Story Section */}
             <Section
               text={[
@@ -269,7 +194,6 @@ export default function Page() {
                         <FormControl>
                           <TiptapEditor
                             canEditable
-                            editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
                             editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                             editorId="story"
@@ -287,7 +211,6 @@ export default function Page() {
                 />
               </FormContainer>
             </Section>
-
             <Section
               text={[
                 "Projenizi görsel olarak temsil edecek logo ve görselleri ekleyin.",
@@ -326,7 +249,6 @@ export default function Page() {
                     </FormItem>
                   )}
                 />
-
                 <FormFieldUI
                   control={form.control}
                   name="projectImage"
@@ -352,7 +274,6 @@ export default function Page() {
                     </FormItem>
                   )}
                 />
-
                 <FormFieldUI
                   control={form.control}
                   name="projectVideo"
@@ -368,7 +289,6 @@ export default function Page() {
                 />
               </FormContainer>
             </Section>
-
             <Section text="Projenizin yürütüleceği veya etki edeceği lokasyonu belirtin." title="Proje Konumu">
               <FormContainer>
                 <FormField htmlFor="location">
@@ -379,7 +299,6 @@ export default function Page() {
                 </FormField>
               </FormContainer>
             </Section>
-
             <Section
               text={[
                 "Projenizin kategorisini seçin.",
@@ -418,92 +337,6 @@ export default function Page() {
                 />
               </FormContainer>
             </Section>
-
-            <Section text="Projeyi yönetecek ve temsil edecek kişiyi belirleyin." title="Proje Lideri">
-              <FormContainer>
-                <Combobox
-                  list={[]}
-                  onValueChange={() => {
-                    return undefined;
-                  }}
-                  selectIdentifier=""
-                  selectLabel=""
-                />
-              </FormContainer>
-            </Section>
-
-            <Section text="Projenin gerçekleştirilmesinde görev alacak ekip üyelerini ekleyin." title="Proje Ekibi">
-              <FormContainer>
-                <div className="space-y-6">
-                  <RadioGroup
-                    defaultValue="existing"
-                    onValueChange={(value) => {
-                      setMemberType(value as "existing" | "invite");
-                    }}
-                    value={memberType}>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem id="existing" value="existing" />
-                      <Label htmlFor="existing">Mevcut Üye</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem id="invite" value="invite" />
-                      <Label htmlFor="invite">Yeni Üye Davet Et</Label>
-                    </div>
-                  </RadioGroup>
-
-                  {memberType === "existing" ? (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="existing-email">Email</Label>
-                        <Input
-                          id="existing-email"
-                          onChange={(e) => {
-                            setSelectedMember(e.target.value);
-                          }}
-                          placeholder="ornek@email.com"
-                          type="email"
-                          value={selectedMember}
-                        />
-                      </div>
-                      <Button
-                        className="w-full"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedMember("");
-                        }}
-                        type="button">
-                        Üyeyi Ekle
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          onChange={(e) => {
-                            setInviteEmail(e.target.value);
-                          }}
-                          placeholder="ornek@email.com"
-                          type="email"
-                          value={inviteEmail}
-                        />
-                      </div>
-                      <Button
-                        className="w-full"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          void handleAddMember();
-                        }}
-                        type="button">
-                        Davet Gönder
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </FormContainer>
-            </Section>
-
             <Section
               text={[
                 "Projenizin web sitesini ve sosyal medya hesaplarını ekleyin.",
@@ -534,7 +367,6 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-
                   <FormFieldUI
                     control={form.control}
                     name="instagramUrl"
@@ -551,7 +383,6 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-
                   <FormFieldUI
                     control={form.control}
                     name="twitterUrl"
@@ -568,7 +399,6 @@ export default function Page() {
                       </FormItem>
                     )}
                   />
-
                   <FormFieldUI
                     control={form.control}
                     name="linkedinUrl"
@@ -588,10 +418,8 @@ export default function Page() {
                 </div>
               </FormContainer>
             </Section>
-
-            <Button className="w-full" type="submit">
-              Projeyi Kaydet ve İlerle
-            </Button>
+            <Button className="w-full" type="submit" />
+            Projeyi Kaydet ve İlerle
           </form>
         </Form>
       </div>
