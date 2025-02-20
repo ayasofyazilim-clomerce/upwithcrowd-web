@@ -1,8 +1,7 @@
 "use server";
 
-import {redirect} from "next/navigation";
 import {AccountServiceClient} from "@ayasofyazilim/core-saas/AccountService";
-import {structuredError, structuredResponse} from "../api";
+import {redirect} from "next/navigation";
 import {signOut} from "./auth";
 
 const TOKEN_URL = `${process.env.TOKEN_URL}/connect/token`;
@@ -26,7 +25,7 @@ export async function signOutServer() {
   } catch (error) {
     return {error: "Unknown error"};
   }
-  redirect("/en/login");
+  redirect("/login");
 }
 async function fetchScopes() {
   const scopes = await fetch(OPENID_URL)
