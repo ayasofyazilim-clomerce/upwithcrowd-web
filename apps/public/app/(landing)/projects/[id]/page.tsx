@@ -13,8 +13,8 @@ export default async function Page({params}: {params: {id: string}}) {
 
   const projectsMemberResponse = await getProjectByIdMembersApi(id);
 
-  if (projectDetailsResponseBasics.type !== "success") return <>{projectDetailsResponseBasics.message}</>;
-  if (projectsMemberResponse.type !== "success") return <>{projectsMemberResponse.message}</>;
+  if (projectDetailsResponseBasics.type !== "success") return <>projectdetail {projectDetailsResponseBasics.message}</>;
+  if (projectsMemberResponse.type !== "success") return <>project member{projectsMemberResponse.message}</>;
 
   const isEditable =
     typeof membersProject.data !== "string" &&
