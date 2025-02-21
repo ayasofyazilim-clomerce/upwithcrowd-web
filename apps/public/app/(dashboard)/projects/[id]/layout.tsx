@@ -16,7 +16,7 @@ export default function Layout({children, params}: {children: React.ReactNode; p
         orientation="vertical"
         tabList={[
           {
-            href: `/projects/${id}/basics/?type=project`,
+            href: `/projects/${id}/basics/?type=Project`,
             label: "Temel Bilgiler",
             disabled: false,
           },

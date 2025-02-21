@@ -56,7 +56,6 @@ export default async function Page({
                   fundableAmount: project.fundableAmount,
                   fundNominalAmount: project.fundNominalAmount,
                   fundCollectionType: project.fundCollectionType?.toString() || "",
-                  projectTypes: project.projectTypes,
                 }}
               />
             ))}

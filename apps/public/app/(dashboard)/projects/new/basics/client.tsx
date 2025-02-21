@@ -1,105 +1,137 @@
 "use client";
+import React from "react";
 import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
 import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import * as SheetRoot from "@/components/ui/sheet";
+import {Label} from "@/components/ui/label";
 import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
+import {zodResolver} from "@hookform/resolvers/zod";
+import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import {Globe, Instagram, Linkedin, Search, Twitter} from "lucide-react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 import type {
   PagedResultDto_CategoryListDto,
   PagedResultDto_TypeListDto,
-  UpwithCrowd_Projects_ProjectsDetailResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
-import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import {Globe, Instagram, Linkedin, Search, Twitter, UserPlus} from "lucide-react";
-import {useParams, useRouter} from "next/navigation";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import Image from "next/image";
-import {putProjectBasicsByIdApi} from "@/actions/upwithcrowd/project/put-action";
-import {FormContainer, FormField} from "../../new/_components/form";
-import {Section} from "../../new/_components/section";
-import TextWithTitle from "../../new/_components/text-with-title";
-
-const projectSchema = z.object({
-  projectName: z.string().min(1, "Proje adı zorunludur").max(60, "Proje adı en fazla 60 karakter olabilir"),
-  projectDefinition: z.string().max(135, "Proje açıklaması en fazla 135 karakter olabilir").nullable(),
-  sectorId: z.string().nullable(),
-  categoryTypes: z.array(z.string()), // Changed to accept any string from category items
-  projectTypes: z.array(z.string()), // Changed to accept any string from type items
-  projectLogo: z.string().optional(),
-  projectImage: z.string().optional(),
-  projectVideo: z.string().optional(),
-  websiteUrl: z.string().optional(),
-  instagramUrl: z.string().optional(),
-  twitterUrl: z.string().optional(),
-  linkedinUrl: z.string().optional(),
-  projectContent: z.string().optional(),
-});
-
-interface ProjectFormValues {
-  projectName: string;
-  projectDefinition: string | null;
-  sectorId: string | null;
-  categoryTypes: string[];
-  projectTypes: string[];
-  projectLogo?: string;
-  projectImage?: string;
-  projectVideo?: string;
-  websiteUrl?: string;
-  instagramUrl?: string;
-  twitterUrl?: string;
-  linkedinUrl?: string;
-  projectContent?: string;
-}
+import {postProjectApi} from "@/actions/upwithcrowd/project/post-action";
+import {FormContainer, FormField} from "../_components/form";
+import {Section} from "../_components/section";
+import TextWithTitle from "../_components/text-with-title";
 
 interface PageData {
-  projectDetail: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   category: PagedResultDto_CategoryListDto | null;
   type: PagedResultDto_TypeListDto | null;
 }
 
-interface CategoryItem {
-  id: string;
-  name: string;
-}
+const projectSchema = z.object({
+  projectName: z
+    .string()
+    .min(1, "Proje adı zorunludur")
+    .max(60, "Proje adı en fazla 60 karakter olabilir")
+    .regex(/[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]{1,600}/, "Geçersiz karakterler içeriyor"),
+  projectDefinition: z
+    .string()
+    .min(1, "Proje açıklaması zorunludur")
+    .regex(/[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]{1,2000}/, "Geçersiz karakterler içeriyor"),
+  categorys: z.array(z.string().uuid()),
+  types: z.array(z.string().uuid()),
+  sectorId: z.string().uuid(),
+  projectLogo: z.string().optional(), // Made optional
+  projectImage: z.string().optional(), // Made optional
+  projectVideo: z.string().optional(), // Removed .url() validation since it's optional
+  websiteUrl: z.string().optional(),
+  instagramUrl: z.string().optional(),
+  twitterUrl: z.string().optional(),
+  linkedinUrl: z.string().optional(),
+  projectContent: z.string().optional(), // Add projectContent to schema
+});
 
-export default function ClientBasics({data}: {data: PageData}) {
+type ProjectFormValues = z.infer<typeof projectSchema>;
+
+export default function BasicsClient({data}: {data: PageData}) {
   const router = useRouter();
-  const {id: projectId} = useParams<{id: string}>();
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
+
+  // Add this helper to find the matching type ID
+  const getTypeId = () => {
+    if (!type || !data.type?.items) return undefined;
+    const matchingType = data.type.items.find((t) => t.name === type);
+    return matchingType?.id;
+  };
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      projectName: data.projectDetail.projectName ?? "",
-      projectDefinition: data.projectDetail.projectDefinition ?? "",
-      sectorId: data.projectDetail.sectorId ?? "",
-      categoryTypes: data.category?.items?.map((category) => category.name) ?? [],
-      projectTypes: data.type?.items?.map((type) => type.name) ?? [],
-      projectContent: data.projectDetail.projectContent ?? "",
+      projectName: "",
+      projectDefinition: "",
+      categorys: [],
+      types: [],
+      sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
+      projectLogo: "",
+      projectImage: "",
+      projectVideo: "",
+      websiteUrl: "",
+      instagramUrl: "",
+      twitterUrl: "",
+      linkedinUrl: "",
     },
   });
 
-  const onSubmit = (values: ProjectFormValues) => {
-    void putProjectBasicsByIdApi({
-      requestBody: values,
-      id: projectId,
+  if (type !== "Project") {
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center">
+        <h1 className="text-2xl font-semibold">Geçersiz Proje Oluşturma İşlemi</h1>
+        <p className="text-muted-foreground">Proje oluşturmak için lütfen doğru yolu takip edin.</p>
+        <Button
+          className="mt-4"
+          onClick={() => {
+            router.push("/projects/new");
+          }}>
+          Proje Oluşturmaya Başla
+        </Button>
+      </div>
+    );
+  }
+
+  const onSubmit = (formData: ProjectFormValues) => {
+    const typeId = getTypeId();
+    if (!typeId) {
+      toast.error("Geçerli bir proje tipi bulunamadı");
+      return;
+    }
+
+    const finalFormData = {
+      ...formData,
+      types: [typeId],
+    };
+
+    void postProjectApi({
+      requestBody: finalFormData,
     }).then((res) => {
       if (res.type === "success") {
         toast.success("Proje başarıyla kaydedildi");
-        router.push(`/projects/${res.data.projectId}/about`);
+        router.push(`/projects/${res.data.projectId}/funding`);
       } else {
         toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
       }
     });
   };
 
+  const categoryOptions =
+    data.category?.items?.map((cat) => ({
+      label: cat.name,
+      value: cat.id,
+    })) || [];
+
   return (
-    <div className="bg-muted w-full overflow-auto pb-8">
-      <section className="mx-auto w-full max-w-7xl p-4  md:p-8">
+    <div className="mx-auto w-full max-w-7xl p-4 md:p-8">
+      <div className="container">
         <TextWithTitle
           classNames={{
             container: "mb-8",
@@ -113,9 +145,9 @@ export default function ClientBasics({data}: {data: PageData}) {
           <form
             className="space-y-8"
             onSubmit={(e) => {
-              void form.handleSubmit(onSubmit)(e);
+              e.preventDefault();
+              void form.handleSubmit(onSubmit)(e); // void kullanımı
             }}>
-            {/* Proje Özeti Section */}
             <Section
               text={[
                 "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
@@ -136,7 +168,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                     </FormItem>
                   )}
                 />
-
                 <FormFieldUI
                   control={form.control}
                   name="projectDefinition"
@@ -148,7 +179,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                           placeholder="Projenizin amacını ve hedeflerini kısaca açıklayın..."
                           {...field}
                           rows={3}
-                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <FormMessage />
@@ -157,7 +187,7 @@ export default function ClientBasics({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-
+            {/* Add Project Story Section */}
             <Section
               text={[
                 "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
@@ -175,14 +205,13 @@ export default function ClientBasics({data}: {data: PageData}) {
                         <FormControl>
                           <TiptapEditor
                             canEditable
-                            editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
-                            editorContent={JSON.parse(field.value || "{}") as JSONContent}
+                            editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                             editorId="story"
                             minWordCount={1}
                             onSaveFunction={async (id, content) => {
                               field.onChange(content);
-                              return await Promise.resolve(id);
+                              return Promise.resolve(id);
                             }}
                           />
                         </FormControl>
@@ -193,8 +222,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-
-            {/* Görsel Kimlik Section */}
             <Section
               text={[
                 "Projenizi görsel olarak temsil edecek logo ve görselleri ekleyin.",
@@ -226,14 +253,13 @@ export default function ClientBasics({data}: {data: PageData}) {
                       </FormControl>
                       {field.value ? (
                         <div className="mt-2 h-32 w-32 overflow-hidden rounded-lg border">
-                          <Image alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
+                          <img alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
                 <FormFieldUI
                   control={form.control}
                   name="projectImage"
@@ -252,14 +278,13 @@ export default function ClientBasics({data}: {data: PageData}) {
                       </FormControl>
                       {field.value ? (
                         <div className="mt-2 h-[180px] w-[320px] overflow-hidden rounded-lg border">
-                          <Image alt="Project preview" className="h-full w-full object-cover" src={field.value} />
+                          <img alt="Project  preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
                 <FormFieldUI
                   control={form.control}
                   name="projectVideo"
@@ -275,15 +300,8 @@ export default function ClientBasics({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-
-            {/* Proje Konumu Section */}
             <Section text="Projenizin yürütüleceği veya etki edeceği lokasyonu belirtin." title="Proje Konumu">
               <FormContainer>
-                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
-                  <p>
-                    Not: Konum entegrasyonu şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş bırakabilirsiniz.
-                  </p>
-                </div>
                 <FormField htmlFor="location">
                   <div className="relative">
                     <Input className="peer pl-8" id="location" placeholder="Şehir veya bölge adı girin..." />
@@ -292,8 +310,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                 </FormField>
               </FormContainer>
             </Section>
-
-            {/* Proje Sınıflandırması Section */}
             <Section
               text={[
                 "Projenizin kategorisini seçin.",
@@ -303,25 +319,26 @@ export default function ClientBasics({data}: {data: PageData}) {
               <FormContainer className="grid gap-4">
                 <FormFieldUI
                   control={form.control}
-                  name="categoryTypes"
+                  name="categorys"
                   render={({field}) => (
                     <FormItem>
                       <FormLabel>Kategori Türleri</FormLabel>
                       <FormControl>
-                        <div className="flex flex-wrap gap-2">
-                          {data.category?.items?.map((cat: CategoryItem) => (
-                            <Button
-                              key={cat.id}
-                              onClick={() => {
-                                const newValue = field.value.includes(cat.id)
-                                  ? field.value.filter((v) => v !== cat.id)
-                                  : [...field.value, cat.id];
-                                field.onChange(newValue);
-                              }}
-                              type="button"
-                              variant={field.value.includes(cat.id) ? "default" : "outline"}>
-                              {cat.name}
-                            </Button>
+                        <div className="grid grid-cols-2 gap-4">
+                          {categoryOptions.map((category) => (
+                            <div className="flex items-center space-x-2" key={category.value}>
+                              <Checkbox
+                                checked={field.value.includes(category.value)}
+                                id={category.value}
+                                onCheckedChange={(checked) => {
+                                  const newValue = checked
+                                    ? [...field.value, category.value]
+                                    : field.value.filter((v) => v !== category.value);
+                                  field.onChange(newValue);
+                                }}
+                              />
+                              <Label htmlFor={category.value}>{category.label}</Label>
+                            </div>
                           ))}
                         </div>
                       </FormControl>
@@ -331,45 +348,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-
-            <Section text="Projeyi yönetecek ve temsil edecek kişiyi belirleyin." title="Proje Lideri">
-              <FormContainer>
-                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
-                  <p>
-                    Not: Proje liderleri seçimi şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş
-                    bırakabilirsiniz.
-                  </p>
-                </div>
-                <Combobox
-                  list={[]}
-                  onValueChange={() => {
-                    //
-                  }}
-                  selectIdentifier=""
-                  selectLabel=""
-                />
-              </FormContainer>
-            </Section>
-
-            <Section text="Projenin gerçekleştirilmesinde görev alacak ekip üyelerini ekleyin." title="Proje Ekibi">
-              <FormContainer>
-                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
-                  <p>
-                    Not: Proje ekibi seçimi şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş bırakabilirsiniz.
-                  </p>
-                </div>
-                <SheetRoot.Sheet>
-                  <SheetRoot.SheetTrigger asChild>
-                    <Button variant="outline">
-                      <UserPlus className="mr-2 h-4 w-4" />
-                      Add member
-                    </Button>
-                  </SheetRoot.SheetTrigger>
-                  <SheetRoot.SheetContent />
-                </SheetRoot.Sheet>
-              </FormContainer>
-            </Section>
-
             <Section
               text={[
                 "Projenizin web sitesini ve sosyal medya hesaplarını ekleyin.",
@@ -400,7 +378,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                       </FormItem>
                     )}
                   />
-
                   <FormFieldUI
                     control={form.control}
                     name="instagramUrl"
@@ -417,7 +394,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                       </FormItem>
                     )}
                   />
-
                   <FormFieldUI
                     control={form.control}
                     name="twitterUrl"
@@ -434,7 +410,6 @@ export default function ClientBasics({data}: {data: PageData}) {
                       </FormItem>
                     )}
                   />
-
                   <FormFieldUI
                     control={form.control}
                     name="linkedinUrl"
@@ -454,16 +429,12 @@ export default function ClientBasics({data}: {data: PageData}) {
                 </div>
               </FormContainer>
             </Section>
-
-            {/* Continue with other sections from the new version */}
-            {/* ... */}
-
             <Button className="w-full" type="submit">
-              Değişiklikleri Kaydet
+              Projeyi Kaydet ve İlerle
             </Button>
           </form>
         </Form>
-      </section>
+      </div>
     </div>
   );
 }

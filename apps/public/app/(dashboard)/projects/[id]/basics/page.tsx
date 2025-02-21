@@ -1,4 +1,5 @@
 import {getPublicProjectDetailsApi} from "@/actions/upwithcrowd/project/action";
+import {getCategoryApi, getTypeApi} from "@/actions/upwithcrowd/category-project/action";
 import ClientBasics from "./client";
 
 export default async function Basics({
@@ -9,12 +10,25 @@ export default async function Basics({
   };
 }) {
   const {id} = params;
-  const projectDetail = await getPublicProjectDetailsApi(id);
-  if (projectDetail.type !== "success") return <>yok</>;
+
+  // Fetch both data in parallel
+  const [projectDetailResponse, categoryResponse, typeResponse] = await Promise.all([
+    getPublicProjectDetailsApi(id),
+    getCategoryApi(),
+    getTypeApi(),
+  ]);
+
+  if (projectDetailResponse.type !== "success") return <>Proje detayları yüklenemedi</>;
+
+  const pageData = {
+    projectDetail: projectDetailResponse.data,
+    category: typeof categoryResponse.data === "string" ? null : categoryResponse.data,
+    type: typeof typeResponse.data === "string" ? null : typeResponse.data,
+  };
 
   return (
     <div className="bg-muted">
-      <ClientBasics projectDetail={projectDetail.data} />
+      <ClientBasics data={pageData} />
     </div>
   );
 }

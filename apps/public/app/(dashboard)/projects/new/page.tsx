@@ -160,7 +160,7 @@ export default function ProjectOnboarding() {
           ))}
 
           <div className="ml-16 flex gap-4 pt-4">
-            <Link href="/projects/new/basics/?type=project">
+            <Link href="/projects/new/basics/?type=Project">
               <Button className="bg-primary hover:bg-primary/90 gap-2" size="lg">
                 Start Creating Project
                 <ChevronRight className="h-4 w-4" />
