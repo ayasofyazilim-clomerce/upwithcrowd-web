@@ -20,7 +20,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
             disabled: false,
           },
           {
-            href: "/projects/new/basics/?type=project",
+            href: "/projects/new/basics/?type=Project",
             label: "Temel Bilgiler",
             disabled: false,
           },
