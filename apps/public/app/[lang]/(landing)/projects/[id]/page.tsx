@@ -3,7 +3,10 @@ import type {
   PagedResultDto_ListProjectsMembersResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getProjectApi, getProjectByIdMembersApi} from "@/actions/upwithcrowd/project/action";
-import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/actions";
+import {
+  getPublicProjectDetailByIdApi,
+  getPublicProjectByIdMembersApi,
+} from "@/actions/upwithcrowd/public-project/actions";
 import ProjectDetails from "./client";
 
 export default async function Page({params}: {params: {id: string}}) {
@@ -14,11 +17,11 @@ export default async function Page({params}: {params: {id: string}}) {
     maxResultCount: 100,
   });
 
-  const projectsMemberResponse = await getProjectByIdMembersApi(id);
+  let projectsMemberResponse = await getProjectByIdMembersApi(id);
 
   if (projectDetailsResponseBasics.type !== "success") return <>projectdetail {projectDetailsResponseBasics.message}</>;
   if (projectsMemberResponse.type !== "success") {
-    //
+    projectsMemberResponse = await getPublicProjectByIdMembersApi(id);
   }
 
   const defaultMembersData: PagedResultDto_ListProjectsMembersResponseDto = {

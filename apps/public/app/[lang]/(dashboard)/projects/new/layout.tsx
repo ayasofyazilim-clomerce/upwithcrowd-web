@@ -23,7 +23,7 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             disabled: false,
           },
           {
-            href: `${baseLink}new/basics/?type=project`,
+            href: `${baseLink}new/basics/?type=Project`,
             label: "Temel Bilgiler",
             disabled: false,
           },
