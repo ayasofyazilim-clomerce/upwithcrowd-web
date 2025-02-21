@@ -6,27 +6,30 @@ import {useSession} from "@repo/utils/auth";
 import {Menu, PlusCircle, X} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useParams} from "next/navigation";
 import {useState} from "react";
+import {getBaseLink} from "@/utils/lib";
 import MemberSwitcher from "./member-switcher";
-
-const PublicLinks = [
-  {href: "/", label: "Home"},
-  {href: "/projects", label: "Projects"},
-  {href: "/blogs", label: "Blog"},
-  {href: "/about", label: "About"},
-  {href: "/faq", label: "FAQ"},
-  {href: "/contact", label: "Contact"},
-];
 
 export default function Header() {
   const pathName = usePathname();
+  const {lang} = useParams<{lang: string}>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {session} = useSession();
+
+  const PublicLinks = [
+    {href: getBaseLink("", lang), label: "Home"},
+    {href: getBaseLink("projects", lang), label: "Projects"},
+    {href: getBaseLink("blogs", lang), label: "Blog"},
+    {href: getBaseLink("about", lang), label: "About"},
+    {href: getBaseLink("faq", lang), label: "FAQ"},
+    {href: getBaseLink("contact", lang), label: "Contact"},
+  ];
+
   return (
     <header className="bg-background flex h-24 px-6">
       <div className="container mx-auto flex items-center justify-between">
-        <Link className="text-primary flex items-center text-2xl font-bold" href="/">
+        <Link className="text-primary flex items-center text-2xl font-bold" href={getBaseLink("", lang)}>
           <Image alt="" height={60} src="/upwc.png" width={60} />
           UPwithCrowd
         </Link>
@@ -46,7 +49,7 @@ export default function Header() {
         <div className="space-x-4">
           {session !== null ? (
             <div className="flex items-center space-x-6">
-              <Link className="flex items-center justify-center gap-2" href="/projects/new">
+              <Link className="flex items-center justify-center gap-2" href={getBaseLink("projects/new", lang)}>
                 <PlusCircle className="text-primary size-5" />
                 Start a Project
               </Link>
@@ -55,10 +58,10 @@ export default function Header() {
           ) : (
             <>
               <Button asChild variant="outline">
-                <Link href="/login">Sign In</Link>
+                <Link href={getBaseLink("login", lang)}>Sign In</Link>
               </Button>
               <Button asChild>
-                <Link href="/register">Sign Up</Link>
+                <Link href={getBaseLink("register", lang)}>Sign Up</Link>
               </Button>
             </>
           )}

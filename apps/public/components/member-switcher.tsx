@@ -19,9 +19,10 @@ import {useMediaQuery} from "@/components/ui/useMediaQuery";
 import {cn} from "@/lib/utils";
 import {signOutServer, useSession} from "@repo/utils/auth";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import {useRouter, useParams} from "next/navigation";
 import {useMember} from "@/app/providers/member";
 import type {Member} from "@/app/providers/member";
+import {getBaseLink} from "@/utils/lib";
 
 export default function MemberSwitcher() {
   const router = useRouter();
@@ -186,19 +187,20 @@ function MemberItem({member}: {member: Partial<Member>}) {
 }
 
 function Commands() {
+  const {lang} = useParams<{lang: string}>();
   return (
     <CommandList>
       <CommandList>
         <CommandGroup>
           <CommandItem>
-            <Link className="flex items-center gap-2" href="/profile/new/business">
+            <Link className="flex items-center gap-2" href={getBaseLink("profile/new/business", lang)}>
               <PlusCircle className="size-4" />
               Create business account
             </Link>
           </CommandItem>
           <CommandSeparator />
           <CommandItem>
-            <Link className="flex items-center gap-2" href="/profile">
+            <Link className="flex items-center gap-2" href={getBaseLink("profile", lang)}>
               <UserIcon className="size-4" />
               Profile
             </Link>

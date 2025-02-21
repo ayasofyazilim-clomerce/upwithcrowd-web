@@ -3,6 +3,7 @@ import Image from "next/image";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import LandingHero from "@/components/landing-hero";
+import {getBaseLink} from "@/utils/lib";
 
 // Mock data for blog posts
 const blogPosts = [
@@ -65,7 +66,8 @@ const blogPosts = [
   },
 ];
 
-export default function Page() {
+export default function Page({params}: {params: {lang: string}}) {
+  const {lang} = params;
   const title = "UPwithCrowd Blog";
   const description = "Insights, tips, and stories from the world of crowdfunding";
   return (
@@ -75,7 +77,7 @@ export default function Page() {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post) => (
-            <Link href={`/blogs/${post.slug}`} key={post.slug}>
+            <Link href={getBaseLink(`blogs/${post.slug}`, lang)} key={post.slug}>
               <Card className="h-full transition-shadow duration-300 hover:shadow-lg">
                 <Image
                   alt={post.title}
