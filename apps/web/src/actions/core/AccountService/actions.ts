@@ -68,7 +68,7 @@ export async function signUpServerApi({
         userName,
         emailAddress: email,
         password,
-        appName: process.env.CLIENT_ID || "",
+        appName: process.env.ABP_APP_NAME || process.env.CLIENT_ID || "",
         returnUrl: "",
       },
     });
@@ -89,7 +89,7 @@ export async function sendPasswordResetCodeApi({tenantId, email}: {tenantId: str
     const response = await client.account.postApiAccountSendPasswordResetCode({
       requestBody: {
         email,
-        appName: process.env.CLIENT_ID || "",
+        appName: process.env.ABP_APP_NAME || process.env.CLIENT_ID || "",
         returnUrl: "",
       },
     });
