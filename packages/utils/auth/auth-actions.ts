@@ -25,7 +25,7 @@ export async function signOutServer() {
   } catch (error) {
     return {error: "Unknown error"};
   }
-  redirect("/login");
+  redirect("/en/login");
 }
 async function fetchScopes() {
   const scopes = await fetch(OPENID_URL)

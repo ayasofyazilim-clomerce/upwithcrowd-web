@@ -149,6 +149,15 @@ export async function resetPasswordApi({
     return structuredError(error);
   }
 }
+export async function myProfileApi() {
+  try {
+    const client = await getAccountServiceClient();
+    const response = await client.profile.getApiAccountMyProfile();
+    return structuredSuccessResponse(response);
+  } catch (error) {
+    throw structuredError(error);
+  }
+}
 //unupdated functions
 
 export async function getSessionsApi(data: GetApiAccountSessionsData) {
