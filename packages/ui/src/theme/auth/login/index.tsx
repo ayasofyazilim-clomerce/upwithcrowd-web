@@ -5,12 +5,15 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useEffect, useState, useTransition} from "react";
 import {FormProvider, useForm} from "react-hook-form";
-import {
-    Volo_Abp_AspNetCore_Mvc_MultiTenancy_FindTenantResultDto
-} from "@ayasofyazilim/core-saas/AccountService";
+import {Volo_Abp_AspNetCore_Mvc_MultiTenancy_FindTenantResultDto} from "@ayasofyazilim/core-saas/AccountService";
 import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
 import {
-    FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@repo/ayasofyazilim-ui/atoms/form";
 import {Input} from "@repo/ayasofyazilim-ui/atoms/input";
 import {toast} from "@repo/ayasofyazilim-ui/atoms/sonner";
@@ -85,8 +88,9 @@ export default function LoginForm({
     });
   }
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const redirectTo =
-      new URLSearchParams(location.search).get("redirect") || "/" + location.pathname.split("/")[1] + "/home";
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get("redirectTo");
+    const redirectTo = redirect ? decodeURIComponent(redirect) : `/${window.location.pathname.split("/")[1]}`;
     startTransition(() => {
       onSubmitAction({
         tenantId: tenantData.tenantId || "",
