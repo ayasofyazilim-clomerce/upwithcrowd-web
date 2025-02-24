@@ -32,7 +32,7 @@ export async function signInServerApi({
       password,
       tenantId,
       redirect: true,
-      redirectTo: "/profile",
+      redirectTo: "/en/profile",
     });
     return structuredSuccessResponse("");
   } catch (error) {
