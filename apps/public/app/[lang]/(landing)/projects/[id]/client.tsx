@@ -155,8 +155,8 @@ export default function ProjectDetails({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {groupedMembers().map((member, index) => (
-                    <div className="flex items-center space-x-4" key={index}>
+                  {groupedMembers().map((member) => (
+                    <div className="flex items-center space-x-4" key={member.mail}>
                       <Avatar className="h-10 w-10">
                         <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
                       </Avatar>
