@@ -26,7 +26,7 @@ export const MemberContext = createContext<MemberContent>({
 });
 export const useMember = () => useContext(MemberContext);
 
-export function MemberProvider({
+export default function MemberProvider({
   children,
   currentMember,
   members,
@@ -35,9 +35,17 @@ export function MemberProvider({
   currentMember: Member | null;
   members: Member[];
 }) {
-  const [member, setCurrentMember] = useState<Member | null>(currentMember);
+  const [__member, setCurrentMember] = useState<Member | null>(currentMember);
   const [memberList, setMemberList] = useState<Member[]>(members);
   const router = useRouter();
+  let _currentMember = currentMember;
+  if (typeof window !== "undefined") {
+    if (window.sessionStorage.getItem("current_member")) {
+      //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- we know it's a Member
+      _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
+    }
+  }
+
   const saveMember = (_member: Member) => {
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem("current_member", JSON.stringify(_member));
@@ -57,7 +65,7 @@ export function MemberProvider({
   return (
     <MemberContext.Provider
       value={{
-        currentMember: member,
+        currentMember: _currentMember,
         members: memberList,
         setCurrentMember: saveMember,
         setMembers: saveMembers,
