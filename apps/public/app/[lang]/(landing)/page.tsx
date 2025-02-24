@@ -17,7 +17,7 @@ export default async function Page() {
       <main>
         <HeroSection />
         <ProjectSlider
-          projects={typeof publicProjectsResponse.data === "string" ? [] : publicProjectsResponse.data.items || []}
+          projects={publicProjectsResponse.type !== "success" ? [] : publicProjectsResponse.data.items || []}
         />
         <DetailsSection />
         <ServicesSection />
