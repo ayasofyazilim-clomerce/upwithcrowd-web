@@ -3,9 +3,12 @@ import Link from "next/link";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Facebook, Twitter, Instagram, Linkedin} from "lucide-react";
+import {useParams} from "next/navigation";
+import {getBaseLink} from "@/utils/lib";
 import {IconWrapper} from "./icon-wrapper";
 
 export default function Footer() {
+  const {lang} = useParams<{lang: string}>();
   return (
     <footer
       className="flex h-[60dvh] flex-col justify-center bg-slate-900 px-6 pt-12 text-white"
@@ -17,17 +20,17 @@ export default function Footer() {
           <h3 className="mb-4 text-lg font-semibold">About Us</h3>
           <ul className="space-y-2">
             <li>
-              <Link className="hover:text-primary" href="/about">
+              <Link className="hover:text-primary" href={getBaseLink("about", lang)}>
                 Our Story
               </Link>
             </li>
             <li>
-              <Link className="hover:text-primary" href="/team">
+              <Link className="hover:text-primary" href={getBaseLink("team", lang)}>
                 Team
               </Link>
             </li>
             <li>
-              <Link className="hover:text-primary" href="/careers">
+              <Link className="hover:text-primary" href={getBaseLink("careers", lang)}>
                 Careers
               </Link>
             </li>
@@ -37,17 +40,17 @@ export default function Footer() {
           <h3 className="mb-4 text-lg font-semibold">Support</h3>
           <ul className="space-y-2">
             <li>
-              <Link className="hover:text-primary" href="/faq">
+              <Link className="hover:text-primary" href={getBaseLink("faq", lang)}>
                 FAQ
               </Link>
             </li>
             <li>
-              <Link className="hover:text-primary" href="/contact">
+              <Link className="hover:text-primary" href={getBaseLink("contact", lang)}>
                 Contact Us
               </Link>
             </li>
             <li>
-              <Link className="hover:text-primary" href="/terms">
+              <Link className="hover:text-primary" href={getBaseLink("terms", lang)}>
                 Terms of Service
               </Link>
             </li>
@@ -56,28 +59,28 @@ export default function Footer() {
         <div>
           <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
           <div className="flex space-x-4">
-            <Link href="#">
+            <Link href={getBaseLink("#", lang)}>
               <IconWrapper
                 className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Facebook}
                 iconClassName="size-4 text-white"
               />
             </Link>
-            <Link href="#">
+            <Link href={getBaseLink("#", lang)}>
               <IconWrapper
                 className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Twitter}
                 iconClassName="size-4 text-white"
               />
             </Link>
-            <Link href="#">
+            <Link href={getBaseLink("#", lang)}>
               <IconWrapper
                 className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Instagram}
                 iconClassName="size-4 text-white"
               />
             </Link>
-            <Link href="#">
+            <Link href={getBaseLink("#", lang)}>
               <IconWrapper
                 className="size-10 bg-slate-800 hover:border hover:border-white"
                 icon={Linkedin}
