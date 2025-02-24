@@ -81,6 +81,37 @@ export default function ProjectDetails({
       .trim();
   }, []);
 
+  const groupedMembers = useCallback(() => {
+    const grouped = (projectsMember.items ?? [])
+      .filter((member) => member.customRoleType !== "Investor")
+      .reduce<
+        Record<
+          string,
+          {
+            name: string | undefined;
+            surname: string | undefined;
+            mail: string | undefined;
+            roles: {customRoleName: string}[];
+          }
+        >
+      >((acc, member) => {
+        const key = member.mail;
+        acc[key] = {
+          name: member.name || undefined,
+          surname: member.surname || undefined,
+          mail: member.mail,
+          roles: [],
+        };
+
+        acc[key].roles.push({
+          customRoleName: member.customRoleName || "",
+        });
+        return acc;
+      }, {});
+
+    return Object.values(grouped);
+  }, [projectsMember.items]);
+
   return (
     <>
       <main className="container mx-auto px-4 py-8">
@@ -124,8 +155,8 @@ export default function ProjectDetails({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {projectsMember.items?.map((member) => (
-                    <div className="flex items-center space-x-4" key={member.customRoleID}>
+                  {groupedMembers().map((member) => (
+                    <div className="flex items-center space-x-4" key={member.mail}>
                       <Avatar className="h-10 w-10">
                         <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
                       </Avatar>
@@ -134,9 +165,12 @@ export default function ProjectDetails({
                           {member.name} {member.surname}
                         </p>
                         <p className="text-muted-foreground text-sm">{member.mail}</p>
-                        <div className="flex flex-col text-sm">
-                          <span className="text-primary">{formatRoleName(member.customRoleName || "")}</span>{" "}
-                          <span>{member.customRoleType}</span>
+                        <div className="flex flex-col gap-2 text-sm">
+                          {member.roles.map((role) => (
+                            <span className="text-primary" key={role.customRoleName}>
+                              {formatRoleName(role.customRoleName)}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     </div>
