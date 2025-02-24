@@ -35,14 +35,7 @@ export function MemberProvider({
   currentMember: Member | null;
   members: Member[];
 }) {
-  let _currentMember = currentMember;
-  if (typeof window !== "undefined") {
-    if (window.sessionStorage.getItem("current_member")) {
-      //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- we know it's a Member
-      _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
-    }
-  }
-  const [member, setCurrentMember] = useState<Member | null>(_currentMember);
+  const [member, setCurrentMember] = useState<Member | null>(currentMember);
   const [memberList, setMemberList] = useState<Member[]>(members);
   const router = useRouter();
   const saveMember = (_member: Member) => {
