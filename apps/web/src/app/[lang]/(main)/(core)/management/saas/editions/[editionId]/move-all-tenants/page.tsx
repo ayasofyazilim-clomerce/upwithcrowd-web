@@ -2,8 +2,8 @@
 
 import {isUnauthorized} from "@repo/utils/policies";
 import {isErrorOnRequest} from "@repo/utils/api";
+import ErrorComponent from "@repo/ui/components/error-component";
 import {getAllEditionsApi, getEditionDetailsByIdApi} from "src/actions/core/SaasService/actions";
-import ErrorComponent from "src/app/[lang]/(main)/_components/error-component";
 import {getResourceData} from "src/language-data/core/SaasService";
 import Form from "./_components/form";
 
