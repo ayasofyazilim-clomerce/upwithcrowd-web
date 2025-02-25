@@ -33,5 +33,10 @@ export default async function Page() {
     return <EmptyPaymentsState />;
   }
 
-  return <PaymentsPage payments={payments} />;
+  // Get the first project ID or use a default
+  const firstProjectID = projects[0]?.id || "";
+  // Set a default amount (you may want to calculate this based on your requirements)
+  const defaultAmount = 0;
+
+  return <PaymentsPage amount={defaultAmount} payments={payments} projectID={firstProjectID} />;
 }
