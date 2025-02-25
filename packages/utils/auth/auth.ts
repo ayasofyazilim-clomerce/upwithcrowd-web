@@ -2,10 +2,9 @@ import Credentials from "next-auth/providers/credentials";
 export type Awaitable<T> = T | PromiseLike<T>;
 
 import {AdapterUser} from "@auth/core/adapters";
-import {fetchNewAccessTokenByRefreshToken, fetchToken, getUserData} from "./auth-actions";
 import NextAuth, {AuthError} from "next-auth";
+import {fetchNewAccessTokenByRefreshToken, fetchToken, getUserData} from "./auth-actions";
 import {MyUser} from "./auth-types";
-import {GetApiAbpApplicationConfigurationResponse} from "@ayasofyazilim/core-saas/AccountService";
 
 export const {handlers, auth, signIn, signOut} = NextAuth({
   providers: [
