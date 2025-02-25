@@ -21,8 +21,10 @@ export default function DetailsSection() {
             width={290}
           />
         </div>
-        <div className="space-y-8">
-          <h2 className="text-2xl font-bold md:text-5xl">We are the Powerful, Free Fundraising Platform</h2>
+        <div className="md-text-left space-y-8 text-center md:text-left">
+          <h2 className="mt-6 text-2xl font-bold md:mt-0 md:text-5xl">
+            We are the Powerful, Free Fundraising Platform
+          </h2>
           <div className="text-muted-foreground space-y-4">
             <p>
               Amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim,
@@ -35,17 +37,17 @@ export default function DetailsSection() {
               condimentum.
             </p>
           </div>
-          <div className="grid gap-8">
-            <div className="flex items-center">
-              <Clock className="text-primary mr-2 h-8 w-8" />
+          <div className="grid gap-8 text-center md:text-left">
+            <div className="flex flex-col items-center md:flex-row md:items-start">
+              <Clock className="text-primary mb-2 h-8 w-8 md:mb-0 md:mr-2" />
               <span>Quick Setup</span>
             </div>
-            <div className="flex items-center">
-              <Users className="text-primary mr-2 h-8 w-8" />
+            <div className="flex flex-col items-center md:flex-row md:items-start">
+              <Users className="text-primary mb-2 h-8 w-8 md:mb-0 md:mr-2" />
               <span>Global Reach</span>
             </div>
-            <div className="flex items-center">
-              <Target className="text-primary mr-2 h-8 w-8" />
+            <div className="flex flex-col items-center md:flex-row md:items-start">
+              <Target className="text-primary mb-2 h-8 w-8 md:mb-0 md:mr-2" />
               <span>Goal Tracking</span>
             </div>
           </div>
