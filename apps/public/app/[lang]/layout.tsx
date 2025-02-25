@@ -49,7 +49,7 @@ export default async function RootLayout({children, params}: {children: React.Re
     <html lang="en">
       <body className={inter.className}>
         <LocaleProvider lang={lang} resources={resources}>
-          <Providers currentMember={member} members={members} session={session}>
+          <Providers currentMember={member} key={session?.user?.email} members={members} session={session}>
             {children}
           </Providers>
         </LocaleProvider>
