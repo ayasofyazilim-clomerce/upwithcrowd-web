@@ -1,16 +1,15 @@
 "use client";
-import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import {ChevronDown} from "lucide-react";
 import PaymentsTable from "./_components/table";
 import type {Payment} from "./types";
 
 interface PaymentsTableProps {
   payments: Payment[];
+  projectID: string;
+  amount: number;
 }
 
-export default function PaymentsPage({payments}: PaymentsTableProps) {
+export default function PaymentsPage({payments, projectID, amount}: PaymentsTableProps) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -18,7 +17,7 @@ export default function PaymentsPage({payments}: PaymentsTableProps) {
         <CardDescription>Ödemelerinizi yönetin.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mb-4 flex items-center justify-start">
+        {/* <div className="mb-4 flex items-center justify-start">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="" variant="outline">
@@ -29,9 +28,9 @@ export default function PaymentsPage({payments}: PaymentsTableProps) {
               <DropdownMenuLabel>Filtre 1</DropdownMenuLabel>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
 
-        <PaymentsTable payments={payments} />
+        <PaymentsTable amount={amount} payments={payments} projectID={projectID} />
       </CardContent>
     </Card>
   );
