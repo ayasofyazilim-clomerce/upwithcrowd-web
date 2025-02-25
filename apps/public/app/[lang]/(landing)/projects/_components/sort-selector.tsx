@@ -26,7 +26,7 @@ export default function SortSelector() {
     <Select
       defaultValue={`${searchParams.get("sortField") || "projectEndDate"} ${searchParams.get("sortOrder") || "ASC"}`}
       onValueChange={handleSort}>
-      <SelectTrigger className="w-[200px]">
+      <SelectTrigger className="w-full md:w-[200px]">
         <SelectValue placeholder="Sort by..." />
       </SelectTrigger>
       <SelectContent>

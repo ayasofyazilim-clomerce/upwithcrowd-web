@@ -35,12 +35,12 @@ export default async function Page({
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="px-6 py-12 md:py-20">
+      <section className="px-4 py-8 md:px-6 md:py-12 lg:py-20">
         <div className="container mx-auto">
           <LandingHero description={description} title={title} />
-          <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <SearchBar />
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <FilterSelector />
               <SortSelector />
             </div>
