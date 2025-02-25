@@ -1,7 +1,5 @@
 "use client";
 
-import {BadgeCheck, LogOut, PlusCircle, UserIcon} from "lucide-react";
-import * as React from "react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import {
@@ -18,11 +16,14 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {useMediaQuery} from "@/components/ui/useMediaQuery";
 import {cn} from "@/lib/utils";
 import {signOutServer, useSession} from "@repo/utils/auth";
+import {BadgeCheck, LogOut, PlusCircle, UserIcon} from "lucide-react";
 import Link from "next/link";
-import {useRouter, useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
+import * as React from "react";
+import {useEffect} from "react";
+import {getBaseLink} from "@/utils/lib";
 import {useMember} from "@/app/providers/member";
 import type {Member} from "@/app/providers/member";
-import {getBaseLink} from "@/utils/lib";
 
 export default function MemberSwitcher() {
   const router = useRouter();
@@ -32,10 +33,12 @@ export default function MemberSwitcher() {
   const {currentMember} = useMember();
   let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
 
-  if (!_currentMember) {
+  useEffect(() => {
     if (!currentMember || currentMember.isValidated === false) {
       router.push("/profile/new/personal");
     }
+  }, [_currentMember]);
+  if (!_currentMember) {
     _currentMember = {
       id: Array.isArray(session?.user?.member_id) ? session.user.member_id[0] : session?.user?.member_id || "",
       name: session?.user?.name || "",
@@ -93,7 +96,7 @@ function Content({
   currentMember,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  currentMember: Member;
+  currentMember: Member | null;
 }) {
   const {members} = useMember();
   const organizations = members.filter((x) => x.type === "Organization" && x.title);
@@ -106,16 +109,20 @@ function Content({
         <CommandEmpty>No member found.</CommandEmpty>
         {individuals.length > 0 && (
           <CommandGroup heading="Individuals" key="individuals">
-            {individuals.map((ind) => (
-              <ListItem currentMember={currentMember} key={ind.id} member={ind} setOpen={setOpen} />
-            ))}
+            {currentMember
+              ? individuals.map((ind) => (
+                  <ListItem currentMember={currentMember} key={ind.id} member={ind} setOpen={setOpen} />
+                ))
+              : null}
           </CommandGroup>
         )}
         {organizations.length > 0 && (
           <CommandGroup heading="Organizations" key="organizations">
-            {organizations.map((org) => (
-              <ListItem currentMember={currentMember} key={org.id} member={org} setOpen={setOpen} />
-            ))}
+            {currentMember
+              ? organizations.map((org) => (
+                  <ListItem currentMember={currentMember} key={org.id} member={org} setOpen={setOpen} />
+                ))
+              : null}
           </CommandGroup>
         )}
       </CommandList>
@@ -154,19 +161,19 @@ function ListItem({
   );
 }
 
-function MemberItem({member}: {member: Partial<Member>}) {
+function MemberItem({member}: {member: Partial<Member> | null}) {
   const {currentMember} = useMember();
 
   return (
     <React.Suspense fallback="loading">
       <>
         <Avatar className="mr-2 size-10">
-          {currentMember?.profileImage && currentMember.id === member.id ? (
+          {member && currentMember?.profileImage && currentMember.id === member.id ? (
             <AvatarImage alt={member.id} src={`data:image/jpeg;base64,${currentMember.profileImage}`} />
           ) : (
             <AvatarFallback className="bg-primary/10 text-primary text-sm">
-              <>{member.name?.slice(0, 1).toUpperCase()}</>
-              <>{member.surname?.slice(0, 1).toUpperCase()}</>
+              <>{member ? member.name?.slice(0, 1).toUpperCase() : "Test"}</>
+              <>{member ? member.surname?.slice(0, 1).toUpperCase() : "Test2"}</>
             </AvatarFallback>
           )}
         </Avatar>
@@ -174,11 +181,11 @@ function MemberItem({member}: {member: Partial<Member>}) {
           <div className="flex flex-col">
             <div className="flex items-center gap-1 overflow-hidden text-ellipsis">
               <p className="overflow-hidden text-ellipsis text-nowrap">
-                {member.type === "Organization" ? member.title : `${member.name} ${member.surname}`}
+                {member?.type === "Organization" ? member.title : `${member?.name} ${member?.surname}`}
               </p>
-              {member.isValidated ? <BadgeCheck className="text-primary size-4 min-w-4" /> : null}
+              {member?.isValidated ? <BadgeCheck className="text-primary size-4 min-w-4" /> : null}
             </div>
-            <span className="text-xs text-gray-500">{member.identifier}</span>
+            <span className="text-xs text-gray-500">{member?.identifier}</span>
           </div>
         </div>
       </>
