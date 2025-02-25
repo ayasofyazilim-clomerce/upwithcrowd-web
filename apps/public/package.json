@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@ayasofyazilim/core-saas": "latest",
-    "@ayasofyazilim/upwithcrowd-saas": "^0.0.25",
+    "@ayasofyazilim/upwithcrowd-saas": "^0.0.26",
+    "@formatjs/intl-localematcher": "^0.5.4",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-avatar": "^1.1.2",
@@ -36,6 +37,7 @@
     "leaflet": "^1.9.4",
     "lint-staged": "15.2.2",
     "lucide-react": "^0.468.0",
+    "negotiator": "0.6.3",
     "next": "14.2.20",
     "next-auth": "5.0.0-beta.16",
     "react": "18.3.1",
@@ -45,19 +47,17 @@
     "recharts": "^2.15.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "negotiator": "0.6.3",
-    "@formatjs/intl-localematcher": "^0.5.4",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.16",
+    "@types/negotiator": "0.6.3",
     "@types/node": "20.11.24",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@types/recharts": "^1.8.29",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.16",
-    "@types/negotiator": "0.6.3",
     "postcss": "^8.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
