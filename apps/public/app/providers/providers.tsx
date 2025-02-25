@@ -4,9 +4,14 @@ import type {Session} from "@repo/utils/auth";
 import {SessionProvider} from "@repo/utils/auth";
 import {Toaster} from "@/components/ui/sonner";
 import {TooltipProvider} from "@/components/ui/tooltip";
+import dynamic from "next/dynamic";
+import {Skeleton} from "@/components/ui/skeleton";
 import type {Member} from "./member";
-import {MemberProvider} from "./member";
 
+const MemberProvider = dynamic(() => import("./member"), {
+  ssr: false,
+  loading: () => <Skeleton className="h-full w-full" />,
+});
 interface ProvidersProps {
   children: React.ReactNode;
   session: Session | null;

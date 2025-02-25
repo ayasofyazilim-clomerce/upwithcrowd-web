@@ -17,7 +17,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useSession} from "@repo/utils/auth";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {useMember} from "@/app/providers/member";
@@ -51,9 +51,11 @@ export default function NewPersonalAccount() {
   const router = useRouter();
   const {session} = useSession();
   const {setMembers, setCurrentMember, currentMember} = useMember();
-  if (currentMember !== null) {
-    router.push("/profile");
-  }
+  useEffect(() => {
+    if (currentMember !== null) {
+      router.push("/profile");
+    }
+  }, [currentMember]);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
 
@@ -167,7 +169,10 @@ export default function NewPersonalAccount() {
         <CardDescription>Enter your personal account details below to get started.</CardDescription>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={() => void form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(e) => {
+            void form.handleSubmit(onSubmit)(e);
+          }}>
           <CardContent className="grid gap-6">
             <div className="grid grid-cols-2 gap-4">
               <FormField
