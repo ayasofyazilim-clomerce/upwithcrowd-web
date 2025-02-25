@@ -1,11 +1,13 @@
 "use client";
 
-import {Badge, DollarSign, Target} from "lucide-react";
+import {DollarSign, Target} from "lucide-react";
 import Image from "next/image";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import Link from "next/link";
+import {Badge} from "@/components/ui/badge";
 
 export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListProjectsResponseDto[]}) {
   const getDaysLeft = (endDate: string | number) => {
@@ -35,8 +37,10 @@ export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListPr
           }}>
           <CarouselContent className="m-0">
             {sortedProjects.map((project) => (
-              <CarouselItem className="p-2 md:basis-1/2 md:p-4 lg:basis-1/3" key={project.id}>
-                <Card className="space-y-4 overflow-hidden border-none p-4 shadow-lg" key={project.id}>
+              <CarouselItem className="cursor-pointer p-2 md:basis-1/2 md:p-4 lg:basis-1/3" key={project.id}>
+                <Card
+                  className="space-y-4 overflow-hidden border-none p-4 shadow-lg transition-transform duration-300 hover:scale-105"
+                  key={project.id}>
                   <ProjectImage project={project} />
                   <ProjectDetails project={project} />
                 </Card>
@@ -63,7 +67,9 @@ function ProjectImage({project}: {project: UpwithCrowd_Projects_ListProjectsResp
         src="https://placehold.co/200x300" // Varsayılan bir resim ekleyin
         width={300}
       />
-      <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">{project.projectStateType}</Badge>
+      <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">
+        {project.fundCollectionType}
+      </Badge>
     </div>
   );
 }
@@ -79,7 +85,7 @@ function ProjectDetails({project}: {project: UpwithCrowd_Projects_ListProjectsRe
   };
 
   return (
-    <div>
+    <Link href={`/projects/${project.id}`}>
       {/* <div className="text-muted-foreground mb-2 flex items-center text-xs md:text-sm">
         <MapPin className="mr-1 h-3 w-3 md:h-4 md:w-4" />
         {project. || "No location"}
@@ -112,6 +118,6 @@ function ProjectDetails({project}: {project: UpwithCrowd_Projects_ListProjectsRe
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
