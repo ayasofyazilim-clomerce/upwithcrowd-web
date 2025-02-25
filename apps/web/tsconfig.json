@@ -4,8 +4,9 @@
     "plugins": [{"name": "next"}],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./src/*"],
-      "components/*": ["./src/components/*"]
+      "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./src/*", "./*"],
+      "components/*": ["./src/components/*"],
+      "@upwithcrowd/*": ["./../public/actions/upwithcrowd/*"]
     }
   },
   "include": [
