@@ -15,7 +15,7 @@ export default function MissionsSection() {
             We provide a trusted platform for peoples of worldwide to support people and organizers.
           </h3>
         </div>
-        <div className="flex w-full items-center justify-center gap-16">
+        <div className="flex w-full flex-col items-center justify-center gap-16 md:flex-row">
           <Missions missionsData={missions} />
           <div className="relative h-full">
             <Image alt="Mission Image" height={380} src="https://placehold.co/630x380" width={630} />
@@ -30,7 +30,7 @@ function Missions({missionsData}: {missionsData: Mission[]}) {
   return (
     <div className="flex flex-col gap-14">
       {missionsData.map((_mission, index) => (
-        <div className="flex items-center gap-4 text-left" key={index}>
+        <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left" key={index}>
           <IconWrapper className="size-14" icon={Presentation} />
           <div className="grid">
             <h3 className="text-2xl font-bold">{_mission.title}</h3>
