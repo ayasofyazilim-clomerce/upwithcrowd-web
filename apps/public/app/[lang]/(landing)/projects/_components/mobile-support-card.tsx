@@ -3,7 +3,7 @@
 import React, {useState, useEffect} from "react";
 import {Button} from "@/components/ui/button";
 import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
-import {useMediaQuery} from "../hooks/use-media-query";
+import {useMediaQuery} from "@/components/ui/useMediaQuery";
 import SupportCard from "./support-card";
 
 export default function MobileSupportDrawer({
