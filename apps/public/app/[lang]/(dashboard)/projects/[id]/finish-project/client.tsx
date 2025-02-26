@@ -18,7 +18,7 @@ import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import FundingTable from "../_components/funding-card";
 import ProjectSummary from "../_components/project-summary";
-import SupportCard from "../_components/support-card";
+import MobileSupportDrawer from "../_components/mobile-support-card";
 
 export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_ProjectsDetailResponseDto}) {
   const {id: projectId} = useParams<{id: string}>();
@@ -28,13 +28,16 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
   const [welcomeModalOpen, setWelcomeModalOpen] = useState(true);
   const fundedPercentage = 0;
 
+  const previewDonationOptions = [10, 25, 50];
+  const previewSelectedAmount = 25;
+
   const handleFinishProject = () => {
     router.push(`/projects/${projectId}`);
     setDialogOpen(false);
   };
 
   return (
-    <div className="bg-muted w-full overflow-hidden">
+    <div className="bg-muted w-full overflow-hidden pb-24 md:pb-0">
       <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <div className="flex flex-col gap-8 md:gap-20 lg:flex-row">
           <div className="lg:w-3/5">
@@ -57,7 +60,7 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
             />
           </div>
           <div className="lg:w-1/3">
-            <SupportCard editLink={`/projects/${projectId}/funding`} />
+            <MobileSupportDrawer donationOptions={previewDonationOptions} selectedDonation={previewSelectedAmount} />
             <FundingTable data={data} editLink={`/projects/${projectId}/funding`} />
             <div className="mt-6">
               {data.privilege ? (
@@ -91,10 +94,10 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
 
       {/* Welcome Modal */}
       <Dialog onOpenChange={setWelcomeModalOpen} open={welcomeModalOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="w-[90%] max-w-[90%] p-4 sm:max-w-[500px] sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Proje Önizleme Sayfasına Hoş Geldiniz!</DialogTitle>
-            <DialogDescription className="space-y-3 pt-4">
+            <DialogTitle className="text-xl sm:text-2xl">Proje Önizleme Sayfasına Hoş Geldiniz!</DialogTitle>
+            <DialogDescription className="space-y-3 pt-4 text-sm sm:text-base">
               <p>
                 Bu sayfa, projenizin lansman öncesi önizlemesini göstermektedir. Burada daha önceki adımlarda girdiğiniz
                 tüm bilgileri bir arada görebilirsiniz.
@@ -121,21 +124,22 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
       </Dialog>
 
       {/* Fixed bottom-right link component */}
-      <div className="fixed bottom-8 right-8 z-50">
+      <div className="fixed bottom-16 left-4 right-4 z-40 ">
         <Button
-          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-4 font-medium shadow-lg transition-all"
+          className="w-full rounded-lg md:w-auto md:rounded-full"
           onClick={() => {
             setDialogOpen(true);
-          }}>
+          }}
+          size="lg">
           Finish Project
         </Button>
       </div>
 
       <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
-        <DialogContent>
+        <DialogContent className="w-[90%] max-w-[90%] p-4 sm:max-w-[425px] sm:p-6">
           <DialogHeader>
-            <DialogTitle>Finish Project</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-xl sm:text-2xl">Finish Project</DialogTitle>
+            <DialogDescription className="text-sm sm:text-base">
               Are you sure you want to finish this project? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>

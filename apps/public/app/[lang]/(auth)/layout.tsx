@@ -22,8 +22,8 @@ export default function Layout({children}: {children: React.ReactNode}) {
     });
   }, [api]);
   return (
-    <section className="grid h-dvh w-full grid-cols-3 overflow-hidden bg-white">
-      <div className="bg-primary relative col-span-2">
+    <section className="grid h-dvh w-full grid-cols-1 overflow-hidden bg-white lg:grid-cols-3">
+      <div className="bg-primary relative col-span-2 hidden lg:flex">
         <Carousel
           className="size-full [&>div.overflow-hidden]:h-full"
           opts={{

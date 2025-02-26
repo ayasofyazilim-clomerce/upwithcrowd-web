@@ -9,10 +9,11 @@ export default function Layout({children, params}: {children: React.ReactNode; p
       <TabLayout
         classNames={{
           vertical: {
-            tabs: "container mx-auto h-auto ",
-            tabList: "min-w-60 bg-transparent gap-2 pt-9",
+            tabs: "container mx-auto h-auto flex-col lg:flex-row overflow-hidden",
+            tabList:
+              "max-w-full bg-transparent gap-2 pt-9 flex-row overflow-x-auto lg:overflow-x-visible flex-nowrap lg:max-w-60 lg:flex-col",
             tabTrigger:
-              "rounded-md items-center data-[state=active]:bg-white data-[state=active]:shadow-md hover:text-black shadow-none",
+              "rounded-md items-center min-w-max data-[state=active]:bg-white data-[state=active]:shadow-md hover:text-black shadow-none",
           },
         }}
         orientation="vertical"
