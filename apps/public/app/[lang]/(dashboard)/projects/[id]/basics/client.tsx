@@ -99,12 +99,12 @@ export default function ClientBasics({data}: {data: PageData}) {
 
   return (
     <div className="bg-muted w-full overflow-auto pb-8">
-      <section className="mx-auto w-full max-w-7xl p-4  md:p-8">
+      <section className="mx-auto w-full max-w-7xl p-2 sm:p-4 md:p-8">
         <TextWithTitle
           classNames={{
-            container: "mb-8",
-            title: "text-3xl",
-            text: "text-lg",
+            container: "mb-4 sm:mb-8",
+            title: "text-2xl sm:text-3xl",
+            text: "text-base sm:text-lg",
           }}
           text="Projenizin kimliğini oluşturacak temel bilgileri ekleyin ve potansiyel destekçilerinize projenizi tanıtın."
           title="Projenizin Temel Bilgileri"
@@ -225,7 +225,7 @@ export default function ClientBasics({data}: {data: PageData}) {
                         />
                       </FormControl>
                       {field.value ? (
-                        <div className="mt-2 h-32 w-32 overflow-hidden rounded-lg border">
+                        <div className="mt-2 h-24 w-24 overflow-hidden rounded-lg border sm:h-32 sm:w-32">
                           <Image alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
@@ -251,7 +251,7 @@ export default function ClientBasics({data}: {data: PageData}) {
                         />
                       </FormControl>
                       {field.value ? (
-                        <div className="mt-2 h-[180px] w-[320px] overflow-hidden rounded-lg border">
+                        <div className="mt-2 h-[140px] w-[250px] overflow-hidden rounded-lg border sm:h-[180px] sm:w-[320px]">
                           <Image alt="Project preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
@@ -308,7 +308,7 @@ export default function ClientBasics({data}: {data: PageData}) {
                     <FormItem>
                       <FormLabel>Kategori Türleri</FormLabel>
                       <FormControl>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
                           {data.category?.items?.map((cat: CategoryItem) => (
                             <Button
                               key={cat.id}
@@ -376,7 +376,7 @@ export default function ClientBasics({data}: {data: PageData}) {
                 "Bu bilgiler, destekçilerinizin sizinle iletişim kurmasını ve projenizi takip etmesini sağlar.",
               ]}
               title="İletişim ve Sosyal Medya">
-              <FormContainer>
+              <FormContainer className="space-y-4 sm:space-y-6">
                 <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
                   <p>
                     Not: Sosyal medya entegrasyonu şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş

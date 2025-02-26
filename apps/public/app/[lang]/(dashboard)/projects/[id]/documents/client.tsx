@@ -100,12 +100,12 @@ export default function DocumentsClient() {
 
   return (
     <div className="bg-muted min-h-screen w-full">
-      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
+      <section className="mx-auto w-full max-w-7xl p-3 sm:p-4 md:p-8">
         <TextWithTitle
           classNames={{
-            container: "mb-8",
-            title: "text-2xl font-medium",
-            text: "text-lg",
+            container: "mb-4 sm:mb-8",
+            title: "text-xl sm:text-2xl font-medium",
+            text: "text-base sm:text-lg",
           }}
           text="Projenize ait belgeleri yükleyin."
           title="Proje Belgeleri"
@@ -114,16 +114,17 @@ export default function DocumentsClient() {
         <Form {...form}>
           <form className="space-y-4" onSubmit={() => void form.handleSubmit(onSubmit)}>
             <Section text="Upload documents to your project" title="Upload Documents">
-              <FormContainer>
+              <FormContainer className="w-full max-w-full">
                 <FormField
                   control={form.control}
                   name="documents"
                   render={({field: {...field}}) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormLabel>Upload Documents</FormLabel>
                       <FormControl>
                         <Input
                           accept=".pdf,.doc,.docx"
+                          className="max-w-full"
                           disabled={isLoading}
                           multiple
                           name={field.name}
@@ -141,13 +142,16 @@ export default function DocumentsClient() {
                 />
 
                 {selectedFiles.length > 0 && (
-                  <div className="mt-4 space-y-2">
+                  <div className="mt-3 space-y-2 sm:mt-4">
                     <h3 className="text-sm font-medium">Selected Files:</h3>
                     <ul className="space-y-2">
                       {selectedFiles.map((file, index) => (
-                        <li className="flex items-center justify-between rounded-md border p-2" key={index}>
-                          <span className="text-sm">{file.name}</span>
+                        <li
+                          className="flex flex-col items-start justify-between gap-2 rounded-md border p-2 sm:flex-row sm:items-center"
+                          key={index}>
+                          <span className="break-all text-sm">{file.name}</span>
                           <Button
+                            className="w-full sm:w-auto"
                             onClick={() => {
                               removeFile(index);
                             }}
@@ -163,7 +167,7 @@ export default function DocumentsClient() {
                 )}
               </FormContainer>
             </Section>
-            <Button disabled={isLoading} type="submit">
+            <Button className="w-full sm:w-auto" disabled={isLoading} type="submit">
               {isLoading ? "Uploading..." : "Upload Documents"}
             </Button>
           </form>

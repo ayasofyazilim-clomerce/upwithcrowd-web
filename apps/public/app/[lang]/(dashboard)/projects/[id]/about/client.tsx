@@ -179,16 +179,16 @@ export default function ClientAbout({
       <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
         <TextWithTitle
           classNames={{
-            container: "mb-8",
-            title: "text-3xl",
-            text: "text-lg",
+            container: "mb-6 md:mb-8",
+            title: "text-2xl md:text-3xl",
+            text: "text-base md:text-lg",
           }}
           text="Kendinizi potansiyel yatırımcılara tanıtın."
           title="Ekip Bilgileri"
         />
         <Form {...form}>
           <form
-            className="space-y-8"
+            className="space-y-6 md:space-y-8"
             onSubmit={(e) => {
               void form.handleSubmit(onSubmit)(e);
             }}>
@@ -267,7 +267,7 @@ export default function ClientAbout({
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                       <FormLabel>Rol</FormLabel>
                       <select
@@ -319,22 +319,51 @@ export default function ClientAbout({
                   </Button>
                 </div>
                 {projectMember.items && projectMember.items.length > 0 ? (
-                  <div className="mt-8">
-                    <h3 className="mb-4 text-lg font-semibold">Mevcut Ekip Üyeleri</h3>
-                    <div className="rounded-md border">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>İsim</TableHead>
-                            <TableHead>E-posta</TableHead>
-                            <TableHead>Rol</TableHead>
-                            <TableHead>Rol Tipi</TableHead>
-                            <TableHead>Durum</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {projectMember.items.map((member, index) => {
-                            return (
+                  <div className="mt-6 md:mt-8">
+                    <h3 className="mb-3 text-base font-semibold md:mb-4 md:text-lg">Mevcut Ekip Üyeleri</h3>
+
+                    {/* Mobile View - Card Layout */}
+                    <div className="block space-y-4 md:hidden">
+                      {projectMember.items.map((member, index) => (
+                        <div className="space-y-2 rounded-lg border p-4" key={index}>
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-medium">
+                              {member.name} {member.surname}
+                            </h4>
+                            {member.status === "Draft" && (
+                              <span className="rounded-full bg-yellow-100 px-2 py-1 text-sm">Draft</span>
+                            )}
+                            {member.status === "Approved" && (
+                              <span className="rounded-full bg-green-100 px-2 py-1 text-sm">Approved</span>
+                            )}
+                            {member.status === "DisApproved" && (
+                              <span className="rounded-full bg-red-100 px-2 py-1 text-sm">DisApproved</span>
+                            )}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            <p>E-posta: {member.mail}</p>
+                            <p>Rol: {formatRoleName(member.customRoleName ?? "")}</p>
+                            <p>Rol Tipi: {member.customRoleType}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Desktop View - Table Layout */}
+                    <div className="hidden md:block">
+                      <div className="rounded-md border">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>İsim</TableHead>
+                              <TableHead>E-posta</TableHead>
+                              <TableHead>Rol</TableHead>
+                              <TableHead>Rol Tipi</TableHead>
+                              <TableHead>Durum</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {projectMember.items.map((member, index) => (
                               <TableRow key={index}>
                                 <TableCell className="font-medium">
                                   {member.name} {member.surname}
@@ -344,7 +373,7 @@ export default function ClientAbout({
                                 <TableCell>{member.customRoleType}</TableCell>
                                 <TableCell>
                                   {member.status === "Draft" && (
-                                    <span className=" rounded-full bg-yellow-100 px-2 py-1">Draft</span>
+                                    <span className="rounded-full bg-yellow-100 px-2 py-1">Draft</span>
                                   )}
                                   {member.status === "Approved" && (
                                     <span className="rounded-full bg-green-100 px-2 py-1">Approved</span>
@@ -354,10 +383,10 @@ export default function ClientAbout({
                                   )}
                                 </TableCell>
                               </TableRow>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
                     </div>
                   </div>
                 ) : null}
@@ -365,129 +394,136 @@ export default function ClientAbout({
             </Section>
             <Section text="Temel bilgilerinizi girin" title="Kişisel Bilgiler">
               <FormContainer>
-                <div>
-                  <FormLabel htmlFor="nationality">Uyruk</FormLabel>
-                  <div className="relative">
-                    <Input className="peer pl-8" id="nationality" placeholder="Start typing your nation..." />
-                    <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
+                <div className="space-y-4">
+                  <div className="w-full md:w-2/3">
+                    <FormLabel htmlFor="nationality">Uyruk</FormLabel>
+                    <div className="relative">
+                      <Input className="peer pl-8" id="nationality" placeholder="Start typing your nation..." />
+                      <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
+                    </div>
                   </div>
+                  <FormField
+                    control={form.control}
+                    name="education"
+                    render={({field}) => (
+                      <FormItem className="mt-2">
+                        <FormLabel>Öğrenim Durumu</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Eğitim geçmişinizi detaylı bir şekilde yazın" {...field} rows={3} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-
-                <FormField
-                  control={form.control}
-                  name="education"
-                  render={({field}) => (
-                    <FormItem className="mt-2">
-                      <FormLabel>Öğrenim Durumu</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Eğitim geçmişinizi detaylı bir şekilde yazın" {...field} rows={3} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </FormContainer>
             </Section>
 
             <Section text="İş deneyiminiz ve uzmanlık alanlarınız" title="Profesyonel Deneyim">
               <FormContainer>
-                <FormField
-                  control={form.control}
-                  name="workExperience"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>İş Deneyimi</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="İş deneyiminizi detaylı bir şekilde yazın" {...field} rows={4} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="workExperience"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>İş Deneyimi</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="İş deneyiminizi detaylı bir şekilde yazın" {...field} rows={4} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="expertise"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Uzmanlık Alanları</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Uzmanlık alanlarınızı virgülle ayırarak yazın" {...field} rows={3} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="expertise"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Uzmanlık Alanları</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Uzmanlık alanlarınızı virgülle ayırarak yazın" {...field} rows={3} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="cv"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Özgeçmiş (Opsiyonel)</FormLabel>
-                      <FormControl>
-                        <Input
-                          accept=".pdf,.doc,.docx"
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                          }}
-                          type="file"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="w-full md:w-2/3">
+                    <FormField
+                      control={form.control}
+                      name="cv"
+                      render={({field}) => (
+                        <FormItem>
+                          <FormLabel>Özgeçmiş (Opsiyonel)</FormLabel>
+                          <FormControl>
+                            <Input
+                              accept=".pdf,.doc,.docx"
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                              type="file"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
               </FormContainer>
             </Section>
 
             <Section text="Sosyal medya ve iletişim bilgileriniz" title="İletişim Bilgileri">
               <FormContainer>
-                <FormField
-                  control={form.control}
-                  name="linkedin"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>LinkedIn</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://linkedin.com/in/username" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="linkedin"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>LinkedIn</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://linkedin.com/in/username" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="twitter"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Twitter</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://twitter.com/username" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="twitter"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Twitter</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://twitter.com/username" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="website"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Kişisel Website</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="website"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Kişisel Website</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </FormContainer>
             </Section>
 
-            <Button className="w-full" type="submit">
+            <Button className="w-full md:w-auto md:min-w-[200px]" type="submit">
               Kaydet
             </Button>
           </form>
