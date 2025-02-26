@@ -1,5 +1,6 @@
 "use client";
 
+import React, {useCallback, useState} from "react";
 import {toast} from "@/components/ui/sonner";
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -13,12 +14,11 @@ import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import Link from "next/link";
 import {useParams} from "next/navigation";
-import {useCallback, useState} from "react";
 import {useMember} from "@/app/providers/member";
 import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment/post-action";
 import FundingTable from "../_components/funding-card";
 import ProjectSummary from "../_components/project-summary";
-import SupportCard from "../_components/support-card";
+import MobileSupportDrawer from "../_components/mobile-support-card";
 
 export default function ProjectDetails({
   data,
@@ -131,7 +131,7 @@ export default function ProjectDetails({
             />
           </div>
           <div className="lg:w-1/3">
-            <SupportCard
+            <MobileSupportDrawer
               customAmount={customAmount}
               donationOptions={donationOptions}
               handleCustomAmountChange={handleCustomAmountChange}

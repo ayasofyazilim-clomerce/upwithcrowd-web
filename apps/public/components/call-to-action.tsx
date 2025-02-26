@@ -4,7 +4,7 @@ import {motion} from "framer-motion";
 
 export default function VolunteerHero() {
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-50 via-emerald-50 to-teal-100 py-12">
+    <div className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-emerald-50 to-teal-100 py-12">
       {/* Animated background shapes */}
       <motion.div
         animate={{opacity: 1}}

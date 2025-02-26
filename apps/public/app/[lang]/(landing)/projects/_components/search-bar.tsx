@@ -20,7 +20,7 @@ export default function SearchBar() {
 
   return (
     <Input
-      className="max-w-sm"
+      className="w-full md:max-w-sm"
       defaultValue={searchParams.get("projectName")?.toString()}
       onChange={(e) => {
         handleSearch(e.target.value);
