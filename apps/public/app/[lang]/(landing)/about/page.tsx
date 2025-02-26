@@ -66,7 +66,7 @@ export default function Page() {
               width={600}
             />
           </div>
-          <div className="lg:w-1/2">
+          <div className="text-center md:text-left lg:w-1/2">
             <h2 className="mb-4 text-2xl font-bold md:text-3xl">Join Our Mission</h2>
             <p className="mb-6 text-lg">
               At UPwithCrowd, we believe in the power of collective support to bring innovative ideas to life. Whether

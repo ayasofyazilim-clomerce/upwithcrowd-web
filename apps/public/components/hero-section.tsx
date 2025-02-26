@@ -1,4 +1,5 @@
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -18,7 +19,9 @@ export default function HeroSection() {
             Crowdfunding is a way to raise money for an individual or organization by collecting donations through
             strangers and more.
           </p>
-          <Button size="lg">Explore Projects</Button>
+          <Link href="/projects">
+            <Button size="lg">Explore Projects</Button>
+          </Link>
         </div>
         <div
           className="ring-primary/30 relative flex aspect-square

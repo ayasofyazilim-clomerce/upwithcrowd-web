@@ -22,7 +22,7 @@ export default function SupportCard({
   isLoading: boolean;
 }) {
   return (
-    <Card className="border-none bg-transparent p-0 shadow-none">
+    <Card className="border-none bg-transparent p-0 p-4 pb-6 shadow-none md:p-0 md:pb-0">
       <CardContent className="p-0">
         <h3 className="mb-4 text-xl font-semibold">Support this project</h3>
         <div className="mb-4 grid grid-cols-3 gap-4">

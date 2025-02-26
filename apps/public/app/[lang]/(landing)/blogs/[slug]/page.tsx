@@ -28,7 +28,7 @@ export default function Page() {
               src={blogPost.image}
               width={800}
             />
-            <div className="bg-muted mb-8 flex items-center justify-between rounded-lg p-4">
+            <div className="bg-muted mb-8 flex flex-col space-y-4 rounded-lg p-4 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center">
                 <Avatar className="mr-4">
                   <AvatarImage alt={blogPost.author.name} src={blogPost.author.avatar} />
@@ -39,7 +39,7 @@ export default function Page() {
                   <p className="text-muted-foreground text-sm">{blogPost.author.role}</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
                 <div>
                   <p className="text-sm font-semibold">Topics</p>
                   <p className="text-muted-foreground text-sm">{blogPost.topics.join(", ")}</p>
@@ -58,9 +58,9 @@ export default function Page() {
 
           <div className="prose mb-12 max-w-none" dangerouslySetInnerHTML={{__html: blogPost.content}} />
 
-          <div className="mb-8 flex items-center justify-between border-b border-t py-4">
-            <div className="text-muted-foreground text-sm">Share this article:</div>
-            <div className="flex space-x-4">
+          <div className="mb-8 flex flex-col space-y-4 border-b border-t py-4 md:flex-row md:items-center md:justify-between">
+            <div className="text-muted-foreground text-center text-sm md:text-left">Share this article:</div>
+            <div className="flex justify-center space-x-4 md:justify-start">
               <Button size="icon" variant="outline">
                 <Facebook className="h-4 w-4" />
               </Button>
@@ -80,6 +80,22 @@ export default function Page() {
 
       {/* Floating share buttons on the left side */}
       <div className="fixed left-4 top-1/2 hidden -translate-y-1/2 transform flex-col space-y-4 lg:flex">
+        <Button size="icon" variant="outline">
+          <Facebook className="h-4 w-4" />
+        </Button>
+        <Button size="icon" variant="outline">
+          <Twitter className="h-4 w-4" />
+        </Button>
+        <Button size="icon" variant="outline">
+          <Linkedin className="h-4 w-4" />
+        </Button>
+        <Button size="icon" variant="outline">
+          <LinkIcon className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {/* Mobile bottom share buttons */}
+      <div className="bg-background fixed bottom-0 left-0 right-0 flex justify-center space-x-4 border-t p-4 lg:hidden">
         <Button size="icon" variant="outline">
           <Facebook className="h-4 w-4" />
         </Button>
