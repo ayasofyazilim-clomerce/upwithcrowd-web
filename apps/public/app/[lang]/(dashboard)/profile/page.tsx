@@ -76,13 +76,13 @@ export default function ProfileClient() {
   };
 
   return (
-    <div className="bg-background min-h-screen">
-      <div className="flex flex-col gap-8 md:flex-row">
+    <div className="bg-background min-h-screen px-4 py-6 md:p-0">
+      <div className="flex flex-col gap-6 md:flex-row md:gap-8">
         <div className="flex w-full flex-col gap-4 md:w-1/3">
-          <Card className="bg-muted flex w-full max-w-md items-center justify-center">
-            <CardContent className="flex flex-col items-center p-8">
-              <div className="relative mb-6">
-                <div className="relative h-24 w-24">
+          <Card className="bg-muted w-full md:max-w-md">
+            <CardContent className="flex flex-col items-center p-6 md:p-8">
+              <div className="relative mb-4 md:mb-6">
+                <div className="relative h-20 w-20 md:h-24 md:w-24">
                   <Image
                     alt="Profile"
                     className="rounded-full bg-[#e5e5e5] object-cover"
@@ -101,23 +101,21 @@ export default function ProfileClient() {
                   <Camera className="text-muted h-4 w-4" />
                 </Button>
               </div>
-              <h2 className="mb-1 text-2xl font-bold">
+              <h2 className="mb-1 text-center text-xl font-bold md:text-2xl">
                 {currentMember.type === "Organization"
                   ? currentMember.title
                   : `${currentMember.name || "Your Name"} ${currentMember.surname}`}
               </h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground mb-4 text-center text-sm md:text-base">
                 {currentMember.type === "Organization" ? "Your business account" : "Your personal account"}
               </p>
             </CardContent>
           </Card>
-          <ScrollArea className="mb-2 h-72">
-            <div
-              className="space-y-4
-            ">
-              {typeof members !== "undefined" &&
-                members.length > 0 &&
-                members
+
+          {typeof members !== "undefined" && members.length > 0 && (
+            <ScrollArea className="mb-4 max-h-60 md:mb-2 md:max-h-72">
+              <div className="space-y-4">
+                {members
                   .filter((member) => member.id !== currentMember.id)
                   .map((membership) => (
                     <Card
@@ -143,11 +141,13 @@ export default function ProfileClient() {
                       </CardContent>
                     </Card>
                   ))}
-            </div>
-          </ScrollArea>
-          <Card className="hover:bg-muted cursor-pointer text-nowrap border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
+              </div>
+            </ScrollArea>
+          )}
+
+          <Card className="hover:bg-muted w-full cursor-pointer text-nowrap border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
             <Link href={getBaseLink("profile/new/business")}>
-              <CardContent className="flex items-center justify-between p-6">
+              <CardContent className="flex items-center justify-between p-4 md:p-6">
                 <div className="flex items-center gap-4">
                   <BriefcaseBusiness className="text-primary h-8 w-8" />
                   <span className="font-semibold">Add New Business Account</span>
@@ -156,15 +156,17 @@ export default function ProfileClient() {
               </CardContent>
             </Link>
           </Card>
-          <div className="text-muted-foreground flex w-full items-center justify-center gap-2 text-center">
-            <p>Membership Id: {currentMember.id}</p>
+
+          <div className="text-muted-foreground flex w-full flex-col items-center justify-center gap-2 px-2 text-center text-sm md:flex-row md:px-0 md:text-base">
+            <p className="break-all">Membership Id: {currentMember.id}</p>
             <Button className="cursor-pointer" onClick={handleCopy} type="button">
               {isCopied ? <CopyCheck className="h-5 w-5 " /> : <Copy className="h-5 w-5" />}
             </Button>
           </div>
-          <div className="flex w-full items-center justify-center">
+
+          <div className="flex w-full items-center justify-center px-2 md:px-0">
             <Button
-              className="flex w-1/3 items-center justify-center rounded-full text-red-500 hover:text-red-700 "
+              className="flex w-full items-center justify-center rounded-full text-red-500 hover:text-red-700 md:w-1/3"
               onClick={() => void signOutServer()}
               variant="outline">
               <LogOut className="mr-2 h-4 w-4" />
@@ -176,9 +178,9 @@ export default function ProfileClient() {
         <div className="w-full md:w-2/3">
           <Card>
             <CardContent className="p-6">
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 <div>
-                  <h2 className="mb-4 text-xl font-semibold">Your account</h2>
+                  <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Your account</h2>
                   <div className="space-y-2">
                     <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/inbox">
                       <div className="flex items-center gap-3">
@@ -227,7 +229,7 @@ export default function ProfileClient() {
                 </div>
 
                 <div>
-                  <h2 className="mb-4 text-xl font-semibold">Settings</h2>
+                  <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Settings</h2>
                   <div className="space-y-2">
                     <Link
                       className="hover:bg-muted flex items-center justify-between rounded-lg p-2"

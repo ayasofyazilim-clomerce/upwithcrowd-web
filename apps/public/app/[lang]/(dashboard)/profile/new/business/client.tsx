@@ -101,24 +101,27 @@ export default function NewBusinessAccount() {
 
   return (
     <>
-      <Card className="mx-auto w-full">
+      <Card className="mx-auto w-full p-2 sm:p-6">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">New Business Account</CardTitle>
-          <CardDescription>Enter your business account details below to get started.</CardDescription>
+          <CardTitle className="text-xl font-bold sm:text-2xl">New Business Account</CardTitle>
+          <CardDescription className="text-sm sm:text-base">
+            Enter your business account details below to get started.
+          </CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={() => void form.handleSubmit(onSubmit)}>
-            <CardContent className="grid gap-6">
-              <div className="grid grid-cols-2 gap-4">
+            <CardContent className="grid gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="identifier"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>VKN (Tax Number)</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">VKN (Tax Number)</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
+                          className="text-sm sm:text-base"
                           inputMode="numeric"
                           maxLength={10}
                           onInput={(e) => {
@@ -140,9 +143,9 @@ export default function NewBusinessAccount() {
                   name="title"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">Title</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter title" />
+                        <Input {...field} className="text-sm sm:text-base" placeholder="Enter title" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -150,17 +153,17 @@ export default function NewBusinessAccount() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="tel"
                   render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Telephone (Optional)</FormLabel>
+                    <FormItem className="w-full">
+                      <FormLabel className="text-sm sm:text-base">Telephone (Optional)</FormLabel>
                       <FormControl>
                         <PhoneInput
                           {...field}
-                          className="w-full"
+                          className="w-full text-sm sm:text-base"
                           countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
                           defaultCountry="tr"
                           inputClassName="w-full"
@@ -176,10 +179,11 @@ export default function NewBusinessAccount() {
                   name="annualIncome"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Annual Income</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">Annual Income</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
+                          className="text-sm sm:text-base"
                           inputMode="numeric"
                           onInput={(e) => {
                             const input = e.currentTarget;
@@ -200,10 +204,11 @@ export default function NewBusinessAccount() {
                 name="mail"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-sm sm:text-base">Email</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
+                        className="text-sm sm:text-base"
                         defaultValue={currentMember?.mail || ""}
                         placeholder="Enter email"
                         type="email"
@@ -215,7 +220,7 @@ export default function NewBusinessAccount() {
               />
             </CardContent>
             <CardFooter>
-              <Button className="w-full" disabled={isSubmitting || !isFormValid} type="submit">
+              <Button className="w-full text-sm sm:text-base" disabled={isSubmitting || !isFormValid} type="submit">
                 {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 {isSubmitting ? "Submitting..." : "Create Business Account"}
               </Button>

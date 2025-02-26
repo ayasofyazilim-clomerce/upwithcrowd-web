@@ -130,13 +130,13 @@ export default function BasicsClient({data}: {data: PageData}) {
     })) || [];
 
   return (
-    <div className="mx-auto w-full max-w-7xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-7xl p-2 sm:p-4 md:p-8">
       <div className="container">
         <TextWithTitle
           classNames={{
-            container: "mb-8",
-            title: "text-3xl",
-            text: "text-lg",
+            container: "mb-4 sm:mb-8",
+            title: "text-2xl sm:text-3xl",
+            text: "text-base sm:text-lg",
           }}
           text="Projenizin kimliğini oluşturacak temel bilgileri ekleyin ve potansiyel destekçilerinize projenizi tanıtın."
           title="Projenizin Temel Bilgileri"
@@ -252,7 +252,7 @@ export default function BasicsClient({data}: {data: PageData}) {
                         />
                       </FormControl>
                       {field.value ? (
-                        <div className="mt-2 h-32 w-32 overflow-hidden rounded-lg border">
+                        <div className="mt-2 h-24 w-24 overflow-hidden rounded-lg border sm:h-32 sm:w-32">
                           <img alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
@@ -277,7 +277,7 @@ export default function BasicsClient({data}: {data: PageData}) {
                         />
                       </FormControl>
                       {field.value ? (
-                        <div className="mt-2 h-[180px] w-[320px] overflow-hidden rounded-lg border">
+                        <div className="mt-2 h-[140px] w-[250px] overflow-hidden rounded-lg border sm:h-[180px] sm:w-[320px]">
                           <img alt="Project  preview" className="h-full w-full object-cover" src={field.value} />
                         </div>
                       ) : null}
@@ -324,7 +324,7 @@ export default function BasicsClient({data}: {data: PageData}) {
                     <FormItem>
                       <FormLabel>Kategori Türleri</FormLabel>
                       <FormControl>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
                           {categoryOptions.map((category) => (
                             <div className="flex items-center space-x-2" key={category.value}>
                               <Checkbox
@@ -361,7 +361,7 @@ export default function BasicsClient({data}: {data: PageData}) {
                     bırakabilirsiniz.
                   </p>
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <FormFieldUI
                     control={form.control}
                     name="websiteUrl"

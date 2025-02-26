@@ -93,13 +93,11 @@ export default function ProjectOnboarding() {
   ];
 
   return (
-    <div className="container mx-auto flex h-auto">
-      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
-        <div className="mb-8 max-w-2xl">
-          {/* <Link href="/projects/new/basics/?type=project">Project</Link>
-          <Link href="/projects/new/basics/?type=girisim">Girişim</Link> */}
-          <h1 className="mb-2 text-3xl font-bold">Start Creating Your Project</h1>
-          <p className="text-muted-foreground">
+    <div className="container mx-auto flex h-auto px-4 md:px-0">
+      <section className="mx-auto w-full max-w-7xl p-0 md:p-8">
+        <div className="mb-8 max-w-2xl text-left">
+          <h1 className="mb-2 text-2xl font-bold md:text-3xl">Start Creating Your Project</h1>
+          <p className="text-muted-foreground text-sm md:text-base">
             We&apos;ll guide you through creating a successful project. You can find important points and tips at each
             step.
           </p>
@@ -107,19 +105,19 @@ export default function ProjectOnboarding() {
 
         <div className="relative">
           {/* Vertical Timeline Line */}
-          <div className="from-primary/0 via-primary/50 to-primary/0 absolute bottom-0 left-8 top-0 z-0 w-0.5 bg-gradient-to-b" />
+          <div className="from-primary/0 via-primary/50 to-primary/0 absolute bottom-0 left-2 top-0 z-0 w-0.5 bg-gradient-to-b md:left-8" />
 
           {steps.map((step, index) => (
             <div className="relative mb-8 last:mb-0" key={step.id}>
               {/* Timeline Dot */}
               <div
-                className={`border-background absolute left-6 z-10 h-5 w-5 rounded-full border-4 transition-all duration-300 ease-in-out
+                className={`border-background absolute left-0 z-10 h-4 w-4 rounded-full border-4 transition-all duration-300 ease-in-out md:left-6 md:h-5 md:w-5
                 ${activeStep === step.id ? "bg-primary scale-125" : "bg-muted"}`}
                 style={{top: "24px"}}
               />
 
               <Card
-                className="ml-16 transition-all duration-300 ease-in-out hover:shadow-lg"
+                className="ml-8 transition-all duration-300 ease-in-out hover:shadow-lg md:ml-16"
                 onMouseEnter={() => {
                   setActiveStep(step.id);
                 }}
@@ -127,27 +125,27 @@ export default function ProjectOnboarding() {
                   setActiveStep(null);
                 }}>
                 <CardHeader>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 md:gap-4">
                     <div
-                      className={`rounded-full p-2 ${activeStep === step.id ? "bg-primary text-primary-foreground" : "bg-muted"} transition-colors duration-300`}>
+                      className={`rounded-full p-1.5 md:p-2 ${activeStep === step.id ? "bg-primary text-primary-foreground" : "bg-muted"} transition-colors duration-300`}>
                       {step.icon}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <CardTitle>{step.title}</CardTitle>
-                        <span className="text-muted-foreground text-sm">Step {index + 1}</span>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <CardTitle className="text-base md:text-lg">{step.title}</CardTitle>
+                        <span className="text-muted-foreground text-xs md:text-sm">Step {index + 1}</span>
                       </div>
-                      <CardDescription>{step.description}</CardDescription>
+                      <CardDescription className="text-xs md:text-sm">{step.description}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p>{step.content}</p>
-                  <div className="bg-muted rounded-lg p-4">
-                    <h4 className="mb-2 font-medium">Important Tips:</h4>
+                  <p className="text-sm md:text-base">{step.content}</p>
+                  <div className="bg-muted rounded-lg p-3 md:p-4">
+                    <h4 className="mb-2 text-sm font-medium md:text-base">Important Tips:</h4>
                     <ul className="space-y-2">
                       {step.tips.map((tip, i) => (
-                        <li className="text-muted-foreground flex items-center gap-2 text-sm" key={i}>
+                        <li className="text-muted-foreground flex items-center gap-2 text-xs md:text-sm" key={i}>
                           <div className="bg-primary h-1 w-1 rounded-full" />
                           {tip}
                         </li>
@@ -159,14 +157,14 @@ export default function ProjectOnboarding() {
             </div>
           ))}
 
-          <div className="ml-16 flex gap-4 pt-4">
-            <Link href="/projects/new/basics/?type=Project">
-              <Button className="bg-primary hover:bg-primary/90 gap-2" size="lg">
+          <div className="mx-auto flex flex-col gap-4 pt-4 md:mx-0 md:ml-16 md:flex-row">
+            <Link className="w-full md:w-auto" href="/projects/new/basics/?type=Project">
+              <Button className="bg-primary hover:bg-primary/90 w-full gap-2 md:w-auto" size="lg">
                 Start Creating Project
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Button className="gap-2" disabled size="lg" variant="outline">
+            <Button className="w-full gap-2 md:w-auto" disabled size="lg" variant="outline">
               Start Creating Enterprise
               <ChevronRight className="h-4 w-4" />
             </Button>

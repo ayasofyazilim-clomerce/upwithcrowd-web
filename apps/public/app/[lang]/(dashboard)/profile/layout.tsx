@@ -13,10 +13,10 @@ export default function Layout({children, params}: {children: React.ReactNode; p
     <TabLayout
       classNames={{
         vertical: {
-          tabs: "container mx-auto h-auto",
-          tabList: "min-w-60 bg-transparent gap-2",
+          tabs: "container mx-auto h-auto flex-col lg:flex-row",
+          tabList: "min-w-60 bg-transparent gap-2 flex-row  max-w-full lg:max-w-60 lg:flex-col",
           tabTrigger:
-            "rounded-full items-center data-[state=active]:bg-muted shadow-none hover:text-black data-[state=active]:shadow-none",
+            "rounded-full [&>a]:text-center lg:[&>a]:text-left items-center data-[state=active]:bg-muted shadow-none hover:text-black data-[state=active]:shadow-none",
         },
       }}
       orientation="vertical"

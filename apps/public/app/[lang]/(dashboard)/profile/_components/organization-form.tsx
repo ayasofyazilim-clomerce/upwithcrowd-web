@@ -62,7 +62,7 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
             await handleSubmit(values);
           })(e);
         }}>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormItem>
             <FormLabel>Identifier</FormLabel>
             <Input disabled readOnly value={currentMember?.identifier || ""} />
@@ -73,7 +73,7 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
           </FormItem>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="tel"

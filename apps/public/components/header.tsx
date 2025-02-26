@@ -7,7 +7,7 @@ import {Menu, PlusCircle, X} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname, useParams} from "next/navigation";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {getBaseLink} from "@/utils/lib";
 import MemberSwitcher from "./member-switcher";
 
@@ -26,27 +26,43 @@ export default function Header() {
     {href: getBaseLink("contact", lang), label: "Contact"},
   ];
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
   return (
-    <header className="bg-background flex h-24 px-6">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link className="text-primary flex items-center text-2xl font-bold" href={getBaseLink("", lang)}>
+    <header className="bg-background relative flex h-24 p-0 md:px-6">
+      <div className="container mx-auto flex items-center justify-between px-12 md:px-0">
+        <Link className="flex shrink-0 items-center" href={getBaseLink("", lang)}>
           <Image alt="" height={60} src="/upwc.png" width={60} />
-          UPwithCrowd
+          <span className="text-primary hidden text-2xl font-bold md:flex">UPwithCrowd</span>
         </Link>
-        <nav className="hidden md:block">
-          <ul className="flex space-x-8 text-lg">
-            {PublicLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  className={cn("text-foreground hover:text-primary ye", pathName === link.href && "text-primary")}
-                  href={link.href}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="space-x-4">
+
+        <div className="hidden flex-1 items-center justify-center md:flex">
+          <nav className="mx-8">
+            <ul className="flex space-x-8 text-lg">
+              {PublicLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    className={cn("text-foreground hover:text-primary", pathName === link.href && "text-primary")}
+                    href={link.href}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        <div className="hidden shrink-0 md:flex">
           {session !== null ? (
             <div className="flex items-center space-x-6">
               <Link className="flex items-center justify-center gap-2" href={getBaseLink("projects/new", lang)}>
@@ -56,45 +72,88 @@ export default function Header() {
               <MemberSwitcher />
             </div>
           ) : (
-            <>
+            <div className="flex items-center space-x-4">
               <Button asChild variant="outline">
                 <Link href={getBaseLink("login", lang)}>Sign In</Link>
               </Button>
               <Button asChild>
                 <Link href={getBaseLink("register", lang)}>Sign Up</Link>
               </Button>
-            </>
+            </div>
           )}
         </div>
+
         <button
           aria-label="Toggle menu"
-          className="md:hidden"
+          className="z-50 md:hidden"
           onClick={() => {
             setIsMenuOpen(!isMenuOpen);
           }}>
-          {isMenuOpen ? <X /> : <Menu />}
+          {isMenuOpen ? <X className="text-white" size={28} /> : <Menu size={28} />}
         </button>
       </div>
+
       {isMenuOpen ? (
-        <nav className="mt-4 md:hidden">
-          <ul className="flex flex-col space-y-2">
-            {PublicLinks.map((link) => (
-              <li key={link.href}>
+        <div className="bg-primary fixed inset-0 z-40 flex flex-col items-center justify-center md:hidden">
+          <nav className="w-full max-w-md px-6">
+            <ul className="flex flex-col space-y-6 text-center">
+              {PublicLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    className={cn(
+                      "hover:text-secondary text-2xl font-semibold text-white transition-colors duration-200",
+                      pathName === link.href && "text-secondary",
+                    )}
+                    href={link.href}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div className="mt-12">
+            {session !== null ? (
+              <div className="flex flex-col items-center space-y-4">
                 <Link
-                  className={cn(
-                    "text-foreground hover:text-primary block py-2",
-                    pathName === link.href && "text-primary",
-                  )}
-                  href={link.href}>
-                  {link.label}
+                  className="hover:text-secondary flex items-center justify-center gap-2 text-white transition-colors duration-200"
+                  href={getBaseLink("projects/new", lang)}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                  }}>
+                  <PlusCircle className="size-6" />
+                  Start a Project
                 </Link>
-              </li>
-            ))}
-            <li>
-              <Button className="w-full">{session?.user ? "Start a Project" : "Sign up"}</Button>
-            </li>
-          </ul>
-        </nav>
+                <div className="mt-4">
+                  <MemberSwitcher />
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center space-y-4">
+                <Button asChild className="w-full max-w-[200px]" variant="outline">
+                  <Link
+                    href={getBaseLink("login", lang)}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}>
+                    Sign In
+                  </Link>
+                </Button>
+                <Button asChild className="w-full max-w-[200px]">
+                  <Link
+                    href={getBaseLink("register", lang)}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}>
+                    Sign Up
+                  </Link>
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
       ) : null}
     </header>
   );

@@ -252,9 +252,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
             {/* Funding Goals Section Begin */}
             <Section
               className="border-b-0"
-              text={[
-                "The minimum required funding amount for the project. This represents the base level of financing needed.",
-              ]}
+              text={["The minimum required f for the project. This represents the base level of financing needed."]}
               title="Fundable Amount">
               <FormContainer className="">
                 <FormField
