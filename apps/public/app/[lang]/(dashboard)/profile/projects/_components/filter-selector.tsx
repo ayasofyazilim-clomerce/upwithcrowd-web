@@ -69,7 +69,7 @@ export default function FilterSelector() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="w-[200px] justify-between" variant="outline">
+        <Button className="w-full justify-between sm:w-[200px]" variant="outline">
           <span className="flex items-center gap-2">
             <FilterIcon className="h-4 w-4" />
             <span className="truncate">{filterCount > 0 ? `Filters (${filterCount})` : "All Projects"}</span>

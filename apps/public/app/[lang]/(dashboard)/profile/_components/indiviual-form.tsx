@@ -43,8 +43,12 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={() => void form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-4">
+      <form
+        className="space-y-4"
+        onSubmit={(e) => {
+          void form.handleSubmit(onSubmit)(e);
+        }}>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormItem>
             <FormLabel>ID Type</FormLabel>
             <Input disabled readOnly value={currentMember?.idType || ""} />
@@ -63,7 +67,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
             )}
           />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormItem>
             <FormLabel>Name</FormLabel>
             <Input disabled readOnly value={currentMember?.name || ""} />
@@ -74,7 +78,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
           </FormItem>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="mobile"

@@ -55,15 +55,15 @@ export default async function Page({
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="container mx-auto px-6">
-        <div className="jy-between mb-6 flex items-center">
-          <div className="mt-2 flex items-center gap-4">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <ProjectSearch />
             <FilterSelector />
             <SortSelector />
           </div>
-          <Link href="/projects/new">
-            <Button size="sm">
+          <Link className="w-full sm:w-auto" href="/projects/new">
+            <Button className="w-full sm:w-auto" size="sm">
               Create New Project <Plus className="ml-2 h-5 w-5" />
             </Button>
           </Link>
@@ -71,7 +71,7 @@ export default async function Page({
 
         <section className="pb-6">
           {projectsResponse.data.items && projectsResponse.data.items.length > 0 ? (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
               {projectsResponse.data.items.map((project) => (
                 <ListedProjectCard key={project.id} project={project} />
               ))}

@@ -55,7 +55,7 @@ export default function NewPersonalAccount() {
     if (currentMember !== null) {
       router.push("/profile");
     }
-  }, [currentMember]);
+  }, [currentMember, router]);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
 
@@ -174,7 +174,7 @@ export default function NewPersonalAccount() {
             void form.handleSubmit(onSubmit)(e);
           }}>
           <CardContent className="grid gap-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="idType"
@@ -213,7 +213,7 @@ export default function NewPersonalAccount() {
                 )}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label>E-Devlet Verification</Label>
                 <div className="flex flex-col gap-4">
@@ -268,7 +268,7 @@ export default function NewPersonalAccount() {
                 )}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="name"
@@ -298,7 +298,7 @@ export default function NewPersonalAccount() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="mobile"

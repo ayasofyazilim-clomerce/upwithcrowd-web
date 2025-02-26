@@ -35,12 +35,12 @@ export default function EditPersonalAccount() {
   }
 
   return (
-    <Card className="mx-auto w-full">
+    <Card className="mx-auto w-full p-2 sm:p-6">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Edit Your Account</CardTitle>
-        <CardDescription>Update your account details below.</CardDescription>
+        <CardTitle className="text-xl font-bold sm:text-2xl">Edit Your Account</CardTitle>
+        <CardDescription className="text-sm sm:text-base">Update your account details below.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="grid gap-4 sm:gap-6">
         {currentMember?.type === "Organization" ? (
           <OrganizationForm onSubmit={onSubmit} />
         ) : (
