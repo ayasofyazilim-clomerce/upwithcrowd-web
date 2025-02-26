@@ -30,7 +30,7 @@ export default function SortSelector() {
     <Select
       defaultValue={`${searchParams.get("sortField") || "creationTime"} ${searchParams.get("sortOrder") || "DESC"}`}
       onValueChange={handleSort}>
-      <SelectTrigger className="w-[200px]">
+      <SelectTrigger className="w-full sm:w-[200px]">
         <SelectValue placeholder="Sort by..." />
       </SelectTrigger>
       <SelectContent>
