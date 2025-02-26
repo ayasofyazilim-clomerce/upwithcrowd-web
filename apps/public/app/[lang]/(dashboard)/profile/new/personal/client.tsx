@@ -5,7 +5,6 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {toast} from "@/components/ui/sonner";
 import Image from "next/image";
@@ -15,11 +14,12 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useSession} from "@repo/utils/auth";
-import {Loader2} from "lucide-react";
+import {Loader2, AlertCircle, CheckCircle2} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {useMember} from "@/app/providers/member";
 import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
 import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
@@ -53,7 +53,7 @@ export default function NewPersonalAccount() {
   const {setMembers, setCurrentMember, currentMember} = useMember();
   useEffect(() => {
     if (currentMember !== null) {
-      router.push("/profile");
+      //router.push("/profile");
     }
   }, [currentMember, router]);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -180,7 +180,7 @@ export default function NewPersonalAccount() {
                 name="idType"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>ID Type</FormLabel>
+                    <FormLabel>ID Type *</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -204,7 +204,7 @@ export default function NewPersonalAccount() {
                 name="identifier"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Identifier</FormLabel>
+                    <FormLabel>Identifier *</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Enter identifier" />
                     </FormControl>
@@ -213,125 +213,141 @@ export default function NewPersonalAccount() {
                 )}
               />
             </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label>E-Devlet Verification</Label>
-                <div className="flex flex-col gap-4">
-                  {!isVerifying && !isVerified && (
-                    <Button
-                      className="w-full gap-2 bg-red-300 hover:bg-red-400"
-                      disabled={!canStartVerification()}
-                      onClick={() => void startVerification()}
-                      type="button"
-                      variant="outline">
-                      {/* <Shield className="mr-2 h-4 w-4" /> */}
-                      <Image alt="E-Devlet" className="rounded-full" height={24} src="/e-devlet-icon.png" width={24} />
-                      {canStartVerification()
-                        ? "Start E-Devlet Verification"
-                        : "You must verify your E-Devlet account!"}
-                    </Button>
-                  )}
 
-                  {isVerifying ? (
-                    <Button className="w-full" disabled variant="outline">
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Verifying...
-                    </Button>
-                  ) : null}
+            {/* New Verification Section */}
+            <div className="relative space-y-4 rounded-lg border p-4">
+              {!isVerified && (
+                <Alert variant={canStartVerification() ? "default" : "destructive"}>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Verification Required</AlertTitle>
+                  <AlertDescription>
+                    Please verify your identity through E-Devlet before proceeding with the registration.
+                  </AlertDescription>
+                </Alert>
+              )}
 
-                  {isVerified ? (
-                    <div className="text-muted flex items-center justify-center gap-2 rounded-md bg-red-700 p-2 text-center">
-                      {/* <Check className="mr-2 h-5 w-5" /> */}
-                      <Image
-                        alt="E-Devlet"
-                        className="rounded-full"
-                        height={24}
-                        src="/e-devlet-white-icon.png"
-                        width={24}
-                      />
-                      <span>E-Devlet Verification Successful!</span>
-                    </div>
-                  ) : null}
+              {isVerified ? (
+                <Alert className="border-green-200 bg-green-50" variant="default">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  <AlertTitle className="text-green-600">Verification Successful</AlertTitle>
+                  <AlertDescription className="text-green-600">
+                    Your identity has been verified. You can now complete your registration.
+                  </AlertDescription>
+                </Alert>
+              ) : null}
+
+              {!isVerified && (
+                <div className="flex justify-center">
+                  <Button
+                    className={`gap-2 ${
+                      canStartVerification() ? "bg-red-600 text-white hover:bg-red-700" : "bg-gray-100 text-gray-400"
+                    }`}
+                    disabled={!canStartVerification() || isVerifying}
+                    onClick={() => void startVerification()}
+                    size="lg"
+                    type="button">
+                    <Image
+                      alt="E-Devlet"
+                      className="rounded-full"
+                      height={24}
+                      src={canStartVerification() ? "/e-devlet-white-icon.png" : "/e-devlet-icon.png"}
+                      width={24}
+                    />
+                    {isVerifying ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Verifying...
+                      </>
+                    ) : (
+                      "Verify with E-Devlet"
+                    )}
+                  </Button>
                 </div>
+              )}
+            </div>
+
+            {/* Rest of the form fields - disabled until verification */}
+            <div className={`space-y-6 ${!isVerified ? "opacity-50" : ""}`}>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter name" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="surname"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Surname</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter surname" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-              <FormField
-                control={form.control}
-                name="email"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter email" type="email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter name" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <FormField
-                control={form.control}
-                name="surname"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Surname</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter surname" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+              <div className=" grid grid-cols-1 gap-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter email" type="email" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="mobile"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Mobile</FormLabel>
-                    <FormControl>
-                      <PhoneInput
-                        {...field}
-                        className="w-full"
-                        countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
-                        defaultCountry="tr"
-                        inputClassName="w-full"
-                      />
-                      {/* <Input {...field} placeholder="+12345678901" /> */}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="annualIncome"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Annual Income</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Enter annual income" type="number" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="mobile"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Mobile</FormLabel>
+                      <FormControl>
+                        <PhoneInput
+                          {...field}
+                          className="w-full"
+                          countrySelectorStyleProps={{flagClassName: "pl-0.5"}}
+                          defaultCountry="tr"
+                          inputClassName="w-full"
+                        />
+                        {/* <Input {...field} placeholder="+12345678901" /> */}
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="annualIncome"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Annual Income</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter annual income" type="number" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </CardContent>
           <CardFooter>
