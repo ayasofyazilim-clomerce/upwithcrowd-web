@@ -1,12 +1,12 @@
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import type { UpwithCrowd_Projects_ListProjectsResponseDto as Project } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { DollarSign, Target } from "lucide-react";
+import {Badge} from "@/components/ui/badge";
+import {Card} from "@/components/ui/card";
+import {Progress} from "@/components/ui/progress";
+import type {UpwithCrowd_Projects_ListProjectsResponseDto as Project} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {DollarSign, Target} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ListedProjectCard({ project }: { project: Project & { url?: string | null } }) {
+export default function ListedProjectCard({project}: {project: Project}) {
   const fundedPercentage = 0;
 
   const getDaysLeft = () => {
