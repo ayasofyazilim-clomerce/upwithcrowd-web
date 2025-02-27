@@ -10,5 +10,6 @@ module.exports = {
     "no-return-await": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-throw-literal": "off",
+    "import/no-extraneous-dependencies": "off",
   },
 };
