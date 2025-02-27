@@ -1,15 +1,16 @@
 "use server";
-import MainAdminLayout from "@repo/ui/theme/main-admin-layout";
+import ErrorComponent from "@repo/ui/components/error-component";
+import AlternativeAdminLayout from "@repo/ui/theme/alternative-admin-layout";
 import {getGrantedPoliciesApi, structuredError} from "@repo/utils/api";
 import {signOutServer} from "@repo/utils/auth";
 import {auth} from "@repo/utils/auth/next-auth";
 import type {Policy} from "@repo/utils/policies";
 import {LogOut} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import ErrorComponent from "@repo/ui/components/error-component";
 import {Novu} from "@/utils/navbar/notification";
 import {myProfileApi} from "@/actions/core/AccountService/actions";
 import unirefund from "public/unirefund.png";
+import image from "public/upwc.png";
 import {getResourceData} from "src/language-data/core/AbpUiNavigation";
 import Providers from "src/providers/providers";
 import {getBaseLink} from "src/utils";
@@ -67,9 +68,10 @@ export default async function Layout({children, params}: LayoutProps) {
   return (
     <Providers>
       <div className="flex h-full flex-col bg-white">
-        <MainAdminLayout
+        <AlternativeAdminLayout
           appName={appName}
           baseURL={baseURL}
+          image={image}
           lang={lang}
           logo={logo}
           navbarItems={navbarFromDB}
@@ -82,9 +84,9 @@ export default async function Layout({children, params}: LayoutProps) {
           }
           prefix=""
           profileMenu={profileMenuProps}
-          tenantData={undefined}
-        />
-        <div className="flex h-full flex-col overflow-hidden px-4">{children}</div>
+          tenantData={undefined}>
+          {children}
+        </AlternativeAdminLayout>
       </div>
     </Providers>
   );

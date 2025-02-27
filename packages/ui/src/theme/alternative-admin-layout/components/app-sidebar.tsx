@@ -10,10 +10,12 @@ export function AppSidebar({
   image,
   navbarItems,
   activeRoutes,
+  lang,
 }: {
   image: StaticImport;
   navbarItems: NavItems[];
   activeRoutes: string[] | null;
+  lang: string;
 }) {
   return (
     <Sidebar collapsible="icon">
@@ -28,7 +30,7 @@ export function AppSidebar({
         />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} />
+        <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} lang={lang} />
       </SidebarContent>
       <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
       <SidebarRail />
