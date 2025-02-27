@@ -1,13 +1,32 @@
 import {Button} from "@/components/ui/button";
-import type {UpwithCrowd_Projects_FundCollectionType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {
+  GetApiProjectData,
+  UpwithCrowd_Projects_FundCollectionType,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {Plus} from "lucide-react";
 import Link from "next/link";
+import {isRedirectError} from "next/dist/client/components/redirect";
+import {structuredError} from "@repo/utils/api";
+import ErrorComponent from "@repo/ui/components/error-component";
 import {getProjectApi} from "@/actions/upwithcrowd/project/action";
 import EmptyProjectsState from "../_components/empty-projects-state";
 import ListedProjectCard from "../_components/listed-project-card";
 import FilterSelector from "./_components/filter-selector";
 import ProjectSearch from "./_components/project-search";
 import SortSelector from "./_components/sort-selector";
+
+async function getApiRequests(searchParams: GetApiProjectData) {
+  try {
+    const requiredRequests = await Promise.all([getProjectApi(searchParams)]);
+    const optionalRequests = await Promise.allSettled([]);
+    return {requiredRequests, optionalRequests};
+  } catch (error) {
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
+  }
+}
 
 export default async function Page({
   searchParams,
@@ -39,8 +58,7 @@ export default async function Page({
         return undefined;
     }
   };
-
-  const projectsResponse = await getProjectApi({
+  const apiRequests = await getApiRequests({
     maxResultCount: 100,
     sorting:
       searchParams.sortField && searchParams.sortOrder
@@ -51,7 +69,10 @@ export default async function Page({
     projectName: searchParams.search,
   });
 
-  if (projectsResponse.type !== "success") return <>{projectsResponse.message}</>;
+  if ("message" in apiRequests) {
+    return <ErrorComponent languageData={{SomethingWentWrong: "Something went wrong"}} message={apiRequests.message} />;
+  }
+  const [projectsResponse] = apiRequests.requiredRequests;
 
   return (
     <div className="bg-background min-h-screen">
