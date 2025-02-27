@@ -109,7 +109,11 @@ export default function NewBusinessAccount() {
           </CardDescription>
         </CardHeader>
         <Form {...form}>
-          <form onSubmit={() => void form.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              void form.handleSubmit(onSubmit)(e); // void kullanımı
+            }}>
             <CardContent className="grid gap-4 sm:gap-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormField
