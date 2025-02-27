@@ -25,7 +25,7 @@ export default function ProjectSearch() {
       onChange={(e) => {
         handleSearch(e.target.value);
       }}
-      placeholder="Search projects..."
+      placeholder="Proje ara..."
       type="search"
     />
   );

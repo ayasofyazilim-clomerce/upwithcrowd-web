@@ -24,18 +24,18 @@ export default async function Page() {
 
       return {
         ...payment,
-        projectName: project?.projectName || "Unknown Project",
+        projectName: project?.projectName || "Bilinmeyen Proje",
       };
     }) ?? [];
 
-  // Show empty state if there are no payments
+  // Ödeme yoksa boş durumu göster
   if (payments.length === 0) {
     return <EmptyPaymentsState />;
   }
 
-  // Get the first project ID or use a default
+  // İlk proje ID'sini al veya varsayılan değer kullan
   const firstProjectID = projects[0]?.id || "";
-  // Set a default amount (you may want to calculate this based on your requirements)
+  // Varsayılan miktar (gereksinimlerinize göre hesaplanabilir)
   const defaultAmount = 0;
 
   return <PaymentsPage amount={defaultAmount} payments={payments} projectID={firstProjectID} />;

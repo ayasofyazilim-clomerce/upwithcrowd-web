@@ -128,7 +128,7 @@ export default function LoginForm({
                 disabled={isPending}
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Tenant</FormLabel>
+                    <FormLabel>Kurum</FormLabel>
                     <FormControl>
                       <div className="relative w-full max-w-sm">
                         <Input
@@ -142,7 +142,7 @@ export default function LoginForm({
                           onKeyUp={(e) => {
                             if (e.key === "Enter") searchForTenant(form.getValues("tenant") || "");
                           }}
-                          placeholder="Logging in as host"
+                          placeholder="Ev sahibi olarak giriş yapılıyor"
                           autoFocus
                         />
                         <Button
@@ -155,11 +155,11 @@ export default function LoginForm({
                             form.setValue("tenant", "");
                           }}>
                           <XIcon className="h-4 w-4" />
-                          <span className="sr-only">Clear</span>
+                          <span className="sr-only">Temizle</span>
                         </Button>
                       </div>
                     </FormControl>
-                    <FormDescription>Leave empty for host.</FormDescription>
+                    <FormDescription>Ev sahibi için boş bırakın.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -171,11 +171,11 @@ export default function LoginForm({
               name="username"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Username or email address</FormLabel>
+                  <FormLabel>Kullanıcı adı veya e-posta adresi</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="user@example.com" autoComplete="true" />
+                    <Input {...field} placeholder="kullanici@ornek.com" autoComplete="true" />
                   </FormControl>
-                  <FormDescription>User name or email address.</FormDescription>
+                  <FormDescription>Kullanıcı adı veya e-posta adresi.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -185,7 +185,7 @@ export default function LoginForm({
               name="password"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Şifre</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder="*******" type="password" autoComplete="true" {...field} />
                   </FormControl>
@@ -195,12 +195,12 @@ export default function LoginForm({
             />
             <div className="text-right">
               <Link href="reset-password" className="text-muted-foreground mt-1 text-xs hover:underline">
-                Forgot password?
+                Şifrenizi mi unuttunuz?
               </Link>
             </div>
             <div>
               <Button disabled={isPending || isSubmitDisabled} className="my-2 w-full">
-                Login
+                Giriş Yap
               </Button>
             </div>
           </form>
@@ -208,14 +208,12 @@ export default function LoginForm({
       </div>
       <div className="flex items-center justify-center">
         <span className="bg-muted h-px w-full"></span>
-        <span className="text-muted-foreground whitespace-nowrap text-center text-xs uppercase">
-          Don't you have an account?
-        </span>
+        <span className="text-muted-foreground whitespace-nowrap text-center text-xs uppercase">Hesabınız yok mu?</span>
         <span className="bg-muted h-px w-full"></span>
       </div>
       <Link href="register" className="text-muted-foreground mt-1 text-xs hover:underline">
         <Button disabled={isPending} className=" w-full" variant={"outline"}>
-          Register
+          Kayıt Ol
         </Button>
       </Link>
     </div>

@@ -3,14 +3,14 @@ import {HandCoins, Heart} from "lucide-react";
 export const services = [
   {
     icon: HandCoins,
-    title: "Give Donation",
+    title: "Bağış Yap",
     description:
-      "The evidence is clear. The ability to learn to read is single significant factor potential. Became a volunteer people and the community.",
+      "Kanıtlar açık. Okuma öğrenme yeteneği, potansiyel için tek önemli faktördür. Gönüllü olun ve insanlara ve topluma yardım edin.",
   },
   {
     icon: Heart,
-    title: "Become Volunteer",
+    title: "Gönüllü Ol",
     description:
-      "The evidence is clear. The ability to learn to read is single significant factor potential. Became a volunteer people and the community.",
+      "Kanıtlar açık. Okuma öğrenme yeteneği, potansiyel için tek önemli faktördür. Gönüllü olun ve insanlara ve topluma yardım edin.",
   },
 ];

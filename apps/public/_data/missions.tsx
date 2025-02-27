@@ -1,20 +1,20 @@
-import {Mission} from "@/_types/missions";
 import {Presentation} from "lucide-react";
+import type {Mission} from "@/_types/missions";
 
 export const missions: Mission[] = [
   {
     icon: Presentation,
-    title: "Manage your campaigns",
-    description: "Track how many people signed the petition by week, month, year.",
+    title: "Kampanyalarınızı Yönetin",
+    description: "Haftalık, aylık, yıllık olarak kaç kişinin dilekçeyi imzaladığını takip edin.",
   },
   {
     icon: Presentation,
-    title: "Collecting donation",
-    description: "Campaign owners can set up to receive donations from supporters.",
+    title: "Bağış Toplama",
+    description: "Kampanya sahipleri, destekçilerden bağış almak için ayarlamalar yapabilir.",
   },
   {
     icon: Presentation,
-    title: "Withdraw your money",
-    description: "Withdraw your money to bank account or Paypal easily with few set up.",
+    title: "Paranızı Çekin",
+    description: "Paranızı banka hesabınıza veya Paypal'a kolayca çekin.",
   },
 ];

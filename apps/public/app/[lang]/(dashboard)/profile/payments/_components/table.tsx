@@ -49,12 +49,12 @@ export default function PaymentsTable({payments}: PaymentsTableProps) {
       rowActions={[
         {
           actionLocation: "row",
-          cta: "Rescission",
+          cta: "İşlemi Geri Al",
           type: "confirmation-dialog",
-          cancelText: "Cancel",
-          confirmationText: "Aprrrove",
-          title: "Rescission",
-          description: "Are you sure you want to rescind this payment?",
+          cancelText: "Vazgeç",
+          confirmationText: "Onayla",
+          title: "İşlemi Geri Al",
+          description: "Bu işlemi onaylamak istediğinizden emin misiniz?",
           async onConfirm(row) {
             const transactionData: UpwithCrowd_Payment_SavePaymentTransactionDto = {
               ...row,
