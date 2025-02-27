@@ -15,7 +15,7 @@
     "clean": "turbo clean",
     "format": "turbo format",
     "prepare": "husky install",
-    "precommit": "",
+    "precommit": "turbo precommit",
     "unused": "npx knip"
   },
   "devDependencies": {
