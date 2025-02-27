@@ -1,12 +1,12 @@
-import {Badge} from "@/components/ui/badge";
-import {Card} from "@/components/ui/card";
-import {Progress} from "@/components/ui/progress";
-import type {UpwithCrowd_Projects_ListProjectsResponseDto as Project} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {DollarSign, Target} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import type { UpwithCrowd_Projects_ListProjectsResponseDto as Project } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import { DollarSign, Target } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ListedProjectCard({project}: {project: Project}) {
+export default function ListedProjectCard({ project }: { project: Project & { url?: string | null } }) {
   const fundedPercentage = 0;
 
   const getDaysLeft = () => {
@@ -25,7 +25,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
             alt={project.projectName}
             className="h-64 w-full rounded-lg object-cover"
             height={300}
-            src="https://placehold.co/200x300"
+            src={project.url || "https://placehold.co/200x300"}
             width={300}
           />
           <Badge className="bg-primary text-primary-foreground absolute bottom-2 left-2 font-medium">
