@@ -6,16 +6,21 @@ import {ThemeProvider} from "../../providers/theme";
 import {
   Ban,
   BriefcaseBusiness,
+  Building2,
   ChartPie,
   CircleX,
   Crown,
   GalleryVerticalEnd,
   HandCoins,
+  Landmark,
   LaptopMinimal,
   LucideIcon,
   PersonStanding,
+  Rabbit,
   Radio,
   Settings,
+  User,
+  Users,
 } from "lucide-react";
 import {usePathname} from "next/navigation";
 import {AppSidebar} from "./components/app-sidebar";
@@ -61,6 +66,37 @@ const newNavbarItems: NavItems[] = [
           {title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/ALL/PS"},
           {title: "Başarısız Projeler", icon: CircleX, url: "/projects/ALL/PF"},
           {title: "İptal Projeler", icon: Ban, url: "/projects/ALL/PC"},
+        ],
+      },
+    ],
+  },
+  {
+    title: "Topluluk",
+    icon: Users,
+    items: [
+      {
+        title: "Yatırımcı",
+        icon: Landmark,
+        items: [
+          {title: "Bireysel", icon: User, url: "/community/investor/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/investor/organization"},
+        ],
+      },
+      {
+        title: "Girişimci",
+        icon: Rabbit,
+        items: [
+          {title: "Bireysel", icon: User, url: "/community/entrepreneur/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/entrepreneur/organization"},
+        ],
+      },
+      {
+        title: "Tümü",
+        icon: GalleryVerticalEnd,
+        items: [
+          {title: "Bireysel", icon: User, url: "/community/all/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/all/organization"},
+          {title: "Tümü", icon: Users, url: "/community/all/all"},
         ],
       },
     ],

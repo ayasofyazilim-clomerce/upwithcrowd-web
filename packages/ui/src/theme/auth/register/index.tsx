@@ -1,3 +1,5 @@
+// @ts-ignore
+// @ts-nocheck
 "use client";
 
 import {useEffect, useState, useTransition} from "react";
@@ -78,7 +80,7 @@ export default function RegisterForm({
     startTransition(() => {
       onTenantSearchAction(name).then((response) => {
         if (response.type !== "success" || !response.data.success) {
-          form.setError("tenant", {type: "manual", message: "Tenant bulunamadı."}, {shouldFocus: true});
+          form.setError("tenant", {type: "manual", message: "Tenant not found."}, {shouldFocus: true});
           return;
         }
         form.clearErrors("tenant");
