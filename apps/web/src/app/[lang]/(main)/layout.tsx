@@ -1,5 +1,4 @@
 "use server";
-import ErrorComponent from "@repo/ui/components/error-component";
 import AlternativeAdminLayout from "@repo/ui/theme/alternative-admin-layout";
 import {getGrantedPoliciesApi, structuredError} from "@repo/utils/api";
 import {signOutServer} from "@repo/utils/auth";
@@ -7,7 +6,7 @@ import {auth} from "@repo/utils/auth/next-auth";
 import type {Policy} from "@repo/utils/policies";
 import {LogOut} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import {Novu} from "@/utils/navbar/notification";
+import ErrorComponent from "@repo/ui/components/error-component";
 import {myProfileApi} from "@/actions/core/AccountService/actions";
 import unirefund from "public/unirefund.png";
 import image from "public/upwc.png";
@@ -75,13 +74,12 @@ export default async function Layout({children, params}: LayoutProps) {
           lang={lang}
           logo={logo}
           navbarItems={navbarFromDB}
-          notification={
-            <Novu
-              appId={process.env.NOVU_APP_IDENTIFIER || ""}
-              appUrl={process.env.NOVU_APP_URL || ""}
-              subscriberId={session?.user?.novuSubscriberId || ""}
-            />
-          }
+          notification={{
+            langugageData: languageData,
+            appUrl: process.env.NOVU_APP_URL || "",
+            appId: process.env.NOVU_APP_IDENTIFIER || "",
+            subscriberId: session?.user?.sub || "67b8674f58411ad400a054e9",
+          }}
           prefix=""
           profileMenu={profileMenuProps}
           tenantData={undefined}>
