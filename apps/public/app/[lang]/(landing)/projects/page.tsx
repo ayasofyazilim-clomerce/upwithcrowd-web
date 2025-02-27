@@ -1,5 +1,5 @@
-import type { UpwithCrowd_Projects_FundCollectionType } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import { getPublicProjectsApi } from "@/actions/upwithcrowd/public-project/actions";
+import type {UpwithCrowd_Projects_FundCollectionType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
 import LandingHero from "@/components/landing-hero";
 import FilterSelector from "./_components/filter-selector";
 import ListedProjectCard from "./_components/listed-project-card";
@@ -24,7 +24,7 @@ export default async function Page({
 
   Object.keys(searchParams).forEach((key) => {
     if (searchParams[key as keyof typeof searchParams]) {
-      Object.assign(reqBody, { [key]: searchParams[key as keyof typeof searchParams] });
+      Object.assign(reqBody, {[key]: searchParams[key as keyof typeof searchParams]});
     }
   });
 
@@ -56,7 +56,6 @@ export default async function Page({
                   fundableAmount: project.fundableAmount,
                   fundNominalAmount: project.fundNominalAmount,
                   fundCollectionType: project.fundCollectionType?.toString() || "",
-                  //@ts-ignore
                   url: project.url || "",
                 }}
               />
