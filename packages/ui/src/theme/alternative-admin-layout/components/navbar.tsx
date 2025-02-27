@@ -14,13 +14,15 @@ import {
 } from "@repo/ayasofyazilim-ui/atoms/sidebar";
 import {NavItems} from "..";
 
-function Tree({navItem, activeRoutes}: {navItem: NavItems; activeRoutes: string[] | null}) {
+function Tree({navItem, activeRoutes, lang}: {navItem: NavItems; activeRoutes: string[] | null; lang: string}) {
   const routes = activeRoutes ? [...activeRoutes] : null;
   const currentRoute = routes?.[0] === navItem.title ? routes?.shift() : null;
   if (!navItem.items?.length) {
     return (
       <SidebarMenuButton isActive={currentRoute === navItem.title} asChild>
-        <a href={navItem.url} className={currentRoute === navItem.title ? "font-normal text-blue-600" : ""}>
+        <a
+          href={`/${lang}${navItem.url}`}
+          className={currentRoute === navItem.title ? "font-normal text-blue-600" : ""}>
           {navItem.icon && <navItem.icon />}
           {navItem.title}
         </a>
@@ -44,7 +46,7 @@ function Tree({navItem, activeRoutes}: {navItem: NavItems; activeRoutes: string[
         <CollapsibleContent>
           <SidebarMenuSub className="mr-0 pr-0">
             {navItem.items.map((subItem, index) => (
-              <Tree key={index} navItem={subItem} activeRoutes={routes} />
+              <Tree key={index} navItem={subItem} activeRoutes={routes} lang={lang} />
             ))}
           </SidebarMenuSub>
         </CollapsibleContent>
@@ -52,7 +54,15 @@ function Tree({navItem, activeRoutes}: {navItem: NavItems; activeRoutes: string[
     </SidebarMenuItem>
   );
 }
-export function NavMain({activeRoutes, navbarItems}: {navbarItems: NavItems[]; activeRoutes: string[] | null}) {
+export function NavMain({
+  activeRoutes,
+  navbarItems,
+  lang,
+}: {
+  navbarItems: NavItems[];
+  activeRoutes: string[] | null;
+  lang: string;
+}) {
   return (
     <>
       <SidebarGroup>
@@ -60,7 +70,7 @@ export function NavMain({activeRoutes, navbarItems}: {navbarItems: NavItems[]; a
         <SidebarGroupContent>
           <SidebarMenu>
             {navbarItems.map((item, index) => (
-              <Tree key={index} navItem={item} activeRoutes={activeRoutes} />
+              <Tree key={index} navItem={item} activeRoutes={activeRoutes} lang={lang} />
             ))}
           </SidebarMenu>
         </SidebarGroupContent>
