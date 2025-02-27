@@ -32,17 +32,13 @@ export default function ListedProjectCard({project}: {project: Project}) {
             {project.fundCollectionType}
           </Badge>
         </div>
-        {/* <div className="text-muted-foreground flex items-center text-xs md:text-sm">
-          <MapPin className="mr-1 h-3 w-3 md:h-4 md:w-4" />
-          California, Bay Area
-        </div> */}
         <h3 className="mb-4 w-full overflow-hidden text-ellipsis text-nowrap text-lg font-semibold md:text-xl">
           {project.projectName}
         </h3>
         <div className="bg-primary/5 rounded-lg p-3 md:p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
-            <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} days left</span>
+            <span className="text-xs font-medium md:text-sm">Fonlanan: {fundedPercentage.toFixed(0)}%</span>
+            <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} gün kaldı</span>
           </div>
           <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
           <div className="flex items-center justify-between text-xs md:text-sm">
@@ -50,14 +46,14 @@ export default function ListedProjectCard({project}: {project: Project}) {
               <DollarSign className="text-primary mr-2 h-5 w-5" />
               <div>
                 <p className="font-semibold">$0</p>
-                <p className="text-muted-foreground text-xs">raised</p>
+                <p className="text-muted-foreground text-xs">toplandı</p>
               </div>
             </div>
             <div className="flex items-center">
               <Target className="text-primary mr-2 h-5 w-5" />
               <div>
                 <p className="font-semibold">${project.fundableAmount.toString()}</p>
-                <p className="text-muted-foreground text-xs">goal</p>
+                <p className="text-muted-foreground text-xs">hedef</p>
               </div>
             </div>
           </div>

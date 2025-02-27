@@ -103,7 +103,7 @@ export default function RegisterForm({
           toast.error(response?.message);
           return;
         }
-        toast.success("You can now log in to your account.");
+        toast.success("Hesabınıza giriş yapabilirsiniz.");
         if (hasLocale) {
           router.replace(`/${location.pathname.split("/").slice(1)}/login/${location.search}`);
         } else {
@@ -116,7 +116,7 @@ export default function RegisterForm({
     const searchParams = new URLSearchParams(location.search);
     const error = searchParams.get("error") as keyof typeof languageData | null;
     if (error) {
-      toast.error(languageData[error] || "Something went wrong. Please try again.");
+      toast.error(languageData[error] || "Bir şeyler ters gitti. Lütfen tekrar deneyin.");
     }
   }, [typeof location !== "undefined"]);
 
@@ -149,7 +149,7 @@ export default function RegisterForm({
                           onKeyUp={(e) => {
                             if (e.key === "Enter") searchForTenant(form.getValues("tenant") || "");
                           }}
-                          placeholder="Logging in as host"
+                          placeholder="Ev sahibi olarak giriş yapılıyor"
                           autoFocus
                         />
                         <Button
@@ -162,11 +162,11 @@ export default function RegisterForm({
                             form.setValue("tenant", "");
                           }}>
                           <XIcon className="h-4 w-4" />
-                          <span className="sr-only">Clear</span>
+                          <span className="sr-only">Temizle</span>
                         </Button>
                       </div>
                     </FormControl>
-                    <FormDescription>Leave empty for host.</FormDescription>
+                    <FormDescription>Ev sahibi için boş bırakın.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -177,9 +177,9 @@ export default function RegisterForm({
               name="email"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel>Email </FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input placeholder="isim@ornek.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -190,11 +190,11 @@ export default function RegisterForm({
               name="username"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Kullanıcı Adı</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="user@example.com" autoComplete="true" />
+                    <Input {...field} placeholder="kullanici@ornek.com" autoComplete="true" />
                   </FormControl>
-                  <FormDescription>User name.</FormDescription>
+                  <FormDescription>Kullanıcı adı.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -204,7 +204,7 @@ export default function RegisterForm({
               name="password"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Şifre</FormLabel>
                   <FormControl>
                     <PasswordInput placeholder="*******" type="password" autoComplete="true" {...field} />
                   </FormControl>
@@ -223,14 +223,12 @@ export default function RegisterForm({
       </div>
       <div className="flex items-center justify-center">
         <span className="bg-muted h-px w-full"></span>
-        <span className="text-muted-foreground whitespace-nowrap text-center text-xs uppercase">
-          Do you have an account?
-        </span>
+        <span className="text-muted-foreground whitespace-nowrap text-center text-xs uppercase">Hesabınız var mı?</span>
         <span className="bg-muted h-px w-full"></span>
       </div>
       <Link href="login" className="text-muted-foreground mt-1 text-xs hover:underline">
         <Button disabled={isPending} className=" w-full" variant={"outline"}>
-          Login
+          Giriş Yap
         </Button>
       </Link>
     </div>

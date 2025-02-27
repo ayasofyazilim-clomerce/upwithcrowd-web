@@ -11,32 +11,32 @@ export default function EmptyProjectsState() {
           <FolderPlus className="text-primary h-12 w-12" />
         </div>
 
-        <h3 className="mb-2 text-2xl font-semibold tracking-tight">You Don&apos;t Have Any Projects Yet</h3>
+        <h3 className="mb-2 text-2xl font-semibold tracking-tight">Henüz Hiç Projeniz Yok</h3>
 
         <p className="text-muted-foreground mb-6 max-w-md">
-          Start taking advantage of UPwithCrowd&aops;s opportunities by creating your first project. Create a new
-          project now!
+          İlk projenizi oluşturarak UPwithCrowd&apos;un fırsatlarından yararlanmaya başlayın. Hemen yeni bir proje
+          oluşturun!
         </p>
 
         <Button asChild className="gap-2" size="lg">
           <Link href="/projects/new">
             <PlusCircle className="h-5 w-5" />
-            Create New Project
+            Yeni Proje Oluştur
           </Link>
         </Button>
 
         <div className="text-muted-foreground mt-8 grid gap-4 text-sm">
           <p className="flex items-center justify-center gap-2">
             <span className="bg-primary/50 h-2 w-2 rounded-full" />
-            Unlimited project creation
+            Sınırsız proje oluşturma
           </p>
           <p className="flex items-center justify-center gap-2">
             <span className="bg-primary/50 h-2 w-2 rounded-full" />
-            Detailed project management tools
+            Detaylı proje yönetim araçları
           </p>
           <p className="flex items-center justify-center gap-2">
             <span className="bg-primary/50 h-2 w-2 rounded-full" />
-            24/7 technical support
+            7/24 teknik destek
           </p>
         </div>
       </CardContent>

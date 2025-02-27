@@ -1,6 +1,7 @@
 import type {
   UpwithCrowd_Projects_ProjectsResponseDto,
   UpwithCrowd_Projects_ProjectsFundingResponseDto,
+  UpwithCrowd_Files_FileResponseListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
@@ -13,11 +14,13 @@ export default function ProjectSummary({
   funding,
   currentImageIndex,
   fundedPercentage,
+  fileResponse,
 }: {
   basics: UpwithCrowd_Projects_ProjectsResponseDto;
   funding: UpwithCrowd_Projects_ProjectsFundingResponseDto;
   currentImageIndex: number;
   fundedPercentage: number;
+  fileResponse: UpwithCrowd_Files_FileResponseListDto;
 }) {
   return (
     <>
@@ -32,7 +35,7 @@ export default function ProjectSummary({
           alt={`${basics.projectName} - Image ${currentImageIndex + 1}`}
           className="aspect-video h-auto w-full rounded-lg object-cover"
           height={360}
-          src="https://placehold.co/640x360"
+          src={fileResponse.fullPath ?? "/placeholder.jpg"}
           width={640}
         />
         <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">

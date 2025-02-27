@@ -6,8 +6,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        port: "",
         hostname: "placehold.co",
+      },
+      {
+        protocol: "https",
+        hostname: "s3.us-west-2.amazonaws.com",
       },
     ],
   },

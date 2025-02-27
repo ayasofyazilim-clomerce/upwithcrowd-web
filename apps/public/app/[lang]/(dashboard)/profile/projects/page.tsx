@@ -85,7 +85,7 @@ export default async function Page({
           </div>
           <Link className="w-full sm:w-auto" href="/projects/new">
             <Button className="w-full sm:w-auto" size="sm">
-              Create New Project <Plus className="ml-2 h-5 w-5" />
+              Yeni Proje Oluştur <Plus className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
