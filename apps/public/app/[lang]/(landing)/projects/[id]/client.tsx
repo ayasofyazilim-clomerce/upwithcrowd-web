@@ -6,6 +6,7 @@ import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
   PagedResultDto_ListProjectsMembersResponseDto,
+  UpwithCrowd_Files_FileResponseListDto,
   UpwithCrowd_Payment_PaymentStatus,
   UpwithCrowd_Payment_SavePaymentTransactionDto,
   UpwithCrowd_Projects_ProjectsDetailResponseDto,
@@ -25,10 +26,12 @@ export default function ProjectDetails({
   data,
   isEditable,
   projectsMember,
+  fileResponse,
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
+  fileResponse: UpwithCrowd_Files_FileResponseListDto;
 }) {
   const {id: projectId} = useParams<{id: string}>();
   const [currentImageIndex, _setCurrentImageIndex] = useState(0);
@@ -152,6 +155,7 @@ export default function ProjectDetails({
             <ProjectSummary
               basics={data}
               currentImageIndex={currentImageIndex}
+              fileResponse={fileResponse}
               fundedPercentage={fundedPercentage}
               funding={data}
             />
