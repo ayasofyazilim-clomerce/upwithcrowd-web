@@ -1,7 +1,7 @@
-import {Badge} from "@/components/ui/badge";
-import {Card} from "@/components/ui/card";
-import {Progress} from "@/components/ui/progress";
-import {DollarSign, Target} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { DollarSign, Target } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,9 +13,10 @@ interface Project {
   fundNominalAmount: number;
   fundCollectionType: string;
   projectTypes?: string[] | null; // Changed from projectType: string[]
+  url: string | null;
 }
 
-export default function ListedProjectCard({project}: {project: Project}) {
+export default function ListedProjectCard({ project }: { project: Project }) {
   const fundedPercentage = 0;
 
   // Calculate days left
@@ -35,7 +36,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
             alt={project.projectName}
             className="h-64 w-full rounded-lg object-cover"
             height={300}
-            src="https://placehold.co/200x300"
+            src={project.url || "https://placehold.co/200x300"}
             width={300}
           />
           <Badge className="bg-primary text-primary-foreground absolute bottom-2 left-2 font-medium">
