@@ -26,7 +26,8 @@
   "dependencies": {
     "@auth/core": "^0.30.0",
     "@ayasofyazilim/core-saas": "latest",
-    "@ayasofyazilim/upwithcrowd-saas": "^0.0.25",
+    "@ayasofyazilim/upwithcrowd-saas": "^0.0.28",
+    "@novu/react": "^2.6.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@repo/ayasofyazilim-ui": "workspace:^",
     "@repo/ui": "workspace:*",
@@ -43,6 +44,7 @@
     "next-auth": "5.0.0-beta.16",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "@tailwindcss/typography": "^0.5.10",
     "tailwindcss-animate": "^1.0.7",
     "zod": "3.22.4"
   },

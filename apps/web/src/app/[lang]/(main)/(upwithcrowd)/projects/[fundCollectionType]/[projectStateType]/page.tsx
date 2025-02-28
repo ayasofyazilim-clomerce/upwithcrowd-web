@@ -1,6 +1,10 @@
 "use server";
 
-import type {GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {
+  GetApiProjectData,
+  UpwithCrowd_Projects_FundCollectionType,
+  UpwithCrowd_Projects_ProjectStateType,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {getProjectApi} from "@upwithcrowd/project/action";
@@ -21,17 +25,50 @@ async function getApiRequests(searchParams: GetApiProjectData) {
   }
 }
 
+function validateFundCollectionType(fundCollectionType: UpwithCrowd_Projects_FundCollectionType | "ALL") {
+  switch (fundCollectionType.toLowerCase()) {
+    case "shre":
+      return "SHRE";
+    case "dbit":
+      return "DBIT";
+    default:
+      return undefined;
+  }
+}
+function validateProjectStateType(projectStateType: UpwithCrowd_Projects_ProjectStateType) {
+  switch (projectStateType.toLowerCase()) {
+    case "pa":
+      return "PA";
+    case "ps":
+      return "PS";
+    case "pf":
+      return "PF";
+    case "pc":
+      return "PC";
+    case "pw":
+      return "PW";
+    default:
+      return undefined;
+  }
+}
 export default async function Page({
   params,
+  searchParams,
 }: {
-  params: {lang: string; fundCollectionType: "SHRE" | "DBIT" | "ALL"; projectStateType: "PA" | "PS" | "PF" | "PC"};
+  params: {
+    lang: string;
+    fundCollectionType: UpwithCrowd_Projects_FundCollectionType | "ALL";
+    projectStateType: UpwithCrowd_Projects_ProjectStateType;
+  };
+  searchParams?: GetApiProjectData;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
 
   const apiRequests = await getApiRequests({
-    fundCollectionType: params.fundCollectionType === "ALL" ? undefined : params.fundCollectionType,
-    projectStateType: params.projectStateType,
+    ...searchParams,
+    fundCollectionType: validateFundCollectionType(params.fundCollectionType),
+    projectStateType: validateProjectStateType(params.projectStateType),
   });
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;

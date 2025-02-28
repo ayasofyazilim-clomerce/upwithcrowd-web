@@ -13,6 +13,7 @@ import {
   SidebarMenuSub,
 } from "@repo/ayasofyazilim-ui/atoms/sidebar";
 import {NavItems} from "..";
+import Link from "next/link";
 
 function Tree({navItem, activeRoutes, lang}: {navItem: NavItems; activeRoutes: string[] | null; lang: string}) {
   const routes = activeRoutes ? [...activeRoutes] : null;
@@ -20,12 +21,12 @@ function Tree({navItem, activeRoutes, lang}: {navItem: NavItems; activeRoutes: s
   if (!navItem.items?.length) {
     return (
       <SidebarMenuButton isActive={currentRoute === navItem.title} asChild>
-        <a
+        <Link
           href={`/${lang}${navItem.url}`}
           className={currentRoute === navItem.title ? "font-normal text-blue-600" : ""}>
           {navItem.icon && <navItem.icon />}
           {navItem.title}
-        </a>
+        </Link>
       </SidebarMenuButton>
     );
   }
