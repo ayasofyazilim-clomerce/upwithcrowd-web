@@ -1,17 +1,17 @@
 import {Inter} from "next/font/google";
 import "../globals.css";
 import {auth} from "@repo/utils/auth/next-auth";
-import {getApiMemberApi, getProfileImageApi} from "@/actions/upwithcrowd/member/actions";
-import {myProfileApi} from "@/actions/core/AccountService/actions";
-import {getLocalizationResources} from "@/utils/lib";
-import Providers from "../providers/providers";
-import type {Member} from "../providers/member";
-import {LocaleProvider} from "../providers/locale";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {structuredError} from "@repo/utils/api";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {signOutServer} from "@repo/utils/auth";
+import {getApiMemberApi, getProfileImageApi} from "@/actions/upwithcrowd/member/actions";
+import {myProfileApi} from "@/actions/core/AccountService/actions";
+import {getLocalizationResources} from "@/utils/lib";
 import {getResourceData} from "@/language/core/Default";
+import Providers from "../providers/providers";
+import type {Member} from "../providers/member";
+import {LocaleProvider} from "../providers/locale";
 
 const inter = Inter({subsets: ["latin"]});
 
