@@ -1,6 +1,10 @@
 "use server";
 
-import type {GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {
+  GetApiProjectData,
+  UpwithCrowd_Projects_FundCollectionType,
+  UpwithCrowd_Projects_ProjectStateType,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {getProjectApi} from "@upwithcrowd/project/action";
@@ -25,7 +29,11 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: {lang: string; fundCollectionType: "SHRE" | "DBIT" | "ALL"; projectStateType: "PA" | "PS" | "PF" | "PC"};
+  params: {
+    lang: string;
+    fundCollectionType: UpwithCrowd_Projects_FundCollectionType | "ALL";
+    projectStateType: UpwithCrowd_Projects_ProjectStateType;
+  };
   searchParams?: GetApiProjectData;
 }) {
   const {lang} = params;
