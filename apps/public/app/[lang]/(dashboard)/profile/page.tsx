@@ -170,7 +170,10 @@ export default function ProfileClient() {
           <div className="flex w-full items-center justify-center px-2 md:px-0">
             <Button
               className="flex w-full items-center justify-center rounded-full text-red-500 hover:text-red-700 md:w-1/3"
-              onClick={() => void signOutServer()}
+              onClick={() => {
+                window.sessionStorage.removeItem("current_member");
+                void signOutServer();
+              }}
               variant="outline">
               <LogOut className="mr-2 h-4 w-4" />
               Çıkış yap
