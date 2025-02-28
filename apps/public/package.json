@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node get-resources.js && prettier --write \"language/resources.ts\" && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,8 +11,14 @@
     "lint:report": "next lint --quiet  > lint-output.txt 2>&1",
     "type-check": "tsc --noEmit",
     "type-check:report": "tsc --noEmit > type-check-output.txt 2>&1",
-    "format": "prettier --write . --plugin=prettier-plugin-tailwindcss --log-level=warn",
-    "precommit": "npx lint-staged"
+    "format": "prettier --write . --plugin=prettier-plugin-tailwindcss",
+    "precommit": "prettier --write . && next lint --fix && tsc --noEmit "
+  },
+  "lint-staged": {
+    "*": [
+      "next lint --fix",
+      "tsc --noEmit"
+    ]
   },
   "dependencies": {
     "@ayasofyazilim/core-saas": "latest",
