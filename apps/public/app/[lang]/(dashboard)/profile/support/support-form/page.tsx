@@ -18,7 +18,7 @@ import {postProjectApi} from "@/actions/upwithcrowd/tasks/post-action";
 // API tipine uygun form şeması
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {
-    required_error: "Please select a task type",
+    required_error: "Lütfen bir talep türü seçin",
   }),
   projectUrl: z
     .string()
@@ -26,16 +26,13 @@ const formSchema = z.object({
     .refine((val) => {
       if (!val) return true; // Optional field
       return /\/projects\/[0-9a-f-]+$/i.exec(val) !== null;
-    }, "Invalid project URL format"),
+    }, "Geçersiz proje URL formatı"),
   memberId: z.string().optional(),
-  summary: z
-    .string()
-    .min(5, "Summary must be at least 5 characters")
-    .max(100, "Summary must not exceed 100 characters"),
+  summary: z.string().min(5, "Özet en az 5 karakter olmalıdır").max(100, "Özet 100 karakteri geçmemelidir"),
   description: z
     .string()
-    .min(10, "Description must be at least 10 characters")
-    .max(500, "Description must not exceed 500 characters"),
+    .min(10, "Açıklama en az 10 karakter olmalıdır")
+    .max(500, "Açıklama 500 karakteri geçmemelidir"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -114,16 +111,16 @@ export default function SupportFormClient() {
               name="tasksType"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Task Type</FormLabel>
+                  <FormLabel>Talep Türü</FormLabel>
                   <Select defaultValue={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select task type" />
+                        <SelectValue placeholder="Talep türü seçin" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Issue">Issue</SelectItem>
-                      <SelectItem value="Support">Support</SelectItem>
+                      <SelectItem value="Issue">Sorun</SelectItem>
+                      <SelectItem value="Support">Destek</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -136,14 +133,14 @@ export default function SupportFormClient() {
               name="projectUrl"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Project URL (Optional)</FormLabel>
+                  <FormLabel>Proje URL (İsteğe Bağlı)</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter project URL (e.g., http://localhost:3000/en/projects/your-project-id)"
+                      placeholder="Proje URL'sini girin (örn: http://localhost:3000/en/projects/your-project-id)"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>If this is related to a specific project, enter the project URL.</FormDescription>
+                  <FormDescription>Eğer belirli bir projeyle ilgiliyse, proje URL sini girin.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -154,11 +151,11 @@ export default function SupportFormClient() {
               name="summary"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Summary</FormLabel>
+                  <FormLabel>Özet</FormLabel>
                   <FormControl>
-                    <Input placeholder="Brief summary of your issue" {...field} />
+                    <Input placeholder="Sorununuzun kısa özeti" {...field} />
                   </FormControl>
-                  <FormDescription>Provide a short summary of your issue.</FormDescription>
+                  <FormDescription>Sorununuzun kısa bir özetini girin.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -169,18 +166,22 @@ export default function SupportFormClient() {
               name="description"
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Açıklama</FormLabel>
                   <FormControl>
-                    <Textarea className="min-h-[120px]" placeholder="Please describe your issue in detail" {...field} />
+                    <Textarea
+                      className="min-h-[120px]"
+                      placeholder="Lütfen sorununuzu detaylı bir şekilde açıklayın"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>Provide a detailed description of your issue.</FormDescription>
+                  <FormDescription>Sorununuzun detaylı bir açıklamasını yapın.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
             <Button className="w-full" disabled={isSubmitting} type="submit">
-              {isSubmitting ? "Submitting..." : "Submit Request"}
+              {isSubmitting ? "Gönderiliyor..." : "Talebi Gönder"}
             </Button>
           </form>
         </Form>
