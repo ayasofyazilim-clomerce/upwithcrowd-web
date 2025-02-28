@@ -16,7 +16,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {useMediaQuery} from "@/components/ui/useMediaQuery";
 import {cn} from "@/lib/utils";
 import {signOutServer, useSession} from "@repo/utils/auth";
-import {BadgeCheck, LogOut, PlusCircle, UserIcon} from "lucide-react";
+import {BadgeCheck, LogOut, PlusCircle, UserIcon, HelpCircle} from "lucide-react";
 import Link from "next/link";
 import {useParams, useRouter} from "next/navigation";
 import * as React from "react";
@@ -210,6 +210,12 @@ function Commands() {
             <Link className="flex items-center gap-2" href={getBaseLink("profile", lang)}>
               <UserIcon className="size-4" />
               Profile
+            </Link>
+          </CommandItem>
+          <CommandItem>
+            <Link className="flex items-center gap-2" href={getBaseLink("profile/support/support-form", lang)}>
+              <HelpCircle className="size-4" />
+              Create Support Request
             </Link>
           </CommandItem>
           <CommandItem
