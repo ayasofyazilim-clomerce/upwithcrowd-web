@@ -53,6 +53,7 @@
     "react-international-phone": "^4.3.0",
     "recharts": "^2.15.1",
     "tailwind-merge": "^2.6.0",
+    "@tailwindcss/typography": "^0.5.10",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
   },
