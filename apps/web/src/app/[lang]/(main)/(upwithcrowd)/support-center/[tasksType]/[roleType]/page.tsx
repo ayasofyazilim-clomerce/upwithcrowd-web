@@ -6,14 +6,24 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import SupportTable from "../../_components/table";
 
-function validateRoleType(roleType?: UpwithCrowd_Tasks_RoleType | "ALL") {
-  switch (roleType?.toLowerCase()) {
+function validateRoleType(roleType: UpwithCrowd_Tasks_RoleType | "ALL") {
+  switch (roleType.toLowerCase()) {
     case "investor":
       return "Investor";
     case "entrepreuner":
       return "Entrepreuner";
     case "tenant":
       return "Tenant";
+    default:
+      return undefined;
+  }
+}
+function validateTasksType(tasksType: UpwithCrowd_Tasks_TasksType) {
+  switch (tasksType.toLowerCase()) {
+    case "support":
+      return "Support";
+    case "issue":
+      return "Issue";
     default:
       return undefined;
   }
@@ -27,7 +37,7 @@ export default async function SupportPage({
 }) {
   const response = await getTaskApi({
     ...searchParams,
-    tasksType: params.tasksType,
+    tasksType: validateTasksType(params.tasksType),
     roleType: validateRoleType(params.roleType),
   });
 

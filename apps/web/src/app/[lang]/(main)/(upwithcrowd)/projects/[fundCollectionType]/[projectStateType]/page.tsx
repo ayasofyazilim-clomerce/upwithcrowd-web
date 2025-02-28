@@ -25,6 +25,32 @@ async function getApiRequests(searchParams: GetApiProjectData) {
   }
 }
 
+function validateFundCollectionType(fundCollectionType: UpwithCrowd_Projects_FundCollectionType | "ALL") {
+  switch (fundCollectionType.toLowerCase()) {
+    case "shre":
+      return "SHRE";
+    case "dbit":
+      return "DBIT";
+    default:
+      return undefined;
+  }
+}
+function validateProjectStateType(projectStateType: UpwithCrowd_Projects_ProjectStateType) {
+  switch (projectStateType.toLowerCase()) {
+    case "pa":
+      return "PA";
+    case "ps":
+      return "PS";
+    case "pf":
+      return "PF";
+    case "pc":
+      return "PC";
+    case "pw":
+      return "PW";
+    default:
+      return undefined;
+  }
+}
 export default async function Page({
   params,
   searchParams,
@@ -41,8 +67,8 @@ export default async function Page({
 
   const apiRequests = await getApiRequests({
     ...searchParams,
-    fundCollectionType: params.fundCollectionType === "ALL" ? undefined : params.fundCollectionType,
-    projectStateType: params.projectStateType,
+    fundCollectionType: validateFundCollectionType(params.fundCollectionType),
+    projectStateType: validateProjectStateType(params.projectStateType),
   });
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
