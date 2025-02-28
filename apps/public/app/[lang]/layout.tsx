@@ -1,8 +1,14 @@
 import {Inter} from "next/font/google";
 import "../globals.css";
 import {auth} from "@repo/utils/auth/next-auth";
+import {isRedirectError} from "next/dist/client/components/redirect";
+import {structuredError} from "@repo/utils/api";
+import ErrorComponent from "@repo/ui/components/error-component";
+import {signOutServer} from "@repo/utils/auth";
 import {getApiMemberApi, getProfileImageApi} from "@/actions/upwithcrowd/member/actions";
+import {myProfileApi} from "@/actions/core/AccountService/actions";
 import {getLocalizationResources} from "@/utils/lib";
+import {getResourceData} from "@/language/core/Default";
 import Providers from "../providers/providers";
 import type {Member} from "../providers/member";
 import {LocaleProvider} from "../providers/locale";
@@ -14,11 +20,36 @@ export const metadata = {
   description: "Empowering ideas through crowdfunding",
 };
 
+async function getApiRequests() {
+  try {
+    const requiredRequests = await Promise.all([myProfileApi()]);
+
+    const optionalRequests = await Promise.allSettled([]);
+    return {requiredRequests, optionalRequests};
+  } catch (error) {
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
+  }
+}
 export default async function RootLayout({children, params}: {children: React.ReactNode; params: {lang: string}}) {
+  const {lang} = params;
   const session = await auth();
+  const {languageData} = await getResourceData(lang);
   let member: Member | null = null;
   let members: Member[] = [];
   if (session) {
+    const apiRequests = await getApiRequests();
+    if ("message" in apiRequests) {
+      return (
+        <html lang="en">
+          <body className={inter.className}>
+            <ErrorComponent languageData={languageData} message={apiRequests.message} signOutServer={signOutServer} />;
+          </body>
+        </html>
+      );
+    }
     const memberResponse = await getApiMemberApi();
     const profileImageResponse = await getProfileImageApi();
     if (memberResponse.type === "success") {
@@ -43,7 +74,6 @@ export default async function RootLayout({children, params}: {children: React.Re
       }
     }
   }
-  const {lang} = params;
   const resources = await getLocalizationResources(lang);
   return (
     <html lang="en">
