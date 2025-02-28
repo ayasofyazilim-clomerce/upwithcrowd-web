@@ -220,7 +220,10 @@ function Commands() {
           </CommandItem>
           <CommandItem
             className="flex items-center gap-2 text-red-500 hover:cursor-pointer aria-selected:text-red-500"
-            onSelect={() => void signOutServer()}>
+            onSelect={() => {
+              window.localStorage.removeItem("current_member");
+              void signOutServer();
+            }}>
             <LogOut className="size-4" />
             Sign out
           </CommandItem>
