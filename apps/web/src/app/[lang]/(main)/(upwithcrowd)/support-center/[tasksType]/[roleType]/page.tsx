@@ -1,10 +1,10 @@
-import {getTaskApi} from "@upwithcrowd/tasks/action";
 import type {
   GetApiTaskData,
   UpwithCrowd_Tasks_RoleType,
   UpwithCrowd_Tasks_TasksType,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import SupportTable from "../../_components/table";
+import {getTaskApi} from "@upwithcrowd/tasks/action";
+import ClientPage from "./client";
 
 function validateRoleType(roleType: UpwithCrowd_Tasks_RoleType | "ALL") {
   switch (roleType.toLowerCase()) {
@@ -41,5 +41,5 @@ export default async function SupportPage({
     roleType: validateRoleType(params.roleType),
   });
 
-  return <SupportTable taskResponse={response.data} />;
+  return <ClientPage taskResponse={response.data} />;
 }
