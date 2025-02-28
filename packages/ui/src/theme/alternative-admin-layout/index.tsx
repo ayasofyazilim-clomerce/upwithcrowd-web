@@ -15,6 +15,7 @@ import {
   Landmark,
   LaptopMinimal,
   LucideIcon,
+  MessageCircleQuestionIcon,
   PersonStanding,
   Rabbit,
   Radio,
@@ -86,8 +87,8 @@ const newNavbarItems: NavItems[] = [
         title: "Girişimci",
         icon: Rabbit,
         items: [
-          {title: "Bireysel", icon: User, url: "/community/entrepreneur/individual"},
-          {title: "Organizasyon", icon: Building2, url: "/community/entrepreneur/organization"},
+          {title: "Bireysel", icon: User, url: "/community/entrepreuner/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/entrepreuner/organization"},
         ],
       },
       {
@@ -98,6 +99,32 @@ const newNavbarItems: NavItems[] = [
           {title: "Organizasyon", icon: Building2, url: "/community/all/organization"},
           {title: "Tümü", icon: Users, url: "/community/all/all"},
         ],
+      },
+    ],
+  },
+  {
+    title: "Destek Merkezi",
+    icon: MessageCircleQuestionIcon,
+    items: [
+      {
+        title: "Destek Talepleri",
+        icon: Landmark,
+        url: "/support-center/support/all",
+        // items: [
+        //   // {title: "Girişimci", icon: Rabbit, url: "/support-center/support/investor"},
+        //   // {title: "Yatırımcı", icon: Landmark, url: "/support-center/support/entrepreuner"},
+        //   {title: "Tümü", icon: Users, url: "/support-center/support/all"},
+        // ],
+      },
+      {
+        title: "Sorular",
+        icon: Rabbit,
+        url: "/support-center/issue/all",
+        // items: [
+        //   // {title: "Girişimci", icon: Rabbit, url: "/support-center/issue/investor"},
+        //   // {title: "Yatırımcı", icon: Landmark, url: "/support-center/issue/entrepreuner"},
+        //   {title: "Tümü", icon: Users, url: "/support-center/issue/all"},
+        // ],
       },
     ],
   },
