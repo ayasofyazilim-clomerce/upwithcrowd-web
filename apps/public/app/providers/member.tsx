@@ -2,7 +2,7 @@
 import {toast} from "@/components/ui/sonner";
 import type {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {useRouter} from "next/navigation";
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {putMemberSwitchByIdApi} from "@/actions/upwithcrowd/member/put-action";
 
 export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
@@ -62,6 +62,13 @@ export default function MemberProvider({
   const saveMembers = (_members: Member[]) => {
     setMemberList(_members);
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && _currentMember) {
+      window.sessionStorage.setItem("current_member", JSON.stringify(_currentMember));
+    }
+  }, [_currentMember]);
+
   return (
     <MemberContext.Provider
       value={{
