@@ -23,13 +23,16 @@ async function getApiRequests(searchParams: GetApiProjectData) {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: {lang: string; fundCollectionType: "SHRE" | "DBIT" | "ALL"; projectStateType: "PA" | "PS" | "PF" | "PC"};
+  searchParams?: GetApiProjectData;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
 
   const apiRequests = await getApiRequests({
+    ...searchParams,
     fundCollectionType: params.fundCollectionType === "ALL" ? undefined : params.fundCollectionType,
     projectStateType: params.projectStateType,
   });

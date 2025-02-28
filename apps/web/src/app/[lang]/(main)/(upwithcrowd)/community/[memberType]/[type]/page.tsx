@@ -23,8 +23,10 @@ async function getApiRequests(searchParams: GetApiMemberData) {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: {lang: string; memberType: "investor" | "entrepreneur" | "all"; type: "individual" | "organization" | "all"};
+  searchParams?: GetApiMemberData;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
@@ -53,6 +55,7 @@ export default async function Page({
   }
 
   const apiRequests = await getApiRequests({
+    ...searchParams,
     isEntrepreneur,
     isInvestor,
     type,

@@ -11,5 +11,6 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-throw-literal": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
+    "import/no-extraneous-dependencies": "off",
   },
 };
