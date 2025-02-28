@@ -5,7 +5,7 @@ import {SessionProvider} from "@repo/utils/auth";
 import {auth} from "@repo/utils/auth/next-auth";
 import {GrantedPoliciesProvider} from "@repo/utils/policies";
 import type {Policy} from "@repo/utils/policies";
-import NovuProvider from "@/providers/novu";
+import {NovuProvider} from "@repo/ui/providers/novu";
 
 interface ProvidersProps {
   children: JSX.Element;
