@@ -1,6 +1,7 @@
 "use client";
 
 import type {Session} from "@repo/utils/auth";
+import {NovuProvider} from "@repo/ui/providers/novu";
 import {SessionProvider} from "@repo/utils/auth";
 import {Toaster} from "@/components/ui/sonner";
 import {TooltipProvider} from "@/components/ui/tooltip";
@@ -25,7 +26,12 @@ export default function Providers({children, session, currentMember, members}: P
       <TooltipProvider>
         <Toaster richColors />
         <MemberProvider currentMember={currentMember} members={members}>
-          {children}
+          <NovuProvider
+            appId={process.env.NOVU_APP_IDENTIFIER || ""}
+            appUrl={process.env.NOVU_APP_URL || ""}
+            subscriberId={session?.user?.sub || "67b8674f58411ad400a054e9"}>
+            {children}
+          </NovuProvider>
         </MemberProvider>
       </TooltipProvider>
     </SessionProvider>
