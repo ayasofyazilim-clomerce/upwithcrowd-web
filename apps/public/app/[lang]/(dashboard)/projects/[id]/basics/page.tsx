@@ -1,4 +1,4 @@
-import {getPublicProjectDetailsApi} from "@/actions/upwithcrowd/project/action";
+import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/actions";
 import {getCategoryApi, getTypeApi} from "@/actions/upwithcrowd/category-project/action";
 import ClientBasics from "./client";
 
@@ -13,7 +13,7 @@ export default async function Basics({
 
   // Fetch both data in parallel
   const [projectDetailResponse, categoryResponse, typeResponse] = await Promise.all([
-    getPublicProjectDetailsApi(id),
+    getPublicProjectDetailByIdApi(id),
     getCategoryApi(),
     getTypeApi(),
   ]);

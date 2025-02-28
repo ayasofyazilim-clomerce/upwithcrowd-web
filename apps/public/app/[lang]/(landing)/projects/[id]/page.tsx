@@ -1,9 +1,8 @@
 import type {
-  UpwithCrowd_Projects_ListProjectsResponseDto,
   PagedResultDto_ListProjectsMembersResponseDto,
   UpwithCrowd_Files_FileResponseListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getProjectApi, getProjectByIdMembersApi} from "@/actions/upwithcrowd/project/action";
+import {getProjectByIdMembersApi} from "@/actions/upwithcrowd/project/action";
 import {
   getPublicProjectDetailByIdApi,
   getPublicProjectByIdMembersApi,
@@ -13,11 +12,8 @@ import ProjectDetails from "./client";
 
 export default async function Page({params}: {params: {id: string}}) {
   const {id} = params;
-
+  const isEditable = false;
   const projectDetailsResponseBasics = await getPublicProjectDetailByIdApi(id);
-  const membersProject = await getProjectApi({
-    maxResultCount: 100,
-  });
 
   let projectsMemberResponse = await getProjectByIdMembersApi(id);
 
@@ -30,10 +26,6 @@ export default async function Page({params}: {params: {id: string}}) {
     items: [],
     totalCount: 0,
   };
-
-  const isEditable =
-    typeof membersProject.data !== "string" &&
-    membersProject.data.items?.some((project: UpwithCrowd_Projects_ListProjectsResponseDto) => project.id === id);
 
   const fileResponse = await getFileApi({
     fileType: "ProjectImages",

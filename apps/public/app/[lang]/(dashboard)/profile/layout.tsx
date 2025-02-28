@@ -33,6 +33,10 @@ export default function Layout({children, params}: {children: React.ReactNode; p
           href: `${baseLink}projects`,
           label: "Projelerim",
         },
+        {
+          href: `${baseLink}support`,
+          label: "Taleplerim",
+        },
       ]}>
       {children}
     </TabLayout>
