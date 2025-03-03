@@ -12,7 +12,7 @@ import {Fragment} from "react/jsx-runtime";
 
 export function HeaderSection({activeRoutes}: {activeRoutes: string[] | null}) {
   return (
-    <Breadcrumb className="mb-4 mt-1">
+    <Breadcrumb className="my-4">
       <BreadcrumbList>
         {activeRoutes?.map((route, index) => (
           <Fragment key={route}>

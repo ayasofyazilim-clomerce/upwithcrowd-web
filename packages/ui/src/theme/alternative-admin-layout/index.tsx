@@ -172,7 +172,9 @@ function findParentTitles(navItems: NavItems[], targetUrl: string): string[] | n
 }
 function AlternativeAdminLayout(props: any) {
   const pathName = usePathname().replace(`/${props.lang}`, "");
-  const activeRoutes = findParentTitles(newNavbarItems, pathName);
+  const activeRoutes =
+    findParentTitles(newNavbarItems, pathName) ||
+    findParentTitles(newNavbarItems, pathName.substring(0, pathName.lastIndexOf("/")));
   return (
     <ThemeProvider
       appName={props.appName}
