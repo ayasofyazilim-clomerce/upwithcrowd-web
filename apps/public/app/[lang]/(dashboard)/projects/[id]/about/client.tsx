@@ -192,7 +192,7 @@ export default function ClientAbout({
             onSubmit={(e) => {
               void form.handleSubmit(onSubmit)(e);
             }}>
-            <Section text="Who is leading this project?" title="Project Leaders">
+            <Section text="Bu projeyi kimler yönetiyor?" title="Proje Liderleri">
               <FormContainer>
                 <div className="space-y-4">
                   <div className="flex flex-col gap-4">
@@ -206,7 +206,7 @@ export default function ClientAbout({
                           }
                         }}
                         value="">
-                        <option value="">Add a leader</option>
+                        <option value="">Lider ekle</option>
                         {leaderOptions
                           .filter((option) => !selectedLeaders.some((leader) => leader.id === option.id))
                           .map((option) => (
@@ -233,7 +233,7 @@ export default function ClientAbout({
                             }}
                             size="sm"
                             variant="ghost">
-                            Remove
+                            Kaldır
                           </Button>
                         </div>
                       ))}
@@ -241,7 +241,7 @@ export default function ClientAbout({
 
                     {selectedLeaders.length === 0 && (
                       <p className="py-4 text-center text-sm text-gray-500">
-                        No project leaders selected. Please add at least one leader.
+                        Henüz proje lideri seçilmedi. Lütfen en az bir lider ekleyin.
                       </p>
                     )}
                   </div>
@@ -398,7 +398,7 @@ export default function ClientAbout({
                   <div className="w-full md:w-2/3">
                     <FormLabel htmlFor="nationality">Uyruk</FormLabel>
                     <div className="relative">
-                      <Input className="peer pl-8" id="nationality" placeholder="Start typing your nation..." />
+                      <Input className="peer pl-8" id="nationality" placeholder="Uyruğunuzu yazmaya başlayın..." />
                       <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
                     </div>
                   </div>
@@ -524,7 +524,7 @@ export default function ClientAbout({
             </Section>
 
             <Button className="w-full md:w-auto md:min-w-[200px]" type="submit">
-              Kaydet
+              Devam Et
             </Button>
           </form>
         </Form>

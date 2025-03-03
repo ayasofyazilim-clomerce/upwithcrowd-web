@@ -50,7 +50,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
         }}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormItem>
-            <FormLabel>ID Type</FormLabel>
+            <FormLabel>Kimlik Türü</FormLabel>
             <Input disabled readOnly value={currentMember?.idType || ""} />
           </FormItem>
           <FormField
@@ -58,7 +58,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
             name="identifier"
             render={({field}) => (
               <FormItem>
-                <FormLabel>Identifier</FormLabel>
+                <FormLabel>Kimlik Numarası</FormLabel>
                 <FormControl>
                   <Input {...field} disabled readOnly />
                 </FormControl>
@@ -69,11 +69,11 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormItem>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>Ad</FormLabel>
             <Input disabled readOnly value={currentMember?.name || ""} />
           </FormItem>
           <FormItem>
-            <FormLabel>Surname</FormLabel>
+            <FormLabel>Soyad</FormLabel>
             <Input disabled readOnly value={currentMember?.surname || ""} />
           </FormItem>
         </div>
@@ -84,7 +84,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
             name="mobile"
             render={({field}) => (
               <FormItem>
-                <FormLabel>Mobile</FormLabel>
+                <FormLabel>Cep Telefonu</FormLabel>
                 <FormControl>
                   <PhoneInput
                     {...field}
@@ -103,9 +103,9 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
             name="annualIncome"
             render={({field}) => (
               <FormItem>
-                <FormLabel>Annual Income</FormLabel>
+                <FormLabel>Yıllık Gelir</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter annual income" type="number" />
+                  <Input {...field} placeholder="Yıllık gelir giriniz" type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,9 +117,9 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
           name="mail"
           render={({field}) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>E-posta</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter email" type="email" />
+                <Input {...field} placeholder="E-posta giriniz" type="email" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,7 +127,7 @@ export function IndividualForm({onSubmit}: IndividualFormProps) {
         />
         <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
           {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-          {form.formState.isSubmitting ? "Updating..." : "Update Personal Account"}
+          {form.formState.isSubmitting ? "Güncelleniyor..." : "Kişisel Hesabı Güncelle"}
         </Button>
       </form>
     </Form>

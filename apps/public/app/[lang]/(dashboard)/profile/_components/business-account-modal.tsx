@@ -22,21 +22,21 @@ export function BusinessAccountModal({isOpen, onClose}: BusinessAccountModalProp
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
             <Building2 className="primary h-8 w-8" />
-            Business Account Created
+            Kurumsal Hesap Oluşturuldu
           </DialogTitle>
           <DialogDescription>
-            Your business account has been successfully created. You&apos;re all set to start managing your business
-            with our tools.
+            Kurumsal hesabınız başarıyla oluşturuldu. Artık araçlarımızla işletmenizi yönetmeye hazırsınız.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
           <p className="text-muted-foreground text-sm">
-            Congratulations on setting up your business account! We look forward to helping you grow your business.
+            Kurumsal hesabınızı oluşturduğunuz için tebrikler! İşletmenizin büyümesine yardımcı olmak için
+            sabırsızlanıyoruz.
           </p>
         </div>
         <DialogFooter>
           <Button className="w-full sm:w-auto" onClick={onClose}>
-            Explore Dashboard
+            Paneli Keşfet
           </Button>
         </DialogFooter>
       </DialogContent>

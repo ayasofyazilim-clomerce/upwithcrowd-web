@@ -25,7 +25,7 @@ function InfoButton({href}: {href: string}) {
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>Click to edit this section</p>
+        <p>Bu bölümü düzenlemek için tıklayın</p>
       </TooltipContent>
     </Tooltip>
   );
@@ -68,7 +68,7 @@ export default function FundingTable({data, editLink}: FundingTableProps) {
         <TableHeader>
           <TableRow>
             <div className="flex items-start">
-              <TableHead className="text-xl font-semibold text-black">Investment Information</TableHead>
+              <TableHead className="text-xl font-semibold text-black">Yatırım Bilgileri</TableHead>
               <InfoButton href={editLink} />
             </div>
           </TableRow>
@@ -76,86 +76,86 @@ export default function FundingTable({data, editLink}: FundingTableProps) {
         <TableBody>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Nominal Fund Amount
+              Nominal Fon Miktarı
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>The base funding amount for the project</TooltipContent>
+                <TooltipContent>Proje için temel fonlama miktarı</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatCurrency(data.fundNominalAmount)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Additional Fund Rate
+              Ek Fonlama Oranı
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Extra funding rate applied to the nominal amount</TooltipContent>
+                <TooltipContent>Nominal miktara uygulanan ek fonlama oranı</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatPercentage(data.additionalFundRate)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Qualified Fund Rate
+              Nitelikli Fonlama Oranı
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Rate applied for qualified funding scenarios</TooltipContent>
+                <TooltipContent>Nitelikli fonlama senaryoları için uygulanan oran</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatPercentage(data.qualifiedFundRate)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Over Funding
+              Ek Fonlama
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Indicates if the project is over its funding target</TooltipContent>
+                <TooltipContent>Projenin fonlama hedefini aşıp aşamayacağını gösterir</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>
-              <Badge variant={data.overFunding ? "default" : "secondary"}>{data.overFunding ? "Yes" : "No"}</Badge>
+              <Badge variant={data.overFunding ? "default" : "secondary"}>{data.overFunding ? "Evet" : "Hayır"}</Badge>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Cash Value
+              Nakit Değeri
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Current cash value of the funding</TooltipContent>
+                <TooltipContent>Fonlamanın mevcut nakit değeri</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatCurrency(data.cashValue)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Fundable Amount
+              Fonlanabilir Miktar
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Maximum amount that can be funded</TooltipContent>
+                <TooltipContent>Fonlanabilecek maksimum miktar</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatCurrency(data.fundableAmount)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Fund Collection Type
+              Fonlama Tipi
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Method of fund collection</TooltipContent>
+                <TooltipContent>Fon toplama yöntemi</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>

@@ -64,9 +64,9 @@ export default function ProjectDetails({
       });
 
       if (paymentResponse.type === "success") {
-        toast.success("Thank you for your support!");
+        toast.success("Desteğiniz için teşekkür ederiz!");
       } else {
-        toast.error(paymentResponse.message || "Something went wrong");
+        toast.error(paymentResponse.message || "Bir şeyler yanlış gitti");
       }
     } catch (error) {
       toast.error("An error occurred while processing your payment");
@@ -187,7 +187,7 @@ export default function ProjectDetails({
             </div>
             <Card className="mt-6">
               <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl">Project Team</CardTitle>
+                <CardTitle className="text-xl font-bold md:text-2xl">Proje Ekibi</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -218,7 +218,7 @@ export default function ProjectDetails({
             {/* Add new Investors Card */}
             <Card className="mt-6">
               <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl">Investors</CardTitle>
+                <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -257,7 +257,7 @@ export default function ProjectDetails({
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block w-full rounded-full shadow-lg transition-all md:w-auto"
             href={`/projects/${projectId}/basics`}>
             <Button className="w-full rounded-md md:w-auto md:rounded-full" size="lg" type="button">
-              Edit Project
+              Projeyi Düzenle
             </Button>
           </Link>
         </div>

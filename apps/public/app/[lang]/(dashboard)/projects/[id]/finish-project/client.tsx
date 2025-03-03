@@ -80,7 +80,7 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Click to edit this section</p>
+                        <p>Bu bölümü düzenlemek için tıklayın</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -107,7 +107,7 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
                 Finansman hedeflerinizi görebilir ve son kontrollerinizi yapabilirsiniz.
               </p>
               <p>
-                Her şey istediğiniz gibi görünüyorsa, sayfanın sağ alt köşesindeki &quot;Finish Project&quot; butonunu
+                Her şey istediğiniz gibi görünüyorsa, sayfanın sağ alt köşesindeki &quot;Projeyi Tamamla&quot; butonunu
                 kullanarak projenizi lansmana gönderebilirsiniz.
               </p>
             </DialogDescription>
@@ -131,16 +131,16 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
             setDialogOpen(true);
           }}
           size="lg">
-          Finish Project
+          Projeyi Tamamla
         </Button>
       </div>
 
       <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
         <DialogContent className="w-[90%] max-w-[90%] p-4 sm:max-w-[425px] sm:p-6">
           <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl">Finish Project</DialogTitle>
+            <DialogTitle className="text-xl sm:text-2xl">Projeyi Tamamla</DialogTitle>
             <DialogDescription className="text-sm sm:text-base">
-              Are you sure you want to finish this project? This action cannot be undone.
+              Projeyi tamamlamak istediğinizden emin misiniz? Bu işlem geri alınamaz.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -149,9 +149,9 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
                 setDialogOpen(false);
               }}
               variant="outline">
-              Cancel
+              İptal
             </Button>
-            <Button onClick={handleFinishProject}>Continue</Button>
+            <Button onClick={handleFinishProject}>Devam Et</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -18,12 +18,12 @@ export default function Header() {
   const {session} = useSession();
 
   const PublicLinks = [
-    {href: getBaseLink("", lang), label: "Home"},
-    {href: getBaseLink("projects", lang), label: "Projects"},
+    {href: getBaseLink("", lang), label: "Ana Sayfa"},
+    {href: getBaseLink("projects", lang), label: "Projeler"},
     {href: getBaseLink("blogs", lang), label: "Blog"},
-    {href: getBaseLink("about", lang), label: "About"},
-    {href: getBaseLink("faq", lang), label: "FAQ"},
-    {href: getBaseLink("contact", lang), label: "Contact"},
+    {href: getBaseLink("about", lang), label: "Hakkımızda"},
+    {href: getBaseLink("faq", lang), label: "SSS"},
+    {href: getBaseLink("contact", lang), label: "İletişim"},
   ];
 
   useEffect(() => {
@@ -67,17 +67,17 @@ export default function Header() {
             <div className="flex items-center space-x-6">
               <Link className="flex items-center justify-center gap-2" href={getBaseLink("projects/new", lang)}>
                 <PlusCircle className="text-primary size-5" />
-                Start a Project
+                Proje Başlat
               </Link>
               <MemberSwitcher />
             </div>
           ) : (
             <div className="flex items-center space-x-4">
               <Button asChild variant="outline">
-                <Link href={getBaseLink("login", lang)}>Sign In</Link>
+                <Link href={getBaseLink("login", lang)}>Giriş Yap</Link>
               </Button>
               <Button asChild>
-                <Link href={getBaseLink("register", lang)}>Sign Up</Link>
+                <Link href={getBaseLink("register", lang)}>Kayıt Ol</Link>
               </Button>
             </div>
           )}
@@ -124,7 +124,7 @@ export default function Header() {
                     setIsMenuOpen(false);
                   }}>
                   <PlusCircle className="size-6" />
-                  Start a Project
+                  Proje Başlat
                 </Link>
                 <div className="mt-4">
                   <MemberSwitcher />
@@ -138,7 +138,7 @@ export default function Header() {
                     onClick={() => {
                       setIsMenuOpen(false);
                     }}>
-                    Sign In
+                    Giriş Yap
                   </Link>
                 </Button>
                 <Button asChild className="w-full max-w-[200px]">
@@ -147,7 +147,7 @@ export default function Header() {
                     onClick={() => {
                       setIsMenuOpen(false);
                     }}>
-                    Sign Up
+                    Kayıt Ol
                   </Link>
                 </Button>
               </div>

@@ -41,58 +41,58 @@ export default function FundingTable({data}: FundingTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-xl font-semibold text-black">Investment Information</TableHead>
+            <TableHead className="text-xl font-semibold text-black">Yatırım Bilgileri</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Nominal Fund Amount
+              Nominal Fon Miktarı
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>The base funding amount for the project</TooltipContent>
+                <TooltipContent>Proje için temel fonlama miktarı</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatCurrency(data.fundNominalAmount)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Additional Fund Rate
+              Ek Fon Oranı
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Extra funding rate applied to the nominal amount</TooltipContent>
+                <TooltipContent>Nominal tutara uygulanan ek fonlama oranı</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatPercentage(data.additionalFundRate)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Qualified Fund Rate
+              Nitelikli Fon Oranı
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Rate applied for qualified funding scenarios</TooltipContent>
+                <TooltipContent>Nitelikli fonlama senaryoları için uygulanan oran</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>{formatPercentage(data.qualifiedFundRate)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="flex items-center gap-2 font-medium">
-              Over Funding
+              Aşırı Fonlama
               <Tooltip>
                 <TooltipTrigger>
                   <Info className="text-muted-foreground h-4 w-4" />
                 </TooltipTrigger>
-                <TooltipContent>Indicates if the project is over its funding target</TooltipContent>
+                <TooltipContent>Projenin fonlama hedefini aşıp aşmadığını gösterir</TooltipContent>
               </Tooltip>
             </TableCell>
             <TableCell>
-              <Badge variant={data.overFunding ? "default" : "secondary"}>{data.overFunding ? "Yes" : "No"}</Badge>
+              <Badge variant={data.overFunding ? "default" : "secondary"}>{data.overFunding ? "Evet" : "Hayır"}</Badge>
             </TableCell>
           </TableRow>
           <TableRow>

@@ -21,19 +21,19 @@ import {BusinessAccountModal} from "../../_components/business-account-modal";
 const formSchema = z.object({
   identifier: z
     .string()
-    .length(10, "VKN must be exactly 10 digits")
-    .regex(/^[0-9]+$/, "VKN must contain only numbers"),
+    .length(10, "VKN tam olarak 10 haneli olmalıdır")
+    .regex(/^[0-9]+$/, "VKN sadece rakamlardan oluşmalıdır"),
   title: z
     .string()
-    .min(1, "Title is required")
-    .regex(/^[a-zA-Z0-9*\s&,.'\-\p{L}]{1,600}$/u, "Invalid title format"),
+    .min(1, "Ünvan gereklidir")
+    .regex(/^[a-zA-Z0-9*\s&,.'\-\p{L}]{1,600}$/u, "Geçersiz ünvan formatı"),
   tel: z
     .string()
-    .regex(/^(?:[+]\d{1,2})(?:\d{10})$/, "Invalid telephone format")
+    .regex(/^(?:[+]\d{1,2})(?:\d{10})$/, "Geçersiz telefon formatı")
     .optional()
     .or(z.literal("")),
-  mail: z.string().email("Invalid email address"),
-  annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Invalid annual income"),
+  mail: z.string().email("Geçersiz e-posta adresi"),
+  annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Geçersiz yıllık gelir"),
   name: z.string().optional(),
   surname: z.string().optional(),
   mobile: z.string().optional(),
@@ -88,7 +88,7 @@ export default function NewBusinessAccount() {
         toast.error(memberResult.message);
       }
     } catch (error) {
-      toast.error("There was an error creating your business account. Please try again.");
+      toast.error("İşletme hesabı oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.");
     }
     setIsSubmitting(false);
   }
@@ -103,9 +103,9 @@ export default function NewBusinessAccount() {
     <>
       <Card className="mx-auto w-full p-2 sm:p-6">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-xl font-bold sm:text-2xl">New Business Account</CardTitle>
+          <CardTitle className="text-xl font-bold sm:text-2xl">Yeni Kurumsal Hesap</CardTitle>
           <CardDescription className="text-sm sm:text-base">
-            Enter your business account details below to get started.
+            Başlamak için işletme hesap bilgilerinizi girin.
           </CardDescription>
         </CardHeader>
         <Form {...form}>
@@ -121,7 +121,7 @@ export default function NewBusinessAccount() {
                   name="identifier"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel className="text-sm sm:text-base">VKN (Tax Number)</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">VKN (Vergi Kimlik Numarası)</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -133,7 +133,7 @@ export default function NewBusinessAccount() {
                             input.value = input.value.replace(/[^0-9]/g, "");
                           }}
                           pattern="[0-9]*"
-                          placeholder="Enter your 10-digit Tax Number"
+                          placeholder="10 haneli Vergi Numaranızı girin"
                           type="text"
                         />
                       </FormControl>
@@ -147,9 +147,9 @@ export default function NewBusinessAccount() {
                   name="title"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel className="text-sm sm:text-base">Title</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">Ünvan</FormLabel>
                       <FormControl>
-                        <Input {...field} className="text-sm sm:text-base" placeholder="Enter title" />
+                        <Input {...field} className="text-sm sm:text-base" placeholder="Ünvan giriniz" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -163,7 +163,7 @@ export default function NewBusinessAccount() {
                   name="tel"
                   render={({field}) => (
                     <FormItem className="w-full">
-                      <FormLabel className="text-sm sm:text-base">Telephone (Optional)</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">Telefon (İsteğe bağlı)</FormLabel>
                       <FormControl>
                         <PhoneInput
                           {...field}
@@ -183,7 +183,7 @@ export default function NewBusinessAccount() {
                   name="annualIncome"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel className="text-sm sm:text-base">Annual Income</FormLabel>
+                      <FormLabel className="text-sm sm:text-base">Yıllık Gelir</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -194,7 +194,7 @@ export default function NewBusinessAccount() {
                             input.value = input.value.replace(/[^0-9]/g, "");
                           }}
                           pattern="[0-9]*"
-                          placeholder="Enter annual income"
+                          placeholder="Yıllık gelir giriniz"
                           type="text"
                         />
                       </FormControl>
@@ -208,13 +208,13 @@ export default function NewBusinessAccount() {
                 name="mail"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel className="text-sm sm:text-base">Email</FormLabel>
+                    <FormLabel className="text-sm sm:text-base">E-posta</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         className="text-sm sm:text-base"
                         defaultValue={currentMember?.mail || ""}
-                        placeholder="Enter email"
+                        placeholder="E-posta adresinizi girin"
                         type="email"
                       />
                     </FormControl>
@@ -226,7 +226,7 @@ export default function NewBusinessAccount() {
             <CardFooter>
               <Button className="w-full text-sm sm:text-base" disabled={isSubmitting || !isFormValid} type="submit">
                 {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {isSubmitting ? "Submitting..." : "Create Business Account"}
+                {isSubmitting ? "Gönderiliyor..." : "İşletme Hesabı Oluştur"}
               </Button>
             </CardFooter>
           </form>

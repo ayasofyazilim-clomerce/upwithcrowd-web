@@ -12,7 +12,7 @@ export default async function Funding({
   const {id} = params;
   const projectDetail = await getPublicProjectDetailsFundingApi(id);
 
-  if (projectDetail.type !== "success") return <>yok</>;
+  if (projectDetail.type !== "success") return <>veri bulunamadı</>;
 
   const fundingDetail: Required<UpwithCrowd_Projects_UpdateProjectFundingDto> = {
     fundCollectionType: projectDetail.data.fundCollectionType || "NONE",

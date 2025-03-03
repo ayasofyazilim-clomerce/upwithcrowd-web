@@ -5,9 +5,9 @@ import ContactInfo from "./_components/contact-card";
 import {ContactForm} from "./client";
 
 export default function Page() {
-  const title = "Contact Us";
+  const title = "İletişim";
   const description =
-    "Have questions or need support? We're here to help. Reach out to us using any of the methods below.";
+    "Sorularınız mı var veya desteğe mi ihtiyacınız var? Size yardımcı olmak için buradayız. Aşağıdaki yöntemlerden herhangi birini kullanarak bize ulaşın.";
 
   return (
     <div className="bg-background min-h-screen">

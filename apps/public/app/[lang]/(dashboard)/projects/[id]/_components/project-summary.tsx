@@ -28,7 +28,7 @@ function InfoButton({href}: {href: string}) {
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>Click to edit this section</p>
+        <p>Bu bölümü düzenlemek için tıklayın</p>
       </TooltipContent>
     </Tooltip>
   );
@@ -59,7 +59,7 @@ export default function ProjectSummary({
 
       <p className="text-md mb-4 font-medium md:text-lg">{basics.projectDefinition}</p>
       <p className="text-normal mb-4">
-        <span className="text-primary font-bold">$0</span> of ${(funding.fundableAmount ?? 0).toLocaleString()} raised
+        <span className="text-primary font-bold">0₺</span> toplanan {(funding.fundableAmount ?? 0).toLocaleString()}₺
       </p>
 
       <div className="relative mx-auto mb-6 w-full">
@@ -94,14 +94,14 @@ export default function ProjectSummary({
       <Progress className="mb-4 h-3" value={fundedPercentage} />
 
       <div className="mb-6 flex justify-between text-sm">
-        <span>$0 raised</span>
+        <span>0₺ toplandı</span>
         <span>
           {funding.projectEndDate
             ? Math.ceil((new Date(funding.projectEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
             : "N/A"}
-          days left
+          gün kaldı
         </span>
-        <span>${funding.fundableAmount?.toLocaleString()} goal</span>
+        <span>{funding.fundableAmount?.toLocaleString()}₺ hedef</span>
       </div>
     </>
   );

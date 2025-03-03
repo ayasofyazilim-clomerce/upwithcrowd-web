@@ -24,7 +24,7 @@ export default function SupportCard({
   return (
     <Card className="border-none bg-transparent p-0 p-4 pb-6 shadow-none md:p-0 md:pb-0">
       <CardContent className="p-0">
-        <h3 className="mb-4 text-xl font-semibold">Support this project</h3>
+        <h3 className="mb-4 text-xl font-semibold">Bu projeye destek ol</h3>
         <div className="mb-4 grid grid-cols-3 gap-4">
           {donationOptions.map((amount) => (
             <Button
@@ -42,7 +42,7 @@ export default function SupportCard({
           <Input
             className="pl-9"
             onChange={handleCustomAmountChange}
-            placeholder="Enter custom amount"
+            placeholder="Özel miktar girin"
             type="text"
             value={customAmount}
           />
@@ -50,7 +50,7 @@ export default function SupportCard({
       </CardContent>
       <CardFooter className="p-0">
         <Button className="w-full" disabled={isLoading} onClick={() => void onDonate(selectedDonation)}>
-          {isLoading ? "Processing..." : `Donate $${selectedDonation} Now`}
+          {isLoading ? "İşleniyor..." : `${selectedDonation}$ Bağış Yap`}
         </Button>
       </CardFooter>
     </Card>

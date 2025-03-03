@@ -118,8 +118,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
             title: "text-3xl",
             text: "text-lg",
           }}
-          text="Plan and manage your project's finances."
-          title="Let's talk about money"
+          text="Projenizin finansmanını planlayın ve yönetin."
+          title="Finansman detayları"
         />
 
         <Form {...form}>
@@ -138,7 +138,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                   name="fundCollectionType"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Fund Collection Type</FormLabel>
+                      <FormLabel>Fonlama Tipi</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select fund collection type" />
@@ -190,7 +190,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                     <Label
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       htmlFor="spesificDate">
-                      End Spesific Date
+                      Özel Bitiş Tarihi
                     </Label>
                   </div>
 
@@ -225,7 +225,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                     name="cashValue"
                     render={({field}) => (
                       <FormItem>
-                        <FormLabel>Cash Value</FormLabel>
+                        <FormLabel>Nakit Değeri</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
@@ -252,8 +252,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
             {/* Funding Goals Section Begin */}
             <Section
               className="border-b-0"
-              text={["The minimum required f for the project. This represents the base level of financing needed."]}
-              title="Fundable Amount">
+              text={["Proje için gerekli minimum fon miktarını girin."]}
+              title="Fonlanabilir Miktar">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -283,8 +283,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
             <Section
               className="border-b-0"
-              text={["The minimum amount an investor can contribute to the project."]}
-              title="Min Fund Amount">
+              text={["Yatırımcıların yapabileceği minimum yatırım miktarı."]}
+              title="Minimum Yatırım Miktarı">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -317,10 +317,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
             <Section
               className="border-b-0"
-              text={[
-                "The minimum required funding amount for the project. This represents the base level of financing needed.",
-              ]}
-              title="Nominal Amount">
+              text={["Nominal değer, projenin temel finansman ihtiyacını temsil eder."]}
+              title="Nominal Değer">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -350,8 +348,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
             <Section
               className="border-b-0"
-              text={["If checked, the project can exceed its target funding amount."]}
-              title="Over Funding">
+              text={["İşaretlenirse, proje hedef fonlama miktarını aşabilir."]}
+              title="Ek Fonlama">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -373,10 +371,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
             <Section
               className="border-b-0"
-              text={[
-                "Additional funding rate. Defines the extra percentage that can be added to the total fundable amount.",
-              ]}
-              title="Additional Funds Rate">
+              text={["Ek fonlama oranı. Toplam fonlanabilir miktara eklenebilecek yüzdeyi belirler."]}
+              title="Ek Fonlama Oranı">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -398,8 +394,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
             </Section>
             <Section
               className="border-b-0"
-              text={["Qualified funding rate for qualified investors who are allowed to invest in the project."]}
-              title="Qualified Funds Rate">
+              text={["Nitelikli yatırımcılar için fonlama oranı."]}
+              title="Nitelikli Fonlama Oranı">
               <FormContainer className="">
                 <FormField
                   control={form.control}
@@ -420,7 +416,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
               </FormContainer>
             </Section>
 
-            <Section text={["Write a clear, brief description of the privileges."]} title="Privilege">
+            <Section text={["Yatırımcılara sağlanacak ayrıcalıkları açıkça belirtin."]} title="Ayrıcalıklar">
               <FormContainer>
                 <FormField
                   control={form.control}
@@ -440,10 +436,10 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
 
             <Section
               text={[
-                "Determine the various costs to bring your project to life with our Google Sheets template.",
-                "We’ll have access to your document, but we will never share your information with others.",
+                "Google Sheets şablonumuzu kullanarak projenizi hayata geçirmek için gereken maliyetleri belirleyin.",
+                "Belgenize erişimimiz olacak, ancak bilgileriniz hiçbir zaman başkalarıyla paylaşılmayacak.",
               ]}
-              title="Project budget BETA(optional)">
+              title="Proje bütçesi BETA(opsiyonel)">
               <FormContainer className="">
                 <BudgetCard />
               </FormContainer>

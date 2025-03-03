@@ -4,12 +4,12 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {useRouter, useSearchParams} from "next/navigation";
 
 const sortOptions = [
-  {label: "Project Name (A-Z)", value: "projectName ASC"},
-  {label: "Project Name (Z-A)", value: "projectName DESC"},
-  {label: "End Date (Newest)", value: "projectEndDate DESC"},
-  {label: "End Date (Oldest)", value: "projectEndDate ASC"},
-  {label: "Fund Amount (High-Low)", value: "fundableAmount DESC"},
-  {label: "Fund Amount (Low-High)", value: "fundableAmount ASC"},
+  {label: "Proje Adı (A-Z)", value: "projectName ASC"},
+  {label: "Proje Adı (Z-A)", value: "projectName DESC"},
+  {label: "Bitiş Tarihi (En Yeni)", value: "projectEndDate DESC"},
+  {label: "Bitiş Tarihi (En Eski)", value: "projectEndDate ASC"},
+  {label: "Fon Miktarı (Yüksek-Düşük)", value: "fundableAmount DESC"},
+  {label: "Fon Miktarı (Düşük-Yüksek)", value: "fundableAmount ASC"},
 ];
 
 export default function SortSelector() {
@@ -27,7 +27,7 @@ export default function SortSelector() {
       defaultValue={`${searchParams.get("sortField") || "projectEndDate"} ${searchParams.get("sortOrder") || "ASC"}`}
       onValueChange={handleSort}>
       <SelectTrigger className="w-full md:w-[200px]">
-        <SelectValue placeholder="Sort by..." />
+        <SelectValue placeholder="Sıralama..." />
       </SelectTrigger>
       <SelectContent>
         {sortOptions.map((option) => (

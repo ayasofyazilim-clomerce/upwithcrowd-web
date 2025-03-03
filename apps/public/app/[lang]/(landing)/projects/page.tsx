@@ -16,9 +16,9 @@ export default async function Page({
     projectName?: string;
   };
 }) {
-  const title = "Discover Innovative Projects";
+  const title = "Yenilikçi Projeleri Keşfet";
   const description =
-    "Explore a world of creativity and innovation. Support projects that are shaping the future and making a difference in communities around the globe.";
+    "Yaratıcılık ve inovasyon dünyasını keşfedin. Geleceği şekillendiren ve dünya çapında toplulukları etkileyen projelere destek olun.";
 
   const reqBody = {};
 

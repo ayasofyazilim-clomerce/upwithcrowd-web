@@ -5,33 +5,33 @@ import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious}
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
-    role: "Project Creator",
+    name: "Ayşe Yılmaz",
+    role: "Proje Sahibi",
     comment:
-      "UPwithCrowd made it easy for me to bring my eco-friendly product to market. The support from the community was incredible!",
+      "UPwithCrowd sayesinde çevre dostu ürünümü pazara sunmak çok kolay oldu. Topluluktan gelen destek inanılmazdı!",
     avatar: "/placeholder.svg",
   },
   {
-    name: "Michael Lee",
-    role: "Backer",
+    name: "Mehmet Demir",
+    role: "Destekçi",
     comment:
-      "I love being part of projects that make a difference. UPwithCrowd connects me with innovative ideas I'm excited to support.",
+      "Fark yaratan projelerin bir parçası olmayı seviyorum. UPwithCrowd, desteklemekten heyecan duyduğum yenilikçi fikirlerle beni buluşturuyor.",
     avatar: "/placeholder.svg",
   },
   {
-    name: "Emily Chen",
-    role: "Nonprofit Leader",
+    name: "Zeynep Kaya",
+    role: "STK Lideri",
     comment:
-      "Thanks to UPwithCrowd, we were able to fund our community outreach program and make a real impact in our local area.",
+      "UPwithCrowd sayesinde, topluluk destek programımızı finanse edebildik ve bölgemizde gerçek bir etki yaratmayı başardık.",
     avatar: "/placeholder.svg",
   },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="bg-primary/10  px-4 py-8 md:px-6 md:py-12 lg:py-32">
+    <section className="bg-primary/10 px-4 py-8 md:px-6 md:py-12 lg:py-32">
       <div className="container mx-auto">
-        <h2 className="mb-6 text-center text-3xl font-bold md:mb-10 md:text-4xl">What Our Community Says</h2>
+        <h2 className="mb-6 text-center text-3xl font-bold md:mb-10 md:text-4xl">Topluluk Ne Diyor?</h2>
         <div className="relative">
           <Carousel
             className="mx-auto w-full max-w-6xl"

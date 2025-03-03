@@ -5,19 +5,19 @@ import {Home, Phone, Mail} from "lucide-react";
 const ContactInfo: FC = () => {
   const data = [
     {
-      title: "Our Location",
+      title: "Adresimiz",
       description: "4517 Washington Ave. Manchester Kentucky 39495",
-      icon: Home, // İkon dosyanızın yolunu buraya ekleyin
+      icon: Home,
     },
     {
-      title: "Our Contact",
+      title: "İletişim",
       description: "+(548) 1234-456-7890",
-      icon: Phone, // İkon dosyanızın yolunu buraya ekleyin
+      icon: Phone,
     },
     {
-      title: "Send Mail",
+      title: "E-posta",
       description: "info.furndz@gmail.com",
-      icon: Mail, // İkon dosyanızın yolunu buraya ekleyin
+      icon: Mail,
     },
   ];
 
