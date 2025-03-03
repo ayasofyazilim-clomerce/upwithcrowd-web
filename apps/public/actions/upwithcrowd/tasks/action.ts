@@ -6,7 +6,7 @@ import {getUpwithcrowd} from "@/utils/client";
 export async function getTaskApi(data?: GetApiTaskData) {
   try {
     const client = await getUpwithcrowd();
-    const dataResponse = await client.task.getApiTask(data);
+    const dataResponse = await client.tasks.getApiTask(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
     throw structuredError(error);

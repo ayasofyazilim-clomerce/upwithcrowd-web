@@ -26,7 +26,7 @@
   "dependencies": {
     "@auth/core": "^0.30.0",
     "@ayasofyazilim/core-saas": "latest",
-    "@ayasofyazilim/upwithcrowd-saas": "^0.0.28",
+    "@ayasofyazilim/upwithcrowd-saas": "^0.0.29",
     "@novu/react": "^2.6.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@repo/ayasofyazilim-ui": "workspace:^",
@@ -40,7 +40,6 @@
     "google-libphonenumber": "^3.2.37",
     "lucide-react": "0.445.0",
     "recharts": "^2.15.1",
-
     "mini-svg-data-uri": "^1.4.4",
     "next": "14.2.20",
     "next-auth": "5.0.0-beta.16",
