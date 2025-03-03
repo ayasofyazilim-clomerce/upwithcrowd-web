@@ -17,17 +17,28 @@ export default function ClientPage({taskResponse}: {taskResponse: PagedResultDto
     taskResponse.items?.[0] ?? null,
   );
   const [isPending, startTransition] = useTransition();
+  if (!taskResponse.items?.length) {
+    return (
+      <div className="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-6">
+        <div className="mb-2">
+          <h1 className="text-2xl font-bold text-gray-700">Açılmış bir destek talebi bulunamadı.</h1>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="my-2 grid grid-cols-3 gap-3">
       <div className="col-span-1 flex flex-col gap-3">
-        {taskResponse.items?.map((item) => (
+        {taskResponse.items.map((item) => (
           <button
-            key={item.id}
             className={cn(
               "hover:bg-accent flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all",
               selectedTask?.id === item.id && "bg-muted",
             )}
-            onClick={() => setSelectedTask(item)}>
+            key={item.id}
+            onClick={() => {
+              setSelectedTask(item);
+            }}>
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
@@ -55,7 +66,7 @@ export default function ClientPage({taskResponse}: {taskResponse: PagedResultDto
         ))}
       </div>
       <div className="col-span-2">
-        {selectedTask && (
+        {selectedTask ? (
           <div className="flex flex-col gap-3 rounded-lg border p-3">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
@@ -86,10 +97,10 @@ export default function ClientPage({taskResponse}: {taskResponse: PagedResultDto
                   if (formData?.comment)
                     void postTaskCommentApi({
                       requestBody: {
-                        memberId: selectedTask?.memberId || "",
-                        projectId: selectedTask?.projectId || "",
-                        tasksId: selectedTask?.id || "",
-                        comment: formData?.comment || "",
+                        memberId: selectedTask.memberId || "",
+                        projectId: selectedTask.projectId || "",
+                        tasksId: selectedTask.id || "",
+                        comment: formData.comment || "",
                       },
                     }).then((res) => {
                       handlePostResponse(res);
@@ -97,7 +108,7 @@ export default function ClientPage({taskResponse}: {taskResponse: PagedResultDto
                 });
               }}
               schema={$UpwithCrowd_TasksComment_TasksCommentDto}
-              submitText={"Gönder"}
+              submitText="Gönder"
               uiSchema={{
                 comment: {
                   "ui:title": "Yorum",
@@ -106,7 +117,7 @@ export default function ClientPage({taskResponse}: {taskResponse: PagedResultDto
               }}
             />
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
