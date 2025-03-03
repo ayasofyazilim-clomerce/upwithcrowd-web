@@ -25,20 +25,22 @@ export default function EditPersonalAccount() {
         //@ts-expect-error we know it's a Member
         //eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- This is safe
         setCurrentMember({...currentMember, ...values});
-        toast.success("Your account has been updated successfully.");
+        toast.success("Hesabınız başarıyla güncellendi.");
       } else {
-        toast.error(result.message || "An error occurred while updating your account.");
+        toast.error(result.message || "Hesabınız güncellenirken bir hata oluştu.");
       }
     } catch (error) {
-      toast.error("There was an error updating your account. Please try again.");
+      toast.error("Hesabınız güncellenirken bir hata oluştu. Lütfen tekrar deneyin.");
     }
   }
 
   return (
     <Card className="mx-auto w-full p-2 sm:p-6">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-xl font-bold sm:text-2xl">Edit Your Account</CardTitle>
-        <CardDescription className="text-sm sm:text-base">Update your account details below.</CardDescription>
+        <CardTitle className="text-xl font-bold sm:text-2xl">Hesabınızı Düzenleyin</CardTitle>
+        <CardDescription className="text-sm sm:text-base">
+          Hesap bilgilerinizi aşağıdan güncelleyebilirsiniz.
+        </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 sm:gap-6">
         {currentMember?.type === "Organization" ? (

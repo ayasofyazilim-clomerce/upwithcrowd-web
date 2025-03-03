@@ -5,7 +5,7 @@ export default function ServicesSection() {
   return (
     <section className="bg-muted px-6 py-12 md:py-20">
       <div className="container mx-auto">
-        <h2 className="mb-10 text-center text-2xl font-bold md:text-3xl">Our Services</h2>
+        <h2 className="mb-10 text-center text-2xl font-bold md:text-3xl">Hizmetlerimiz</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {services.map((service, index) => (
             <Card

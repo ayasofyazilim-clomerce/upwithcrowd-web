@@ -55,7 +55,7 @@ export default function MemberSwitcher() {
       <PopoverTrigger asChild>
         <Button
           aria-expanded={open}
-          aria-label="Select a member"
+          aria-label="Üye seçin"
           className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
@@ -73,7 +73,7 @@ export default function MemberSwitcher() {
       <DrawerTrigger asChild>
         <Button
           aria-expanded={open}
-          aria-label="Select a member"
+          aria-label="Üye seçin"
           className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
@@ -103,12 +103,12 @@ function Content({
   const individuals = members.filter((x) => x.type === "Individual");
   return (
     <Command>
-      <CommandInput placeholder="Search member..." />
+      <CommandInput placeholder="Üye ara..." />
       {(individuals.length > 0 || organizations.length > 0) && <CommandSeparator />}
       <CommandList>
-        <CommandEmpty>No member found.</CommandEmpty>
+        <CommandEmpty>Üye bulunamadı.</CommandEmpty>
         {individuals.length > 0 && (
-          <CommandGroup heading="Individuals" key="individuals">
+          <CommandGroup heading="Bireysel Üyeler" key="individuals">
             {currentMember
               ? individuals.map((ind) => (
                   <ListItem currentMember={currentMember} key={ind.id} member={ind} setOpen={setOpen} />
@@ -117,7 +117,7 @@ function Content({
           </CommandGroup>
         )}
         {organizations.length > 0 && (
-          <CommandGroup heading="Organizations" key="organizations">
+          <CommandGroup heading="Kurumsal Üyeler" key="organizations">
             {currentMember
               ? organizations.map((org) => (
                   <ListItem currentMember={currentMember} key={org.id} member={org} setOpen={setOpen} />
@@ -202,20 +202,20 @@ function Commands() {
           <CommandItem>
             <Link className="flex items-center gap-2" href={getBaseLink("profile/new/business", lang)}>
               <PlusCircle className="size-4" />
-              Create business account
+              Kurumsal hesap oluştur
             </Link>
           </CommandItem>
           <CommandSeparator />
           <CommandItem>
             <Link className="flex items-center gap-2" href={getBaseLink("profile", lang)}>
               <UserIcon className="size-4" />
-              Profile
+              Profil
             </Link>
           </CommandItem>
           <CommandItem>
             <Link className="flex items-center gap-2" href={getBaseLink("profile/support/support-form", lang)}>
               <HelpCircle className="size-4" />
-              Create Support Request
+              Destek Talebi Oluştur
             </Link>
           </CommandItem>
           <CommandItem
@@ -225,7 +225,7 @@ function Commands() {
               void signOutServer();
             }}>
             <LogOut className="size-4" />
-            Sign out
+            Çıkış yap
           </CommandItem>
         </CommandGroup>
       </CommandList>

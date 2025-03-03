@@ -11,33 +11,32 @@ import LandingHero from "@/components/landing-hero";
 const goals = [
   {
     icon: Lightbulb,
-    title: "Inspire Innovation",
+    title: "İnovasyonu Teşvik Et",
     description:
-      "We provide a platform for creative minds to showcase their groundbreaking ideas and turn them into reality.",
+      "Yaratıcı zihinlerin çığır açan fikirlerini sergileyebilecekleri ve gerçeğe dönüştürebilecekleri bir platform sunuyoruz.",
   },
   {
     icon: Users,
-    title: "Build Community",
+    title: "Topluluk Oluştur",
     description:
-      "Our platform fosters connections between creators and backers, building a supportive community of innovators.",
+      "Platformumuz, yaratıcılar ile destekçiler arasında bağlantılar kurarak, yenilikçilerden oluşan destekleyici bir topluluk oluşturuyor.",
   },
   {
     icon: Target,
-    title: "Drive Impact",
-    description:
-      "We aim to fund projects that make a real difference, creating positive change in communities worldwide.",
+    title: "Etki Yarat",
+    description: "Dünya çapında toplumlar üzerinde gerçek bir fark yaratan projeleri fonlamayı hedefliyoruz.",
   },
   {
     icon: Heart,
-    title: "Empower Creators",
+    title: "Yaratıcıları Güçlendir",
     description:
-      "Empowering innovators and changemakers to bring their ideas to life through the power of community support.",
+      "Topluluk desteğinin gücüyle yenilikçileri ve değişim yaratanları fikirlerini hayata geçirmeleri için güçlendiriyoruz.",
   },
 ];
 
-const title = "About UPwithCrowd";
+const title = "UPwithCrowd Hakkında";
 const description =
-  "Empowering innovators and changemakers to bring their ideas to life through the power of community support.";
+  "Topluluk desteğinin gücüyle yenilikçileri ve değişim yaratanları fikirlerini hayata geçirmeleri için güçlendiriyoruz.";
 
 export default function Page() {
   return (
@@ -59,7 +58,7 @@ export default function Page() {
         <div className="mb-16 flex flex-col items-center gap-8 lg:flex-row">
           <div className="lg:w-1/2">
             <Image
-              alt="UPwithCrowd in action"
+              alt="UPwithCrowd çalışırken"
               className="rounded-lg shadow-lg"
               height={400}
               src="/placeholder.svg"
@@ -67,13 +66,13 @@ export default function Page() {
             />
           </div>
           <div className="text-center md:text-left lg:w-1/2">
-            <h2 className="mb-4 text-2xl font-bold md:text-3xl">Join Our Mission</h2>
+            <h2 className="mb-4 text-2xl font-bold md:text-3xl">Misyonumuza Katılın</h2>
             <p className="mb-6 text-lg">
-              At UPwithCrowd, we believe in the power of collective support to bring innovative ideas to life. Whether
-              you&apos;re a creator with a groundbreaking project or a backer looking to support the next big thing,
-              you&apos;re in the right place. Join us in shaping the future, one project at a time.
+              UPwithCrowd olarak, yenilikçi fikirleri hayata geçirmek için kolektif desteğin gücüne inanıyoruz. İster
+              çığır açan bir projeye sahip bir yaratıcı, ister gelecekteki büyük bir şeyi desteklemek isteyen bir
+              destekçi olun, doğru yerdesiniz. Geleceği şekillendirmek için bize katılın, bir proje bir adım.
             </p>
-            <Button size="lg">Start Your Project</Button>
+            <Button size="lg">Projenizi Başlatın</Button>
           </div>
         </div>
 

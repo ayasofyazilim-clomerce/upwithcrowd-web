@@ -12,14 +12,15 @@ import {Loader2} from "lucide-react";
 import {useMember} from "@/app/providers/member";
 
 const formSchema = z.object({
+  identifier: z.string(),
   idType: z.literal("VKN").optional(),
   tel: z
     .string()
-    .regex(/^(?:[+]\d{1,2})(?:\d{10})$/, "Invalid telephone format")
+    .regex(/^(?:[+]\d{1,2})(?:\d{10})$/, "Geçersiz telefon formatı")
     .optional()
     .or(z.literal("")),
-  mail: z.string().email("Invalid email address"),
-  annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Invalid annual income"),
+  mail: z.string().email("Geçersiz e-posta adresi"),
+  annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Geçersiz yıllık gelir"),
   mobile: z.string().optional(),
 });
 
@@ -35,6 +36,7 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
+      identifier: currentMember?.identifier || "",
       idType: "VKN",
       tel: currentMember?.tel || "",
       mail: currentMember?.mail || "",
@@ -63,12 +65,20 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
           })(e);
         }}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="identifier"
+            render={({field}) => (
+              <FormItem>
+                <FormLabel>Kimlik Numarası</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled readOnly />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <FormItem>
-            <FormLabel>Identifier</FormLabel>
-            <Input disabled readOnly value={currentMember?.identifier || ""} />
-          </FormItem>
-          <FormItem>
-            <FormLabel>Title</FormLabel>
+            <FormLabel>Ünvan</FormLabel>
             <Input disabled readOnly value={currentMember?.title || ""} />
           </FormItem>
         </div>
@@ -79,7 +89,7 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
             name="tel"
             render={({field}) => (
               <FormItem>
-                <FormLabel>Telephone</FormLabel>
+                <FormLabel>Telefon</FormLabel>
                 <FormControl>
                   <PhoneInput
                     className="w-full"
@@ -101,9 +111,9 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
             name="annualIncome"
             render={({field}) => (
               <FormItem>
-                <FormLabel>Annual Income</FormLabel>
+                <FormLabel>Yıllık Gelir</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter annual income" type="number" />
+                  <Input {...field} placeholder="Yıllık gelir giriniz" type="number" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -115,9 +125,9 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
           name="mail"
           render={({field}) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>E-posta</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter email" type="email" />
+                <Input {...field} placeholder="E-posta giriniz" type="email" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,7 +135,7 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
         />
         <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
           {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-          {form.formState.isSubmitting ? "Updating..." : "Update Organization Account"}
+          {form.formState.isSubmitting ? "Güncelleniyor..." : "Kurumsal Hesabı Güncelle"}
         </Button>
       </form>
     </Form>

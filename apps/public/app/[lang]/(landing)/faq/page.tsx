@@ -3,45 +3,46 @@ import LandingHero from "@/components/landing-hero";
 
 const faqItems = [
   {
-    question: "What is crowdfunding?",
+    question: "Kitle fonlaması nedir?",
     answer:
-      "Crowdfunding is a method of raising capital through the collective effort of friends, family, customers, and individual investors. This approach taps into the collective efforts of a large pool of individuals—primarily online via social media and crowdfunding platforms—and leverages their networks for greater reach and exposure.",
+      "Kitle fonlaması, arkadaşlar, aile, müşteriler ve bireysel yatırımcıların toplu çabasıyla sermaye artırma yöntemidir. Bu yaklaşım, büyük bir birey topluluğunun toplu çabalarından yararlanır - öncelikle sosyal medya ve kitle fonlaması platformları aracılığıyla çevrimiçi olarak - ve daha geniş erişim ve görünürlük için ağlarını kullanır.",
   },
   {
-    question: "How does UPwithCrowd work?",
+    question: "UPwithCrowd nasıl çalışır?",
     answer:
-      "UPwithCrowd provides a platform for project creators to showcase their ideas and for backers to support projects they believe in. Creators set a funding goal and deadline. If the project reaches its funding goal, backers' credit cards are charged when the campaign ends. If the project doesn't reach its funding goal, no one is charged.",
+      "UPwithCrowd, proje yaratıcılarının fikirlerini sergileyebilecekleri ve destekçilerin inandıkları projeleri destekleyebilecekleri bir platform sunar. Yaratıcılar bir fonlama hedefi ve son tarih belirler. Proje fonlama hedefine ulaşırsa, destekçilerin kredi kartlarından kampanya sonunda ücret tahsil edilir. Proje fonlama hedefine ulaşmazsa, kimsenin kartından ücret tahsil edilmez.",
   },
   {
-    question: "What types of projects can I fund on UPwithCrowd?",
+    question: "UPwithCrowd'da hangi tür projeleri fonlayabilirim?",
     answer:
-      "UPwithCrowd supports a wide variety of projects across different categories including technology, arts, film, music, publishing, games, and more. We encourage innovative and creative projects that have a clear goal and can make a positive impact.",
+      "UPwithCrowd, teknoloji, sanat, film, müzik, yayıncılık, oyunlar ve daha fazlası dahil olmak üzere farklı kategorilerde çeşitli projeleri destekler. Net bir hedefi olan ve olumlu etki yaratabilecek yenilikçi ve yaratıcı projeleri teşvik ediyoruz.",
   },
   {
-    question: "How do I start a project on UPwithCrowd?",
+    question: "UPwithCrowd'da nasıl proje başlatabilirim?",
     answer:
-      "To start a project, you need to create an account, then click on the 'Start a Project' button. You'll be guided through a process where you'll provide details about your project, set your funding goal, create rewards for backers, and submit your project for review.",
+      "Bir proje başlatmak için önce bir hesap oluşturmanız, ardından 'Proje Başlat' düğmesine tıklamanız gerekir. Projeniz hakkında ayrıntılar vereceğiniz, fonlama hedefinizi belirleyeceğiniz, destekçiler için ödüller oluşturacağınız ve projenizi incelemeye sunacağınız bir süreç boyunca yönlendirileceksiniz.",
   },
   {
-    question: "Is my donation tax-deductible?",
+    question: "Bağışım vergiden düşürülebilir mi?",
     answer:
-      "In most cases, contributions to UPwithCrowd projects are not tax-deductible. UPwithCrowd is not a 501(c)(3) organization. That said, some projects might be run by nonprofit organizations. In those cases, you should contact the project creator directly to determine if your contribution is tax-deductible.",
+      "Çoğu durumda, UPwithCrowd projelerine yapılan katkılar vergiden düşürülemez. UPwithCrowd bir 501(c)(3) kuruluşu değildir. Bununla birlikte, bazı projeler kar amacı gütmeyen kuruluşlar tarafından yürütülüyor olabilir. Bu durumlarda, katkınızın vergiden düşürülüp düşürülemeyeceğini belirlemek için doğrudan proje yaratıcısıyla iletişime geçmelisiniz.",
   },
   {
-    question: "What happens if a project doesn't reach its funding goal?",
+    question: "Bir proje fonlama hedefine ulaşmazsa ne olur?",
     answer:
-      "If a project doesn't reach its funding goal by the deadline, no money is collected from backers and the project creator receives nothing. This is part of our all-or-nothing funding model, which protects both creators and backers.",
+      "Bir proje son tarihe kadar fonlama hedefine ulaşmazsa, destekçilerden para tahsil edilmez ve proje yaratıcısı hiçbir şey almaz. Bu, hem yaratıcıları hem de destekçileri koruyan ya hep ya hiç fonlama modelimizin bir parçasıdır.",
   },
   {
-    question: "How does UPwithCrowd make money?",
+    question: "UPwithCrowd nasıl para kazanır?",
     answer:
-      "UPwithCrowd applies a 5% fee to the funds collected for creators. Our payments processor also charges a fee of 3% + $0.20 per pledge. These fees only apply to successfully funded projects.",
+      "UPwithCrowd, yaratıcılar için toplanan fonlara %5 ücret uygular. Ödeme işlemcimiz ayrıca her taahhüt için %3 + 0,20$ ücret alır. Bu ücretler yalnızca başarıyla fonlanan projeler için geçerlidir.",
   },
 ];
 
 export default function Page() {
-  const title = "Frequently Asked Questions";
-  const description = "Find answers to common questions about UPwithCrowd, how it works, and how you can get involved.";
+  const title = "Sıkça Sorulan Sorular";
+  const description =
+    "UPwithCrowd hakkında, nasıl çalıştığı ve nasıl dahil olabileceğiniz konusunda sık sorulan soruların cevaplarını bulun.";
 
   return (
     <div className="bg-background min-h-screen">

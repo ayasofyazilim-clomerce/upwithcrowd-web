@@ -8,68 +8,71 @@ import {getBaseLink} from "@/utils/lib";
 // Mock data for blog posts
 const blogPosts = [
   {
-    slug: "10-tips-for-successful-crowdfunding",
-    title: "10 Tips for Successful Crowdfunding",
-    excerpt: "Learn the secrets to running a successful crowdfunding campaign and bringing your ideas to life.",
+    slug: "basarili-kitlesel-fonlama-icin-10-ipucu",
+    title: "Başarılı Kitlesel Fonlama için 10 İpucu",
+    excerpt:
+      "Başarılı bir kitlesel fonlama kampanyası yürütmenin ve fikirlerinizi hayata geçirmenin sırlarını öğrenin.",
     image: "/placeholder.svg",
     date: "2023-06-01",
-    category: "Crowdfunding",
-    readTime: "5 min read",
+    category: "Kitlesel Fonlama",
+    readTime: "5 dk okuma",
   },
   {
-    slug: "the-future-of-crowdfunding",
-    title: "The Future of Crowdfunding",
-    excerpt: "Explore emerging trends and technologies shaping the future of crowdfunding and online fundraising.",
+    slug: "kitlesel-fonlamanin-gelecegi",
+    title: "Kitlesel Fonlamanın Geleceği",
+    excerpt:
+      "Kitlesel fonlama ve çevrimiçi bağış toplama yöntemlerinin geleceğini şekillendiren yeni trendleri ve teknolojileri keşfedin.",
     image: "/placeholder.svg",
     date: "2023-05-15",
-    category: "Industry Insights",
-    readTime: "7 min read",
+    category: "Sektör Analizi",
+    readTime: "7 dk okuma",
   },
   {
-    slug: "spotlight-innovative-projects",
-    title: "Spotlight: Innovative Projects Making a Difference",
+    slug: "yenilikci-projeler",
+    title: "Öne Çıkan: Fark Yaratan Yenilikçi Projeler",
     excerpt:
-      "Discover inspiring projects that are leveraging crowdfunding to create positive change in communities worldwide.",
+      "Dünya çapında toplumsal değişim yaratmak için kitlesel fonlamayı kullanan ilham verici projeleri keşfedin.",
     image: "/placeholder.svg",
     date: "2023-05-01",
-    category: "Project Spotlight",
-    readTime: "6 min read",
+    category: "Proje Vitrini",
+    readTime: "6 dk okuma",
   },
   {
-    slug: "crowdfunding-for-nonprofits",
-    title: "Crowdfunding for Nonprofits: A Complete Guide",
-    excerpt: "Learn how nonprofits can effectively use crowdfunding to support their causes and expand their reach.",
+    slug: "kar-amaci-gutmeyen-kuruluslar-icin-kitlesel-fonlama",
+    title: "Kar Amacı Gütmeyen Kuruluşlar için Kitlesel Fonlama Rehberi",
+    excerpt:
+      "Kar amacı gütmeyen kuruluşların amaçlarını desteklemek ve etkilerini artırmak için kitlesel fonlamayı nasıl etkili kullanabileceklerini öğrenin.",
     image: "/placeholder.svg",
     date: "2023-04-20",
-    category: "Nonprofit",
-    readTime: "8 min read",
+    category: "STK",
+    readTime: "8 dk okuma",
   },
   {
-    slug: "building-community-around-your-project",
-    title: "Building a Community Around Your Crowdfunding Project",
+    slug: "projeniz-etrafinda-topluluk-olusturmak",
+    title: "Kitlesel Fonlama Projeniz Etrafında Topluluk Oluşturmak",
     excerpt:
-      "Discover strategies to engage supporters and create a lasting community around your crowdfunding campaign.",
+      "Destekçilerinizle etkileşim kurmanın ve kitlesel fonlama kampanyanız etrafında kalıcı bir topluluk oluşturmanın stratejilerini keşfedin.",
     image: "/placeholder.svg",
     date: "2023-04-10",
-    category: "Community",
-    readTime: "6 min read",
+    category: "Topluluk",
+    readTime: "6 dk okuma",
   },
   {
-    slug: "legal-considerations-for-crowdfunding",
-    title: "Legal Considerations for Crowdfunding Campaigns",
+    slug: "kitlesel-fonlama-hukuki-hususlar",
+    title: "Kitlesel Fonlama Kampanyaları için Hukuki Hususlar",
     excerpt:
-      "Navigate the legal landscape of crowdfunding with this comprehensive guide to regulations and best practices.",
+      "Kitlesel fonlamanın yasal düzenlemeler ve en iyi uygulamalar konusundaki kapsamlı rehberiyle hukuki boyutunu öğrenin.",
     image: "/placeholder.svg",
     date: "2023-03-25",
-    category: "Legal",
-    readTime: "7 min read",
+    category: "Hukuk",
+    readTime: "7 dk okuma",
   },
 ];
 
 export default function Page({params}: {params: {lang: string}}) {
   const {lang} = params;
   const title = "UPwithCrowd Blog";
-  const description = "Insights, tips, and stories from the world of crowdfunding";
+  const description = "Kitlesel fonlama dünyasından içgörüler, ipuçları ve hikayeler";
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8">

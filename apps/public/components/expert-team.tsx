@@ -2,23 +2,23 @@ import Image from "next/image";
 
 const team = [
   {
-    name: "John Doe",
-    role: "CEO & Founder",
+    name: "Ahmet Yılmaz",
+    role: "CEO & Kurucu",
     image: "/placeholder.svg",
   },
   {
-    name: "Jane Smith",
+    name: "Ayşe Demir",
     role: "CTO",
     image: "/placeholder.svg",
   },
   {
-    name: "Alex Johnson",
-    role: "Head of Community",
+    name: "Mehmet Kaya",
+    role: "Topluluk Yöneticisi",
     image: "/placeholder.svg",
   },
   {
-    name: "Maria Garcia",
-    role: "Lead Designer",
+    name: "Zeynep Çelik",
+    role: "Baş Tasarımcı",
     image: "/placeholder.svg",
   },
 ];
@@ -27,8 +27,8 @@ export default function ExpertTeam() {
   return (
     <section className="px-6 py-12 md:py-20">
       <div className="container mx-auto">
-        <h1 className="text-center text-2xl uppercase">Our Team</h1>
-        <h2 className="text-center text-4xl font-bold">Meet Our Expert Team</h2>
+        <h1 className="text-center text-2xl uppercase">Ekibimiz</h1>
+        <h2 className="text-center text-4xl font-bold">Uzman Ekibimizle Tanışın</h2>
         <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member, index) => (
             <div className="text-center" key={index}>

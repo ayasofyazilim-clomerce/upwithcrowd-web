@@ -23,19 +23,19 @@ export default function VolunteerHero() {
           className="mb-4 text-2xl font-semibold text-emerald-800"
           initial={{opacity: 0, y: 20}}
           transition={{delay: 0.2}}>
-          BECOME A VOLUNTEER
+          GÖNÜLLÜ OL
         </motion.h2>
         <motion.h1
           animate={{opacity: 1, y: 0}}
           className="mb-8 text-4xl font-bold leading-tight text-gray-900 md:text-6xl"
           initial={{opacity: 0, y: 20}}
           transition={{delay: 0.4}}>
-          Join hands with us for a
+          Daha iyi bir yaşam ve gelecek için
           <br />
-          <span className="text-emerald-600">better life and future</span>
+          <span className="text-emerald-600">bizimle el ele verin</span>
         </motion.h1>
         <motion.div animate={{opacity: 1, y: 0}} initial={{opacity: 0, y: 20}} transition={{delay: 0.6}}>
-          <Button size="lg">Discover More</Button>
+          <Button size="lg">Daha Fazla Bilgi</Button>
         </motion.div>
       </div>
     </div>

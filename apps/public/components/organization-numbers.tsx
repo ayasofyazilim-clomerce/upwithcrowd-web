@@ -1,8 +1,8 @@
 const stats = [
-  {label: "Projects Funded", value: "10,000+"},
-  {label: "Total Raised", value: "$100M+"},
-  {label: "Global Backers", value: "1M+"},
-  {label: "Success Rate", value: "78%"},
+  {label: "Finanse Edilen Projeler", value: "10.000+"},
+  {label: "Toplam Toplanan", value: "$100M+"},
+  {label: "Küresel Destekçiler", value: "1M+"},
+  {label: "Başarı Oranı", value: "78%"},
 ];
 
 export default function OrganizationNumbers() {

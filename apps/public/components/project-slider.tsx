@@ -26,8 +26,8 @@ export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListPr
     <section className="px-6 py-20">
       <div className="container mx-auto">
         <div className="mb-10 flex flex-col items-center">
-          <h4 className="text-2xl uppercase">Our cases</h4>
-          <h2 className="text-center text-4xl font-bold">Popular causes what you should know</h2>
+          <h4 className="text-2xl uppercase">Projelerimiz</h4>
+          <h2 className="text-center text-4xl font-bold">Öne Çıkan Projeler</h2>
         </div>
         <Carousel
           className="mx-auto w-full max-w-6xl"
@@ -95,9 +95,9 @@ function ProjectDetails({project}: {project: UpwithCrowd_Projects_ListProjectsRe
       </h3>
       <div className="bg-primary/5 rounded-lg p-3 md:p-4">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
+          <span className="text-xs font-medium md:text-sm">Tamamlanan: {fundedPercentage.toFixed(0)}%</span>
           <span className="text-muted-foreground text-xs md:text-sm">
-            {project.projectEndDate ? getDaysLeft(project.projectEndDate) : 0} days left
+            {project.projectEndDate ? getDaysLeft(project.projectEndDate) : 0} gün kaldı
           </span>
         </div>
         <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
@@ -106,14 +106,14 @@ function ProjectDetails({project}: {project: UpwithCrowd_Projects_ListProjectsRe
             <DollarSign className="text-primary mr-2 h-5 w-5" />
             <div>
               <p className="font-semibold">${project.fundableAmount || 0}</p>
-              <p className="text-muted-foreground text-xs">raised</p>
+              <p className="text-muted-foreground text-xs">toplanan</p>
             </div>
           </div>
           <div className="flex items-center">
             <Target className="text-primary mr-2 h-5 w-5" />
             <div>
               <p className="font-semibold">${project.fundableAmount || 0}</p>
-              <p className="text-muted-foreground text-xs">goal</p>
+              <p className="text-muted-foreground text-xs">hedef</p>
             </div>
           </div>
         </div>

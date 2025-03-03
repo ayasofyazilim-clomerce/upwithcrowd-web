@@ -53,7 +53,7 @@ export default function NewPersonalAccount() {
   const {setMembers, setCurrentMember, currentMember} = useMember();
   useEffect(() => {
     if (currentMember !== null) {
-      router.push("/profile");
+      //router.push("/profile");
     }
   }, [currentMember, router]);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -165,8 +165,8 @@ export default function NewPersonalAccount() {
   return (
     <Card className="mx-auto w-full">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Create Your Personal Account</CardTitle>
-        <CardDescription>Enter your personal account details below to get started.</CardDescription>
+        <CardTitle className="text-2xl font-bold">Yeni Kişisel Hesap Oluştur</CardTitle>
+        <CardDescription>Kişisel hesap bilgilerinizi aşağıya girerek başlayın.</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form
@@ -180,15 +180,15 @@ export default function NewPersonalAccount() {
                 name="idType"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>ID Type *</FormLabel>
+                    <FormLabel>Kimlik Türü *</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select ID type" />
+                          <SelectValue placeholder="Kimlik türünü seçin" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="NONE">NONE</SelectItem>
+                        <SelectItem value="NONE">YOK</SelectItem>
                         <SelectItem value="TCKN">TCKN</SelectItem>
                         <SelectItem value="YKN">YKN</SelectItem>
                         <SelectItem value="MKN">MKN</SelectItem>
@@ -204,9 +204,9 @@ export default function NewPersonalAccount() {
                 name="identifier"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Identifier *</FormLabel>
+                    <FormLabel>Kimlik Numarası *</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter identifier" />
+                      <Input {...field} placeholder="Kimlik numarasını girin" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -219,9 +219,9 @@ export default function NewPersonalAccount() {
               {!isVerified && (
                 <Alert variant={canStartVerification() ? "default" : "destructive"}>
                   <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Verification Required</AlertTitle>
+                  <AlertTitle>Doğrulama Gerekli</AlertTitle>
                   <AlertDescription>
-                    Please verify your identity through E-Devlet before proceeding with the registration.
+                    Kayıt işlemine devam etmeden önce kimliğinizi E-Devlet üzerinden doğrulayın.
                   </AlertDescription>
                 </Alert>
               )}
@@ -229,9 +229,9 @@ export default function NewPersonalAccount() {
               {isVerified ? (
                 <Alert className="border-green-200 bg-green-50" variant="default">
                   <CheckCircle2 className="h-4 w-4 text-green-600" />
-                  <AlertTitle className="text-green-600">Verification Successful</AlertTitle>
+                  <AlertTitle className="text-green-600">Doğrulama Başarılı</AlertTitle>
                   <AlertDescription className="text-green-600">
-                    Your identity has been verified. You can now complete your registration.
+                    Kimliğiniz doğrulandı. Şimdi kaydınızı tamamlayabilirsiniz.
                   </AlertDescription>
                 </Alert>
               ) : null}
@@ -256,10 +256,10 @@ export default function NewPersonalAccount() {
                     {isVerifying ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Verifying...
+                        Doğrulanıyor...
                       </>
                     ) : (
-                      "Verify with E-Devlet"
+                      "E-Devlet ile Doğrula"
                     )}
                   </Button>
                 </div>
@@ -274,9 +274,9 @@ export default function NewPersonalAccount() {
                   name="name"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>İsim</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter name" />
+                        <Input {...field} placeholder="İsim girin" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -287,9 +287,9 @@ export default function NewPersonalAccount() {
                   name="surname"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Surname</FormLabel>
+                      <FormLabel>Soyisim</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter surname" />
+                        <Input {...field} placeholder="Soyisim girin" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -303,9 +303,9 @@ export default function NewPersonalAccount() {
                   name="email"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>E-posta</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter email" type="email" />
+                        <Input {...field} placeholder="E-posta girin" type="email" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -319,7 +319,7 @@ export default function NewPersonalAccount() {
                   name="mobile"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Mobile</FormLabel>
+                      <FormLabel>Mobil</FormLabel>
                       <FormControl>
                         <PhoneInput
                           {...field}
@@ -339,9 +339,9 @@ export default function NewPersonalAccount() {
                   name="annualIncome"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>Annual Income</FormLabel>
+                      <FormLabel>Yıllık Gelir</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter annual income" type="number" />
+                        <Input {...field} placeholder="Yıllık geliri girin" type="number" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -353,7 +353,7 @@ export default function NewPersonalAccount() {
           <CardFooter>
             <Button className="w-full" disabled={form.formState.isSubmitting || !isVerified} type="submit">
               {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              {form.formState.isSubmitting ? "Submitting..." : "Create Personal Account"}
+              {form.formState.isSubmitting ? "Gönderiliyor..." : "Kişisel Hesap Oluştur"}
             </Button>
           </CardFooter>
         </form>

@@ -4,24 +4,24 @@ import Link from "next/link";
 
 const blogPosts = [
   {
-    title: "10 Tips for Successful Crowdfunding",
+    title: "Başarılı Kitle Fonlaması için 10 İpucu",
     image: "/placeholder.svg",
     excerpt:
-      "Learn the secrets to running a successful crowdfunding campaign and bringing your ideas to life.Get insights from experts and learn how to maximize your campaign's potential.",
-    slug: "10-tips-for-successful-crowdfunding",
+      "Başarılı bir kitle fonlama kampanyası yürütmenin ve fikirlerinizi hayata geçirmenin sırlarını öğrenin. Uzmanlardan içgörüler edinin ve kampanyanızın potansiyelini en üst düzeye çıkarın.",
+    slug: "basarili-kitle-fonlamasi-10-ipucu",
   },
   {
-    title: "The Future of Crowdfunding",
+    title: "Kitle Fonlamasının Geleceği",
     image: "/placeholder.svg",
-    excerpt: "Explore emerging trends and technologies shaping the future of crowdfunding and online fundraising.",
-    slug: "the-future-of-crowdfunding",
+    excerpt: "Kitle fonlaması ve çevrimiçi fon toplama alanını şekillendiren yeni trendleri ve teknolojileri keşfedin.",
+    slug: "kitle-fonlamasinin-gelecegi",
   },
   {
-    title: "Spotlight: Innovative Projects Making a Difference",
+    title: "Öne Çıkanlar: Fark Yaratan Yenilikçi Projeler",
     image: "/placeholder.svg",
     excerpt:
-      "Discover inspiring projects that are leveraging crowdfunding to create positive change in communities worldwide.",
-    slug: "spotlight-innovative-projects",
+      "Dünya çapında topluluklarda olumlu değişim yaratmak için kitle fonlamasını kullanan ilham verici projeleri keşfedin.",
+    slug: "fark-yaratan-yenilikci-projeler",
   },
 ];
 
@@ -29,7 +29,7 @@ export default function BlogPreview() {
   return (
     <section className="bg-muted px-6 py-12 md:py-20">
       <div className="container mx-auto">
-        <h2 className="mb-10 text-center text-3xl font-bold">Latest from Our Blog</h2>
+        <h2 className="mb-10 text-center text-3xl font-bold">Blog&apos;dan Son Yazılar</h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post, index) => (
             <div
@@ -40,7 +40,7 @@ export default function BlogPreview() {
                 <h3 className="mb-2 text-xl font-semibold">{post.title}</h3>
                 <p className="text-muted-foreground mb-4 line-clamp-3">{post.excerpt}</p>
                 <Button className="mt-4 self-start">
-                  <Link href={`/blog/${post.slug}`}>Read More</Link>
+                  <Link href={`/blog/${post.slug}`}>Devamını Oku</Link>
                 </Button>
               </div>
             </div>

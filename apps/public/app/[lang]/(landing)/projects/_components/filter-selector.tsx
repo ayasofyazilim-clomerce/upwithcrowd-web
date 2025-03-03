@@ -7,18 +7,18 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {FilterIcon} from "lucide-react";
 
 const fundingTypeOptions = [
-  {label: "All Types", value: "all"},
-  {label: "Share Based", value: "shre"},
-  {label: "Debt Based", value: "dbit"},
-  {label: "Share & Debt Based", value: "shre_dbit"},
+  {label: "Tüm Tipler", value: "all"},
+  {label: "Hisse Bazlı", value: "shre"},
+  {label: "Borç Bazlı", value: "dbit"},
+  {label: "Hisse & Borç Bazlı", value: "shre_dbit"},
 ];
 
 const dateRangeOptions = [
-  {label: "All Time", value: "all"},
-  {label: "Ending Soon (7 days)", value: "7d"},
-  {label: "Ending Soon (15 days)", value: "15d"},
-  {label: "Ending Soon (30 days)", value: "30d"},
-  {label: "Ending Soon (60 days)", value: "60d"},
+  {label: "Tüm Zamanlar", value: "all"},
+  {label: "Yakında Bitenler (7 gün)", value: "7d"},
+  {label: "Yakında Bitenler (15 gün)", value: "15d"},
+  {label: "Yakında Bitenler (30 gün)", value: "30d"},
+  {label: "Yakında Bitenler (60 gün)", value: "60d"},
 ];
 
 export default function FilterSelector() {
@@ -72,14 +72,14 @@ export default function FilterSelector() {
         <Button className="w-full justify-between md:w-[200px]" variant="outline">
           <span className="flex items-center gap-2">
             <FilterIcon className="h-4 w-4" />
-            <span className="truncate">{filterCount > 0 ? `Filters (${filterCount})` : "All Projects"}</span>
+            <span className="truncate">{filterCount > 0 ? `Filtreler (${filterCount})` : "Tüm Projeler"}</span>
           </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] space-y-4 p-3">
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="funding-type">
-            Funding Type
+            Fonlama Tipi
           </label>
           <Select
             defaultValue={searchParams.get("fundCollectionType") || "all"}
@@ -88,7 +88,7 @@ export default function FilterSelector() {
               handleFilterChange("fundType", value);
             }}>
             <SelectTrigger>
-              <SelectValue placeholder="Select type" />
+              <SelectValue placeholder="Tip seçin" />
             </SelectTrigger>
             <SelectContent>
               {fundingTypeOptions.map((option) => (
@@ -102,7 +102,7 @@ export default function FilterSelector() {
 
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="date-range">
-            Date Range
+            Tarih Aralığı
           </label>
           <Select
             defaultValue={searchParams.get("dateFilter") || "all"}
@@ -111,7 +111,7 @@ export default function FilterSelector() {
               handleFilterChange("dateRange", value);
             }}>
             <SelectTrigger>
-              <SelectValue placeholder="Select range" />
+              <SelectValue placeholder="Aralık seçin" />
             </SelectTrigger>
             <SelectContent>
               {dateRangeOptions.map((option) => (

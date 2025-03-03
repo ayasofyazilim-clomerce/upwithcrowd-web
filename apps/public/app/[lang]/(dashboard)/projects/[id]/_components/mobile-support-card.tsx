@@ -30,7 +30,7 @@ export default function MobileSupportDrawer({
     <Drawer onOpenChange={setOpen} open={open}>
       <DrawerTrigger asChild>
         <Button className="fixed bottom-4 left-4 right-4 z-50" size="lg">
-          Support this project
+          Projeyi Destekle
         </Button>
       </DrawerTrigger>
       <DrawerContent>

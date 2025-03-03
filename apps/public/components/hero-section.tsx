@@ -13,14 +13,14 @@ export default function HeroSection() {
       }}>
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-between md:h-full md:flex-row">
         <div className="mb-8 max-w-2xl text-center md:mb-0 md:text-left">
-          <h1 className="mb-4 text-3xl font-bold md:text-6xl">Fundraising for the people and cause you care</h1>
+          <h1 className="mb-4 text-3xl font-bold md:text-6xl">Önemsediğiniz insanlar ve amaçlar için bağış toplama</h1>
           <p className="text-muted-foreground text-md mb-6 tracking-wide md:text-lg">
-            We provide a trusted donation channel for peoples of worldwide to support people and organizers.
-            Crowdfunding is a way to raise money for an individual or organization by collecting donations through
-            strangers and more.
+            İnsanlara ve organizasyonlara destek olmak için dünya çapında güvenilir bir bağış kanalı sunuyoruz. Kitlesel
+            fonlama, yabancılardan ve daha fazlasından bağış toplayarak bir birey veya organizasyon için para toplama
+            yöntemidir.
           </p>
           <Link href="/projects">
-            <Button size="lg">Explore Projects</Button>
+            <Button size="lg">Projeleri Keşfet</Button>
           </Link>
         </div>
         <div
