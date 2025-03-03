@@ -47,6 +47,8 @@ function validateProjectStateType(projectStateType: UpwithCrowd_Projects_Project
       return "PC";
     case "pw":
       return "PW";
+    case "pd":
+      return "PD";
     default:
       return undefined;
   }
