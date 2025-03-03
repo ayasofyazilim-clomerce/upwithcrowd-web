@@ -12,7 +12,7 @@
     "type-check": "tsc --noEmit",
     "type-check:report": "tsc --noEmit > type-check-output.txt 2>&1",
     "format": "prettier --write . --plugin=prettier-plugin-tailwindcss",
-    "precommit": "prettier --write . && next lint --fix && tsc --noEmit "
+    "precommit": "npx lint-staged"
   },
   "lint-staged": {
     "*": [
