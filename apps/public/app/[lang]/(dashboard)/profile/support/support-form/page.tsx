@@ -13,7 +13,7 @@ import {Textarea} from "@/components/ui/textarea";
 import {toast} from "@/components/ui/sonner";
 import Link from "next/link";
 import {Info} from "lucide-react";
-import {postProjectApi} from "@/actions/upwithcrowd/tasks/post-action";
+import {postTasksApi} from "@/actions/upwithcrowd/tasks/post-action";
 
 // API tipine uygun form şeması
 const formSchema = z.object({
@@ -45,7 +45,6 @@ export default function SupportFormClient() {
     defaultValues: {
       tasksType: undefined,
       projectUrl: "",
-      memberId: "",
       summary: "",
       description: "",
     },
@@ -61,12 +60,11 @@ export default function SupportFormClient() {
       setIsSubmitting(true);
       const projectId = values.projectUrl ? extractProjectId(values.projectUrl) : undefined;
 
-      const response = await postProjectApi({
+      const response = await postTasksApi({
         requestBody: {
           tasksType: values.tasksType,
           roleType: "Tenant",
           projectId,
-          memberId: values.memberId || undefined,
           summary: values.summary,
           description: values.description,
         },

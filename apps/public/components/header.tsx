@@ -8,10 +8,18 @@ import Image from "next/image";
 import Link from "next/link";
 import {usePathname, useParams} from "next/navigation";
 import {useState, useEffect} from "react";
+import type {NotificationProps} from "@repo/ui/components/notification";
+import {Notification} from "@repo/ui/components/notification";
 import {getBaseLink} from "@/utils/lib";
 import MemberSwitcher from "./member-switcher";
 
-export default function Header() {
+export default function Header({
+  appName,
+  notification,
+}: {
+  appName: string;
+  notification?: NotificationProps | undefined;
+}) {
   const pathName = usePathname();
   const {lang} = useParams<{lang: string}>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,7 +51,7 @@ export default function Header() {
       <div className="container mx-auto flex items-center justify-between px-12 md:px-0">
         <Link className="flex shrink-0 items-center" href={getBaseLink("", lang)}>
           <Image alt="" height={60} src="/upwc.png" width={60} />
-          <span className="text-primary hidden text-2xl font-bold md:flex">UPwithCrowd</span>
+          <span className="text-primary hidden text-2xl font-bold md:flex">{appName}</span>
         </Link>
 
         <div className="hidden flex-1 items-center justify-center md:flex">
@@ -70,6 +78,15 @@ export default function Header() {
                 Proje Başlat
               </Link>
               <MemberSwitcher />
+              {notification ? (
+                <Notification
+                  appId={notification.appId}
+                  appUrl={notification.appUrl}
+                  langugageData={{}}
+                  popoverContentProps={{className: "rounded-lg", style: {height: "h-auto"}}}
+                  subscriberId={notification.subscriberId}
+                />
+              ) : null}
             </div>
           ) : (
             <div className="flex items-center space-x-4">

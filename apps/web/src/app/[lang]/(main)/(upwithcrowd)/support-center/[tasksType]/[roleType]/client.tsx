@@ -89,17 +89,14 @@ export default function ClientPage({taskResponse}: {taskResponse: PagedResultDto
               disabled={isPending}
               filter={{
                 type: "exclude",
-                keys: ["tasksId", "memberId", "projectId"],
+                keys: ["taskId"],
               }}
-              // formData={response}
               onSubmit={({formData}) => {
                 startTransition(() => {
                   if (formData?.comment)
                     void postTaskCommentApi({
                       requestBody: {
-                        memberId: selectedTask.memberId || "",
-                        projectId: selectedTask.projectId || "",
-                        tasksId: selectedTask.id || "",
+                        taskId: selectedTask.id || "",
                         comment: formData.comment || "",
                       },
                     }).then((res) => {

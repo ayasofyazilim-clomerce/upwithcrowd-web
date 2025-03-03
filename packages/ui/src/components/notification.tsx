@@ -81,7 +81,7 @@ export function Notification({ appId, appUrl, subscriberId, langugageData, tabs,
         </PopoverTrigger>
         <PopoverContent
           sideOffset={popoverContentProps?.sideOffset || 10}
-          className={cn("rounded-none p-0 max-w-[25rem] w-full h-[500px] overflow-hidden [&>div]:h-full [&>div>div]:h-full", popoverContentProps?.className)}
+          className={cn("p-0 max-w-[25rem] w-full h-[500px] overflow-hidden [&>div]:h-full [&>div>div]:h-full", popoverContentProps?.className)}
           style={{
             width: 'var(--radix-popover-content-available-width)',
             height: 'var(--radix-popover-content-available-height)',
