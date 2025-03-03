@@ -41,9 +41,9 @@ export default async function Page({params}: {params: {id: string}}) {
     fullPath: null,
   };
 
-  // Get the first item from the array or use default if no items exist
-  const fileResponseData =
-    fileResponse.type === "success" && fileResponse.data.length > 0 ? fileResponse.data[0] : defaultFileResponse;
+  // Use the entire file response data or default if no items exist
+  const fileResponseData: UpwithCrowd_Files_FileResponseListDto[] =
+    fileResponse.type === "success" && fileResponse.data.length > 0 ? fileResponse.data : [defaultFileResponse];
 
   return (
     <div className="bg-background min-h-screen">

@@ -53,7 +53,7 @@ export default function NewPersonalAccount() {
   const {setMembers, setCurrentMember, currentMember} = useMember();
   useEffect(() => {
     if (currentMember !== null) {
-      //router.push("/profile");
+      router.push("/profile");
     }
   }, [currentMember, router]);
   const [isVerifying, setIsVerifying] = useState(false);

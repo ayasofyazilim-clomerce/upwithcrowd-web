@@ -31,10 +31,9 @@ export default function ProjectDetails({
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
-  fileResponse: UpwithCrowd_Files_FileResponseListDto;
+  fileResponse: UpwithCrowd_Files_FileResponseListDto[];
 }) {
   const {id: projectId} = useParams<{id: string}>();
-  const [currentImageIndex, _setCurrentImageIndex] = useState(0);
   const [customAmount, setCustomAmount] = useState<string>("");
   const donationOptions = [10, 25, 50, 100, 250, 500];
   const [selectedDonation, setSelectedDonation] = useState(donationOptions[0]);
@@ -154,7 +153,6 @@ export default function ProjectDetails({
           <div className="lg:w-3/5">
             <ProjectSummary
               basics={data}
-              currentImageIndex={currentImageIndex}
               fileResponse={fileResponse}
               fundedPercentage={fundedPercentage}
               funding={data}

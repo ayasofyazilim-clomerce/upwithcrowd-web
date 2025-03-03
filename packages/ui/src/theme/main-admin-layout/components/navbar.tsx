@@ -1,8 +1,8 @@
 "use client";
 
-import { IdCardIcon } from "@radix-ui/react-icons";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ayasofyazilim-ui/atoms/tooltip";
-import { BreadcrumbItemType, NavbarItemsFromDB } from "@repo/ui/theme/types";
+import {IdCardIcon} from "@radix-ui/react-icons";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@repo/ayasofyazilim-ui/atoms/tooltip";
+import {BreadcrumbItemType, NavbarItemsFromDB} from "@repo/ui/theme/types";
 
 import {
   BookA,
@@ -40,7 +40,7 @@ import {
   User,
   WalletCards,
 } from "lucide-react";
-import { Notification, NotificationProps } from "../../../components/notification";
+import {Notification, NotificationProps} from "../../../components/notification";
 import BreadcrumbNavigation from "./breadcrumb";
 import LanguageSelector from "./language-selector";
 import Logo from "./logo";
@@ -53,13 +53,13 @@ export default function Navbar({
   navigation,
   lang,
   tenantData,
-  notification
+  notification,
 }: {
   prefix: string;
   lang: string;
   navbarItems: NavbarItemsFromDB[];
   navigation: BreadcrumbItemType[];
-  tenantData?: { tenantId: string; tenantName: string };
+  tenantData?: {tenantId: string; tenantName: string};
   notification?: NotificationProps;
 }) {
   return (

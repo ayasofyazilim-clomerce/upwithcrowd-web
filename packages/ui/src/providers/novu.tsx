@@ -1,6 +1,6 @@
 "use client";
 
-import { NovuProvider as Novu } from "@novu/react";
+import {NovuProvider as Novu} from "@novu/react";
 
 export function NovuProvider({
   children,
