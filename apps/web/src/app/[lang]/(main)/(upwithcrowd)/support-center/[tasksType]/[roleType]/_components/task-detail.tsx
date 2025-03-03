@@ -37,9 +37,11 @@ function TaskDetail({
           <div className="-mx-3 flex flex-col gap-2 border-b px-3 pb-4" key={comment.id}>
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <div className="font-semibold">John Doe</div>
+                <div className="font-semibold">{comment.fullname}</div>
               </div>
-              <div className="text-muted-foreground text-xs">{formatDistanceToNow(new Date(), {addSuffix: true})}</div>
+              <div className="text-muted-foreground text-xs">
+                {formatDistanceToNow(new Date(comment.createDateTime), {addSuffix: true})}
+              </div>
             </div>
             <div className="break-all text-xs font-medium">{comment.comment}</div>
           </div>
