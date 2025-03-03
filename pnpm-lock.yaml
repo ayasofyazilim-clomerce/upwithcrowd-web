@@ -46,8 +46,8 @@ importers:
         specifier: ^0.5.4
         version: 0.5.10
       '@hookform/resolvers':
-        specifier: ^3.10.0
-        version: 3.10.0(react-hook-form@7.54.2(react@18.3.1))
+        specifier: 4.1.2
+        version: 4.1.2(react-hook-form@7.54.2(react@18.3.1))
       '@radix-ui/react-accordion':
         specifier: ^1.2.2
         version: 1.2.3(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -80,7 +80,7 @@ importers:
         version: link:../../packages/utils
       '@tailwindcss/typography':
         specifier: ^0.5.10
-        version: 0.5.10(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3)))
+        version: 0.5.15(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3)))
       '@tanstack/react-table':
         specifier: ^8.20.6
         version: 8.21.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -139,7 +139,7 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3)))
       zod:
-        specifier: ^3.24.1
+        specifier: 3.24.2
         version: 3.24.2
     devDependencies:
       '@types/leaflet':
@@ -297,8 +297,8 @@ importers:
         specifier: ^1.0.0-beta-3
         version: 1.0.0-beta-3(@tiptap/core@2.4.0(@tiptap/pm@2.3.0))(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)
       '@hookform/resolvers':
-        specifier: ^3.3.4
-        version: 3.10.0(react-hook-form@7.54.2(react@18.3.1))
+        specifier: 4.1.2
+        version: 4.1.2(react-hook-form@7.54.2(react@18.3.1))
       '@internationalized/date':
         specifier: ^3.7.0
         version: 3.7.0
@@ -618,7 +618,7 @@ importers:
         specifier: ^0.9.0
         version: 0.9.0(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod:
-        specifier: ^3.22.4
+        specifier: 3.24.2
         version: 3.24.2
     devDependencies:
       '@babel/core':
@@ -2196,8 +2196,8 @@ packages:
     peerDependencies:
       typescript: ^5.x
 
-  '@hookform/resolvers@3.10.0':
-    resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
+  '@hookform/resolvers@4.1.2':
+    resolution: {integrity: sha512-wl6H9c9wLOZMJAqGLEVKzbCkxJuV+BYuLFZFCQtCwMe0b3qQk4kUBd/ZAj13SwcSqcx86rCgSCyngQfmA6DOWg==}
     peerDependencies:
       react-hook-form: ^7.0.0
 
@@ -4362,6 +4362,9 @@ packages:
     peerDependencies:
       solid-js: ^1.6.12
 
+  '@standard-schema/utils@0.3.0':
+    resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+
   '@storybook/addon-actions@8.5.5':
     resolution: {integrity: sha512-XJtE69QBXROM0xvAAFohkwuBLLnuEFBvAnmsY4+pfk001BCEZf7UXDY/XKD3Ew/Uou6o7oco7RmStycSlXU2Ng==}
     peerDependencies:
@@ -4695,6 +4698,11 @@ packages:
     resolution: {integrity: sha512-Pe8BuPJQJd3FfRnm6H0ulKIGoMEQS+Vq01R6M5aCrFB/ccR/shT+0kXLjouGC1gFLm9hopTFN+DMP0pfwRWzPw==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
+
+  '@tailwindcss/typography@0.5.15':
+    resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
 
   '@tanstack/react-table@8.16.0':
     resolution: {integrity: sha512-rKRjnt8ostqN2fercRVOIH/dq7MAmOENCMvVlKx6P9Iokhh6woBGnIZEkqsY/vEJf1jN3TqLOb34xQGLVRuhAg==}
@@ -12143,8 +12151,9 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@hookform/resolvers@3.10.0(react-hook-form@7.54.2(react@18.3.1))':
+  '@hookform/resolvers@4.1.2(react-hook-form@7.54.2(react@18.3.1))':
     dependencies:
+      '@standard-schema/utils': 0.3.0
       react-hook-form: 7.54.2(react@18.3.1)
 
   '@humanwhocodes/config-array@0.11.14':
@@ -14786,6 +14795,8 @@ snapshots:
     dependencies:
       solid-js: 1.9.4
 
+  '@standard-schema/utils@0.3.0': {}
+
   '@storybook/addon-actions@8.5.5(storybook@8.5.5(prettier@3.2.5))':
     dependencies:
       '@storybook/global': 5.0.0
@@ -15264,14 +15275,6 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.1(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.3.3))
 
-  '@tailwindcss/typography@0.5.10(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3)))':
-    dependencies:
-      lodash.castarray: 4.4.0
-      lodash.isplainobject: 4.0.6
-      lodash.merge: 4.6.2
-      postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3))
-
   '@tailwindcss/typography@0.5.10(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.17.19)(typescript@5.7.3)))':
     dependencies:
       lodash.castarray: 4.4.0
@@ -15279,6 +15282,14 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.17.19)(typescript@5.7.3))
+
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3)))':
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.10.16(@swc/helpers@0.5.15))(@types/node@20.11.24)(typescript@5.7.3))
 
   '@tanstack/react-table@8.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
