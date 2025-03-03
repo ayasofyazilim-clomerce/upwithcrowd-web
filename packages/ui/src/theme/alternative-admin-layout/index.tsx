@@ -1,7 +1,7 @@
 "use client";
 
-import { SidebarInset, SidebarProvider } from "@repo/ayasofyazilim-ui/atoms/sidebar";
-import { ThemeProvider } from "../../providers/theme";
+import {SidebarInset, SidebarProvider} from "@repo/ayasofyazilim-ui/atoms/sidebar";
+import {ThemeProvider} from "../../providers/theme";
 
 import {
   Ban,
@@ -23,8 +23,8 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { AppSidebar } from "./components/app-sidebar";
+import {usePathname} from "next/navigation";
+import {AppSidebar} from "./components/app-sidebar";
 import HeaderSection from "./components/header-section";
 
 export type NavItems = {
@@ -43,30 +43,30 @@ const newNavbarItems: NavItems[] = [
         title: "Paya Dayalı",
         icon: ChartPie,
         items: [
-          { title: "Aktif Projeler", icon: Radio, url: "/projects/shre/pa" },
-          { title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/shre/ps" },
-          { title: "Başarısız Projeler", icon: CircleX, url: "/projects/shre/pf" },
-          { title: "İptal Projeler", icon: Ban, url: "/projects/shre/pc" },
+          {title: "Aktif Projeler", icon: Radio, url: "/projects/shre/pa"},
+          {title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/shre/ps"},
+          {title: "Başarısız Projeler", icon: CircleX, url: "/projects/shre/pf"},
+          {title: "İptal Projeler", icon: Ban, url: "/projects/shre/pc"},
         ],
       },
       {
         title: "Borca Dayalı",
         icon: HandCoins,
         items: [
-          { title: "Aktif Projeler", icon: Radio, url: "/projects/dbit/pa" },
-          { title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/dbit/ps" },
-          { title: "Başarısız Projeler", icon: CircleX, url: "/projects/dbit/pf" },
-          { title: "İptal Projeler", icon: Ban, url: "/projects/dbit/pc" },
+          {title: "Aktif Projeler", icon: Radio, url: "/projects/dbit/pa"},
+          {title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/dbit/ps"},
+          {title: "Başarısız Projeler", icon: CircleX, url: "/projects/dbit/pf"},
+          {title: "İptal Projeler", icon: Ban, url: "/projects/dbit/pc"},
         ],
       },
       {
         title: "Tüm Projeler",
         icon: GalleryVerticalEnd,
         items: [
-          { title: "Aktif Projeler", icon: Radio, url: "/projects/all/pa" },
-          { title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/all/ps" },
-          { title: "Başarısız Projeler", icon: CircleX, url: "/projects/all/pf" },
-          { title: "İptal Projeler", icon: Ban, url: "/projects/all/pc" },
+          {title: "Aktif Projeler", icon: Radio, url: "/projects/all/pa"},
+          {title: "Başarılı Projeler", icon: LaptopMinimal, url: "/projects/all/ps"},
+          {title: "Başarısız Projeler", icon: CircleX, url: "/projects/all/pf"},
+          {title: "İptal Projeler", icon: Ban, url: "/projects/all/pc"},
         ],
       },
     ],
@@ -79,25 +79,25 @@ const newNavbarItems: NavItems[] = [
         title: "Yatırımcı",
         icon: Landmark,
         items: [
-          { title: "Bireysel", icon: User, url: "/community/investor/individual" },
-          { title: "Organizasyon", icon: Building2, url: "/community/investor/organization" },
+          {title: "Bireysel", icon: User, url: "/community/investor/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/investor/organization"},
         ],
       },
       {
         title: "Girişimci",
         icon: Rabbit,
         items: [
-          { title: "Bireysel", icon: User, url: "/community/entrepreuner/individual" },
-          { title: "Organizasyon", icon: Building2, url: "/community/entrepreuner/organization" },
+          {title: "Bireysel", icon: User, url: "/community/entrepreuner/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/entrepreuner/organization"},
         ],
       },
       {
         title: "Tümü",
         icon: GalleryVerticalEnd,
         items: [
-          { title: "Bireysel", icon: User, url: "/community/all/individual" },
-          { title: "Organizasyon", icon: Building2, url: "/community/all/organization" },
-          { title: "Tümü", icon: Users, url: "/community/all/all" },
+          {title: "Bireysel", icon: User, url: "/community/all/individual"},
+          {title: "Organizasyon", icon: Building2, url: "/community/all/organization"},
+          {title: "Tümü", icon: Users, url: "/community/all/all"},
         ],
       },
     ],
@@ -136,19 +136,19 @@ const newNavbarItems: NavItems[] = [
         title: "Identity",
         icon: PersonStanding,
         items: [
-          { title: "Roles", url: "/management/identity/roles" },
-          { title: "Users", url: "/management/identity/users" },
-          { title: "Claim Types", url: "/management/identity/claim-types" },
-          { title: "Security Logs", url: "/management/identity/security-logs" },
-          { title: "Organization", url: "/management/identity/organization" },
+          {title: "Roles", url: "/management/identity/roles"},
+          {title: "Users", url: "/management/identity/users"},
+          {title: "Claim Types", url: "/management/identity/claim-types"},
+          {title: "Security Logs", url: "/management/identity/security-logs"},
+          {title: "Organization", url: "/management/identity/organization"},
         ],
       },
       {
         title: "Saas",
         icon: BriefcaseBusiness,
         items: [
-          { title: "Editions", url: "/management/saas/editions" },
-          { title: "Tenants", url: "/management/saas/tenants" },
+          {title: "Editions", url: "/management/saas/editions"},
+          {title: "Tenants", url: "/management/saas/tenants"},
         ],
       },
     ],

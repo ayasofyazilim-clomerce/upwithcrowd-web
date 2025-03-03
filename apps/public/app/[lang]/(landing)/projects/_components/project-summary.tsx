@@ -103,57 +103,57 @@ export default function ProjectSummary({
                 isTransitioning ? "scale-[1.02] opacity-70" : "scale-100 opacity-100",
               )}
               fill
+              priority={currentImageIndex === 0}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
               src={fileResponse[currentImageIndex].fullPath ?? "/placeholder.jpg"}
-              priority={currentImageIndex === 0}
             />
           ) : (
             <Image
               alt={`${basics.projectName} - No Image Available`}
               className="object-cover"
               fill
+              priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
               src="/placeholder.jpg"
-              priority
             />
           )}
           <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4 px-3 py-1 text-sm font-medium shadow-md">
             {funding.fundCollectionType}
           </Badge>
-          {hasImages && fileResponse.length > 1 && (
+          {hasImages && fileResponse.length > 1 ? (
             <>
               <Button
-                size="icon"
-                variant="secondary"
+                aria-label="Previous image"
                 className="focus:ring-primary absolute left-3 top-1/2 -translate-y-1/2 transform rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm hover:bg-white focus:ring-2 focus:ring-offset-2"
                 onClick={() => {
                   prevImage();
                 }}
-                aria-label="Previous image">
+                size="icon"
+                variant="secondary">
                 <ChevronLeft className="h-5 w-5" />
               </Button>
               <Button
-                size="icon"
-                variant="secondary"
+                aria-label="Next image"
                 className="focus:ring-primary absolute right-3 top-1/2 -translate-y-1/2 transform rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm hover:bg-white focus:ring-2 focus:ring-offset-2"
                 onClick={() => {
                   nextImage();
                 }}
-                aria-label="Next image">
+                size="icon"
+                variant="secondary">
                 <ChevronRight className="h-5 w-5" />
               </Button>
               <div className="absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full bg-black/20 px-3 py-1.5 backdrop-blur-sm">
                 {fileResponse.map((_, index) => (
                   <button
-                    key={index}
+                    aria-label={`View image ${index + 1}`}
                     className={cn(
                       "focus-visible:ring-primary h-2.5 w-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2",
                       index === currentImageIndex ? "scale-110 bg-white" : "bg-white/50 hover:bg-white/80",
                     )}
+                    key={index}
                     onClick={() => {
                       setCurrentImageIndex(index);
                     }}
-                    aria-label={`View image ${index + 1}`}
                   />
                 ))}
                 <span className="ml-1.5 text-xs text-white">
@@ -161,39 +161,39 @@ export default function ProjectSummary({
                 </span>
               </div>
             </>
-          )}
+          ) : null}
         </div>
       </div>
 
       {/* Carousel-style Thumbnails Gallery */}
-      {hasImages && fileResponse.length > 1 && (
+      {hasImages && fileResponse.length > 1 ? (
         <div className="relative mb-6 rounded-lg p-2">
           <div className="flex w-full items-center justify-between">
             <Button
-              size="icon"
-              variant="outline"
+              aria-label="Scroll thumbnails left"
               className="mr-2 h-8 w-8 flex-shrink-0 rounded-full"
               onClick={() => {
                 scrollThumbnails("left");
               }}
-              aria-label="Scroll thumbnails left">
+              size="icon"
+              variant="outline">
               <ChevronLeft className="h-4 w-4" />
             </Button>
 
             <div
-              ref={thumbnailsRef}
-              className="flex max-w-full gap-2 overflow-x-hidden scroll-smooth px-1 py-1 md:gap-3">
+              className="flex max-w-full gap-2 overflow-x-hidden scroll-smooth px-1 py-1 md:gap-3"
+              ref={thumbnailsRef}>
               {fileResponse.map((file, index) => (
                 <button
-                  key={index}
+                  aria-label={`Select image ${index + 1}`}
                   className={cn(
                     "focus-visible:ring-primary group relative min-w-0 flex-shrink-0 cursor-pointer overflow-hidden rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2",
                     index === currentImageIndex ? "scale-105" : "opacity-70 hover:opacity-100 hover:shadow-sm",
                   )}
+                  key={index}
                   onClick={() => {
                     setCurrentImageIndex(index);
-                  }}
-                  aria-label={`Select image ${index + 1}`}>
+                  }}>
                   <div className="h-18 relative w-24 overflow-hidden rounded-md md:h-20 md:w-32">
                     <Image
                       alt={`Thumbnail ${index + 1}`}
@@ -211,18 +211,18 @@ export default function ProjectSummary({
             </div>
 
             <Button
-              size="icon"
-              variant="outline"
+              aria-label="Scroll thumbnails right"
               className="ml-2 h-8 w-8 flex-shrink-0 rounded-full"
               onClick={() => {
                 scrollThumbnails("right");
               }}
-              aria-label="Scroll thumbnails right">
+              size="icon"
+              variant="outline">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
-      )}
+      ) : null}
 
       <Progress className="mb-4 h-3" value={fundedPercentage} />
 
