@@ -8,7 +8,7 @@ import BasicsClient from "./client";
 async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([]);
-    const optionalRequests = await Promise.allSettled([getCategoryApi()]);
+    const optionalRequests = await Promise.allSettled([getCategoryApi(), getTypeApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -27,13 +27,11 @@ export default async function BasicsPage({params}: {params: {lang: string}}) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [categoryResponse] = apiRequests.optionalRequests;
-  // Fetch both data in parallel
-  const [typeResponse] = await Promise.all([getTypeApi()]);
+  const [categoryResponse, typeResponse] = apiRequests.optionalRequests;
 
   const pageData = {
     category: categoryResponse.status === "fulfilled" ? categoryResponse.value.data : null,
-    type: typeof typeResponse.data === "string" ? null : typeResponse.data,
+    type: typeResponse.status === "fulfilled" ? typeResponse.value.data : null,
   };
 
   return (

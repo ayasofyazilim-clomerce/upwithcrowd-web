@@ -9,7 +9,7 @@ import ClientBasics from "./client";
 async function getApiRequests(id: string) {
   try {
     const requiredRequests = await Promise.all([getPublicProjectDetailByIdApi(id)]);
-    const optionalRequests = await Promise.allSettled([getCategoryApi()]);
+    const optionalRequests = await Promise.allSettled([getCategoryApi(), getTypeApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -28,15 +28,12 @@ export default async function Basics({params}: {params: {id: string; lang: strin
   }
 
   const [projectDetailResponse] = apiRequests.requiredRequests;
-  const [categoryResponse] = apiRequests.optionalRequests;
-
-  // Fetch both data in parallel
-  const [typeResponse] = await Promise.all([getTypeApi()]);
+  const [categoryResponse, typeResponse] = apiRequests.optionalRequests;
 
   const pageData = {
     projectDetail: projectDetailResponse.data,
     category: categoryResponse.status === "fulfilled" ? categoryResponse.value.data : null,
-    type: typeof typeResponse.data === "string" ? null : typeResponse.data,
+    type: typeResponse.status === "fulfilled" ? typeResponse.value.data : null,
   };
 
   return (
