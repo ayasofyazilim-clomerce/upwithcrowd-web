@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
+import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -36,7 +36,7 @@ export default function Page() {
             alt="Forgot password illustration"
             className="h-full w-full rounded-lg object-cover"
             height={600}
-            src="/placeholder.svg"
+            src="https://placehold.co/200x200"
             width={600}
           />
         </div>

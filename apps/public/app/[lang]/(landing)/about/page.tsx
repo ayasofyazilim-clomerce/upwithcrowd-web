@@ -1,12 +1,12 @@
-import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
-import {Lightbulb, Users, Target, Heart} from "lucide-react";
-import ExpertTeam from "@/components/expert-team";
-import Testimonials from "@/components/testimoni";
+import {Heart, Lightbulb, Target, Users} from "lucide-react";
+import Image from "next/image";
 import BlogPreview from "@/components/blog-preview";
 import CallToAction from "@/components/call-to-action";
+import ExpertTeam from "@/components/expert-team";
 import LandingHero from "@/components/landing-hero";
+import Testimonials from "@/components/testimoni";
 
 const goals = [
   {
@@ -61,7 +61,7 @@ export default function Page() {
               alt="UPwithCrowd çalışırken"
               className="rounded-lg shadow-lg"
               height={400}
-              src="/placeholder.svg"
+              src="https://placehold.co/200x200"
               width={600}
             />
           </div>

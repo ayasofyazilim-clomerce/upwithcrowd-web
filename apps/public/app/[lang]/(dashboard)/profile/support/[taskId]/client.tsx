@@ -1,10 +1,8 @@
 "use client";
 
-import React, {useState} from "react";
-import {MessageCircle, Calendar, Clock} from "lucide-react";
-import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {
   Dialog,
@@ -15,15 +13,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {Textarea} from "@/components/ui/textarea";
 import {Separator} from "@/components/ui/separator";
+import {Textarea} from "@/components/ui/textarea";
 import type {
   PagedResultDto_ListTasksCommentDto,
   PagedResultDto_ListTasksDto,
   UpwithCrowd_Tasks_ListTasksDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {useParams} from "next/navigation";
 import {handlePostResponse} from "@repo/utils/api";
+import {Calendar, Clock, MessageCircle} from "lucide-react";
+import {useParams} from "next/navigation";
+import React, {useState} from "react";
 import {postTaskCommentApi} from "@/actions/upwithcrowd/task-comment/post-action";
 
 interface TaskCommentClientProps {
@@ -168,7 +168,7 @@ export const TaskCommentClient: React.FC<TaskCommentClientProps> = ({response, r
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Avatar>
-                        <AvatarImage src="/placeholder.svg" />
+                        <AvatarImage src="https://placehold.co/200x200" />
                         <AvatarFallback
                           className={`${index % 2 === 0 ? "bg-primary/20" : "bg-secondary/20"} text-foreground`}>
                           {getInitials(comment.fullname || "")}

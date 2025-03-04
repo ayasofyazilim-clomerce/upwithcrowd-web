@@ -34,7 +34,7 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             disabled: true,
           },
           {
-            href: `${baseLink}new/about`,
+            href: `${baseLink}new/funding`,
             label: "Fonlama Bilgilerim",
             disabled: true,
           },
