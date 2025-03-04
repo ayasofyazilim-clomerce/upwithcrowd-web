@@ -11,6 +11,7 @@ import {
   CircleDot,
   CircleX,
   Crown,
+  File,
   GalleryVerticalEnd,
   HandCoins,
   Landmark,
@@ -132,6 +133,7 @@ const newNavbarItems: NavItems[] = [
       },
     ],
   },
+  {title: "Dosyalar", icon: File, url: "/files"},
   {
     title: "Management",
     icon: Settings,
