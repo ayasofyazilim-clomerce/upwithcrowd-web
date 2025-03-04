@@ -1,7 +1,7 @@
 "use server";
 
 import type {GetApiPublicProjectProjectListData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {structuredError, structuredResponse} from "@repo/utils/api";
+import {structuredError, structuredResponse, structuredSuccessResponse} from "@repo/utils/api";
 import {getUpwithcrowd} from "@/utils/client";
 
 export async function getPublicProjectsApi(data?: GetApiPublicProjectProjectListData) {
@@ -18,9 +18,9 @@ export async function getPublicProjectDetailByIdApi(id: string) {
   try {
     const client = await getUpwithcrowd();
     const dataResponse = await client.publicProject.getApiPublicProjectProjectDetailById({id});
-    return structuredResponse(dataResponse);
+    return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
   }
 }
 

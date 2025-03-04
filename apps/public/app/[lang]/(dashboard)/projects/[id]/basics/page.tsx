@@ -1,24 +1,36 @@
-import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/actions";
+import {structuredError} from "@repo/utils/api";
+import {isRedirectError} from "next/dist/client/components/redirect";
+import ErrorComponent from "@repo/ui/components/error-component";
 import {getCategoryApi, getTypeApi} from "@/actions/upwithcrowd/category-project/action";
+import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getResourceData} from "@/language/core/Default";
 import ClientBasics from "./client";
 
-export default async function Basics({
-  params,
-}: {
-  params: {
-    id: string;
-  };
-}) {
-  const {id} = params;
+async function getApiRequests(id: string) {
+  try {
+    const requiredRequests = await Promise.all([getPublicProjectDetailByIdApi(id)]);
+    const optionalRequests = await Promise.allSettled([]);
+    return {requiredRequests, optionalRequests};
+  } catch (error) {
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
+  }
+}
+export default async function Basics({params}: {params: {id: string; lang: string}}) {
+  const {id, lang} = params;
+  const {languageData} = await getResourceData(lang);
+
+  const apiRequests = await getApiRequests(id);
+  if ("message" in apiRequests) {
+    return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
+  }
+
+  const [projectDetailResponse] = apiRequests.requiredRequests;
 
   // Fetch both data in parallel
-  const [projectDetailResponse, categoryResponse, typeResponse] = await Promise.all([
-    getPublicProjectDetailByIdApi(id),
-    getCategoryApi(),
-    getTypeApi(),
-  ]);
-
-  if (projectDetailResponse.type !== "success") return <>Proje detayları yüklenemedi</>;
+  const [categoryResponse, typeResponse] = await Promise.all([getCategoryApi(), getTypeApi()]);
 
   const pageData = {
     projectDetail: projectDetailResponse.data,
