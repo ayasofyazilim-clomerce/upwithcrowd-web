@@ -67,6 +67,7 @@ export default function SupportFormClient() {
           projectId,
           summary: values.summary,
           description: values.description,
+          status: "Draft",
         },
       });
       if (response.type === "success") {
@@ -103,7 +104,12 @@ export default function SupportFormClient() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className="space-y-6" onSubmit={(e) => void form.handleSubmit(onSubmit)(e)}>
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              void form.handleSubmit(onSubmit)(e); // void kullanımı
+            }}>
             <FormField
               control={form.control}
               name="tasksType"
