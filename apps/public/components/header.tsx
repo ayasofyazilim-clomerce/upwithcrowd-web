@@ -2,15 +2,14 @@
 
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
+import {getBaseLink} from "@/utils/lib";
+import type {NotificationProps} from "@repo/ui/components/notification";
 import {useSession} from "@repo/utils/auth";
 import {Menu, PlusCircle, X} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {usePathname, useParams} from "next/navigation";
-import {useState, useEffect} from "react";
-import type {NotificationProps} from "@repo/ui/components/notification";
-import {Notification} from "@repo/ui/components/notification";
-import {getBaseLink} from "@/utils/lib";
+import {useParams, usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
 import MemberSwitcher from "./member-switcher";
 
 export default function Header({
@@ -78,7 +77,7 @@ export default function Header({
                 Proje Başlat
               </Link>
               <MemberSwitcher />
-              {notification ? (
+              {/* {notification ? (
                 <Notification
                   appId={notification.appId}
                   appUrl={notification.appUrl}
@@ -86,7 +85,7 @@ export default function Header({
                   popoverContentProps={{className: "rounded-lg", style: {height: "h-auto"}}}
                   subscriberId={notification.subscriberId}
                 />
-              ) : null}
+              ) : null} */}
             </div>
           ) : (
             <div className="flex items-center space-x-4">
