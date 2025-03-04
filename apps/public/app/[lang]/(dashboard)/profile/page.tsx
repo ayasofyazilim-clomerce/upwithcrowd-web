@@ -90,7 +90,7 @@ export default function ProfileClient() {
                     src={
                       currentMember.profileImage
                         ? `data:image/jpeg;base64,${currentMember.profileImage}`
-                        : "/placeholder.svg"
+                        : "https://placehold.co/200x200"
                     }
                   />
                 </div>

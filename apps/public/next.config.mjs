@@ -2,7 +2,6 @@
 const nextConfig = {
   transpilePackages: ["@repo/ui", "geist", "@ayasofyazilim/upwithcrowd-saas", "@ayasofyazilim/core-saas"],
   images: {
-    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: "https",
