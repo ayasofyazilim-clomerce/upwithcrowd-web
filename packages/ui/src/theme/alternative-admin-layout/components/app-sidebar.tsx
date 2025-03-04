@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ayasofyazilim-ui/atoms/dropdown-menu";
 import {Notification} from "../../../components/notification";
+import Link from "next/link";
 
 export function AppSidebar({
   image,
@@ -43,14 +44,16 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Image
-          alt="Crowdfunding illustration"
-          className="object-cover"
-          height={75}
-          src={image}
-          width={75}
-          style={{margin: "auto"}}
-        />
+        <Link href={`/${lang}/home`}>
+          <Image
+            alt="Crowdfunding illustration"
+            className="object-cover"
+            height={75}
+            src={image}
+            width={75}
+            style={{margin: "auto"}}
+          />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} lang={lang} />
