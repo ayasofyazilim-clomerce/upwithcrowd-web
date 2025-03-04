@@ -1,3 +1,4 @@
+"use server";
 import {auth} from "@repo/utils/auth/next-auth";
 import Header from "@/components/header";
 
