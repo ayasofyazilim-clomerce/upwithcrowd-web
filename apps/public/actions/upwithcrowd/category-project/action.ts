@@ -1,16 +1,16 @@
 "use server";
 
 import type {GetApiCategoryData, GetApiTypeData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {structuredResponse, structuredError} from "@repo/utils/api";
+import {structuredResponse, structuredError, structuredSuccessResponse} from "@repo/utils/api";
 import {getUpwithcrowd} from "@/utils/client";
 
 export async function getCategoryApi(data?: GetApiCategoryData) {
   try {
     const client = await getUpwithcrowd();
     const dataResponse = await client.category.getApiCategory(data);
-    return structuredResponse(dataResponse);
+    return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
   }
 }
 
