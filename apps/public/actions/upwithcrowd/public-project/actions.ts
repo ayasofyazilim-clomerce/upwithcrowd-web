@@ -28,8 +28,8 @@ export async function getPublicProjectByIdMembersApi(id: string) {
   try {
     const client = await getUpwithcrowd();
     const dataResponse = await client.publicProject.getApiPublicProjectByIdMembers({id});
-    return structuredResponse(dataResponse);
+    return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
   }
 }
