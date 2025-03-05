@@ -36,14 +36,14 @@ export const blogPost = {
 
     <p>Bu ipuçlarını takip ederek, başarılı bir kitlesel fonlama kampanyası yürütme yolunda olacaksınız. Unutmayın, başarı genellikle dikkatli planlama, otantik hikaye anlatımı ve sürekli çabanın bir kombinasyonundan gelir. Kitlesel fonlama yolculuğunuzda iyi şanslar!</p>
   `,
-  image: "/placeholder.svg",
+  image: "https://placehold.co/1080x1080",
   date: "2023-06-01",
   category: "Kitlesel Fonlama",
   readTime: "5 dk okuma",
   lastUpdated: "2023-06-05",
   author: {
     name: "Jane Doe",
-    avatar: "/placeholder.svg",
+    avatar: "https://placehold.co/60x60",
     role: "Kitlesel Fonlama Uzmanı",
   },
   topics: ["Kitlesel Fonlama", "Fon Toplama", "Proje Yönetimi"],

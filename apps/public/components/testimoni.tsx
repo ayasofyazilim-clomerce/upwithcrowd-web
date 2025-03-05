@@ -9,21 +9,21 @@ const testimonials = [
     role: "Proje Sahibi",
     comment:
       "UPwithCrowd sayesinde çevre dostu ürünümü pazara sunmak çok kolay oldu. Topluluktan gelen destek inanılmazdı!",
-    avatar: "/placeholder.svg",
+    avatar: "https://placehold.co/300x300",
   },
   {
     name: "Mehmet Demir",
     role: "Destekçi",
     comment:
       "Fark yaratan projelerin bir parçası olmayı seviyorum. UPwithCrowd, desteklemekten heyecan duyduğum yenilikçi fikirlerle beni buluşturuyor.",
-    avatar: "/placeholder.svg",
+    avatar: "https://placehold.co/300x300",
   },
   {
     name: "Zeynep Kaya",
     role: "STK Lideri",
     comment:
       "UPwithCrowd sayesinde, topluluk destek programımızı finanse edebildik ve bölgemizde gerçek bir etki yaratmayı başardık.",
-    avatar: "/placeholder.svg",
+    avatar: "https://placehold.co/300x300",
   },
 ];
 

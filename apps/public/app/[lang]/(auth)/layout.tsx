@@ -3,6 +3,7 @@ import type {CarouselApi} from "@/components/ui/carousel";
 import {Carousel, CarouselContent, CarouselItem} from "@/components/ui/carousel";
 import Image from "next/image";
 import {useEffect, useState} from "react";
+import UPWC from "@public/upwc.png";
 
 export default function Layout({children}: {children: React.ReactNode}) {
   const [api, setApi] = useState<CarouselApi>();
@@ -45,7 +46,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
         </div>
       </div>
       <div className="m-auto flex size-full flex-wrap items-center bg-white py-4">
-        <Image alt="" className="mx-auto" height={60} src="/upwc.png" width={60} />
+        <Image alt="" className="mx-auto" height={60} src={UPWC.src} width={60} />
         <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-8 px-16">{children}</div>
       </div>
     </section>

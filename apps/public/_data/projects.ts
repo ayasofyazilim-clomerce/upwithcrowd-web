@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     id: 1,
     title: "Çevre Dostu Su Arıtıcı",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
     location: "San Francisco, CA",
     badge: "Çevre",
     goal: 50000,
@@ -13,7 +13,7 @@ export const projects: Project[] = [
   {
     id: 2,
     title: "Güneş Enerjili Eğitim Kitleri",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
     location: "Nairobi, Kenya",
     badge: "Eğitim",
     goal: 30000,
@@ -22,7 +22,7 @@ export const projects: Project[] = [
   {
     id: 3,
     title: "Topluluk Bahçesi Girişimi",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
     location: "Londra, İngiltere",
     badge: "Topluluk",
     goal: 20000,
@@ -31,7 +31,7 @@ export const projects: Project[] = [
   {
     id: 4,
     title: "Uygun Fiyatlı 3D Baskılı Protezler",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
     location: "Berlin, Almanya",
     badge: "Sağlık",
     goal: 40000,

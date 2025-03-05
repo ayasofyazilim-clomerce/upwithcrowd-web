@@ -1,13 +1,15 @@
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import UPWC from "@public/upwc.png";
+import Banner from "@public/banner.png";
 
 export default function HeroSection() {
   return (
     <section
       className="relative h-[calc(100dvh-6rem)] px-6 py-12 md:py-20"
       style={{
-        backgroundImage: "url('/banner.png')",
+        backgroundImage: `url('${Banner.src}')`,
         backgroundSize: "100%",
         backgroundPosition: "center",
       }}>
@@ -26,7 +28,7 @@ export default function HeroSection() {
         <div
           className="ring-primary/30 relative flex aspect-square
          w-full max-w-lg items-center justify-center rounded-[25px] rounded-tl-[100px] bg-white ring-4">
-          <Image alt="Crowdfunding illustration" className="object-cover" height={400} src="/upwc.png" width={400} />
+          <Image alt="Crowdfunding illustration" className="object-cover" height={400} src={UPWC.src} width={400} />
         </div>
       </div>
     </section>

@@ -3,6 +3,7 @@ import type {FC} from "react";
 import {useEffect} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import UPWC from "@public/upwc.png";
 
 interface MapProps {
   latitude: number;
@@ -27,12 +28,10 @@ const Map: FC<MapProps> = ({latitude, longitude, zoom}) => {
     // Initialize a new map instance
     const map = L.map("map", {preferCanvas: true}).setView([latitude, longitude], zoom);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {}).addTo(map);
 
     const customIcon = L.icon({
-      iconUrl: "/upwc.png",
+      iconUrl: UPWC.src,
       iconSize: [38, 38], // size of the icon
       iconAnchor: [22, 38], // point of the icon which will correspond to marker's location
       popupAnchor: [-3, -38], // point from which the popup should open relative to the iconAnchor
