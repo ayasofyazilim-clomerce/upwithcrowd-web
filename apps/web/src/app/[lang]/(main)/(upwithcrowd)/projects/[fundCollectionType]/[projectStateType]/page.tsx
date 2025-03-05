@@ -39,18 +39,17 @@ function validateFundCollectionType(fundCollectionType: UpwithCrowd_Projects_Fun
 function validateProjectStateType(projectStateType: UpwithCrowd_Projects_ProjectStateType) {
   switch (projectStateType.toLowerCase()) {
     case "pa":
-      return "PA" as UpwithCrowd_Projects_ProjectStateType;
+      return "PA";
     case "ps":
-      return "PS" as UpwithCrowd_Projects_ProjectStateType;
+      return "PS";
     case "pf":
-      return "PF" as UpwithCrowd_Projects_ProjectStateType;
+      return "PF";
     case "pc":
-      return "PC" as UpwithCrowd_Projects_ProjectStateType;
+      return "PC";
     case "pw":
-      return "PW" as UpwithCrowd_Projects_ProjectStateType;
+      return "PW";
     case "pd":
-      // If "PD" is not a valid enum value, return undefined instead
-      return undefined;
+      return "PD";
     default:
       return undefined;
   }

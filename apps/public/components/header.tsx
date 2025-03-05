@@ -2,7 +2,6 @@
 
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
-import {getBaseLink} from "@/utils/lib";
 import type {NotificationProps} from "@repo/ui/components/notification";
 import {useSession} from "@repo/utils/auth";
 import {Menu, PlusCircle, X} from "lucide-react";
@@ -10,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {useParams, usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
+import {getBaseLink} from "@/utils/lib";
+import UPWC from "@public/upwc.png";
 import MemberSwitcher from "./member-switcher";
 
 export default function Header({
@@ -49,7 +50,7 @@ export default function Header({
     <header className="bg-background relative flex h-24 p-0 md:px-6">
       <div className="container mx-auto flex items-center justify-between px-12 md:px-0">
         <Link className="flex shrink-0 items-center" href={getBaseLink("", lang)}>
-          <Image alt="" height={60} src="/upwc.png" width={60} />
+          <Image alt="" height={60} src={UPWC.src} width={60} />
           <span className="text-primary hidden text-2xl font-bold md:flex">{appName}</span>
         </Link>
 
