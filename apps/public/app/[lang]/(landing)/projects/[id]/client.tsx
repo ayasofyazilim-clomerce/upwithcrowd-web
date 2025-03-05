@@ -1,10 +1,11 @@
 "use client";
 
-import React, {useCallback, useState} from "react";
-import {toast} from "@/components/ui/sonner";
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
+import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {toast} from "@/components/ui/sonner";
 import type {
+  PagedResultDto_ListPaymentTransactionDto,
   PagedResultDto_ListProjectsMembersResponseDto,
   UpwithCrowd_Files_FileResponseListDto,
   UpwithCrowd_Payment_PaymentStatus,
@@ -13,14 +14,15 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import {ChevronRight} from "lucide-react";
 import Link from "next/link";
 import {useParams} from "next/navigation";
-import {Button} from "@/components/ui/button";
+import React, {useCallback, useState} from "react";
 import {useMember} from "@/app/providers/member";
-import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment/post-action";
+import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment-transaction/post-action";
 import FundingTable from "../_components/funding-card";
-import ProjectSummary from "../_components/project-summary";
 import MobileSupportDrawer from "../_components/mobile-support-card";
+import ProjectSummary from "../_components/project-summary";
 
 // Add this mock data at the top of the file, after the imports
 const mockDocuments = [
@@ -59,11 +61,13 @@ export default function ProjectDetails({
   isEditable,
   projectsMember,
   fileResponse,
+  paymentResponse,
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
+  paymentResponse: PagedResultDto_ListPaymentTransactionDto;
 }) {
   const {id: projectId} = useParams<{id: string}>();
   const [customAmount, setCustomAmount] = useState<string>("");
@@ -83,7 +87,7 @@ export default function ProjectDetails({
   const handleDonation = async (amount: number) => {
     try {
       setIsLoading(true);
-      const paymentResponse = await postApiPaymentTransaction({
+      const paymentTransactionResponse = await postApiPaymentTransaction({
         requestBody: {
           projectID: projectId,
           memberID: currentMember?.id,
@@ -94,10 +98,10 @@ export default function ProjectDetails({
         } as UpwithCrowd_Payment_SavePaymentTransactionDto,
       });
 
-      if (paymentResponse.type === "success") {
+      if (paymentTransactionResponse.type === "success") {
         toast.success("Desteğiniz için teşekkür ederiz!");
       } else {
-        toast.error(paymentResponse.message || "Bir şeyler yanlış gitti");
+        toast.error(paymentTransactionResponse.message || "Bir şeyler yanlış gitti");
       }
     } catch (error) {
       toast.error("An error occurred while processing your payment");
@@ -207,37 +211,6 @@ export default function ProjectDetails({
     return Object.values(grouped);
   }, [projectsMember.items]);
 
-  const groupedInvestors = useCallback(() => {
-    const grouped = (projectsMember.items ?? [])
-      .filter((member) => member.customRoleType === "Investor")
-      .reduce<
-        Record<
-          string,
-          {
-            name: string | undefined;
-            surname: string | undefined;
-            mail: string | undefined;
-            roles: {customRoleName: string}[];
-          }
-        >
-      >((acc, member) => {
-        const key = member.mail;
-        acc[key] = {
-          name: member.name || undefined,
-          surname: member.surname || undefined,
-          mail: member.mail,
-          roles: [],
-        };
-
-        acc[key].roles.push({
-          customRoleName: member.customRoleName || "",
-        });
-        return acc;
-      }, {});
-
-    return Object.values(grouped);
-  }, [projectsMember.items]);
-
   return (
     <>
       <main className="container mx-auto px-4 py-8">
@@ -312,26 +285,62 @@ export default function ProjectDetails({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {groupedInvestors().map((member) => (
-                    <div className="flex items-center space-x-4" key={member.mail}>
+                  {paymentResponse.items?.slice(0, 3).map((payment, index) => (
+                    <div className="flex items-center space-x-4" key={payment.id}>
                       <Avatar className="h-10 w-10">
-                        <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
+                        <AvatarFallback>JD</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-medium">
-                          {member.name} {member.surname}
-                        </p>
-                        <p className="text-muted-foreground text-sm">{member.mail}</p>
+                        <p className="font-medium">John Doe</p>
+                        <p className="text-muted-foreground text-sm">{payment.amount}₺</p>
                         <div className="flex flex-col gap-2 text-sm">
-                          {member.roles.map((role) => (
-                            <span className="text-primary" key={role.customRoleName}>
-                              {formatRoleName(role.customRoleName)}
-                            </span>
-                          ))}
+                          {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
                         </div>
                       </div>
                     </div>
                   ))}
+
+                  {(paymentResponse.totalCount || 0) > 3 && (
+                    <div className="bg-background flex items-center rounded-full border p-1 shadow-sm">
+                      <div className="flex -space-x-1.5">
+                        <img
+                          alt="Avatar 01"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-03.jpg"
+                          width={20}
+                        />
+                        <img
+                          alt="Avatar 02"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-04.jpg"
+                          width={20}
+                        />
+                        <img
+                          alt="Avatar 03"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-05.jpg"
+                          width={20}
+                        />
+                        <img
+                          alt="Avatar 04"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-06.jpg"
+                          width={20}
+                        />
+                      </div>
+                      <p className="text-muted-foreground flex-1 px-2 text-xs">
+                        Projenin <strong className="text-foreground font-medium">{paymentResponse.totalCount}</strong>{" "}
+                        yatırımcısı var.
+                        <Link className="float-right" href="#">
+                          <ChevronRight className="size-4" />
+                        </Link>
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

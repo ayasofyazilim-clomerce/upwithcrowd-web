@@ -1,17 +1,41 @@
-import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment/action";
+import ErrorComponent from "@repo/ui/components/error-component";
+import {structuredError} from "@repo/utils/api";
+import {isRedirectError} from "next/dist/client/components/redirect";
+import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
 import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getResourceData} from "@/language/core/Default";
 import EmptyPaymentsState from "../_components/empty-payments-state";
 import PaymentsPage from "./client";
 
-export default async function Page() {
-  const paymentsResponse = await getApiPaymentTransactionApi({
-    maxResultCount: 100,
-  });
+async function getApiRequests() {
+  try {
+    const requiredRequests = await Promise.all([
+      getApiPaymentTransactionApi({
+        maxResultCount: 100,
+      }),
+    ]);
+    const optionalRequests = await Promise.allSettled([]);
+    return {requiredRequests, optionalRequests};
+  } catch (error) {
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
+  }
+}
 
-  if (paymentsResponse.type !== "success") return <>{paymentsResponse.message}</>;
+export default async function Page({params}: {params: {lang: string}}) {
+  const {lang} = params;
+  const {languageData} = await getResourceData(lang);
+
+  const apiRequests = await getApiRequests();
+  if ("message" in apiRequests) {
+    return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
+  }
+
+  const [paymentsResponse] = apiRequests.requiredRequests;
 
   const projectsResponse = await getPublicProjectsApi();
-
   if (projectsResponse.type !== "success") {
     return <>{projectsResponse.message}</>;
   }

@@ -12,7 +12,7 @@ import {AlertCircle, ArrowUpRight, CreditCard, DollarSign, LinkIcon} from "lucid
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {getBaseLink} from "@/utils/lib";
-import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment/post-action";
+import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment-transaction/post-action";
 import type {Payment} from "../types";
 
 interface PaymentsTableProps {
