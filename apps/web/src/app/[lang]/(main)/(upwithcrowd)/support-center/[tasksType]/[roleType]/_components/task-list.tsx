@@ -34,15 +34,24 @@ function TaskList({
   };
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "açık":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "beklemede":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "kapalı":
-        return "bg-red-100 text-red-800 border-red-200";
+    switch (status) {
+      case "Completed":
+        return "bg-gray-200 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm hover:bg-gray-200";
+      case "Open":
+        return "bg-green-700 text-white font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm hover:bg-green-700";
       default:
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-gray-200 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm";
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "Completed":
+        return "Tamamlandı";
+      case "Open":
+        return "Açık";
+      default:
+        return status || "Yeni";
     }
   };
 
@@ -72,9 +81,7 @@ function TaskList({
               )}>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm sm:text-base">{item.summary || "Destek Talebi"}</CardTitle>
-                <Badge className={`px-2 py-0.5 text-xs font-medium ${getStatusColor(item.status.trim() || "Yeni")}`}>
-                  {item.status.trim() || "Yeni"}
-                </Badge>
+                <Badge className={getStatusColor(item.status)}>{getStatusLabel(item.status)}</Badge>
               </div>
               <CardDescription className="mt-1 flex flex-wrap items-center gap-2 text-xs">
                 <span className="flex items-center gap-1">
