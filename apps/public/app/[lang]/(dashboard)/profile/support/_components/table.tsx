@@ -44,19 +44,6 @@ export default function SupportTable({taskResponse}: PaymentsTableProps) {
               },
             ],
           },
-          {
-            badgeClassName: "bg-gray-50 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm",
-            position: "after",
-            label: "Taslak",
-            conditions: [
-              {
-                conditionAccessorKey: "status",
-                when(value) {
-                  return value === "Draft";
-                },
-              },
-            ],
-          },
         ],
       },
     },

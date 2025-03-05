@@ -23,7 +23,7 @@ import type {
 import {handlePostResponse} from "@repo/utils/api";
 import {Calendar, CheckCircle, Clock, MessageCircle, RefreshCw} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
-import React, {useState} from "react";
+import React, {useState, useTransition} from "react";
 import {toast} from "@/components/ui/sonner";
 import {postTaskCommentApi} from "@/actions/upwithcrowd/task-comment/post-action";
 import {putTaskByIdApi} from "@/actions/upwithcrowd/tasks/put-action";
@@ -46,7 +46,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [isTaskResolved, setIsTaskResolved] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const {data} = responseComment;
@@ -73,7 +73,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
     : (taskData as UpwithCrowd_Tasks_ListTasksDto);
 
   // Check if the task is already marked as resolved/closed
-  const isAlreadyResolved = currentTask.status.toLowerCase() === "kapalı" || currentTask.status === "Completed";
+  const isAlreadyResolved = currentTask.status === "Completed";
 
   const formatDate = (dateString: string) => {
     try {
@@ -108,8 +108,6 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
         return "bg-gray-200 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm hover:bg-gray-200";
       case "Open":
         return "bg-green-700 text-white font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm hover:bg-green-700";
-      case "Draft":
-        return "bg-gray-50 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm hover:bg-gray-50";
       default:
         return "bg-gray-200 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm";
     }
@@ -121,8 +119,6 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
         return "Tamamlandı";
       case "Open":
         return "Açık";
-      case "Draft":
-        return "Taslak";
       default:
         return status || "Yeni";
     }
@@ -139,76 +135,74 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
     });
   };
 
-  const handleMarkAsResolved = async () => {
-    if (isSubmitting) return;
+  const handleMarkAsResolved = () => {
+    if (isPending) return;
 
-    setIsSubmitting(true);
-    try {
-      // Call the API to update the task status to "Completed"
-      const result = await putTaskByIdApi({
-        id: taskId,
-        requestBody: {
-          ...currentTask,
-          status: "Completed",
-        },
-      });
-
-      if (result.type === "success") {
-        setIsTaskResolved(true);
-        toast.success("Talep çözüldü", {
-          description: "Destek talebiniz başarıyla kapatıldı.",
+    startTransition(async () => {
+      try {
+        // Call the API to update the task status to "Completed"
+        const result = await putTaskByIdApi({
+          id: taskId,
+          requestBody: {
+            ...currentTask,
+            status: "Completed",
+          },
         });
 
-        // Refresh the page to show updated status
-        router.refresh();
-      } else {
+        if (result.type === "success") {
+          setIsTaskResolved(true);
+          toast.success("Talep çözüldü", {
+            description: "Destek talebiniz başarıyla kapatıldı.",
+          });
+
+          // Refresh the page to show updated status
+          router.refresh();
+        } else {
+          toast.error("Hata", {
+            description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
+          });
+        }
+      } catch (error) {
         toast.error("Hata", {
           description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
         });
       }
-    } catch (error) {
-      toast.error("Hata", {
-        description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    });
   };
 
-  const handleReopenTask = async () => {
-    if (isSubmitting) return;
+  const handleReopenTask = () => {
+    if (isPending) return;
 
-    setIsSubmitting(true);
-    try {
-      // Call the API to update the task status to "Open"
-      const result = await putTaskByIdApi({
-        id: taskId,
-        requestBody: {
-          ...currentTask,
-          status: "Open",
-        },
-      });
-
-      if (result.type === "success") {
-        setIsTaskResolved(false);
-        toast.success("Talep yeniden açıldı", {
-          description: "Destek talebiniz yeniden açıldı.",
+    startTransition(async () => {
+      try {
+        // Call the API to update the task status to "Open"
+        const result = await putTaskByIdApi({
+          id: taskId,
+          requestBody: {
+            ...currentTask,
+            status: "Open",
+          },
         });
 
-        // Refresh the page to show updated status
-        router.refresh();
-      } else {
+        if (result.type === "success") {
+          setIsTaskResolved(false);
+          toast.success("Talep yeniden açıldı", {
+            description: "Destek talebiniz yeniden açıldı.",
+          });
+
+          // Refresh the page to show updated status
+          router.refresh();
+        } else {
+          toast.error("Hata", {
+            description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
+          });
+        }
+      } catch (error) {
         toast.error("Hata", {
           description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
         });
       }
-    } catch (error) {
-      toast.error("Hata", {
-        description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    });
   };
 
   // Determine if commenting should be disabled
@@ -242,8 +236,10 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
               {currentTask.status === "Completed" && (
                 <Button
                   className="gap-2 bg-amber-600 py-2 text-sm text-white shadow-md transition-all hover:bg-amber-600 hover:text-white hover:shadow-lg"
-                  disabled={isSubmitting}
-                  onClick={() => void handleReopenTask()}
+                  disabled={isPending}
+                  onClick={() => {
+                    handleReopenTask();
+                  }}
                   size="sm"
                   variant="outline">
                   <RefreshCw className="h-4 w-4" />
@@ -329,8 +325,10 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
         {currentTask.status === "Completed" ? (
           <Button
             className="w-full gap-2 bg-amber-600 py-6 text-base shadow-md transition-all hover:bg-amber-600 hover:shadow-lg"
-            disabled={isSubmitting}
-            onClick={() => void handleReopenTask()}>
+            disabled={isPending}
+            onClick={() => {
+              handleReopenTask();
+            }}>
             <RefreshCw className="h-5 w-5" />
             <span>Yeniden Aç</span>
           </Button>
@@ -339,8 +337,10 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
             <div className="grid w-full grid-cols-2 gap-4">
               <Button
                 className="w-full gap-2 py-6 text-base shadow-md transition-all hover:shadow-lg"
-                disabled={isSubmitting || isTaskResolved}
-                onClick={() => void handleMarkAsResolved()}>
+                disabled={isPending || isTaskResolved}
+                onClick={() => {
+                  handleMarkAsResolved();
+                }}>
                 <CheckCircle className="h-5 w-5" />
                 <span>Sorunum Çözüldü</span>
               </Button>
