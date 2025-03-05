@@ -35,24 +35,27 @@ function validateFundCollectionType(fundCollectionType: UpwithCrowd_Projects_Fun
       return undefined;
   }
 }
+
 function validateProjectStateType(projectStateType: UpwithCrowd_Projects_ProjectStateType) {
   switch (projectStateType.toLowerCase()) {
     case "pa":
-      return "PA";
+      return "PA" as UpwithCrowd_Projects_ProjectStateType;
     case "ps":
-      return "PS";
+      return "PS" as UpwithCrowd_Projects_ProjectStateType;
     case "pf":
-      return "PF";
+      return "PF" as UpwithCrowd_Projects_ProjectStateType;
     case "pc":
-      return "PC";
+      return "PC" as UpwithCrowd_Projects_ProjectStateType;
     case "pw":
-      return "PW";
+      return "PW" as UpwithCrowd_Projects_ProjectStateType;
     case "pd":
-      return "PD";
+      // If "PD" is not a valid enum value, return undefined instead
+      return undefined;
     default:
       return undefined;
   }
 }
+
 export default async function Page({
   params,
   searchParams,

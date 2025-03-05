@@ -34,7 +34,7 @@ function validateTasksType(tasksType: UpwithCrowd_Tasks_TasksType) {
   }
 }
 
-async function getApiRequests(searchParams: GetApiTaskData) {
+async function getApiRequests(searchParams: Partial<GetApiTaskData>) {
   try {
     const requiredRequests = await Promise.all([getTaskApi(searchParams)]);
     const optionalRequests = await Promise.allSettled([]);
@@ -50,33 +50,33 @@ async function getApiRequests(searchParams: GetApiTaskData) {
 export default async function Layout({
   children,
   params,
-  searchParams,
 }: {
   children: React.ReactNode;
   params: {
     lang: string;
-    taskId?: string;
+    taskId?: string[];
     tasksType: UpwithCrowd_Tasks_TasksType;
     roleType: UpwithCrowd_Tasks_RoleType | "ALL";
   };
-  searchParams?: GetApiTaskData;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
 
   const baseLink = `/${lang}/support-center/${params.tasksType}/${params.roleType}`;
+
+  // No longer accessing searchParams directly from props
   const apiRequests = await getApiRequests({
-    ...searchParams,
     tasksType: validateTasksType(params.tasksType),
     roleType: validateRoleType(params.roleType),
   });
+
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
   const [taskResponse] = apiRequests.requiredRequests;
   return (
-    <div className="my-2 grid grid-cols-3 gap-3">
+    <div className="my-2 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-3">
       <TaskList baseLink={baseLink} taskId={params.taskId} taskResponse={taskResponse.data} />
       {children}
     </div>
