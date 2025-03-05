@@ -7,6 +7,7 @@ import {
   getPublicProjectDetailByIdApi,
 } from "@/actions/upwithcrowd/public-project/actions";
 import {getResourceData} from "@/language/core/Default";
+import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {
@@ -19,6 +20,9 @@ async function getApiRequests(id: string) {
         fileTypeGroup: "Project",
         relatedEntity: "Project",
         relatedId: id,
+      }),
+      getApiPaymentTransactionApi({
+        maxResultCount: 999,
       }),
     ]);
     const optionalRequests = await Promise.allSettled([]);
@@ -41,7 +45,8 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, paymentsResponse] =
+    apiRequests.requiredRequests;
 
   return (
     <div className="bg-background min-h-screen">
@@ -49,6 +54,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
         isEditable={isEditable}
+        paymentResponse={paymentsResponse.data}
         projectsMember={projectsMemberResponse.data}
       />
     </div>

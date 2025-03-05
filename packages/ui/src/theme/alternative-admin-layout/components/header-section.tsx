@@ -14,7 +14,7 @@ import {Fragment} from "react/jsx-runtime";
 export function HeaderSection({activeRoutes}: {activeRoutes: string[] | null}) {
   return (
     <Breadcrumb className="my-4 flex flex-row flex-wrap gap-4">
-      <SidebarTrigger className="-ml-1" />
+      <SidebarTrigger className="-ml-1 md:hidden" />
       <BreadcrumbList>
         {activeRoutes?.map((route, index) => (
           <Fragment key={route}>
