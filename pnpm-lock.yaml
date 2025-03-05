@@ -40,8 +40,8 @@ importers:
         specifier: latest
         version: 0.0.4(magicast@0.3.5)(openapi-types@12.1.3)
       '@ayasofyazilim/upwithcrowd-saas':
-        specifier: ^0.0.34
-        version: 0.0.34(magicast@0.3.5)(openapi-types@12.1.3)
+        specifier: ^0.0.35
+        version: 0.0.35(magicast@0.3.5)(openapi-types@12.1.3)
       '@formatjs/intl-localematcher':
         specifier: ^0.5.4
         version: 0.5.10
@@ -185,8 +185,8 @@ importers:
         specifier: latest
         version: 0.0.4(magicast@0.3.5)(openapi-types@12.1.3)
       '@ayasofyazilim/upwithcrowd-saas':
-        specifier: ^0.0.34
-        version: 0.0.34(magicast@0.3.5)(openapi-types@12.1.3)
+        specifier: ^0.0.35
+        version: 0.0.35(magicast@0.3.5)(openapi-types@12.1.3)
       '@novu/react':
         specifier: ^2.6.5
         version: 2.6.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1036,8 +1036,8 @@ packages:
     resolution: {integrity: sha512-Iof0t+ZKdIEJS2ddm2HBqSMncalBNyKsYYlMq1tkH8vQHgtG7kZMPy2YTRHP6WlH/CKcHC3R5ulOf8xmC2H3UA==}
     hasBin: true
 
-  '@ayasofyazilim/upwithcrowd-saas@0.0.34':
-    resolution: {integrity: sha512-wIgmb8AqDaNLd9dHaZFBYQ/twzJT+iZS5l6uILr2fq0d633IEq86jweEts+KWu1TRn6LJgaBAf3pP6jVZoS2IA==}
+  '@ayasofyazilim/upwithcrowd-saas@0.0.35':
+    resolution: {integrity: sha512-IQfjL2pzBQjS251PF1N7yQvIIlH7csMNnTL2bJxKP5rUEiF6Gg0GL3NaPSWB6dFuIjHrz7UXMcNKCn11cF2nFQ==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -10972,7 +10972,7 @@ snapshots:
       - magicast
       - openapi-types
 
-  '@ayasofyazilim/upwithcrowd-saas@0.0.34(magicast@0.3.5)(openapi-types@12.1.3)':
+  '@ayasofyazilim/upwithcrowd-saas@0.0.35(magicast@0.3.5)(openapi-types@12.1.3)':
     dependencies:
       '@ayasofyazilim/sdk_generator': 0.0.13(magicast@0.3.5)(openapi-types@12.1.3)
       commander: 13.1.0

@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@ayasofyazilim/core-saas": "latest",
-    "@ayasofyazilim/upwithcrowd-saas": "^0.0.34",
+    "@ayasofyazilim/upwithcrowd-saas": "^0.0.35",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@hookform/resolvers": "4.1.2",
     "@radix-ui/react-accordion": "^1.2.2",
