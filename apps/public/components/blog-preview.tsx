@@ -5,20 +5,20 @@ import Link from "next/link";
 const blogPosts = [
   {
     title: "Başarılı Kitle Fonlaması için 10 İpucu",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/400x300",
     excerpt:
       "Başarılı bir kitle fonlama kampanyası yürütmenin ve fikirlerinizi hayata geçirmenin sırlarını öğrenin. Uzmanlardan içgörüler edinin ve kampanyanızın potansiyelini en üst düzeye çıkarın.",
     slug: "basarili-kitle-fonlamasi-10-ipucu",
   },
   {
     title: "Kitle Fonlamasının Geleceği",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/400x300",
     excerpt: "Kitle fonlaması ve çevrimiçi fon toplama alanını şekillendiren yeni trendleri ve teknolojileri keşfedin.",
     slug: "kitle-fonlamasinin-gelecegi",
   },
   {
     title: "Öne Çıkanlar: Fark Yaratan Yenilikçi Projeler",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/400x300",
     excerpt:
       "Dünya çapında topluluklarda olumlu değişim yaratmak için kitle fonlamasını kullanan ilham verici projeleri keşfedin.",
     slug: "fark-yaratan-yenilikci-projeler",

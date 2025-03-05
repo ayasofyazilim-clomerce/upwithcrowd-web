@@ -4,22 +4,22 @@ const team = [
   {
     name: "Ahmet Yılmaz",
     role: "CEO & Kurucu",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
   },
   {
     name: "Ayşe Demir",
     role: "CTO",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
   },
   {
     name: "Mehmet Kaya",
     role: "Topluluk Yöneticisi",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
   },
   {
     name: "Zeynep Çelik",
     role: "Baş Tasarımcı",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/300x300",
   },
 ];
 

@@ -12,7 +12,7 @@ const blogPosts = [
     title: "Başarılı Kitlesel Fonlama için 10 İpucu",
     excerpt:
       "Başarılı bir kitlesel fonlama kampanyası yürütmenin ve fikirlerinizi hayata geçirmenin sırlarını öğrenin.",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/1800x1200",
     date: "2023-06-01",
     category: "Kitlesel Fonlama",
     readTime: "5 dk okuma",
@@ -22,7 +22,7 @@ const blogPosts = [
     title: "Kitlesel Fonlamanın Geleceği",
     excerpt:
       "Kitlesel fonlama ve çevrimiçi bağış toplama yöntemlerinin geleceğini şekillendiren yeni trendleri ve teknolojileri keşfedin.",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/1800x1200",
     date: "2023-05-15",
     category: "Sektör Analizi",
     readTime: "7 dk okuma",
@@ -32,7 +32,7 @@ const blogPosts = [
     title: "Öne Çıkan: Fark Yaratan Yenilikçi Projeler",
     excerpt:
       "Dünya çapında toplumsal değişim yaratmak için kitlesel fonlamayı kullanan ilham verici projeleri keşfedin.",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/1800x1200",
     date: "2023-05-01",
     category: "Proje Vitrini",
     readTime: "6 dk okuma",
@@ -42,7 +42,7 @@ const blogPosts = [
     title: "Kar Amacı Gütmeyen Kuruluşlar için Kitlesel Fonlama Rehberi",
     excerpt:
       "Kar amacı gütmeyen kuruluşların amaçlarını desteklemek ve etkilerini artırmak için kitlesel fonlamayı nasıl etkili kullanabileceklerini öğrenin.",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/1800x1200",
     date: "2023-04-20",
     category: "STK",
     readTime: "8 dk okuma",
@@ -52,7 +52,7 @@ const blogPosts = [
     title: "Kitlesel Fonlama Projeniz Etrafında Topluluk Oluşturmak",
     excerpt:
       "Destekçilerinizle etkileşim kurmanın ve kitlesel fonlama kampanyanız etrafında kalıcı bir topluluk oluşturmanın stratejilerini keşfedin.",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/1800x1200",
     date: "2023-04-10",
     category: "Topluluk",
     readTime: "6 dk okuma",
@@ -62,7 +62,7 @@ const blogPosts = [
     title: "Kitlesel Fonlama Kampanyaları için Hukuki Hususlar",
     excerpt:
       "Kitlesel fonlamanın yasal düzenlemeler ve en iyi uygulamalar konusundaki kapsamlı rehberiyle hukuki boyutunu öğrenin.",
-    image: "/placeholder.svg",
+    image: "https://placehold.co/1800x1200",
     date: "2023-03-25",
     category: "Hukuk",
     readTime: "7 dk okuma",

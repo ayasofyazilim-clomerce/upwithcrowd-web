@@ -6,7 +6,8 @@
     "target": "ES6",
     "paths": {
       "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./*"],
-      "@tiptap-location/*": ["../../packages/ayasofyazilim-ui/tiptap/*"]
+      "@tiptap-location/*": ["../../packages/ayasofyazilim-ui/tiptap/*"],
+      "@public/*": ["./public/*"]
     }
   },
   "include": [

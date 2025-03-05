@@ -7,7 +7,7 @@ import {useSession} from "@repo/utils/auth";
 //   name: "John",
 //   surname: "Doe",
 //   email: "john.doe@example.com",
-//   profileImage: "/placeholder.svg",
+//   profileImage: "https://placehold.co/300x300",
 // };
 
 export default function People() {
