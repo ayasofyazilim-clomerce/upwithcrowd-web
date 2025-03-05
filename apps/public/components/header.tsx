@@ -77,15 +77,16 @@ export default function Header({
                 Proje Başlat
               </Link>
               <MemberSwitcher />
-              {/* {notification ? (
-                <Notification
-                  appId={notification.appId}
-                  appUrl={notification.appUrl}
-                  langugageData={{}}
-                  popoverContentProps={{className: "rounded-lg", style: {height: "h-auto"}}}
-                  subscriberId={notification.subscriberId}
-                />
-              ) : null} */}
+              {notification ? (
+                // <Notification
+                //   appId={notification.appId}
+                //   appUrl={notification.appUrl}
+                //   langugageData={{}}
+                //   popoverContentProps={{className: "rounded-lg", style: {height: "h-auto"}}}
+                //   subscriberId={notification.subscriberId}
+                // />
+                <></>
+              ) : null}
             </div>
           ) : (
             <div className="flex items-center space-x-4">
