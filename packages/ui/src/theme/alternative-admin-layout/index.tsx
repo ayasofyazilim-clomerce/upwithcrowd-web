@@ -194,7 +194,7 @@ function AlternativeAdminLayout(props: any) {
       tenantData={props.tenantData}>
       <SidebarProvider>
         <AppSidebar image={props.image} activeRoutes={activeRoutes} navbarItems={newNavbarItems} lang={props.lang} />
-        <SidebarInset className="flex h-full flex-col overflow-hidden px-5">
+        <SidebarInset className="flex h-full flex-col  overflow-auto px-5">
           <div className="h-full pb-16">
             <HeaderSection activeRoutes={activeRoutes} />
             {props.children}
