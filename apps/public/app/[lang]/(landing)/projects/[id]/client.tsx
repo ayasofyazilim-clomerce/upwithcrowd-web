@@ -17,7 +17,7 @@ import Link from "next/link";
 import {useParams} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {useMember} from "@/app/providers/member";
-import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment/post-action";
+import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment-transaction/post-action";
 import FundingTable from "../_components/funding-card";
 import ProjectSummary from "../_components/project-summary";
 import MobileSupportDrawer from "../_components/mobile-support-card";
