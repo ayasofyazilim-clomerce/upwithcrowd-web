@@ -5,6 +5,7 @@ import {Button} from "@/components/ui/button";
 import {Facebook, Twitter, Instagram, Linkedin} from "lucide-react";
 import {useParams} from "next/navigation";
 import {getBaseLink} from "@/utils/lib";
+import Backdrop from "@public/footer-drop.png";
 import {IconWrapper} from "./icon-wrapper";
 
 export default function Footer() {
@@ -13,7 +14,7 @@ export default function Footer() {
     <footer
       className="flex min-h-[60dvh] flex-col justify-center bg-slate-900 px-4 pt-12 text-white sm:px-6"
       style={{
-        backgroundImage: "url('/footer-drop.png')",
+        backgroundImage: `url('${Backdrop.src}')`,
       }}>
       <div className="container m-auto grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         <div className="text-center sm:text-left">

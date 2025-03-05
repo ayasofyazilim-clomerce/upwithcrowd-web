@@ -24,6 +24,8 @@ import {useMember} from "@/app/providers/member";
 import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
 import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
 import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
+import EDevletIcon from "@public/e-devlet-icon.png";
+import EDevletWhiteIcon from "@public/e-devlet-white-icon.png";
 
 const formSchema = z.object({
   name: z
@@ -250,7 +252,7 @@ export default function NewPersonalAccount() {
                       alt="E-Devlet"
                       className="rounded-full"
                       height={24}
-                      src={canStartVerification() ? "/e-devlet-white-icon.png" : "/e-devlet-icon.png"}
+                      src={canStartVerification() ? EDevletWhiteIcon.src : EDevletIcon.src}
                       width={24}
                     />
                     {isVerifying ? (

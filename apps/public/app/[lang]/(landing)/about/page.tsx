@@ -61,7 +61,7 @@ export default function Page() {
               alt="UPwithCrowd çalışırken"
               className="rounded-lg shadow-lg"
               height={400}
-              src="https://placehold.co/200x200"
+              src="https://placehold.co/1080x1080"
               width={600}
             />
           </div>

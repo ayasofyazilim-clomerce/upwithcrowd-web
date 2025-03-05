@@ -1,3 +1,5 @@
+import Backdrop from "@public/back-drop.png";
+
 const stats = [
   {label: "Finanse Edilen Projeler", value: "10.000+"},
   {label: "Toplam Toplanan", value: "$100M+"},
@@ -7,7 +9,7 @@ const stats = [
 
 export default function OrganizationNumbers() {
   return (
-    <section className="bg-primary px-6 py-12 text-white md:py-20" style={{backgroundImage: "url('/back-drop.png')"}}>
+    <section className="bg-primary px-6 py-12 text-white md:py-20" style={{backgroundImage: `url('${Backdrop.src}')`}}>
       <div className="container mx-auto">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((stat, index) => (
