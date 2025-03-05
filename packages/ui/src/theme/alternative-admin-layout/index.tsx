@@ -13,6 +13,7 @@ import {
   Crown,
   File,
   GalleryVerticalEnd,
+  Gauge,
   HandCoins,
   Landmark,
   LaptopMinimal,
@@ -37,6 +38,7 @@ export type NavItems = {
 };
 
 const newNavbarItems: NavItems[] = [
+  {title: "Kontrol Paneli", icon: Gauge, url: "/home"},
   {
     title: "Projeler",
     icon: Crown,
