@@ -15,6 +15,51 @@ interface PaymentsTableProps {
 export default function SupportTable({taskResponse}: PaymentsTableProps) {
   const columns = tanstackTableCreateColumnsByRowData<UpwithCrowd_Tasks_ListTasksDto>({
     rows: $UpwithCrowd_Tasks_ListTasksDto.properties,
+    badges: {
+      tasksType: {
+        values: [
+          {
+            badgeClassName: "bg-gray-200 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm",
+            position: "after",
+            label: "Tamamlandı",
+            conditions: [
+              {
+                conditionAccessorKey: "status",
+                when(value) {
+                  return value === "Completed";
+                },
+              },
+            ],
+          },
+          {
+            badgeClassName: "bg-green-700 text-white font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm",
+            position: "after",
+            label: "Açık",
+            conditions: [
+              {
+                conditionAccessorKey: "status",
+                when(value) {
+                  return value === "Open";
+                },
+              },
+            ],
+          },
+          {
+            badgeClassName: "bg-gray-50 text-gray-600 font-medium px-2.5 py-0.5 rounded-full text-xs shadow-sm",
+            position: "after",
+            label: "Taslak",
+            conditions: [
+              {
+                conditionAccessorKey: "status",
+                when(value) {
+                  return value === "Draft";
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
     links: {
       summary: {
         prefix: getBaseLink("profile/support"),
