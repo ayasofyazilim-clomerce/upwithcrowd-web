@@ -1,4 +1,6 @@
+"use server";
 import type {
+  GetApiTaskData,
   UpwithCrowd_Tasks_RoleType,
   UpwithCrowd_Tasks_TasksType,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
@@ -9,10 +11,37 @@ import {getTaskApi} from "@upwithcrowd/tasks/action";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import TaskDetail from "../_components/task-detail";
+import TaskList from "../_components/task-list";
 
-async function getApiRequests(taskId: string) {
+function validateRoleType(roleType: UpwithCrowd_Tasks_RoleType | "ALL") {
+  switch (roleType.toLowerCase()) {
+    case "investor":
+      return "Investor";
+    case "entrepreuner":
+      return "Entrepreuner";
+    case "tenant":
+      return "Tenant";
+    default:
+      return undefined;
+  }
+}
+function validateTasksType(tasksType: UpwithCrowd_Tasks_TasksType) {
+  switch (tasksType.toLowerCase()) {
+    case "support":
+      return "Support";
+    case "issue":
+      return "Issue";
+    default:
+      return undefined;
+  }
+}
+async function getApiRequests(searchParams: GetApiTaskData, taskId?: string) {
   try {
-    const requiredRequests = await Promise.all([getTaskApi({id: taskId}), getTaskCommentApi({tasksId: taskId})]);
+    const requiredRequests = await Promise.all([
+      getTaskApi(searchParams),
+      taskId ? getTaskApi({id: taskId}) : null,
+      getTaskCommentApi({tasksId: taskId}),
+    ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -22,8 +51,10 @@ async function getApiRequests(taskId: string) {
     throw error;
   }
 }
+
 export default async function SupportPage({
   params,
+  searchParams,
 }: {
   params: {
     lang: string;
@@ -31,22 +62,32 @@ export default async function SupportPage({
     roleType: UpwithCrowd_Tasks_RoleType | "ALL";
     taskId?: string[];
   };
+  searchParams?: GetApiTaskData;
 }) {
   const {lang, taskId} = params;
-
-  if (!taskId?.length) return <></>;
+  const baseLink = `/${lang}/support-center/${params.tasksType}/${params.roleType}`;
 
   const {languageData} = await getResourceData(lang);
-  const apiRequests = await getApiRequests(taskId[0]);
+  const apiRequests = await getApiRequests(
+    {
+      ...searchParams,
+      tasksType: validateTasksType(params.tasksType),
+      roleType: validateRoleType(params.roleType),
+    },
+    taskId?.length ? taskId[0] : undefined,
+  );
+
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [taskResponse, taskCommentResponse] = apiRequests.requiredRequests;
-  const taskData = taskResponse.data.items?.[0];
-  if (!taskData) {
-    return <ErrorComponent languageData={languageData} message="Task not found" />;
-  }
+  const [taskListResponse, taskDetailResponse, taskCommentResponse] = apiRequests.requiredRequests;
+  const taskData = taskDetailResponse?.data.items?.[0];
 
-  return <TaskDetail taskCommentResponse={taskCommentResponse.data} taskData={taskData} />;
+  return (
+    <div className="my-2 grid grid-cols-1 gap-4 pb-4 md:grid-cols-3 md:gap-3">
+      <TaskList baseLink={baseLink} taskId={params.taskId} taskResponse={taskListResponse.data} />
+      {taskData ? <TaskDetail taskCommentResponse={taskCommentResponse.data} taskData={taskData} /> : null}
+    </div>
+  );
 }
