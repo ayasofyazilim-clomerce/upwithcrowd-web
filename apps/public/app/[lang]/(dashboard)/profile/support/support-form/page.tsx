@@ -15,7 +15,6 @@ import Link from "next/link";
 import {Info} from "lucide-react";
 import {postTasksApi} from "@/actions/upwithcrowd/tasks/post-action";
 
-// API tipine uygun form şeması
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {
     required_error: "Lütfen bir talep türü seçin",
@@ -24,7 +23,7 @@ const formSchema = z.object({
     .string()
     .optional()
     .refine((val) => {
-      if (!val) return true; // Optional field
+      if (!val) return true;
       return /\/projects\/[0-9a-f-]+$/i.exec(val) !== null;
     }, "Geçersiz proje URL formatı"),
   memberId: z.string().optional(),
@@ -67,7 +66,7 @@ export default function SupportFormClient() {
           projectId,
           summary: values.summary,
           description: values.description,
-          status: "Draft",
+          status: "Open",
         },
       });
       if (response.type === "success") {
