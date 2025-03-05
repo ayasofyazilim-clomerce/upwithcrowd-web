@@ -77,7 +77,7 @@ export default function Header({
                 Proje Başlat
               </Link>
               <MemberSwitcher />
-              {/* {notification ? (
+              {notification ? (
                 // <Notification
                 //   appId={notification.appId}
                 //   appUrl={notification.appUrl}
@@ -86,7 +86,7 @@ export default function Header({
                 //   subscriberId={notification.subscriberId}
                 // />
                 <></>
-              ) : null} */}
+              ) : null}
             </div>
           ) : (
             <div className="flex items-center space-x-4">
