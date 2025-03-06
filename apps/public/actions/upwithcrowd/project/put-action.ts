@@ -2,7 +2,7 @@
 import type {
   PutApiProjectByIdData,
   PutApiProjectByIdFundingData,
-  type PutApiProjectByIdStatusData,
+  PutApiProjectByIdStatusData,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {structuredError, structuredResponse} from "@repo/utils/api";
 import {getUpwithcrowd} from "@/utils/client";
