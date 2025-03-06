@@ -5,10 +5,10 @@ import {getFileApi} from "@/actions/upwithcrowd/images/action";
 import {
   getPublicProjectByIdMembersApi,
   getPublicProjectDetailByIdApi,
-} from "@/actions/upwithcrowd/public-project/actions";
+  getProjectByIdUpdatePermissionApi,
+} from "@/actions/upwithcrowd/public-project/action";
 import {getResourceData} from "@/language/core/Default";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
-import {getProjectByIdUpdatePermissionApi} from "@/actions/upwithcrowd/project/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {

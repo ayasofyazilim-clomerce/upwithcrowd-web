@@ -286,7 +286,7 @@ export default function ProjectDetails({
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {paymentResponse.items.slice(0, 3).map((payment, index) => (
+                    {paymentResponse.items?.slice(0, 3).map((payment, index) => (
                       <div className="flex items-center space-x-4" key={payment.id}>
                         <Avatar className="h-10 w-10">
                           <AvatarFallback>JD</AvatarFallback>

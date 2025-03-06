@@ -8,7 +8,7 @@ import MissionsSection from "@/components/mission-section";
 import OrganizationNumbers from "@/components/organization-numbers";
 import ServicesSection from "@/components/services-section";
 import Testimonials from "@/components/testimoni";
-import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
 
 export default async function Page() {
   const publicProjectsResponse = await getPublicProjectsApi({});
