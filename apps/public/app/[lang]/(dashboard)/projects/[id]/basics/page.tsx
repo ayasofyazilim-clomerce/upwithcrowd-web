@@ -2,7 +2,7 @@ import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {getCategoryApi, getTypeApi} from "@/actions/upwithcrowd/category-project/action";
-import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/action";
 import {getResourceData} from "@/language/core/Default";
 import ClientBasics from "./client";
 

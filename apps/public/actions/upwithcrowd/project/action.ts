@@ -1,9 +1,6 @@
 "use server";
 
-import type {
-  GetApiProjectByIdUpdatePermissionData,
-  GetApiProjectData,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {structuredResponse, structuredError, structuredSuccessResponse} from "@repo/utils/api";
 import {getUpwithcrowd} from "@/utils/client";
 
@@ -34,15 +31,5 @@ export async function getProjectByIdMembersApi(id: string) {
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
-  }
-}
-
-export async function getProjectByIdUpdatePermissionApi(data: GetApiProjectByIdUpdatePermissionData) {
-  try {
-    const client = await getUpwithcrowd();
-    const dataResponse = await client.project.getApiProjectByIdUpdatePermission(data);
-    return structuredSuccessResponse(dataResponse);
-  } catch (error) {
-    throw structuredError(error);
   }
 }

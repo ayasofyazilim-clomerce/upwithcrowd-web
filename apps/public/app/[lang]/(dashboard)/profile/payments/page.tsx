@@ -2,7 +2,7 @@ import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
-import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
 import {getResourceData} from "@/language/core/Default";
 import EmptyPaymentsState from "../_components/empty-payments-state";
 import PaymentsPage from "./client";

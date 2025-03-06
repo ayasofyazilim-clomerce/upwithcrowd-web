@@ -66,7 +66,6 @@ export default function SupportFormClient() {
           projectId,
           summary: values.summary,
           description: values.description,
-          status: "Open",
         },
       });
       if (response.type === "success") {

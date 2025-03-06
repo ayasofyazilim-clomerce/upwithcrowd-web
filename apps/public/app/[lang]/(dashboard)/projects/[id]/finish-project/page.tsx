@@ -2,7 +2,7 @@ import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language/core/Default";
-import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getPublicProjectDetailByIdApi} from "@/actions/upwithcrowd/public-project/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {
