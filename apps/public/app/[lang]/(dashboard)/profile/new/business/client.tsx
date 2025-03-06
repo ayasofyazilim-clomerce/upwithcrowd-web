@@ -5,7 +5,6 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {toast} from "@/components/ui/sonner";
 import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Loader2} from "lucide-react";
@@ -13,9 +12,9 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
+import {handlePostResponse} from "@repo/utils/api";
 import {useMember} from "@/app/providers/member";
 import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
-import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
@@ -43,7 +42,7 @@ export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const {setMembers, currentMember} = useMember();
+  const {currentMember} = useMember();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -59,44 +58,31 @@ export default function NewBusinessAccount() {
   // Check if the form is valid
   const isFormValid = form.formState.isValid;
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    try {
-      const requestBody: UpwithCrowd_Members_SaveMemberDto = {
-        type: "Organization",
-        idType: "VKN",
-        identifier: values.identifier,
-        title: values.title,
-        tel: values.tel || "",
-        mail: values.mail,
-        annualIncome: parseInt(values.annualIncome),
-        mobile: "",
-        isValidated: true,
-      };
 
-      const memberResult = await postApiMember({requestBody});
+    const requestBody: UpwithCrowd_Members_SaveMemberDto = {
+      type: "Organization",
+      idType: "VKN",
+      identifier: values.identifier,
+      title: values.title,
+      tel: values.tel || "",
+      mail: values.mail,
+      annualIncome: parseInt(values.annualIncome),
+      mobile: "",
+      isValidated: true,
+    };
 
-      if (memberResult.type === "success") {
-        const memberResponse = await getApiMemberApi();
-        if (memberResponse.type !== "success") {
-          return;
-        }
-        const memberList = memberResponse.data.items || [];
-        setMembers(memberList);
-        setShowSuccessModal(true);
-      } else {
-        toast.error(memberResult.message);
-      }
-    } catch (error) {
-      toast.error("İşletme hesabı oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.");
-    }
+    void postApiMember({requestBody}).then((response) => {
+      handlePostResponse(response, router);
+    });
+
     setIsSubmitting(false);
   }
 
   const handleModalClose = () => {
     setShowSuccessModal(false);
     router.replace("/profile");
-    // router.refresh();
   };
 
   return (

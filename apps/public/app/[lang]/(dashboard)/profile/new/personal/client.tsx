@@ -1,31 +1,30 @@
 "use client";
-import {PhoneInput} from "react-international-phone";
-import "react-international-phone/style.css";
+import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
+import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {toast} from "@/components/ui/sonner";
-import Image from "next/image";
 import type {
   UpwithCrowd_Members_IdType,
   UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useSession} from "@repo/utils/auth";
-import {Loader2, AlertCircle, CheckCircle2} from "lucide-react";
-import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
-import {useForm} from "react-hook-form";
-import * as z from "zod";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {useMember} from "@/app/providers/member";
-import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
-import {getApiMemberApi} from "@/actions/upwithcrowd/member/actions";
 import EDevletIcon from "@public/e-devlet-icon.png";
 import EDevletWhiteIcon from "@public/e-devlet-white-icon.png";
+import {handlePostResponse} from "@repo/utils/api";
+import {useSession} from "@repo/utils/auth";
+import {AlertCircle, CheckCircle2, Loader2} from "lucide-react";
+import Image from "next/image";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {PhoneInput} from "react-international-phone";
+import "react-international-phone/style.css";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z
@@ -52,12 +51,7 @@ const formSchema = z.object({
 export default function NewPersonalAccount() {
   const router = useRouter();
   const {session} = useSession();
-  const {setMembers, setCurrentMember, currentMember} = useMember();
-  useEffect(() => {
-    if (currentMember !== null) {
-      router.push("/profile");
-    }
-  }, [currentMember, router]);
+
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
 
@@ -81,75 +75,38 @@ export default function NewPersonalAccount() {
     return values.idType !== "NONE" && values.identifier;
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const requestBody: UpwithCrowd_Members_SaveMemberDto = {
-        type: "Individual",
-        idType: values.idType as UpwithCrowd_Members_IdType,
-        identifier: values.identifier,
-        name: values.name,
-        surname: values.surname,
-        title: values.title,
-        tel: "", // Set tel as empty string
-        mail: values.email,
-        annualIncome: parseInt(values.annualIncome),
-        mobile: values.mobile,
-        isValidated: isVerified, // Change this line to use the isVerified state
-      };
-
-      const memberResult = await postApiMember({requestBody});
-      if (memberResult.type === "success") {
-        await putMyProfileApi({
-          requestBody: {
-            name: values.name,
-            surname: values.surname,
-            userName: session?.user?.name || "",
-          },
-        });
-        const memberResponse = await getApiMemberApi();
-        if (memberResponse.type !== "success") {
-          return;
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const requestBody: UpwithCrowd_Members_SaveMemberDto = {
+      type: "Individual",
+      idType: values.idType as UpwithCrowd_Members_IdType,
+      identifier: values.identifier,
+      name: values.name,
+      surname: values.surname,
+      title: values.title,
+      tel: "", // Set tel as empty string
+      mail: values.email,
+      annualIncome: parseInt(values.annualIncome),
+      mobile: values.mobile,
+      isValidated: isVerified, // Change this line to use the isVerified state
+    };
+    postApiMember({requestBody})
+      .then(async (response) => {
+        if (response.type === "success") {
+          await putMyProfileApi({
+            requestBody: {
+              name: values.name,
+              surname: values.surname,
+              userName: session?.user?.name || "",
+            },
+          });
+          handlePostResponse(response, router);
+        } else {
+          toast.error(response.message);
         }
-        const memberList = memberResponse.data.items || [];
-        setMembers(memberList);
-        const memberIndex = memberList.findIndex((x) => x.id === memberResult.data.memberID);
-        if (memberList.length === 0 || memberIndex === -1) {
-          return;
-        }
-        setCurrentMember(memberList[memberIndex]);
-        toast.success("Your personal account has been created successfully.");
-      } else {
-        try {
-          const errorMessage = memberResult.message || "";
-          // First try to parse as JSON
-          try {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- This is safe
-            const errorMessages: Record<string, string> = JSON.parse(errorMessage);
-            Object.keys(errorMessages).forEach((key) => {
-              if (key in form.getValues()) {
-                form.setError(key as keyof z.infer<typeof formSchema>, {
-                  message: errorMessages[key],
-                });
-              }
-            });
-          } catch {
-            // If not JSON, check if it's a simple string message
-            if (errorMessage.toLowerCase().includes("identifier")) {
-              form.setError("identifier", {
-                message: errorMessage,
-              });
-            } else {
-              // If we can't determine the specific field, show a toast
-              toast.error(errorMessage);
-            }
-          }
-        } catch (errorMessage) {
-          toast.error(String(errorMessage));
-        }
-      }
-    } catch (error) {
-      toast.error("There was an error creating your personal account. Please try again.");
-    }
+      })
+      .catch(() => {
+        toast.error("There was an error creating your personal account. Please try again.");
+      });
   }
 
   const startVerification = async () => {
