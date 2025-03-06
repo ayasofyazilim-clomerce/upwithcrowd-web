@@ -70,10 +70,10 @@ export default async function RootLayout({children, params}: {children: React.Re
       );
     }
     const [memberResponse, profileImageResponse] = apiRequests.optionalRequests;
-    members = memberResponse.status === "fulfilled" ? memberResponse.value.data.items || [] : [];
     const profileImage = profileImageResponse.status === "fulfilled" ? profileImageResponse.value.data : undefined;
-    const activeMember = findActiveMember(members, session.user?.member_id);
+    members = memberResponse.status === "fulfilled" ? memberResponse.value.data.items || [] : [];
 
+    const activeMember = findActiveMember(members, session.user?.member_id);
     if (profileImage) {
       const activeMemberIndex = members.findIndex((_member) => _member.id === activeMember?.id);
       if (activeMember && activeMemberIndex !== -1) {
