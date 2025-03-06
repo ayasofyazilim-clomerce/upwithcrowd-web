@@ -1,5 +1,7 @@
 "use client";
 
+import {postTaskCommentApi} from "@/actions/upwithcrowd/task-comment/post-action";
+import {putTaskByIdApi} from "@/actions/upwithcrowd/tasks/put-action";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
@@ -14,19 +16,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {Separator} from "@/components/ui/separator";
+import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
 import type {
   PagedResultDto_ListTasksCommentDto,
   PagedResultDto_ListTasksDto,
   UpwithCrowd_Tasks_ListTasksDto,
+  UpwithCrowd_Tasks_TasksStatus,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {handlePostResponse} from "@repo/utils/api";
+import {handlePostResponse, handlePutResponse} from "@repo/utils/api";
 import {Calendar, CheckCircle, Clock, MessageCircle, RefreshCw} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
-import React, {useState, useTransition} from "react";
-import {toast} from "@/components/ui/sonner";
-import {postTaskCommentApi} from "@/actions/upwithcrowd/task-comment/post-action";
-import {putTaskByIdApi} from "@/actions/upwithcrowd/tasks/put-action";
+import {useState, useTransition} from "react";
 
 interface TaskCommentClientProps {
   response: {
@@ -45,7 +46,7 @@ interface TaskCommentClientProps {
 export function TaskCommentClient({response, responseComment}: TaskCommentClientProps) {
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [isTaskResolved, setIsTaskResolved] = useState(false);
+  const [isTaskResolved, _setIsTaskResolved] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -135,73 +136,23 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
     });
   };
 
-  const handleMarkAsResolved = () => {
-    if (isPending) return;
-
-    startTransition(async () => {
-      try {
-        // Call the API to update the task status to "Completed"
-        const result = await putTaskByIdApi({
-          id: taskId,
-          requestBody: {
-            ...currentTask,
-            status: "Completed",
-          },
-        });
-
-        if (result.type === "success") {
-          setIsTaskResolved(true);
-          toast.success("Talep çözüldü", {
-            description: "Destek talebiniz başarıyla kapatıldı.",
-          });
-
-          // Refresh the page to show updated status
-          router.refresh();
-        } else {
+  const changeTaskStatus = (status: UpwithCrowd_Tasks_TasksStatus) => {
+    startTransition(() => {
+      putTaskByIdApi({
+        id: taskId,
+        requestBody: {
+          ...currentTask,
+          status: status,
+        },
+      })
+        .then((_response) => {
+          handlePutResponse(_response, router);
+        })
+        .catch(() => {
           toast.error("Hata", {
             description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
           });
-        }
-      } catch (error) {
-        toast.error("Hata", {
-          description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
         });
-      }
-    });
-  };
-
-  const handleReopenTask = () => {
-    if (isPending) return;
-
-    startTransition(async () => {
-      try {
-        // Call the API to update the task status to "Open"
-        const result = await putTaskByIdApi({
-          id: taskId,
-          requestBody: {
-            ...currentTask,
-            status: "Open",
-          },
-        });
-
-        if (result.type === "success") {
-          setIsTaskResolved(false);
-          toast.success("Talep yeniden açıldı", {
-            description: "Destek talebiniz yeniden açıldı.",
-          });
-
-          // Refresh the page to show updated status
-          router.refresh();
-        } else {
-          toast.error("Hata", {
-            description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
-          });
-        }
-      } catch (error) {
-        toast.error("Hata", {
-          description: "İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.",
-        });
-      }
     });
   };
 
@@ -238,7 +189,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
                   className="gap-2 bg-amber-600 py-2 text-sm text-white shadow-md transition-all hover:bg-amber-600 hover:text-white hover:shadow-lg"
                   disabled={isPending}
                   onClick={() => {
-                    handleReopenTask();
+                    changeTaskStatus("Open");
                   }}
                   size="sm"
                   variant="outline">
@@ -327,7 +278,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
             className="w-full gap-2 bg-amber-600 py-6 text-base shadow-md transition-all hover:bg-amber-600 hover:shadow-lg"
             disabled={isPending}
             onClick={() => {
-              handleReopenTask();
+              changeTaskStatus("Open");
             }}>
             <RefreshCw className="h-5 w-5" />
             <span>Yeniden Aç</span>
@@ -339,7 +290,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
                 className="w-full gap-2 py-6 text-base shadow-md transition-all hover:shadow-lg"
                 disabled={isPending || isTaskResolved}
                 onClick={() => {
-                  handleMarkAsResolved();
+                  changeTaskStatus("Completed");
                 }}>
                 <CheckCircle className="h-5 w-5" />
                 <span>Sorunum Çözüldü</span>
