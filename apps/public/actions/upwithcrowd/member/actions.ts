@@ -28,9 +28,9 @@ export async function getProfileImageApi() {
   const api_client = await getUpwithcrowd();
   try {
     const response = await api_client.profile.getApiProfileGetProfilePicture();
-    return structuredResponse(response);
+    return structuredSuccessResponse(response);
   } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
   }
 }
 
