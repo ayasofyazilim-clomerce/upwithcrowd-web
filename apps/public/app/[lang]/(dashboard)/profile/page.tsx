@@ -81,12 +81,6 @@ export default function ProfileClient() {
       <div className="flex flex-col gap-6 md:flex-row md:gap-8">
         <div className="flex w-full flex-col gap-4 md:w-1/3">
           <Card className="bg-muted w-full md:max-w-md">
-            <Button
-              onClick={() => {
-                router.refresh();
-              }}>
-              TESTTT
-            </Button>
             <CardContent className="flex flex-col items-center p-6 md:p-8">
               <div className="relative mb-4 md:mb-6">
                 <div className="relative h-20 w-20 md:h-24 md:w-24">
