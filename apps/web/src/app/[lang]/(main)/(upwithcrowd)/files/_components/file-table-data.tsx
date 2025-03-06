@@ -14,7 +14,6 @@ const projectsColumns = (locale: string) => {
       fileSize: "Dosya Boyutu",
       creationDate: "Yüklenme Tarihi",
     },
-    selectableRows: true,
     custom: {
       fileType: {
         showHeader: true,
@@ -71,7 +70,7 @@ function projectsTable() {
   const table: ProjectsTable = {
     columnVisibility: {
       type: "show",
-      columns: ["select", "fileType", "fileSize", "creationDate"],
+      columns: ["fileType", "fileSize", "creationDate"],
     },
     fillerColumn: "fileType",
     columnOrder: ["fileType", "fileSize", "creationDate"],
