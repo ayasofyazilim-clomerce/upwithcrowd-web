@@ -1,5 +1,5 @@
 import {getMemberApi} from "@upwithcrowd/member/actions";
-import {getPublicProjectsApi} from "@upwithcrowd/public-project/actions";
+import {getPublicProjectsApi} from "@upwithcrowd/public-project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {structuredError} from "@repo/utils/api";
