@@ -8,6 +8,7 @@ import {
 } from "@/actions/upwithcrowd/public-project/actions";
 import {getResourceData} from "@/language/core/Default";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
+import {getProjectByIdUpdatePermissionApi} from "@/actions/upwithcrowd/project/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {
@@ -26,6 +27,7 @@ async function getApiRequests(id: string) {
       getApiPaymentTransactionApi({
         maxResultCount: 999,
       }),
+      getProjectByIdUpdatePermissionApi({id}),
     ]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -37,7 +39,6 @@ async function getApiRequests(id: string) {
 }
 
 export default async function Page({params}: {params: {id: string; lang: string}}) {
-  const isEditable = false;
   const {lang, id} = params;
   const {languageData} = await getResourceData(lang);
 
@@ -47,9 +48,9 @@ export default async function Page({params}: {params: {id: string; lang: string}
   }
 
   const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
-  const [paymentsResponse] = apiRequests.optionalRequests;
+  const [paymentsResponse, isEditableResponse] = apiRequests.optionalRequests;
   const paymentData = paymentsResponse.status === "fulfilled" ? paymentsResponse.value.data : {totalCount: 0};
-
+  const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
   return (
     <div className="bg-background min-h-screen">
       <ProjectDetails
