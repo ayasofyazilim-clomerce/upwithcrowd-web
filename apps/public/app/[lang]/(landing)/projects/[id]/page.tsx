@@ -21,11 +21,12 @@ async function getApiRequests(id: string) {
         relatedEntity: "Project",
         relatedId: id,
       }),
+    ]);
+    const optionalRequests = await Promise.allSettled([
       getApiPaymentTransactionApi({
         maxResultCount: 999,
       }),
     ]);
-    const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -45,8 +46,9 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, paymentsResponse] =
-    apiRequests.requiredRequests;
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
+  const [paymentsResponse] = apiRequests.optionalRequests;
+  const paymentData = paymentsResponse.status === "fulfilled" ? paymentsResponse.value.data : {totalCount: 0};
 
   return (
     <div className="bg-background min-h-screen">
@@ -54,7 +56,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
         isEditable={isEditable}
-        paymentResponse={paymentsResponse.data}
+        paymentResponse={paymentData}
         projectsMember={projectsMemberResponse.data}
       />
     </div>
