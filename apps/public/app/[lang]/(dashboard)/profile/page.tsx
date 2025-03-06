@@ -35,7 +35,8 @@ export default function ProfileClient() {
   const [isCopied, setIsCopied] = useState(false);
   const router = useRouter();
 
-  if (currentMember === null) return null;
+  if (!currentMember) return null;
+
   const handleCopy = () => {
     if (currentMember.id) {
       void navigator.clipboard.writeText(currentMember.id);
