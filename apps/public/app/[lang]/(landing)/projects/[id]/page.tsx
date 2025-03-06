@@ -8,6 +8,7 @@ import {
 } from "@/actions/upwithcrowd/public-project/actions";
 import {getResourceData} from "@/language/core/Default";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
+import {getProjectByIdUpdatePermissionApi} from "@/actions/upwithcrowd/project/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {
@@ -24,6 +25,7 @@ async function getApiRequests(id: string) {
       getApiPaymentTransactionApi({
         maxResultCount: 999,
       }),
+      getProjectByIdUpdatePermissionApi({id}),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -36,7 +38,6 @@ async function getApiRequests(id: string) {
 }
 
 export default async function Page({params}: {params: {id: string; lang: string}}) {
-  const isEditable = false;
   const {lang, id} = params;
   const {languageData} = await getResourceData(lang);
 
@@ -45,7 +46,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, paymentsResponse] =
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, paymentsResponse, isEditable] =
     apiRequests.requiredRequests;
 
   return (
@@ -53,7 +54,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
       <ProjectDetails
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
-        isEditable={isEditable}
+        isEditable={isEditable.data}
         paymentResponse={paymentsResponse.data}
         projectsMember={projectsMemberResponse.data}
       />
