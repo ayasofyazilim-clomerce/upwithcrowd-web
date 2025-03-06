@@ -70,9 +70,9 @@ export default async function RootLayout({children, params}: {children: React.Re
       );
     }
     const [memberResponse, profileImageResponse] = apiRequests.optionalRequests;
-    const memberList = memberResponse.status === "fulfilled" ? memberResponse.value.data.items || [] : [];
+    members = memberResponse.status === "fulfilled" ? memberResponse.value.data.items || [] : [];
     const profileImage = profileImageResponse.status === "fulfilled" ? profileImageResponse.value.data : undefined;
-    const activeMember = findActiveMember(memberList, session.user?.member_id);
+    const activeMember = findActiveMember(members, session.user?.member_id);
 
     if (profileImage) {
       const activeMemberIndex = members.findIndex((_member) => _member.id === activeMember?.id);
@@ -81,7 +81,6 @@ export default async function RootLayout({children, params}: {children: React.Re
       }
     }
     member = activeMember;
-    members = memberList;
   }
 
   const resources = await getLocalizationResources(lang);
