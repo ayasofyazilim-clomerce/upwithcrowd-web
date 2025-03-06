@@ -8,6 +8,19 @@ module.exports = {
     "@ayasofyazilim/upwithcrowd-saas",
     "@ayasofyazilim/core-saas",
   ],
+  images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+      {
+        protocol: "https",
+        hostname: "s3.us-west-2.amazonaws.com",
+      },
+    ],
+  },
   output: "standalone",
   experimental: {
     serverActions: {

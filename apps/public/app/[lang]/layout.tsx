@@ -1,17 +1,17 @@
-import {Inter} from "next/font/google";
-import "../globals.css";
+import ErrorComponent from "@repo/ui/components/error-component";
+import {structuredError} from "@repo/utils/api";
+import {signOutServer} from "@repo/utils/auth";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import {structuredError} from "@repo/utils/api";
-import ErrorComponent from "@repo/ui/components/error-component";
-import {signOutServer} from "@repo/utils/auth";
-import {getApiMemberApi, getProfileImageApi} from "@/actions/upwithcrowd/member/actions";
-import {myProfileApi} from "@/actions/core/AccountService/actions";
+import {Inter} from "next/font/google";
 import {getLocalizationResources} from "@/utils/lib";
 import {getResourceData} from "@/language/core/Default";
-import Providers from "../providers/providers";
-import type {Member} from "../providers/member";
+import {getMemberApi, getProfileImageApi} from "@/actions/upwithcrowd/member/actions";
+import {myProfileApi} from "@/actions/core/AccountService/actions";
+import "../globals.css";
 import {LocaleProvider} from "../providers/locale";
+import type {Member} from "../providers/member";
+import Providers from "../providers/providers";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -20,11 +20,30 @@ export const metadata = {
   description: "Empowering ideas through crowdfunding",
 };
 
+function findActiveMember(memberList: Member[], memberIdFromSession?: string | string[]) {
+  if (memberList.length === 0) return null;
+
+  // Eğer backend'den member listesi geldiyse ama session'da bu member id yoksa kullanıcı ilk defa member oluşturmuş demektir.
+  // İlk member oluşturulduğunda backend bu member'ı aktif member olarak kaydediyor.
+  // Bu sebeple memberIdFromSession gelmediğinde ilk member'ı aktif member olarak set edebiliriz.
+  if (!memberIdFromSession) {
+    return memberList[0];
+  }
+
+  if (Array.isArray(memberIdFromSession)) {
+    return (
+      memberList.find((memberFromDB) => memberIdFromSession.find((member) => member === memberFromDB.id)) ||
+      memberList[0]
+    );
+  }
+  return memberList.find((memberFromDB) => memberFromDB.id === memberIdFromSession) || memberList[0];
+}
+
 async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([myProfileApi()]);
 
-    const optionalRequests = await Promise.allSettled([]);
+    const optionalRequests = await Promise.allSettled([getMemberApi(), getProfileImageApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -50,30 +69,20 @@ export default async function RootLayout({children, params}: {children: React.Re
         </html>
       );
     }
-    const memberResponse = await getApiMemberApi();
-    const profileImageResponse = await getProfileImageApi();
-    if (memberResponse.type === "success") {
-      members = memberResponse.data.items || [];
-      if (profileImageResponse.type === "success") {
-        members = members.map((_member) => {
-          if (_member.id === session.user?.member_id) {
-            return {..._member, profileImage: profileImageResponse.data};
-          }
-          return _member;
-        });
-      }
-      member =
-        members.find((x) => {
-          if (Array.isArray(session.user?.member_id)) {
-            return session.user.member_id.find((y) => y === x.id);
-          }
-          return x.id === session.user?.member_id;
-        }) || null;
-      if (member && profileImageResponse.type === "success") {
-        member = {...member, profileImage: profileImageResponse.data};
+    const [memberResponse, profileImageResponse] = apiRequests.optionalRequests;
+    const profileImage = profileImageResponse.status === "fulfilled" ? profileImageResponse.value.data : undefined;
+    members = memberResponse.status === "fulfilled" ? memberResponse.value.data.items || [] : [];
+
+    const activeMember = findActiveMember(members, session.user?.member_id);
+    if (profileImage) {
+      const activeMemberIndex = members.findIndex((_member) => _member.id === activeMember?.id);
+      if (activeMember && activeMemberIndex !== -1) {
+        members[activeMemberIndex].profileImage = profileImage;
       }
     }
+    member = activeMember;
   }
+
   const resources = await getLocalizationResources(lang);
   return (
     <html lang="en">

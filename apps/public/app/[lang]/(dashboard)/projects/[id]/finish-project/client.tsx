@@ -16,6 +16,8 @@ import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {useParams, useRouter} from "next/navigation";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
+import {handlePutResponse} from "@repo/utils/api";
+import {putProjectStatusByIdApi} from "@/actions/upwithcrowd/project/put-action";
 import FundingTable from "../_components/funding-card";
 import ProjectSummary from "../_components/project-summary";
 import MobileSupportDrawer from "../_components/mobile-support-card";
@@ -32,8 +34,12 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
   const previewSelectedAmount = 25;
 
   const handleFinishProject = () => {
-    router.push(`/projects/${projectId}`);
-    setDialogOpen(false);
+    void putProjectStatusByIdApi({
+      id: projectId,
+      status: "Pending",
+    }).then((response) => {
+      handlePutResponse(response, router, `/projects/${projectId}`);
+    });
   };
 
   return (

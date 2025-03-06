@@ -97,10 +97,34 @@ const projectsColumns = (locale: string) => {
 
 function projectsTable() {
   const table: ProjectsTable = {
+    fillerColumn: "title",
     columnVisibility: {
       type: "show",
       columns: ["title", "mail", "mobile", "isEntrepreneur", "isInvestor", "isValidated"],
     },
+    rowActions: [
+      {
+        actionLocation: "row",
+        cta: "Kimliği Onayla",
+        onClick() {
+          //
+        },
+        type: "simple",
+        icon: CheckCircle,
+        condition: (row) => !row.isValidated,
+      },
+      {
+        actionLocation: "row",
+        cta: "Kimliği Reddet",
+
+        onClick() {
+          //
+        },
+        type: "simple",
+        icon: XCircle,
+        condition: (row) => !row.isValidated,
+      },
+    ],
   };
   return table;
 }
