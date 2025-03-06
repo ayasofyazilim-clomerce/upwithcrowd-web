@@ -109,6 +109,7 @@ function projectsTable(router: AppRouterInstance) {
         },
         type: "simple",
         icon: CheckCircle,
+        condition: (row) => row.status === "Pending",
       },
       {
         actionLocation: "row",
@@ -124,6 +125,7 @@ function projectsTable(router: AppRouterInstance) {
         },
         type: "simple",
         icon: XCircle,
+        condition: (row) => row.status === "Pending",
       },
       {
         actionLocation: "row",
@@ -139,6 +141,7 @@ function projectsTable(router: AppRouterInstance) {
         },
         type: "simple",
         icon: Ban,
+        condition: (row) => row.status === "Pending",
       },
     ],
   };
