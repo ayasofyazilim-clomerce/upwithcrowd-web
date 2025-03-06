@@ -84,6 +84,7 @@ const newNavbarItems: NavItems[] = [
     title: "Topluluk",
     icon: Users,
     items: [
+      {title: "Onay Bekleyenler", icon: Megaphone, url: "/community/organizations"},
       {
         title: "Yatırımcı",
         icon: Landmark,

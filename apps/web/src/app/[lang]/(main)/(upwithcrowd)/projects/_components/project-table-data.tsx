@@ -7,6 +7,7 @@ import {handlePutResponse} from "@repo/utils/api";
 import {putProjectStatusByIdApi} from "@upwithcrowd/project/put-action";
 import {Ban, CheckCircle, XCircle} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import {getBaseLink} from "@/utils";
 
 type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Projects_ListProjectsResponseDto>;
 
@@ -20,12 +21,12 @@ const projectsColumns = (locale: string) => {
       projectEndDate: "Bitiş Tarihi",
       overFunding: "Ek Fonlama",
     },
-    // links: {
-    //   projectName: {
-    //     prefix: getBaseLink("projects", locale),
-    //     targetAccessorKey: "id",
-    //   },
-    // },
+    links: {
+      projectName: {
+        prefix: getBaseLink("projects/detail", locale),
+        targetAccessorKey: "id",
+      },
+    },
     faceted: {
       overFunding: {
         options: [
