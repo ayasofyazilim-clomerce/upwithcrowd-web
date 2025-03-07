@@ -6,7 +6,7 @@ import {structuredError} from "@repo/utils/api";
 import {getProjectApi} from "@upwithcrowd/project/action";
 import {isRedirectError, permanentRedirect} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
-import FileTable from "../../../files/_components/table";
+import FileTable from "../_components/table";
 
 async function getApiRequests(searchParams: GetApiProjectData) {
   try {
