@@ -138,7 +138,6 @@ const newNavbarItems: NavItems[] = [
       },
     ],
   },
-  {title: "Dosyalar", icon: File, url: "/files"},
   {
     title: "Management",
     icon: Settings,
