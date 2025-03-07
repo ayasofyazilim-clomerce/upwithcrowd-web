@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useTransition} from "react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
@@ -10,16 +10,18 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
-import {toast} from "@/components/ui/sonner";
 import Link from "next/link";
 import {Info} from "lucide-react";
+import AsyncSelect from "@repo/ayasofyazilim-ui/molecules/async-select";
+import {handlePostResponse} from "@repo/utils/api";
 import {postTasksApi} from "@/actions/upwithcrowd/tasks/post-action";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
 
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {
     required_error: "Lütfen bir talep türü seçin",
   }),
-  projectUrl: z
+  projectName: z
     .string()
     .optional()
     .refine((val) => {
@@ -37,50 +39,46 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SupportFormClient() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [selectedProject, setSelectedProject] = useState<{id: string; name: string}>();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       tasksType: undefined,
-      projectUrl: "",
+      projectName: "",
       summary: "",
       description: "",
     },
   });
 
-  const extractProjectId = (url: string): string | undefined => {
-    const match = /\/projects\/(?:[0-9a-f-]+)$/i.exec(url);
-    return match ? match[0].split("/").pop() : undefined;
-  };
-
-  async function onSubmit(values: FormValues) {
+  async function searchProject(search: string) {
     try {
-      setIsSubmitting(true);
-      const projectId = values.projectUrl ? extractProjectId(values.projectUrl) : undefined;
+      const res = await getPublicProjectsApi({projectName: search, maxResultCount: 10});
+      if (res.type === "success") {
+        return res.data.items?.map((i) => ({id: i.id, name: i.projectName})) || [];
+      }
+      return [];
+    } catch (error) {
+      return [];
+    }
+  }
 
-      const response = await postTasksApi({
+  function onSubmit(values: FormValues) {
+    startTransition(() => {
+      void postTasksApi({
         requestBody: {
           tasksType: values.tasksType,
           roleType: "Tenant",
-          projectId,
+          projectId: selectedProject?.id,
           summary: values.summary,
           description: values.description,
         },
-      });
-      if (response.type === "success") {
-        toast.success(response.message);
+      }).then((res) => {
+        handlePostResponse(res);
         form.reset();
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("An unknown error occurred");
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+      });
+    });
   }
 
   return (
@@ -129,20 +127,22 @@ export default function SupportFormClient() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="projectUrl"
-              render={({field}) => (
+              name="projectName"
+              render={() => (
                 <FormItem>
-                  <FormLabel>Proje URL (İsteğe Bağlı)</FormLabel>
+                  <FormLabel>Proje Adı</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Proje URL'sini girin (örn: http://localhost:3000/en/projects/your-project-id)"
-                      {...field}
+                    <AsyncSelect
+                      fetchAction={searchProject}
+                      onChange={(value) => {
+                        setSelectedProject(value.at(-1));
+                      }}
+                      value={selectedProject ? [selectedProject] : []}
                     />
                   </FormControl>
-                  <FormDescription>Eğer belirli bir projeyle ilgiliyse, proje URL sini girin.</FormDescription>
+                  <FormDescription>Talebiniz bir proje hakkında değilse boş bırakabilirsiniz!</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -182,8 +182,8 @@ export default function SupportFormClient() {
               )}
             />
 
-            <Button className="w-full" disabled={isSubmitting} type="submit">
-              {isSubmitting ? "Gönderiliyor..." : "Talebi Gönder"}
+            <Button className="w-full" disabled={isPending} type="submit">
+              {isPending ? "Gönderiliyor..." : "Talebi Gönder"}
             </Button>
           </form>
         </Form>
