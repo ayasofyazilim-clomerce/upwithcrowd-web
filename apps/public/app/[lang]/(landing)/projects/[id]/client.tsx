@@ -403,7 +403,6 @@ export default function ProjectDetails({
           </Card>
         </div>
       </div>
-      <div className="my-12 space-y-4" />
     </main>
   );
 }
