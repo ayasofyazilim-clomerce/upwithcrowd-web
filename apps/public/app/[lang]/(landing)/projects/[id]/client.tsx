@@ -23,6 +23,7 @@ import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment-transacti
 import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
+import ProjectActions from "./_components/project-actions";
 
 // Add this mock data at the top of the file, after the imports
 const mockDocuments = [
@@ -212,207 +213,197 @@ export default function ProjectDetails({
   }, [projectsMember.items]);
 
   return (
-    <>
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col gap-8 md:gap-20 lg:flex-row">
-          <div className="lg:w-3/5">
-            <ProjectSummary
-              basics={data}
-              fileResponse={fileResponse}
-              fundedPercentage={fundedPercentage}
-              funding={data}
-            />
+    <main className="container mx-auto px-4 py-8">
+      <div className="flex flex-col gap-8 md:gap-20 lg:flex-row">
+        <div className="lg:w-3/5">
+          <ProjectSummary
+            basics={data}
+            fileResponse={fileResponse}
+            fundedPercentage={fundedPercentage}
+            funding={data}
+          />
 
-            <TipTapEditor
-              editorClassName="mt-8"
-              editorContent={data.projectContent ? (JSON.parse(data.projectContent) as JSONContent) : {}}
-              mode="live"
-            />
+          <TipTapEditor
+            editorClassName="mt-8"
+            editorContent={data.projectContent ? (JSON.parse(data.projectContent) as JSONContent) : {}}
+            mode="live"
+          />
+        </div>
+        <div className="lg:w-1/3">
+          {isEditable ? <ProjectActions projectId={projectId} /> : null}
+          {!isEditable && (
+            <>
+              <MobileSupportDrawer
+                customAmount={customAmount}
+                donationOptions={donationOptions}
+                handleCustomAmountChange={handleCustomAmountChange}
+                isLoading={isLoading}
+                onDonate={handleDonation}
+                selectedDonation={selectedDonation}
+                setSelectedDonation={setSelectedDonation}
+              />
+              <FundingTable data={data} />
+            </>
+          )}
+          <div className="mt-6">
+            {data.privilege ? (
+              <div className="mb-8">
+                <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
+                <p>{data.privilege}</p>
+              </div>
+            ) : null}
           </div>
-          <div className="lg:w-1/3">
-            <MobileSupportDrawer
-              customAmount={customAmount}
-              donationOptions={donationOptions}
-              handleCustomAmountChange={handleCustomAmountChange}
-              isLoading={isLoading}
-              onDonate={handleDonation}
-              selectedDonation={selectedDonation}
-              setSelectedDonation={setSelectedDonation}
-            />
-            <FundingTable data={data} />
-            <div className="mt-6">
-              {data.privilege ? (
-                <div className="mb-8">
-                  <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
-                  <p>{data.privilege}</p>
-                </div>
-              ) : null}
-            </div>
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold md:text-2xl">Proje Ekibi</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {groupedMembers().map((member) => (
+                  <div className="flex items-center space-x-4" key={member.mail}>
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <p className="font-medium">
+                        {member.name} {member.surname}
+                      </p>
+                      <p className="text-muted-foreground text-sm">{member.mail}</p>
+                      <div className="flex flex-col gap-2 text-sm">
+                        {member.roles.map((role) => (
+                          <span className="text-primary" key={role.customRoleName}>
+                            {formatRoleName(role.customRoleName)}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Add new Investors Card */}
+          {!isEditable && Boolean(paymentResponse.items) && (
             <Card className="mt-6">
               <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl">Proje Ekibi</CardTitle>
+                <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {groupedMembers().map((member) => (
-                    <div className="flex items-center space-x-4" key={member.mail}>
+                  {paymentResponse.items?.slice(0, 3).map((payment, index) => (
+                    <div className="flex items-center space-x-4" key={payment.id}>
                       <Avatar className="h-10 w-10">
-                        <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
+                        <AvatarFallback>JD</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-medium">
-                          {member.name} {member.surname}
-                        </p>
-                        <p className="text-muted-foreground text-sm">{member.mail}</p>
+                        <p className="font-medium">John Doe</p>
+                        <p className="text-muted-foreground text-sm">{payment.amount}₺</p>
                         <div className="flex flex-col gap-2 text-sm">
-                          {member.roles.map((role) => (
-                            <span className="text-primary" key={role.customRoleName}>
-                              {formatRoleName(role.customRoleName)}
-                            </span>
-                          ))}
+                          {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
                         </div>
                       </div>
                     </div>
                   ))}
+
+                  {(paymentResponse.totalCount || 0) > 3 && (
+                    <div className="bg-background flex items-center rounded-full border p-1 shadow-sm">
+                      <div className="flex -space-x-1.5">
+                        <img
+                          alt="Avatar 01"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-03.jpg"
+                          width={20}
+                        />
+                        <img
+                          alt="Avatar 02"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-04.jpg"
+                          width={20}
+                        />
+                        <img
+                          alt="Avatar 03"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-05.jpg"
+                          width={20}
+                        />
+                        <img
+                          alt="Avatar 04"
+                          className="ring-background rounded-full ring-1"
+                          height={20}
+                          src="https://originui.com/avatar-80-06.jpg"
+                          width={20}
+                        />
+                      </div>
+                      <p className="text-muted-foreground flex-1 px-2 text-xs">
+                        Projenin <strong className="text-foreground font-medium">{paymentResponse.totalCount}</strong>{" "}
+                        yatırımcısı var.
+                        <Link className="float-right" href="#">
+                          <ChevronRight className="size-4" />
+                        </Link>
+                      </p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
-
-            {/* Add new Investors Card */}
-            {Boolean(paymentResponse.items) && (
-              <Card className="mt-6">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {paymentResponse.items?.slice(0, 3).map((payment, index) => (
-                      <div className="flex items-center space-x-4" key={payment.id}>
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <p className="font-medium">John Doe</p>
-                          <p className="text-muted-foreground text-sm">{payment.amount}₺</p>
-                          <div className="flex flex-col gap-2 text-sm">
-                            {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
-                          </div>
-                        </div>
+          )}
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold md:text-2xl">Belge, Ödül, Hukuki Durum</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {mockDocuments.map((doc) => (
+                  <div
+                    className="hover:bg-muted/50 group flex items-center gap-3 rounded-lg border p-3 transition-all"
+                    key={doc.id}>
+                    <div className="bg-primary/10 text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-md">
+                      {getFileIcon(doc.type)}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-sm font-medium">{doc.title}</h4>
+                        <Button
+                          className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
+                          size="icon"
+                          variant="ghost">
+                          <svg
+                            className="lucide lucide-download"
+                            fill="none"
+                            height="16"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" x2="12" y1="15" y2="3" />
+                          </svg>
+                          <span className="sr-only">İndir</span>
+                        </Button>
                       </div>
-                    ))}
-
-                    {(paymentResponse.totalCount || 0) > 3 && (
-                      <div className="bg-background flex items-center rounded-full border p-1 shadow-sm">
-                        <div className="flex -space-x-1.5">
-                          <img
-                            alt="Avatar 01"
-                            className="ring-background rounded-full ring-1"
-                            height={20}
-                            src="https://originui.com/avatar-80-03.jpg"
-                            width={20}
-                          />
-                          <img
-                            alt="Avatar 02"
-                            className="ring-background rounded-full ring-1"
-                            height={20}
-                            src="https://originui.com/avatar-80-04.jpg"
-                            width={20}
-                          />
-                          <img
-                            alt="Avatar 03"
-                            className="ring-background rounded-full ring-1"
-                            height={20}
-                            src="https://originui.com/avatar-80-05.jpg"
-                            width={20}
-                          />
-                          <img
-                            alt="Avatar 04"
-                            className="ring-background rounded-full ring-1"
-                            height={20}
-                            src="https://originui.com/avatar-80-06.jpg"
-                            width={20}
-                          />
-                        </div>
-                        <p className="text-muted-foreground flex-1 px-2 text-xs">
-                          Projenin <strong className="text-foreground font-medium">{paymentResponse.totalCount}</strong>{" "}
-                          yatırımcısı var.
-                          <Link className="float-right" href="#">
-                            <ChevronRight className="size-4" />
-                          </Link>
-                        </p>
+                      <p className="text-muted-foreground line-clamp-2 text-sm">{doc.description}</p>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="text-muted-foreground text-xs">{doc.date}</span>
+                        <span className="bg-muted-foreground inline-flex h-1.5 w-1.5 rounded-full" />
+                        <span className="text-muted-foreground text-xs uppercase">{doc.type}</span>
                       </div>
-                    )}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            )}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl">Belge, Ödül, Hukuki Durum</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockDocuments.map((doc) => (
-                    <div
-                      className="hover:bg-muted/50 group flex items-center gap-3 rounded-lg border p-3 transition-all"
-                      key={doc.id}>
-                      <div className="bg-primary/10 text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-md">
-                        {getFileIcon(doc.type)}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-medium">{doc.title}</h4>
-                          <Button
-                            className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
-                            size="icon"
-                            variant="ghost">
-                            <svg
-                              className="lucide lucide-download"
-                              fill="none"
-                              height="16"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              viewBox="0 0 24 24"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                              <polyline points="7 10 12 15 17 10" />
-                              <line x1="12" x2="12" y1="15" y2="3" />
-                            </svg>
-                            <span className="sr-only">İndir</span>
-                          </Button>
-                        </div>
-                        <p className="text-muted-foreground line-clamp-2 text-sm">{doc.description}</p>
-                        <div className="mt-1 flex items-center gap-2">
-                          <span className="text-muted-foreground text-xs">{doc.date}</span>
-                          <span className="bg-muted-foreground inline-flex h-1.5 w-1.5 rounded-full" />
-                          <span className="text-muted-foreground text-xs uppercase">{doc.type}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        <div className="my-12 space-y-4" />
-      </main>
-
-      {/* Fixed bottom-right link component */}
-      {isEditable ? (
-        <div className="fixed bottom-16 left-4 right-4 z-50 md:bottom-16 md:left-auto md:right-8">
-          <Link
-            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-block w-full rounded-full shadow-lg transition-all md:w-auto"
-            href={`/projects/${projectId}/basics`}>
-            <Button className="w-full rounded-md md:w-auto md:rounded-full" size="lg" type="button">
-              Projeyi Düzenle
-            </Button>
-          </Link>
-        </div>
-      ) : null}
-    </>
+      </div>
+      <div className="my-12 space-y-4" />
+    </main>
   );
 }
