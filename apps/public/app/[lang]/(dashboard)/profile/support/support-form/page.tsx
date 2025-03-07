@@ -13,13 +13,15 @@ import {Textarea} from "@/components/ui/textarea";
 import {toast} from "@/components/ui/sonner";
 import Link from "next/link";
 import {Info} from "lucide-react";
+import AsyncSelect from "@repo/ayasofyazilim-ui/molecules/async-select";
 import {postTasksApi} from "@/actions/upwithcrowd/tasks/post-action";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
 
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {
     required_error: "Lütfen bir talep türü seçin",
   }),
-  projectUrl: z
+  projectName: z
     .string()
     .optional()
     .refine((val) => {
@@ -38,32 +40,39 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function SupportFormClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>();
+  const [selectedProject, setSelectedProject] = useState<{id: string; name: string}>();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       tasksType: undefined,
-      projectUrl: "",
+      projectName: "",
       summary: "",
       description: "",
     },
   });
 
-  const extractProjectId = (url: string): string | undefined => {
-    const match = /\/projects\/(?:[0-9a-f-]+)$/i.exec(url);
-    return match ? match[0].split("/").pop() : undefined;
-  };
+  async function searchMerchants(search: string) {
+    try {
+      const res = await getPublicProjectsApi({projectName: search, maxResultCount: 10});
+      if (res.type === "success") {
+        return res.data.items?.map((i) => ({id: i.id, name: i.projectName})) || [];
+      }
+      return [];
+    } catch (error) {
+      return [];
+    }
+  }
 
   async function onSubmit(values: FormValues) {
     try {
       setIsSubmitting(true);
-      const projectId = values.projectUrl ? extractProjectId(values.projectUrl) : undefined;
-
       const response = await postTasksApi({
         requestBody: {
           tasksType: values.tasksType,
           roleType: "Tenant",
-          projectId,
+          projectId: selectedProjectId,
           summary: values.summary,
           description: values.description,
           status: "Open",
@@ -72,6 +81,7 @@ export default function SupportFormClient() {
       if (response.type === "success") {
         toast.success(response.message);
         form.reset();
+        setSelectedProjectId(undefined);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -130,20 +140,22 @@ export default function SupportFormClient() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="projectUrl"
-              render={({field}) => (
+              name="projectName"
+              render={() => (
                 <FormItem>
-                  <FormLabel>Proje URL (İsteğe Bağlı)</FormLabel>
+                  <FormLabel>Proje Adı</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Proje URL'sini girin (örn: http://localhost:3000/en/projects/your-project-id)"
-                      {...field}
+                    <AsyncSelect
+                      fetchAction={searchMerchants}
+                      onChange={(value) => {
+                        setSelectedProject(value.at(-1));
+                      }}
+                      value={selectedProject ? [selectedProject] : []}
                     />
                   </FormControl>
-                  <FormDescription>Eğer belirli bir projeyle ilgiliyse, proje URL sini girin.</FormDescription>
+                  <FormDescription>Talebiniz bir proje hakkında değilse boş bırakabilirsiniz!</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
