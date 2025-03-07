@@ -16,7 +16,8 @@
     "format": "turbo format",
     "prepare": "husky install",
     "precommit": "turbo precommit",
-    "unused": "npx knip"
+    "unused": "npx knip",
+    "saas": "pnpm i @ayasofyazilim/upwithcrowd-saas@latest --filter ./apps/*"
   },
   "devDependencies": {
     "@playwright/test": "^1.47.1",

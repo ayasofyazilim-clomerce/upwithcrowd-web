@@ -5,10 +5,10 @@ import {getFileApi} from "@/actions/upwithcrowd/images/action";
 import {
   getPublicProjectByIdMembersApi,
   getPublicProjectDetailByIdApi,
-} from "@/actions/upwithcrowd/public-project/actions";
+  getProjectByIdUpdatePermissionApi,
+} from "@/actions/upwithcrowd/public-project/action";
 import {getResourceData} from "@/language/core/Default";
 import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
-import {getProjectByIdUpdatePermissionApi} from "@/actions/upwithcrowd/project/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {
@@ -22,12 +22,13 @@ async function getApiRequests(id: string) {
         relatedEntity: "Project",
         relatedId: id,
       }),
+    ]);
+    const optionalRequests = await Promise.allSettled([
       getApiPaymentTransactionApi({
         maxResultCount: 999,
       }),
       getProjectByIdUpdatePermissionApi({id}),
     ]);
-    const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -46,16 +47,17 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, paymentsResponse, isEditable] =
-    apiRequests.requiredRequests;
-
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
+  const [paymentsResponse, isEditableResponse] = apiRequests.optionalRequests;
+  const paymentData = paymentsResponse.status === "fulfilled" ? paymentsResponse.value.data : {totalCount: 0};
+  const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
   return (
     <div className="bg-background min-h-screen">
       <ProjectDetails
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
-        isEditable={isEditable.data}
-        paymentResponse={paymentsResponse.data}
+        isEditable={isEditable}
+        paymentResponse={paymentData}
         projectsMember={projectsMemberResponse.data}
       />
     </div>

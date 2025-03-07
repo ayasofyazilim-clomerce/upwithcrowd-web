@@ -279,71 +279,73 @@ export default function ProjectDetails({
             </Card>
 
             {/* Add new Investors Card */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {paymentResponse.items?.slice(0, 3).map((payment, index) => (
-                    <div className="flex items-center space-x-4" key={payment.id}>
-                      <Avatar className="h-10 w-10">
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <p className="font-medium">John Doe</p>
-                        <p className="text-muted-foreground text-sm">{payment.amount}₺</p>
-                        <div className="flex flex-col gap-2 text-sm">
-                          {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
+            {Boolean(paymentResponse.items) && (
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {paymentResponse.items?.slice(0, 3).map((payment, index) => (
+                      <div className="flex items-center space-x-4" key={payment.id}>
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback>JD</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <p className="font-medium">John Doe</p>
+                          <p className="text-muted-foreground text-sm">{payment.amount}₺</p>
+                          <div className="flex flex-col gap-2 text-sm">
+                            {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
 
-                  {(paymentResponse.totalCount || 0) > 3 && (
-                    <div className="bg-background flex items-center rounded-full border p-1 shadow-sm">
-                      <div className="flex -space-x-1.5">
-                        <img
-                          alt="Avatar 01"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-03.jpg"
-                          width={20}
-                        />
-                        <img
-                          alt="Avatar 02"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-04.jpg"
-                          width={20}
-                        />
-                        <img
-                          alt="Avatar 03"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-05.jpg"
-                          width={20}
-                        />
-                        <img
-                          alt="Avatar 04"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-06.jpg"
-                          width={20}
-                        />
+                    {(paymentResponse.totalCount || 0) > 3 && (
+                      <div className="bg-background flex items-center rounded-full border p-1 shadow-sm">
+                        <div className="flex -space-x-1.5">
+                          <img
+                            alt="Avatar 01"
+                            className="ring-background rounded-full ring-1"
+                            height={20}
+                            src="https://originui.com/avatar-80-03.jpg"
+                            width={20}
+                          />
+                          <img
+                            alt="Avatar 02"
+                            className="ring-background rounded-full ring-1"
+                            height={20}
+                            src="https://originui.com/avatar-80-04.jpg"
+                            width={20}
+                          />
+                          <img
+                            alt="Avatar 03"
+                            className="ring-background rounded-full ring-1"
+                            height={20}
+                            src="https://originui.com/avatar-80-05.jpg"
+                            width={20}
+                          />
+                          <img
+                            alt="Avatar 04"
+                            className="ring-background rounded-full ring-1"
+                            height={20}
+                            src="https://originui.com/avatar-80-06.jpg"
+                            width={20}
+                          />
+                        </div>
+                        <p className="text-muted-foreground flex-1 px-2 text-xs">
+                          Projenin <strong className="text-foreground font-medium">{paymentResponse.totalCount}</strong>{" "}
+                          yatırımcısı var.
+                          <Link className="float-right" href="#">
+                            <ChevronRight className="size-4" />
+                          </Link>
+                        </p>
                       </div>
-                      <p className="text-muted-foreground flex-1 px-2 text-xs">
-                        Projenin <strong className="text-foreground font-medium">{paymentResponse.totalCount}</strong>{" "}
-                        yatırımcısı var.
-                        <Link className="float-right" href="#">
-                          <ChevronRight className="size-4" />
-                        </Link>
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
             <Card className="mt-6">
               <CardHeader>
                 <CardTitle className="text-xl font-bold md:text-2xl">Belge, Ödül, Hukuki Durum</CardTitle>
