@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useTransition} from "react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
@@ -10,12 +10,12 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
-import {toast} from "@/components/ui/sonner";
 import Link from "next/link";
 import {Info} from "lucide-react";
 import AsyncSelect from "@repo/ayasofyazilim-ui/molecules/async-select";
+import {handlePostResponse} from "@repo/utils/api";
 import {postTasksApi} from "@/actions/upwithcrowd/tasks/post-action";
-import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/actions";
+import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
 
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {
@@ -39,8 +39,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SupportFormClient() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedProjectId, setSelectedProjectId] = useState<string>();
+  const [isPending, startTransition] = useTransition();
   const [selectedProject, setSelectedProject] = useState<{id: string; name: string}>();
 
   const form = useForm<FormValues>({
@@ -53,7 +52,7 @@ export default function SupportFormClient() {
     },
   });
 
-  async function searchMerchants(search: string) {
+  async function searchProject(search: string) {
     try {
       const res = await getPublicProjectsApi({projectName: search, maxResultCount: 10});
       if (res.type === "success") {
@@ -65,32 +64,21 @@ export default function SupportFormClient() {
     }
   }
 
-  async function onSubmit(values: FormValues) {
-    try {
-      setIsSubmitting(true);
-      const response = await postTasksApi({
+  function onSubmit(values: FormValues) {
+    startTransition(() => {
+      void postTasksApi({
         requestBody: {
           tasksType: values.tasksType,
           roleType: "Tenant",
-          projectId: selectedProjectId,
+          projectId: selectedProject?.id,
           summary: values.summary,
           description: values.description,
         },
-      });
-      if (response.type === "success") {
-        toast.success(response.message);
+      }).then((res) => {
+        handlePostResponse(res);
         form.reset();
-        setSelectedProjectId(undefined);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("An unknown error occurred");
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+      });
+    });
   }
 
   return (
@@ -147,7 +135,7 @@ export default function SupportFormClient() {
                   <FormLabel>Proje Adı</FormLabel>
                   <FormControl>
                     <AsyncSelect
-                      fetchAction={searchMerchants}
+                      fetchAction={searchProject}
                       onChange={(value) => {
                         setSelectedProject(value.at(-1));
                       }}
@@ -194,8 +182,8 @@ export default function SupportFormClient() {
               )}
             />
 
-            <Button className="w-full" disabled={isSubmitting} type="submit">
-              {isSubmitting ? "Gönderiliyor..." : "Talebi Gönder"}
+            <Button className="w-full" disabled={isPending} type="submit">
+              {isPending ? "Gönderiliyor..." : "Talebi Gönder"}
             </Button>
           </form>
         </Form>
