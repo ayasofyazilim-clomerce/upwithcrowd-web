@@ -1,6 +1,9 @@
+"use server";
+
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import {permanentRedirect} from "next/navigation";
 import {getFileApi} from "@/actions/upwithcrowd/images/action";
 import {
   getPublicProjectByIdMembersApi,
@@ -51,6 +54,10 @@ export default async function Page({params}: {params: {id: string; lang: string}
   const [paymentsResponse, isEditableResponse] = apiRequests.optionalRequests;
   const paymentData = paymentsResponse.status === "fulfilled" ? paymentsResponse.value.data : {totalCount: 0};
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
+
+  if (projectDetailsResponseBasics.data.status !== "Approved" && !isEditable) {
+    return permanentRedirect(`/${lang}/projects`);
+  }
   return (
     <div className="bg-background min-h-screen">
       <ProjectDetails
