@@ -4,11 +4,12 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {ConfirmationDialog} from "@repo/ayasofyazilim-ui/molecules/confirmation-dialog";
 import {handlePutResponse} from "@repo/utils/api";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {putProjectStatusByIdApi} from "@/actions/upwithcrowd/project/put-action";
 
 function ProjectActions({projectId}: {projectId: string}) {
   const router = useRouter();
+  const {lang} = useParams<{lang: string}>();
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -16,7 +17,7 @@ function ProjectActions({projectId}: {projectId: string}) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-row flex-wrap gap-4">
-          <Link href={`/projects/${projectId}/basics`}>
+          <Link href={`/${lang}/projects/${projectId}/basics`}>
             <Button className="w-full rounded-md md:w-auto md:rounded-full" size="lg" type="button">
               Projeyi Düzenle
             </Button>
