@@ -33,6 +33,7 @@
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
     "@tailwindcss/typography": "^0.5.10",
+    "@repo/actions": "workspace:*",
     "@tanstack/react-table": "8.16.0",
     "@types/google-libphonenumber": "^7.4.30",
     "date-fns": "^3.6.0",
@@ -48,7 +49,7 @@
     "react-dom": "18.3.1",
     "recharts": "^2.15.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "3.22.4"
+    "zod": "3.24.2"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.1.1",

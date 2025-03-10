@@ -2,7 +2,7 @@
 
 import type {DeleteApiFeatureManagementFeaturesData} from "@ayasofyazilim/core-saas/AdministrationService";
 import {structuredError, structuredResponse} from "@repo/utils/api";
-import {getAdministrationServiceClient} from "src/lib";
+import {getAdministrationServiceClient} from "../lib";
 
 export async function deleteLanguageByIdApi(id: string) {
   try {

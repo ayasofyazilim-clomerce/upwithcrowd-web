@@ -6,7 +6,7 @@ import type {
   PutApiSaasTenantsByIdData,
 } from "@ayasofyazilim/core-saas/SaasService";
 import {structuredError, structuredResponse} from "@repo/utils/api";
-import {getSaasServiceClient} from "src/lib";
+import {getSaasServiceClient} from "../lib";
 
 export async function putEditionApi(data: PutApiSaasEditionsByIdData) {
   try {

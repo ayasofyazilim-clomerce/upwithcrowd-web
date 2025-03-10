@@ -6,7 +6,7 @@ import type {
 } from "@ayasofyazilim/core-saas/AccountService";
 import {structuredError, structuredResponse, structuredSuccessResponse} from "@repo/utils/api";
 import {signIn} from "@repo/utils/auth/next-auth";
-import {getAccountServiceClient} from "src/lib";
+import {getAccountServiceClient} from "../lib";
 
 export async function getTenantByNameApi(name: string) {
   try {

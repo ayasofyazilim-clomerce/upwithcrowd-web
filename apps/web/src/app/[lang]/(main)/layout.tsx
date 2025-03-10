@@ -8,7 +8,7 @@ import {LogOut} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {getProjectApi} from "@upwithcrowd/project/action";
-import {myProfileApi} from "@/actions/core/AccountService/actions";
+import {myProfileApi} from "@repo/actions/core/AccountService/actions";
 import unirefund from "public/unirefund.png";
 import image from "public/upwc.png";
 import {getResourceData} from "src/language-data/core/AbpUiNavigation";

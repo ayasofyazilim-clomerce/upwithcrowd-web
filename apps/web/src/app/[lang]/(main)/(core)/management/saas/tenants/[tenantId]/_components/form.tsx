@@ -19,8 +19,8 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useGrantedPolicies, isActionGranted} from "@repo/utils/policies";
 import {handleDeleteResponse, handlePutResponse} from "@repo/utils/api";
-import {deleteTenantByIdApi} from "src/actions/core/SaasService/delete-actions";
-import {putTenantApi} from "src/actions/core/SaasService/put-actions";
+import {deleteTenantByIdApi} from "@repo/actions/core/SaasService/delete-actions";
+import {putTenantApi} from "@repo/actions/core/SaasService/put-actions";
 import type {SaasServiceResource} from "src/language-data/core/SaasService";
 
 const tenantEditSchema = createZodObject($Volo_Saas_Host_Dtos_SaasTenantUpdateDto, [
