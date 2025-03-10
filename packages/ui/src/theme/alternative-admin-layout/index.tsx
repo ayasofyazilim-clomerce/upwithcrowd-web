@@ -8,10 +8,11 @@ import {
   BriefcaseBusiness,
   Building2,
   ChartPie,
-  CircleDot,
   CircleX,
   Crown,
   File,
+  FileStack,
+  FileType2,
   GalleryVerticalEnd,
   Gauge,
   HandCoins,
@@ -144,6 +145,14 @@ const newNavbarItems: NavItems[] = [
     title: "Management",
     icon: Settings,
     items: [
+      {
+        title: "File",
+        icon: File,
+        items: [
+          {icon: FileType2, title: "Mime Types", url: "/management/file/mime-types"},
+          {icon: FileStack, title: "File Type Groups", url: "/management/file/file-type-groups"},
+        ],
+      },
       {
         title: "Identity",
         icon: PersonStanding,
