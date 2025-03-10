@@ -3,26 +3,26 @@
 import type {GetApiFileTypeData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getFileTypeApi} from "@repo/actions/upwithcrowd/file-type/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
+import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
+import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import FileTypeTable from "./_components/table";
 
 async function getApiRequests(filters: GetApiFileTypeData) {
   try {
     const session = await auth();
-    const apiRequests = await Promise.all([getFileTypeApi(filters, session)]);
-    return {
-      type: "success" as const,
-      data: apiRequests,
-    };
+    const requiredRequests = await Promise.all([getFileTypeApi(filters, session)]);
+    const optionalRequests = await Promise.allSettled([]);
+    return {requiredRequests, optionalRequests};
   } catch (error) {
-    const err = error as {data?: string; message?: string};
-    return {
-      type: "error" as const,
-      message: err.message,
-    };
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
   }
 }
+
 export default async function Page({
   params,
   searchParams,
@@ -40,11 +40,9 @@ export default async function Page({
     ...searchParams,
   });
 
-  if (apiRequests.type === "error") {
-    return <ErrorComponent languageData={languageData} message={apiRequests.message || "Unknown error occurred"} />;
+  if ("message" in apiRequests) {
+    return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
-
-  const [subStoresResponse] = apiRequests.data;
-
-  return <FileTypeTable languageData={languageData} locale={lang} response={subStoresResponse.data} />;
+  const [fileTypeResponse] = apiRequests.requiredRequests;
+  return <FileTypeTable languageData={languageData} locale={lang} response={fileTypeResponse.data} />;
 }

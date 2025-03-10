@@ -1,5 +1,5 @@
 "use client";
-import type {PagedResultDto_FileTypeListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {PagedResultDto_ListFileTypeDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import TanstackTable from "@repo/ayasofyazilim-ui/molecules/tanstack-table";
 import {useGrantedPolicies} from "@repo/utils/policies";
 import {useRouter} from "next/navigation";
@@ -13,12 +13,12 @@ function FileTypeTable({
 }: {
   locale: string;
   languageData: DefaultResource;
-  response: PagedResultDto_FileTypeListDto;
+  response: PagedResultDto_ListFileTypeDto;
 }) {
   const router = useRouter();
   const {grantedPolicies} = useGrantedPolicies();
   const columns = tableData.fileType.columns(locale);
-  const table = tableData.fileType.table(languageData, router, grantedPolicies);
+  const table = tableData.fileType.table(languageData, router, grantedPolicies, locale);
   return <TanstackTable {...table} columns={columns} data={response.items || []} rowCount={response.totalCount} />;
 }
 
