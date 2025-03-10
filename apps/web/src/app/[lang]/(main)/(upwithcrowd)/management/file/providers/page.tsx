@@ -1,18 +1,18 @@
 "use server";
 
-import type {GetApiFileTypeData, GetApiMimeTypeData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getMimeTypesApi} from "@repo/actions/upwithcrowd/mime-type/actions";
+import type {GetApiProviderData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getProvidersApi} from "@repo/actions/upwithcrowd/providers/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
-import MimeTypesTable from "./_components/table";
+import ProvidersTable from "./_components/table";
 
-async function getApiRequests(filters: GetApiFileTypeData) {
+async function getApiRequests(filters: GetApiProviderData) {
   try {
     const session = await auth();
-    const requiredRequests = await Promise.all([getMimeTypesApi(filters, session)]);
+    const requiredRequests = await Promise.all([getProvidersApi(filters, session)]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -30,7 +30,7 @@ export default async function Page({
     partyId: string;
     lang: string;
   };
-  searchParams?: GetApiMimeTypeData;
+  searchParams?: GetApiProviderData;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
@@ -42,7 +42,7 @@ export default async function Page({
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
-  const [mimeTypeResponse] = apiRequests.requiredRequests;
+  const [providerResponse] = apiRequests.requiredRequests;
 
-  return <MimeTypesTable languageData={languageData} locale={lang} response={mimeTypeResponse.data} />;
+  return <ProvidersTable languageData={languageData} locale={lang} response={providerResponse.data} />;
 }
