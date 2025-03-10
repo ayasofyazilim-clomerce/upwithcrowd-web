@@ -1,9 +1,10 @@
 import {Badge} from "@/components/ui/badge";
 import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
-import {DollarSign, Target} from "lucide-react";
+import {Target, Wallet} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {formatCurrency} from "@repo/ui/utils";
 
 interface Project {
   id: string;
@@ -58,16 +59,16 @@ export default function ListedProjectCard({project}: {project: Project}) {
           <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
           <div className="flex items-center justify-between text-xs md:text-sm">
             <div className="flex items-center">
-              <DollarSign className="text-primary mr-2 h-5 w-5" />
+              <Wallet className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">$0</p>
+                <p className="font-semibold">{formatCurrency(0)}</p>
                 <p className="text-muted-foreground text-xs">raised</p>
               </div>
             </div>
             <div className="flex items-center">
               <Target className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">${project.fundableAmount.toString()}</p>
+                <p className="font-semibold">{formatCurrency(project.fundableAmount)}</p>
                 <p className="text-muted-foreground text-xs">goal</p>
               </div>
             </div>
