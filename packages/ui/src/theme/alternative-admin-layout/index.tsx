@@ -31,7 +31,9 @@ import {usePathname} from "next/navigation";
 import {AppSidebar} from "./components/app-sidebar";
 import HeaderSection from "./components/header-section";
 
+export type NavbarBadges = Record<string, number>;
 export type NavItems = {
+  id?: string;
   title: string;
   url?: string;
   icon?: LucideIcon;
@@ -44,7 +46,7 @@ const newNavbarItems: NavItems[] = [
     title: "Projeler",
     icon: Crown,
     items: [
-      {title: "Bekleyen Projeler", icon: Megaphone, url: "/projects/pending"},
+      {title: "Bekleyen Projeler", icon: Megaphone, url: "/projects/pending", id: "pendingProjects"},
       {
         title: "Paya Dayalı",
         icon: ChartPie,
@@ -84,7 +86,7 @@ const newNavbarItems: NavItems[] = [
     title: "Topluluk",
     icon: Users,
     items: [
-      {title: "Onay Bekleyenler", icon: Megaphone, url: "/community/organizations"},
+      {title: "Onay Bekleyenler", icon: Megaphone, url: "/community/organizations", id: "pendingOrganizations"},
       {
         title: "Yatırımcı",
         icon: Landmark,
@@ -197,7 +199,13 @@ function AlternativeAdminLayout(props: any) {
       notification={props.notification}
       tenantData={props.tenantData}>
       <SidebarProvider>
-        <AppSidebar image={props.image} activeRoutes={activeRoutes} navbarItems={newNavbarItems} lang={props.lang} />
+        <AppSidebar
+          image={props.image}
+          activeRoutes={activeRoutes}
+          navbarItems={newNavbarItems}
+          lang={props.lang}
+          navbarBadges={props.navbarBadges}
+        />
         <SidebarInset className="flex h-full flex-col  overflow-auto px-5">
           <div className="h-full pb-16">
             <HeaderSection activeRoutes={activeRoutes} />
