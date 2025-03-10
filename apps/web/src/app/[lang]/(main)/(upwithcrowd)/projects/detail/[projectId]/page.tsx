@@ -3,7 +3,7 @@
 import type {GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
-import {getProjectApi} from "@upwithcrowd/project/action";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import {isRedirectError, permanentRedirect} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import FileTable from "../_components/table";

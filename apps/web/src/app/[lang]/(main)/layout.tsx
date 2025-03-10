@@ -7,7 +7,7 @@ import type {Policy} from "@repo/utils/policies";
 import {LogOut} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import ErrorComponent from "@repo/ui/components/error-component";
-import {getProjectApi} from "@upwithcrowd/project/action";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import {myProfileApi} from "@repo/actions/core/AccountService/actions";
 import unirefund from "public/unirefund.png";
 import image from "public/upwc.png";

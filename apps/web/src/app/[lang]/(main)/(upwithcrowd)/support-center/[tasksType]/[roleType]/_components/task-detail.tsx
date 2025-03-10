@@ -21,8 +21,8 @@ import type {
   UpwithCrowd_Tasks_ListTasksDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {handlePostResponse} from "@repo/utils/api";
-import {postTaskCommentApi} from "@upwithcrowd/task-comment/post-action";
-import {putTaskByIdApi} from "@upwithcrowd/tasks/put-action";
+import {postTaskCommentApi} from "@repo/actions/upwithcrowd/task-comment/post-action";
+import {putTaskByIdApi} from "@repo/actions/upwithcrowd/tasks/put-action";
 import {useRouter} from "next/navigation";
 import {toast} from "@/components/ui/sonner";
 
