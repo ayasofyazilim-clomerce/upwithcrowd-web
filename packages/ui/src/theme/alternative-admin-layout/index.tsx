@@ -204,7 +204,7 @@ function AlternativeAdminLayout(props: any) {
           activeRoutes={activeRoutes}
           navbarItems={newNavbarItems}
           lang={props.lang}
-          menuBadges={props.menuBadges}
+          navbarBadges={props.navbarBadges}
         />
         <SidebarInset className="flex h-full flex-col  overflow-auto px-5">
           <div className="h-full pb-16">

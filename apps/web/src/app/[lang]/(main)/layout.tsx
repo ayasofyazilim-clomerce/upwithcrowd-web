@@ -51,7 +51,7 @@ export default async function Layout({children, params}: LayoutProps) {
   const [grantedPolicies] = apiRequests.requiredRequests;
   const [pendingProjectsResponse] = apiRequests.optionalRequests;
 
-  const menuBadges = {
+  const navbarBadges = {
     pendingProjects: pendingProjectsResponse.status === "fulfilled" ? pendingProjectsResponse.value.data.totalCount : 0,
   };
 
@@ -79,7 +79,7 @@ export default async function Layout({children, params}: LayoutProps) {
           image={image}
           lang={lang}
           logo={logo}
-          menuBadges={menuBadges}
+          navbarBadges={navbarBadges}
           navbarItems={navbarFromDB}
           notification={{
             langugageData: languageData,

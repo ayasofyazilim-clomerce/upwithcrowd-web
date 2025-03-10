@@ -19,12 +19,12 @@ import Link from "next/link";
 function Tree({
   navItem,
   activeRoutes,
-  menuBadges,
+  navbarBadges,
   lang,
 }: {
   navItem: NavItems;
   activeRoutes: string[] | null;
-  menuBadges: NavbarBadges;
+  navbarBadges: NavbarBadges;
   lang: string;
 }) {
   const routes = activeRoutes ? [...activeRoutes] : null;
@@ -38,10 +38,10 @@ function Tree({
           className={currentRoute === navItem.title ? "font-normal text-blue-600" : ""}>
           {navItem.icon && <navItem.icon />}
           {navItem.title}
-          {navItem?.id && navItem.id in menuBadges && (
+          {navItem?.id && navItem.id in navbarBadges && (
             <div className="ml-auto">
               <Badge className="rounded-full border-0 bg-blue-600  py-0 text-xs text-white" variant="outline">
-                {menuBadges[navItem.id]}
+                {navbarBadges[navItem.id]}
               </Badge>
             </div>
           )}
@@ -50,7 +50,7 @@ function Tree({
     );
   }
   const badgeCounts = navItem.items.reduce(
-    (acc, item) => acc + (item?.id && item.id in menuBadges ? menuBadges[item.id] : 0),
+    (acc, item) => acc + (item?.id && item.id in navbarBadges ? navbarBadges[item.id] : 0),
     0,
   );
   return (
@@ -77,7 +77,7 @@ function Tree({
         <CollapsibleContent>
           <SidebarMenuSub className="mr-0 pr-0">
             {navItem.items.map((subItem, index) => (
-              <Tree key={index} navItem={subItem} activeRoutes={routes} lang={lang} menuBadges={menuBadges} />
+              <Tree key={index} navItem={subItem} activeRoutes={routes} lang={lang} navbarBadges={navbarBadges} />
             ))}
           </SidebarMenuSub>
         </CollapsibleContent>
@@ -89,12 +89,12 @@ export function NavMain({
   activeRoutes,
   navbarItems,
   lang,
-  menuBadges,
+  navbarBadges,
 }: {
   navbarItems: NavItems[];
   activeRoutes: string[] | null;
   lang: string;
-  menuBadges: NavbarBadges;
+  navbarBadges: NavbarBadges;
 }) {
   return (
     <>
@@ -103,7 +103,7 @@ export function NavMain({
         <SidebarGroupContent>
           <SidebarMenu>
             {navbarItems.map((item, index) => (
-              <Tree key={index} navItem={item} activeRoutes={activeRoutes} lang={lang} menuBadges={menuBadges} />
+              <Tree key={index} navItem={item} activeRoutes={activeRoutes} lang={lang} navbarBadges={navbarBadges} />
             ))}
           </SidebarMenu>
         </SidebarGroupContent>

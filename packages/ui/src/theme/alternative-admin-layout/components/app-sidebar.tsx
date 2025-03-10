@@ -35,13 +35,13 @@ export function AppSidebar({
   navbarItems,
   activeRoutes,
   lang,
-  menuBadges,
+  navbarBadges,
 }: {
   image: StaticImport;
   navbarItems: NavItems[];
   activeRoutes: string[] | null;
   lang: string;
-  menuBadges: NavbarBadges;
+  navbarBadges: NavbarBadges;
 }) {
   return (
     <Sidebar collapsible="icon">
@@ -58,7 +58,7 @@ export function AppSidebar({
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} lang={lang} menuBadges={menuBadges} />
+        <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} lang={lang} navbarBadges={navbarBadges} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
