@@ -5,20 +5,13 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {Badge} from "@/components/ui/badge";
 import type {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {formatCurrency} from "@repo/ui/utils";
 
 interface FundingTableProps {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
 }
 
 export default function FundingTable({data}: FundingTableProps) {
-  const formatCurrency = (value: number | null | undefined) => {
-    if (value === null || value === undefined) return "-";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(value);
-  };
-
   const formatPercentage = (value: string | null | undefined) => {
     if (value === null || value === undefined) return "-";
     return `${value}%`;

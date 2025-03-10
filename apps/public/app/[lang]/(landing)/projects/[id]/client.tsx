@@ -19,6 +19,7 @@ import Image from "next/image";
 import {useParams} from "next/navigation";
 import React, {useCallback, useState} from "react";
 import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
+import {formatCurrency} from "@repo/ui/utils";
 import {useMember} from "@/app/providers/member";
 import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
@@ -207,7 +208,7 @@ export default function ProjectDetails({
                       </Avatar>
                       <div className="flex-1">
                         <p className="font-medium">John Doe</p>
-                        <p className="text-muted-foreground text-sm">{payment.amount}₺</p>
+                        <p className="text-muted-foreground text-sm">{formatCurrency(payment.amount)}</p>
                         <div className="flex flex-col gap-2 text-sm">
                           {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
                         </div>
