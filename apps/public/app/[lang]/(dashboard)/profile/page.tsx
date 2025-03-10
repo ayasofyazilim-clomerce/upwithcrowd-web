@@ -25,7 +25,7 @@ import Link from "next/link";
 import {toast} from "@/components/ui/sonner";
 import {useRouter} from "next/navigation";
 import {signOutServer} from "@repo/utils/auth";
-import {postProfileImageApi} from "@/actions/upwithcrowd/member/post-action";
+import {postProfileImageApi} from "@repo/actions/upwithcrowd/member/post-action";
 import {useMember} from "@/app/providers/member";
 import {getBaseLink} from "@/utils/lib";
 

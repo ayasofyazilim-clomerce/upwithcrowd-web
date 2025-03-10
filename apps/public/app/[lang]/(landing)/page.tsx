@@ -1,3 +1,4 @@
+import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
 import {ProjectSlider} from "@/components/project-slider";
 import BlogPreview from "@/components/blog-preview";
 import CallToAction from "@/components/call-to-action";
@@ -8,7 +9,6 @@ import MissionsSection from "@/components/mission-section";
 import OrganizationNumbers from "@/components/organization-numbers";
 import ServicesSection from "@/components/services-section";
 import Testimonials from "@/components/testimoni";
-import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
 
 export default async function Page() {
   const publicProjectsResponse = await getPublicProjectsApi({});

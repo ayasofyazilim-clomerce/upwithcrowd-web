@@ -13,8 +13,8 @@ import {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {handlePostResponse} from "@repo/utils/api";
+import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
 import {useMember} from "@/app/providers/member";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
