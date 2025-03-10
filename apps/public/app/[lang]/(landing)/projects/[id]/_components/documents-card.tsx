@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import type {UpwithCrowd_Files_FileResponseListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {FileImage, FileText, File} from "lucide-react";
 
 const getFileNameFromPath = (fullPath: string): string => {
   const matches = /[^/]+$/.exec(fullPath);
@@ -18,60 +19,11 @@ const getFileType = (fileName: string): string => {
 const getFileIcon = (type: string) => {
   switch (type) {
     case "pdf":
-      return (
-        <svg
-          className="lucide lucide-file-text"
-          fill="none"
-          height="20"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" x2="8" y1="13" y2="13" />
-          <line x1="16" x2="8" y1="17" y2="17" />
-          <line x1="10" x2="8" y1="9" y2="9" />
-        </svg>
-      );
+      return <FileText />;
     case "image":
-      return (
-        <svg
-          className="lucide lucide-image"
-          fill="none"
-          height="20"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg">
-          <rect height="18" rx="2" ry="2" width="18" x="3" y="3" />
-          <circle cx="9" cy="9" r="2" />
-          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-        </svg>
-      );
+      return <FileImage />;
     default:
-      return (
-        <svg
-          className="lucide lucide-file"
-          fill="none"
-          height="20"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-          <polyline points="14 2 14 8 20 8" />
-        </svg>
-      );
+      return <File />;
   }
 };
 
