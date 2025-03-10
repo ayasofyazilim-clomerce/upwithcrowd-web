@@ -18,7 +18,7 @@ import type {
   PagedResultDto_CategoryListDto,
   PagedResultDto_TypeListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {postProjectApi} from "@/actions/upwithcrowd/project/post-action";
+import {postProjectApi} from "@repo/actions/upwithcrowd/project/post-action";
 import {FormContainer, FormField} from "../_components/form";
 import {Section} from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";

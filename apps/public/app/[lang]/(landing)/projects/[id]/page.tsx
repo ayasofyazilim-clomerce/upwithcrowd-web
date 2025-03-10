@@ -4,14 +4,14 @@ import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {permanentRedirect} from "next/navigation";
-import {getFileApi} from "@/actions/upwithcrowd/images/action";
+import {getFileApi} from "@repo/actions/upwithcrowd/images/action";
 import {
   getPublicProjectByIdMembersApi,
   getPublicProjectDetailByIdApi,
   getProjectByIdUpdatePermissionApi,
-} from "@/actions/upwithcrowd/public-project/action";
+} from "@repo/actions/upwithcrowd/public-project/action";
+import {getApiPaymentTransactionApi} from "@repo/actions/upwithcrowd/payment-transaction/action";
 import {getResourceData} from "@/language/core/Default";
-import {getApiPaymentTransactionApi} from "@/actions/upwithcrowd/payment-transaction/action";
 import ProjectDetails from "./client";
 
 async function getApiRequests(id: string) {

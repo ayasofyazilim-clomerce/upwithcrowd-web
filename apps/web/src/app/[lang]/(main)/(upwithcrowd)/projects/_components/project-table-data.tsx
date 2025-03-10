@@ -4,7 +4,7 @@ import {$UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwi
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
 import {handlePutResponse} from "@repo/utils/api";
-import {putProjectStatusByIdApi} from "@upwithcrowd/project/put-action";
+import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import {Ban, CheckCircle, XCircle} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {getBaseLink} from "@/utils";

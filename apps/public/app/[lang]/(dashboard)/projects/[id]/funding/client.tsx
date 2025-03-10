@@ -15,7 +15,7 @@ import {toast} from "@/components/ui/sonner";
 import {DatePicker} from "@/components/ui/date-picker";
 import {Label} from "@/components/ui/label";
 import {useState, useEffect} from "react";
-import {putProjectFundingByIdApi} from "@/actions/upwithcrowd/project/put-action";
+import {putProjectFundingByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import TextWithTitle from "../../new/_components/text-with-title";
 import {Section} from "../../new/_components/section";
 import {FormContainer} from "../../new/_components/form";

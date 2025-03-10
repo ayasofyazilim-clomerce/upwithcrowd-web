@@ -11,8 +11,8 @@ import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecu
 import {AlertCircle, ArrowUpRight, CreditCard, DollarSign, LinkIcon} from "lucide-react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
 import {getBaseLink} from "@/utils/lib";
-import {postApiPaymentTransaction} from "@/actions/upwithcrowd/payment-transaction/post-action";
 import type {Payment} from "../types";
 
 interface PaymentsTableProps {

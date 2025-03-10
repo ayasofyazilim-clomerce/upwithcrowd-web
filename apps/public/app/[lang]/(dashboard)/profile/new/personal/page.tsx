@@ -3,8 +3,8 @@
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError, permanentRedirect} from "next/dist/client/components/redirect";
+import {getMemberApi} from "@repo/actions/upwithcrowd/member/actions";
 import {getResourceData} from "@/language/core/Default";
-import {getMemberApi} from "@/actions/upwithcrowd/member/actions";
 import NewPersonalAccount from "./client";
 
 async function getApiRequests() {

@@ -1,5 +1,5 @@
 import type {UpwithCrowd_Projects_UpdateProjectFundingDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getPublicProjectDetailsFundingApi} from "@/actions/upwithcrowd/project/action";
+import {getPublicProjectDetailsFundingApi} from "@repo/actions/upwithcrowd/project/action";
 import ClientFunding from "./client";
 
 export default async function Funding({

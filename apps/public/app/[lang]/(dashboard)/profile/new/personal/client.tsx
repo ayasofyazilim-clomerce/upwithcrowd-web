@@ -1,6 +1,6 @@
 "use client";
-import {postApiMember} from "@/actions/upwithcrowd/member/post-action";
-import {putMyProfileApi} from "@/actions/upwithcrowd/my-profile/put-action";
+import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
+import {putMyProfileApi} from "@repo/actions/upwithcrowd/my-profile/put-action";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";

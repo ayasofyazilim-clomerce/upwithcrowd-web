@@ -1,7 +1,7 @@
 "use client";
 
-import {postTaskCommentApi} from "@/actions/upwithcrowd/task-comment/post-action";
-import {putTaskByIdApi} from "@/actions/upwithcrowd/tasks/put-action";
+import {postTaskCommentApi} from "@repo/actions/upwithcrowd/task-comment/post-action";
+import {putTaskByIdApi} from "@repo/actions/upwithcrowd/tasks/put-action";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
@@ -142,7 +142,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
         id: taskId,
         requestBody: {
           ...currentTask,
-          status: status,
+          status,
         },
       })
         .then((_response) => {

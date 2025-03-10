@@ -8,7 +8,7 @@ import Link from "next/link";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {structuredError} from "@repo/utils/api";
 import ErrorComponent from "@repo/ui/components/error-component";
-import {getProjectApi} from "@/actions/upwithcrowd/project/action";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import EmptyProjectsState from "../_components/empty-projects-state";
 import ListedProjectCard from "../_components/listed-project-card";
 import FilterSelector from "./_components/filter-selector";
