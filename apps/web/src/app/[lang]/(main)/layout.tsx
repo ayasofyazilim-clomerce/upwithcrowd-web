@@ -7,6 +7,7 @@ import type {Policy} from "@repo/utils/policies";
 import {LogOut} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import ErrorComponent from "@repo/ui/components/error-component";
+import {getProjectApi} from "@upwithcrowd/project/action";
 import {myProfileApi} from "@/actions/core/AccountService/actions";
 import unirefund from "public/unirefund.png";
 import image from "public/upwc.png";
@@ -26,7 +27,7 @@ async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([getGrantedPoliciesApi(), myProfileApi()]);
 
-    const optionalRequests = await Promise.allSettled([]);
+    const optionalRequests = await Promise.allSettled([getProjectApi({status: "Pending"})]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -48,6 +49,11 @@ export default async function Layout({children, params}: LayoutProps) {
 
   const baseURL = getBaseLink("", lang);
   const [grantedPolicies] = apiRequests.requiredRequests;
+  const [pendingProjectsResponse] = apiRequests.optionalRequests;
+
+  const navbarBadges = {
+    pendingProjects: pendingProjectsResponse.status === "fulfilled" ? pendingProjectsResponse.value.data.totalCount : 0,
+  };
 
   const navbarFromDB = await getNavbarFromDB(lang, languageData, grantedPolicies as Record<Policy, boolean>);
   const profileMenuProps = getProfileMenuFromDB(languageData);
@@ -73,6 +79,7 @@ export default async function Layout({children, params}: LayoutProps) {
           image={image}
           lang={lang}
           logo={logo}
+          navbarBadges={navbarBadges}
           navbarItems={navbarFromDB}
           notification={{
             langugageData: languageData,

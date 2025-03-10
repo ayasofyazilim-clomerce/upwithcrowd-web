@@ -13,7 +13,7 @@ import {
 } from "@repo/ayasofyazilim-ui/atoms/sidebar";
 import {StaticImport} from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
-import {NavItems} from "..";
+import {NavItems, type NavbarBadges} from "..";
 import {NavMain} from "./navbar";
 import {useTheme} from "../../../providers/theme";
 import {Avatar, AvatarFallback, AvatarImage} from "@repo/ayasofyazilim-ui/atoms/avatar";
@@ -35,11 +35,13 @@ export function AppSidebar({
   navbarItems,
   activeRoutes,
   lang,
+  navbarBadges,
 }: {
   image: StaticImport;
   navbarItems: NavItems[];
   activeRoutes: string[] | null;
   lang: string;
+  navbarBadges: NavbarBadges;
 }) {
   return (
     <Sidebar collapsible="icon">
@@ -56,7 +58,7 @@ export function AppSidebar({
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} lang={lang} />
+        <NavMain activeRoutes={activeRoutes} navbarItems={navbarItems} lang={lang} navbarBadges={navbarBadges} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
