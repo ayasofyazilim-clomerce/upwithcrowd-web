@@ -1,6 +1,6 @@
 "use client";
 
-import {DollarSign, Target} from "lucide-react";
+import {Target, Wallet} from "lucide-react";
 import Image from "next/image";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Card} from "@/components/ui/card";
@@ -8,6 +8,7 @@ import {Progress} from "@/components/ui/progress";
 import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import Link from "next/link";
 import {Badge} from "@/components/ui/badge";
+import {formatCurrency} from "@repo/ui/utils";
 
 export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListProjectsResponseDto[]}) {
   const getDaysLeft = (endDate: string | number) => {
@@ -103,16 +104,16 @@ function ProjectDetails({project}: {project: UpwithCrowd_Projects_ListProjectsRe
         <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
         <div className="flex items-center justify-between text-xs md:text-sm">
           <div className="flex items-center">
-            <DollarSign className="text-primary mr-2 h-5 w-5" />
+            <Wallet className="text-primary mr-2 h-5 w-5" />
             <div>
-              <p className="font-semibold">${project.fundableAmount || 0}</p>
+              <p className="font-semibold">{formatCurrency(0)}</p>
               <p className="text-muted-foreground text-xs">toplanan</p>
             </div>
           </div>
           <div className="flex items-center">
             <Target className="text-primary mr-2 h-5 w-5" />
             <div>
-              <p className="font-semibold">${project.fundableAmount || 0}</p>
+              <p className="font-semibold">{formatCurrency(project.fundableAmount)}</p>
               <p className="text-muted-foreground text-xs">hedef</p>
             </div>
           </div>
