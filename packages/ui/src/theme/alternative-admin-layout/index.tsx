@@ -11,6 +11,7 @@ import {
   CircleX,
   Crown,
   File,
+  FileStack,
   FileType2,
   GalleryVerticalEnd,
   Gauge,
@@ -147,7 +148,10 @@ const newNavbarItems: NavItems[] = [
       {
         title: "File",
         icon: File,
-        items: [{icon: FileType2, title: "Mime Types", url: "/management/file/mime-types"}],
+        items: [
+          {icon: FileType2, title: "Mime Types", url: "/management/file/mime-types"},
+          {icon: FileStack, title: "File Type Groups", url: "/management/file/file-type-groups"},
+        ],
       },
       {
         title: "Identity",
