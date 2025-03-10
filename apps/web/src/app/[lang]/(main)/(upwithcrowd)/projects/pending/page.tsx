@@ -7,7 +7,7 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
-import {getProjectApi} from "@upwithcrowd/project/action";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import ProjectTable from "../_components/table";

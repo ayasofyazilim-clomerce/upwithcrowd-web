@@ -15,8 +15,8 @@ import type {
   PagedResultDto_ListProjectsMembersResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {postProjectAffiliationApi} from "@/actions/upwithcrowd/project/post-action";
-import {getMemberMailApi} from "@/actions/upwithcrowd/member/actions";
+import {postProjectAffiliationApi} from "@repo/actions/upwithcrowd/project/post-action";
+import {getMemberMailApi} from "@repo/actions/upwithcrowd/member/actions";
 import {useMember} from "@/app/providers/member";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";

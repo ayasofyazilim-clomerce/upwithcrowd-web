@@ -3,8 +3,8 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {toast} from "@/components/ui/sonner";
 import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
 import {useMember} from "@/app/providers/member";
-import {putMemberApiById} from "@/actions/upwithcrowd/member/put-action";
 import {IndividualForm} from "../_components/indiviual-form";
 import {OrganizationForm} from "../_components/organization-form";
 

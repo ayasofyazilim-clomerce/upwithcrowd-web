@@ -14,8 +14,8 @@ import Link from "next/link";
 import {Info} from "lucide-react";
 import AsyncSelect from "@repo/ayasofyazilim-ui/molecules/async-select";
 import {handlePostResponse} from "@repo/utils/api";
-import {postTasksApi} from "@/actions/upwithcrowd/tasks/post-action";
-import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
+import {postTasksApi} from "@repo/actions/upwithcrowd/tasks/post-action";
+import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
 
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {

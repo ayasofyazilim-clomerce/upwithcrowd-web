@@ -1,4 +1,4 @@
-import {getTaskApi} from "@/actions/upwithcrowd/tasks/action";
+import {getTaskApi} from "@repo/actions/upwithcrowd/tasks/action";
 import SupportClient from "./client";
 
 export default async function SupportPage() {

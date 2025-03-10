@@ -1,5 +1,5 @@
-import {getTaskCommentApi} from "@/actions/upwithcrowd/task-comment/action";
-import {getTaskApi} from "@/actions/upwithcrowd/tasks/action";
+import {getTaskCommentApi} from "@repo/actions/upwithcrowd/task-comment/action";
+import {getTaskApi} from "@repo/actions/upwithcrowd/tasks/action";
 import {TaskCommentClient} from "./client";
 
 export default async function SupportPage({

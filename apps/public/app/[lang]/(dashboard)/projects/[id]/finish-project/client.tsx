@@ -17,7 +17,7 @@ import {useParams, useRouter} from "next/navigation";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {handlePutResponse} from "@repo/utils/api";
-import {putProjectStatusByIdApi} from "@/actions/upwithcrowd/project/put-action";
+import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import FundingTable from "../_components/funding-card";
 import ProjectSummary from "../_components/project-summary";
 import MobileSupportDrawer from "../_components/mobile-support-card";

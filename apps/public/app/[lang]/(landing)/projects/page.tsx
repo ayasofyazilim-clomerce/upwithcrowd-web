@@ -1,5 +1,5 @@
 import type {UpwithCrowd_Projects_FundCollectionType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getPublicProjectsApi} from "@/actions/upwithcrowd/public-project/action";
+import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
 import LandingHero from "@/components/landing-hero";
 import FilterSelector from "./_components/filter-selector";
 import ListedProjectCard from "./_components/listed-project-card";

@@ -5,7 +5,7 @@ import {ConfirmationDialog} from "@repo/ayasofyazilim-ui/molecules/confirmation-
 import {handlePutResponse} from "@repo/utils/api";
 import Link from "next/link";
 import {useParams, useRouter} from "next/navigation";
-import {putProjectStatusByIdApi} from "@/actions/upwithcrowd/project/put-action";
+import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 
 function ProjectActions({projectId}: {projectId: string}) {
   const router = useRouter();

@@ -19,7 +19,7 @@ import {useParams, useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import Image from "next/image";
-import {putProjectBasicsByIdApi} from "@/actions/upwithcrowd/project/put-action";
+import {putProjectBasicsByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import {FormContainer, FormField} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
