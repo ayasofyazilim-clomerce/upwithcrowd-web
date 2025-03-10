@@ -200,3 +200,4 @@ export const dummyData = [
   },
 ];
 export type Ruleset = typeof dummyData;
+export * from "./handler";
