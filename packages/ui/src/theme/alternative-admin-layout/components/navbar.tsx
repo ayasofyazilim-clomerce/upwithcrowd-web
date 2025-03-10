@@ -12,12 +12,24 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
 } from "@repo/ayasofyazilim-ui/atoms/sidebar";
-import {NavItems} from "..";
+import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
+import {NavItems, type NavbarBadges} from "..";
 import Link from "next/link";
 
-function Tree({navItem, activeRoutes, lang}: {navItem: NavItems; activeRoutes: string[] | null; lang: string}) {
+function Tree({
+  navItem,
+  activeRoutes,
+  menuBadges,
+  lang,
+}: {
+  navItem: NavItems;
+  activeRoutes: string[] | null;
+  menuBadges: NavbarBadges;
+  lang: string;
+}) {
   const routes = activeRoutes ? [...activeRoutes] : null;
   const currentRoute = routes?.[0] === navItem.title ? routes?.shift() : null;
+
   if (!navItem.items?.length) {
     return (
       <SidebarMenuButton isActive={currentRoute === navItem.title} asChild>
@@ -26,10 +38,21 @@ function Tree({navItem, activeRoutes, lang}: {navItem: NavItems; activeRoutes: s
           className={currentRoute === navItem.title ? "font-normal text-blue-600" : ""}>
           {navItem.icon && <navItem.icon />}
           {navItem.title}
+          {navItem?.id && navItem.id in menuBadges && (
+            <div className="ml-auto">
+              <Badge className="rounded-full border-0 bg-blue-600  py-0 text-xs text-white" variant="outline">
+                {menuBadges[navItem.id]}
+              </Badge>
+            </div>
+          )}
         </Link>
       </SidebarMenuButton>
     );
   }
+  const badgeCounts = navItem.items.reduce(
+    (acc, item) => acc + (item?.id && item.id in menuBadges ? menuBadges[item.id] : 0),
+    0,
+  );
   return (
     <SidebarMenuItem>
       <Collapsible
@@ -41,13 +64,20 @@ function Tree({navItem, activeRoutes, lang}: {navItem: NavItems; activeRoutes: s
             isActive={currentRoute === navItem.title}>
             {navItem.icon && <navItem.icon />}
             {navItem.title}
-            <ChevronRight className="ml-auto transition-transform" />
+            <div className="ml-auto flex flex-row items-center">
+              {badgeCounts > 0 && (
+                <Badge className="rounded-full border-0 bg-blue-600 py-0 text-xs text-white" variant="outline">
+                  {badgeCounts}
+                </Badge>
+              )}
+              <ChevronRight className="transition-transform" />
+            </div>
           </SidebarMenuButton>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub className="mr-0 pr-0">
             {navItem.items.map((subItem, index) => (
-              <Tree key={index} navItem={subItem} activeRoutes={routes} lang={lang} />
+              <Tree key={index} navItem={subItem} activeRoutes={routes} lang={lang} menuBadges={menuBadges} />
             ))}
           </SidebarMenuSub>
         </CollapsibleContent>
@@ -59,10 +89,12 @@ export function NavMain({
   activeRoutes,
   navbarItems,
   lang,
+  menuBadges,
 }: {
   navbarItems: NavItems[];
   activeRoutes: string[] | null;
   lang: string;
+  menuBadges: NavbarBadges;
 }) {
   return (
     <>
@@ -71,7 +103,7 @@ export function NavMain({
         <SidebarGroupContent>
           <SidebarMenu>
             {navbarItems.map((item, index) => (
-              <Tree key={index} navItem={item} activeRoutes={activeRoutes} lang={lang} />
+              <Tree key={index} navItem={item} activeRoutes={activeRoutes} lang={lang} menuBadges={menuBadges} />
             ))}
           </SidebarMenu>
         </SidebarGroupContent>
