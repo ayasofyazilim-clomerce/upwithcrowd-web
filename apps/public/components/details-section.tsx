@@ -22,35 +22,34 @@ export default function DetailsSection() {
           />
         </div>
         <div className="md-text-left space-y-8 text-center md:text-left">
-          <h2 className="mt-6 text-2xl font-bold md:mt-0 md:text-5xl">
-            Biz Güçlü, Ücretsiz Bağış Toplama Platformuyuz
-          </h2>
+          <h2 className="mt-6 text-2xl font-bold md:mt-0 md:text-5xl">Projeleri Hayata Geçiren Güçlü Platform</h2>
           <div className="text-muted-foreground space-y-4">
             <p>
-              Platformumuz, bağış toplama sürecini kolaylaştırmak ve hızlandırmak için tasarlanmıştır. Herkesin
-              katılımını teşvik eden kullanıcı dostu arayüzümüz ile projelerinizi geniş kitlelere ulaştırabilirsiniz.
+              Platformumuz, yaratıcı fikirlerin ve projelerin hayata geçirilmesini kolaylaştırmak için tasarlandı.
+              Kullanıcı dostu arayüzümüz sayesinde projelerinizi geniş kitlelere ulaştırabilir ve gerekli desteği
+              bulabilirsiniz.
             </p>
             <p>
-              Güçlü altyapımız sayesinde, bağışlarınızı güvenli bir şekilde yönetebilir ve hedeflerinize ulaşmak için
-              gerekli desteği alabilirsiniz. Bizimle, bağış toplama artık daha erişilebilir ve etkili.
+              Güçlü altyapımız ile projelerinizi güvenle yönetebilir, destekçilerinizle etkileşime geçebilir ve
+              hedeflerinize daha hızlı ulaşabilirsiniz. UpWithCrowd ile fikirlerinizi gerçeğe dönüştürmenin yeni yolu.
             </p>
             <p>
-              Platformumuz, kullanıcıların projelerini tanıtmalarına ve bağış toplama kampanyalarını yönetmelerine
-              olanak tanır. Ayrıca, kampanyalarınızın başarısını artırmak için çeşitli araçlar ve kaynaklar sunuyoruz.
+              Platformumuz, yenilikçi projelerin tanıtılmasına ve topluluk desteğiyle büyümesine olanak tanır.
+              Projelerinizin başarıya ulaşması için ihtiyaç duyduğunuz tüm araçları ve kaynakları sunuyoruz.
             </p>
           </div>
           <div className="grid gap-8 text-center md:text-left">
             <div className="flex flex-col items-center md:flex-row md:items-start">
               <Clock className="text-primary mb-2 h-8 w-8 md:mb-0 md:mr-2" />
-              <span>Hızlı Kurulum</span>
+              <span>Hızlı Proje Başlatma</span>
             </div>
             <div className="flex flex-col items-center md:flex-row md:items-start">
               <Users className="text-primary mb-2 h-8 w-8 md:mb-0 md:mr-2" />
-              <span>Küresel Erişim</span>
+              <span>Geniş Topluluk Erişimi</span>
             </div>
             <div className="flex flex-col items-center md:flex-row md:items-start">
               <Target className="text-primary mb-2 h-8 w-8 md:mb-0 md:mr-2" />
-              <span>Hedef Takibi</span>
+              <span>Akıllı Hedef Takibi</span>
             </div>
           </div>
         </div>
