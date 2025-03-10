@@ -3,26 +3,26 @@
 import type {GetApiFileTypeGroupData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getFileTypeGroupApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
+import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
+import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import FileTypeGroupTable from "./_components/table";
 
 async function getApiRequests(filters: GetApiFileTypeGroupData) {
   try {
     const session = await auth();
-    const apiRequests = await Promise.all([getFileTypeGroupApi(filters, session)]);
-    return {
-      type: "success" as const,
-      data: apiRequests,
-    };
+    const requiredRequests = await Promise.all([getFileTypeGroupApi(filters, session)]);
+    const optionalRequests = await Promise.allSettled([]);
+    return {requiredRequests, optionalRequests};
   } catch (error) {
-    const err = error as {data?: string; message?: string};
-    return {
-      type: "error" as const,
-      message: err.message,
-    };
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
   }
 }
+
 export default async function Page({
   params,
   searchParams,
@@ -39,12 +39,10 @@ export default async function Page({
   const apiRequests = await getApiRequests({
     ...searchParams,
   });
-
-  if (apiRequests.type === "error") {
-    return <ErrorComponent languageData={languageData} message={apiRequests.message || "Unknown error occurred"} />;
+  if ("message" in apiRequests) {
+    return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
+  const [fileTypeGroupResponse] = apiRequests.requiredRequests;
 
-  const [subStoresResponse] = apiRequests.data;
-
-  return <FileTypeGroupTable languageData={languageData} locale={lang} response={subStoresResponse.data} />;
+  return <FileTypeGroupTable languageData={languageData} locale={lang} response={fileTypeGroupResponse.data} />;
 }

@@ -9,6 +9,7 @@ import {
   Building2,
   ChartPie,
   CircleX,
+  Cloudy,
   Crown,
   File,
   FileStack,
@@ -153,6 +154,7 @@ const newNavbarItems: NavItems[] = [
           {icon: FileType, title: "File Types", url: "/management/file/file-types"},
           {icon: FileType2, title: "Mime Types", url: "/management/file/mime-types"},
           {icon: FileStack, title: "File Type Groups", url: "/management/file/file-type-groups"},
+          {icon: Cloudy, title: "Providers", url: "/management/file/providers"},
         ],
       },
       {
