@@ -12,6 +12,7 @@ import {
   Crown,
   File,
   FileStack,
+  FileType,
   FileType2,
   GalleryVerticalEnd,
   Gauge,
@@ -149,6 +150,7 @@ const newNavbarItems: NavItems[] = [
         title: "File",
         icon: File,
         items: [
+          {icon: FileType, title: "File Types", url: "/management/file/file-types"},
           {icon: FileType2, title: "Mime Types", url: "/management/file/mime-types"},
           {icon: FileStack, title: "File Type Groups", url: "/management/file/file-type-groups"},
         ],
