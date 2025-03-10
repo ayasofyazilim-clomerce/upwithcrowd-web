@@ -15,7 +15,7 @@ import type {
 } from "@ayasofyazilim/core-saas/IdentityService";
 import {structuredSuccessResponse, structuredError, structuredResponse} from "@repo/utils/api";
 import type {Session} from "@repo/utils/auth";
-import {getIdentityServiceClient} from "src/lib";
+import {getIdentityServiceClient} from "../lib";
 
 export async function getRolesByIdClaimsApi(id: string) {
   try {

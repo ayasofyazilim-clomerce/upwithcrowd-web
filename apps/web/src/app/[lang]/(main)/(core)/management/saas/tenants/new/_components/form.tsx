@@ -14,7 +14,7 @@ import AutoForm, {
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {handlePostResponse} from "@repo/utils/api";
-import {postTenantApi} from "src/actions/core/SaasService/post-actions";
+import {postTenantApi} from "@repo/actions/core/SaasService/post-actions";
 import type {SaasServiceResource} from "src/language-data/core/SaasService";
 
 const tenantCreateSchema = createZodObject($Volo_Saas_Host_Dtos_SaasTenantCreateDto, [

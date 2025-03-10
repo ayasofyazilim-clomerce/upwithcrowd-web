@@ -8,7 +8,7 @@ import type {
   UniRefund_AdministrationService_CountrySettings_SetCountrySettingsByListDto,
 } from "@ayasofyazilim/core-saas/AdministrationService";
 import {structuredError, structuredResponse} from "@repo/utils/api";
-import {getAdministrationServiceClient} from "src/lib";
+import {getAdministrationServiceClient} from "../lib";
 
 export async function putPermissionsApi(data: PutApiPermissionManagementPermissionsData) {
   try {

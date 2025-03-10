@@ -6,7 +6,7 @@ import type {
   PostApiAccountSendPasswordResetCodeData,
 } from "@ayasofyazilim/core-saas/AccountService";
 import {structuredError, structuredResponse} from "@repo/utils/api";
-import {getAccountServiceClient} from "src/lib";
+import {getAccountServiceClient} from "../lib";
 
 export async function postPasswordChangeApi(data: PostApiAccountMyProfileChangePasswordData) {
   try {

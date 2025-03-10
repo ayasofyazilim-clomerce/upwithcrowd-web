@@ -3,7 +3,7 @@
 import {isUnauthorized} from "@repo/utils/policies";
 import {isErrorOnRequest} from "@repo/utils/api";
 import ErrorComponent from "@repo/ui/components/error-component";
-import {getEditionDetailsByIdApi} from "src/actions/core/SaasService/actions";
+import {getEditionDetailsByIdApi} from "@repo/actions/core/SaasService/actions";
 import {getResourceData} from "src/language-data/core/SaasService";
 import Form from "./_components/form";
 
