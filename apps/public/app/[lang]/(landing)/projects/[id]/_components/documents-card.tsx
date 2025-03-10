@@ -2,7 +2,7 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import type {UpwithCrowd_Files_FileResponseListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {FileImage, FileText, File} from "lucide-react";
+import {FileImage, FileText, File, Download} from "lucide-react";
 
 const getFileNameFromPath = (fullPath: string): string => {
   const matches = /[^/]+$/.exec(fullPath);
@@ -55,21 +55,7 @@ export default function DocumentsCard({fileResponse}: {fileResponse: UpwithCrowd
                           className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
                           size="icon"
                           variant="ghost">
-                          <svg
-                            className="lucide lucide-download"
-                            fill="none"
-                            height="16"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" x2="12" y1="15" y2="3" />
-                          </svg>
+                          <Download />
                           <span className="sr-only">İndir</span>
                         </Button>
                       </div>
