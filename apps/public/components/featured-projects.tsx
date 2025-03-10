@@ -5,9 +5,10 @@ import {Button} from "@/components/ui/button";
 import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import {DollarSign, MapPin, Target} from "lucide-react";
+import {MapPin, Target, Wallet} from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import {formatCurrency} from "@repo/ui/utils";
 import type {Project} from "@/_types";
 import {projects} from "@/_data";
 
@@ -49,16 +50,16 @@ const columns = [
             <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
             <div className="flex items-center justify-between text-xs md:text-sm">
               <div className="flex items-center">
-                <DollarSign className="text-primary mr-2 h-5 w-5" />
+                <Wallet className="text-primary mr-2 h-5 w-5" />
                 <div>
-                  <p className="font-semibold">${project.raised.toLocaleString()}</p>
+                  <p className="font-semibold">{formatCurrency(project.raised)}</p>
                   <p className="text-muted-foreground text-xs">raised</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <Target className="text-primary mr-2 h-5 w-5" />
                 <div>
-                  <p className="font-semibold">${project.goal.toLocaleString()}</p>
+                  <p className="font-semibold">{formatCurrency(project.goal)}</p>
                   <p className="text-muted-foreground text-xs">goal</p>
                 </div>
               </div>

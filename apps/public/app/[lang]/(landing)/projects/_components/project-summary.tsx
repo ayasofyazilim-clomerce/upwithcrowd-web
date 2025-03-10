@@ -12,6 +12,7 @@ import {ChevronLeft, ChevronRight} from "lucide-react";
 import Image from "next/image";
 import {useState, useEffect, useRef} from "react";
 import {cn} from "@/lib/utils";
+import {formatCurrency} from "@repo/ui/utils";
 
 export default function ProjectSummary({
   basics,
@@ -71,7 +72,7 @@ export default function ProjectSummary({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [hasImages, isTransitioning]);
+  }, [hasImages, isTransitioning, nextImage, prevImage]);
 
   const scrollThumbnails = (direction: "left" | "right") => {
     if (!thumbnailsRef.current) return;
@@ -90,7 +91,8 @@ export default function ProjectSummary({
       <h2 className="mb-2 text-2xl font-bold md:text-3xl">{basics.projectName}</h2>
       <p className="text-md mb-4 font-medium md:text-lg">{basics.projectDefinition}</p>
       <p className="text-normal mb-4">
-        <span className="text-primary font-bold">$0</span> of ${(funding.fundableAmount ?? 0).toLocaleString()} raised
+        <span className="text-primary font-bold">{formatCurrency(0)}</span> of {formatCurrency(funding.fundableAmount)}{" "}
+        raised
       </p>
 
       <div className="relative mx-auto mb-2 w-full overflow-hidden rounded-xl bg-gray-100 shadow-lg">
@@ -129,6 +131,7 @@ export default function ProjectSummary({
                   prevImage();
                 }}
                 size="icon"
+                type="button"
                 variant="secondary">
                 <ChevronLeft className="h-5 w-5" />
               </Button>
@@ -139,21 +142,23 @@ export default function ProjectSummary({
                   nextImage();
                 }}
                 size="icon"
+                type="button"
                 variant="secondary">
                 <ChevronRight className="h-5 w-5" />
               </Button>
               <div className="absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full bg-black/20 px-3 py-1.5 backdrop-blur-sm">
-                {fileResponse.map((_, index) => (
+                {fileResponse.map((file, index) => (
                   <button
                     aria-label={`View image ${index + 1}`}
                     className={cn(
                       "focus-visible:ring-primary h-2.5 w-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2",
                       index === currentImageIndex ? "scale-110 bg-white" : "bg-white/50 hover:bg-white/80",
                     )}
-                    key={index}
+                    key={`dot-${file.fileId || index}`}
                     onClick={() => {
                       setCurrentImageIndex(index);
                     }}
+                    type="button"
                   />
                 ))}
                 <span className="ml-1.5 text-xs text-white">
@@ -176,6 +181,7 @@ export default function ProjectSummary({
                 scrollThumbnails("left");
               }}
               size="icon"
+              type="button"
               variant="outline">
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -190,10 +196,11 @@ export default function ProjectSummary({
                     "focus-visible:ring-primary group relative min-w-0 flex-shrink-0 cursor-pointer overflow-hidden rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2",
                     index === currentImageIndex ? "scale-105" : "opacity-70 hover:opacity-100 hover:shadow-sm",
                   )}
-                  key={index}
+                  key={`thumb-${file.fileId || index}`}
                   onClick={() => {
                     setCurrentImageIndex(index);
-                  }}>
+                  }}
+                  type="button">
                   <div className="h-18 relative w-24 overflow-hidden rounded-md md:h-20 md:w-32">
                     <Image
                       alt={`Thumbnail ${index + 1}`}
@@ -217,6 +224,7 @@ export default function ProjectSummary({
                 scrollThumbnails("right");
               }}
               size="icon"
+              type="button"
               variant="outline">
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -227,14 +235,14 @@ export default function ProjectSummary({
       <Progress className="mb-4 h-3" value={fundedPercentage} />
 
       <div className="mb-6 flex justify-between text-sm">
-        <span>$0 raised</span>
+        <span>{formatCurrency(0)} raised</span>
         <span>
           {funding.projectEndDate
             ? Math.ceil((new Date(funding.projectEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
             : "N/A"}
           days left
         </span>
-        <span>${funding.fundableAmount?.toLocaleString()} goal</span>
+        <span>{formatCurrency(funding.fundableAmount)} goal</span>
       </div>
     </>
   );

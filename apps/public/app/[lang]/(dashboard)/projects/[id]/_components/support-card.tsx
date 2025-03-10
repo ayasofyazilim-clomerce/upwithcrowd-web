@@ -1,8 +1,9 @@
 "use client";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
-import {DollarSign} from "lucide-react";
+import {Wallet} from "lucide-react";
 import {Input} from "@/components/ui/input";
+import {formatCurrency} from "@repo/ui/utils";
 
 export default function SupportCard({
   donationOptions,
@@ -18,18 +19,18 @@ export default function SupportCard({
         <div className="mb-4 grid grid-cols-3 gap-4">
           {donationOptions.map((amount) => (
             <Button disabled key={amount} variant={selectedDonation === amount ? "default" : "outline"}>
-              ${amount}
+              {formatCurrency(amount)}
             </Button>
           ))}
         </div>
         <div className="relative mb-4">
-          <DollarSign className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+          <Wallet className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
           <Input className="pl-9" disabled placeholder="Özel miktar girin" type="text" />
         </div>
       </CardContent>
       <CardFooter className="p-0">
         <Button className="w-full" disabled>
-          Preview Mode - {selectedDonation}₺ Destek Ol
+          Preview Mode - {formatCurrency(selectedDonation)} Destek Ol
         </Button>
       </CardFooter>
     </Card>

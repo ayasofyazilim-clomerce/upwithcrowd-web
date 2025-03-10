@@ -1826,7 +1826,7 @@ export type TagServiceResources = {
   "UniRefund.TagService:010009": "Provided tags have different currencies: {differentCurrencies}";
   "UniRefund.TagService:0100010": "Some of the provided tags do not have calculated refund amount!";
   "UniRefund.TagService:0100011": "Provided tags belong to different travelers!";
-  "UniRefund.TagService:0100012": "Some of the provided tags are already refunded";
+  "UniRefund.TagService:0100012": "Some of the provided tags are already refunded! Related Tags: '{tagNumbers}'";
   "UniRefund.SettingService:0100013": "There is no such an entity given id. Entity type: {fullname}";
   "UniRefund.SettingService:0100014": "There is no such an entity. Entity type: {fullname}, id: {id}";
   "UniRefund.TagService:0100015": "Provided tags have different statuses: {differentStatuses}";
@@ -1847,6 +1847,7 @@ export type TagServiceResources = {
   "UniRefund.TagService:0100028": "Total amount of the invoice lines with the VAT Rate: '{vATRate}': '{amount}' must be upper than '{minimumAmount}'!";
   "UniRefund.TagService:0100029": "Total amount of the invoice: '{invoiceNumber}' in Tag: '{amount}' must be upper than '{minimumAmount}'!";
   "UniRefund.TagService:0100030": "Tags without an early refund fee in their contract cannot be refunded. Affected Tags: '{tagNumbersStr}'";
+  "UniRefund.TagService:0100031": "Refund operation can not be performed due to some tags' refund expiration date have passed! Related Tags: '{tagNumbers}'";
 };
 export type RefundServiceResources = {
   "UniRefund.RefundService:001001": "Country currency is not set";
