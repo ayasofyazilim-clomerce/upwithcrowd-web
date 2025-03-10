@@ -6,8 +6,8 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
-import {getTaskCommentApi} from "@upwithcrowd/task-comment/action";
-import {getTaskApi} from "@upwithcrowd/tasks/action";
+import {getTaskCommentApi} from "@repo/actions/upwithcrowd/task-comment/action";
+import {getTaskApi} from "@repo/actions/upwithcrowd/tasks/action";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import TaskDetail from "../_components/task-detail";

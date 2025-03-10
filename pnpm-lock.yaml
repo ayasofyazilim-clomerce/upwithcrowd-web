@@ -47,7 +47,7 @@ importers:
         version: 0.5.10
       '@hookform/resolvers':
         specifier: 4.1.2
-        version: 4.1.2(react-hook-form@7.54.2(react@18.3.1))
+        version: 4.1.2(react-hook-form@7.53.0(react@18.3.1))
       '@radix-ui/react-accordion':
         specifier: ^1.2.2
         version: 1.2.3(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -69,6 +69,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.1
         version: 1.1.2(@types/react@18.3.18)(react@18.3.1)
+      '@repo/actions':
+        specifier: workspace:*
+        version: link:../../packages/actions
       '@repo/ayasofyazilim-ui':
         specifier: workspace:^
         version: link:../../packages/ayasofyazilim-ui
@@ -124,8 +127,8 @@ importers:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.54.2
-        version: 7.54.2(react@18.3.1)
+        specifier: 7.53.0
+        version: 7.53.0(react@18.3.1)
       react-international-phone:
         specifier: ^4.3.0
         version: 4.5.0(react@18.3.1)
@@ -9326,12 +9329,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
-  react-hook-form@7.54.2:
-    resolution: {integrity: sha512-eHpAUgUjWbZocoQYUHposymRb4ZP6d0uwUnooL2uOybA9/3tPUvoAKqEWK1WaSiTxxOfTpffNZP7QwlnM3/gEg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-
   react-hot-toast@2.4.1:
     resolution: {integrity: sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==}
     engines: {node: '>=10'}
@@ -12201,11 +12198,6 @@ snapshots:
     dependencies:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.53.0(react@18.3.1)
-
-  '@hookform/resolvers@4.1.2(react-hook-form@7.54.2(react@18.3.1))':
-    dependencies:
-      '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.54.2(react@18.3.1)
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -20653,10 +20645,6 @@ snapshots:
       react: 18.3.1
 
   react-hook-form@7.53.0(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-
-  react-hook-form@7.54.2(react@18.3.1):
     dependencies:
       react: 18.3.1
 

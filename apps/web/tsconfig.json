@@ -6,7 +6,7 @@
     "paths": {
       "@/*": ["../../packages/ayasofyazilim-ui/@/*", "./src/*", "./*"],
       "components/*": ["./src/components/*"],
-      "@upwithcrowd/*": ["./../public/actions/upwithcrowd/*"]
+      "@repo/actions/upwithcrowd/*": ["./../public/actions/upwithcrowd/*"]
     }
   },
   "include": [

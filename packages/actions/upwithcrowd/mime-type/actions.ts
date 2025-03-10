@@ -7,7 +7,7 @@ import {getUpwithcrowdClient} from "../lib";
 
 export async function getMimeTypesApi(data: GetApiMimeTypeData, session: Session | null) {
   try {
-    const client = await getUpwithcrowdClient(session);
+    const client = await getUpwithcrowdClientClient(session);
     const response = await client.mimeType.getApiMimeType(data);
     return structuredSuccessResponse(response);
   } catch (error) {

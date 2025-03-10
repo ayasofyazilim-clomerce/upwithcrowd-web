@@ -12,7 +12,7 @@ export default function SupportCard({
   selectedDonation: number;
 }) {
   return (
-    <Card className="border-none bg-transparent p-0 p-4 pb-6 shadow-none md:p-0 md:pb-0">
+    <Card className="border-none bg-transparent p-4 pb-6 shadow-none md:p-0 md:pb-0">
       <CardContent className="p-0">
         <h3 className="mb-4 text-xl font-semibold">Projeyi Destekle</h3>
         <div className="mb-4 grid grid-cols-3 gap-4">

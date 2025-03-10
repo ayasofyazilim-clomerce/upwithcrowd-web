@@ -1,6 +1,6 @@
 import type {PagedResultDto_ListProjectsMembersResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getCustomRolesApi} from "@/actions/upwithcrowd/roles/action";
-import {getProjectByIdMembersApi} from "@/actions/upwithcrowd/project/action";
+import {getCustomRolesApi} from "@repo/actions/upwithcrowd/roles/action";
+import {getProjectByIdMembersApi} from "@repo/actions/upwithcrowd/project/action";
 import ClientAbout from "./client";
 
 export default async function About({params}: {params: {id: string}}) {
