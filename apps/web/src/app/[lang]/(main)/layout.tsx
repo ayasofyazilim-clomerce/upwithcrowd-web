@@ -44,7 +44,14 @@ export default async function Layout({children, params}: LayoutProps) {
   const apiRequests = await getApiRequests();
 
   if ("message" in apiRequests) {
-    return <ErrorComponent languageData={languageData} message={apiRequests.message} signOutServer={signOutServer} />;
+    return (
+      <ErrorComponent
+        languageData={languageData}
+        message={apiRequests.message}
+        showHomeButton={false}
+        signOutServer={signOutServer}
+      />
+    );
   }
 
   const baseURL = getBaseLink("", lang);
