@@ -1,41 +1,25 @@
 "use client";
 
-import {useState, useEffect} from "react";
 import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
-import {LogOut, RefreshCw} from "lucide-react";
+import {LogOut, RefreshCw, Home} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {motion} from "framer-motion";
+import Link from "next/link";
 
 export default function ErrorComponent({
   message,
   languageData,
   signOutServer,
+  showHomeButton = true,
 }: {
   message?: string;
   languageData: {SomethingWentWrong: string};
   signOutServer?: () => Promise<{
     error: string;
   }>;
+  showHomeButton?: boolean;
 }) {
   const router = useRouter();
-  const [countdown, setCountdown] = useState(4);
-
-  useEffect(() => {
-    if (signOutServer) {
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            void signOutServer();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [signOutServer]);
 
   return (
     <section className="from-muted to-muted/50 relative flex h-screen w-full items-center justify-center overflow-hidden bg-gradient-to-br via-white px-4 py-12">
@@ -124,18 +108,6 @@ export default function ErrorComponent({
               <p className="text-muted-foreground text-xl">
                 For your security, you have been logged out due to inactivity.
               </p>
-
-              {countdown > 0 && (
-                <div className="flex items-center justify-center space-x-3">
-                  <motion.div
-                    className="bg-primary flex h-16 w-16 items-center justify-center rounded-full text-white"
-                    animate={{scale: [1, 1.1, 1]}}
-                    transition={{duration: 1, repeat: Number.POSITIVE_INFINITY}}>
-                    <span className="text-2xl font-bold">{countdown}</span>
-                  </motion.div>
-                  <span className="text-muted-foreground text-lg">Redirecting to login page...</span>
-                </div>
-              )}
             </div>
           )}
         </motion.div>
@@ -168,6 +140,14 @@ export default function ErrorComponent({
               </>
             )}
           </Button>
+          {showHomeButton && (
+            <Link href="/en">
+              <Button className="flex items-center gap-2 px-8 py-3 text-lg" variant="outline" size="lg">
+                <Home className="h-6 w-6" />
+                <span>Go Home</span>
+              </Button>
+            </Link>
+          )}
         </motion.div>
       </div>
     </section>
