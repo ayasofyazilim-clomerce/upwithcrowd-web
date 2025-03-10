@@ -9,6 +9,7 @@ import {ChevronLeft, ChevronRight, Info} from "lucide-react";
 import Image from "next/image";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {useRouter} from "next/navigation";
+import {formatCurrency} from "@repo/ui/utils";
 
 // Info button component
 function InfoButton({href}: {href: string}) {
@@ -59,7 +60,8 @@ export default function ProjectSummary({
 
       <p className="text-md mb-4 font-medium md:text-lg">{basics.projectDefinition}</p>
       <p className="text-normal mb-4">
-        <span className="text-primary font-bold">0₺</span> toplanan {(funding.fundableAmount ?? 0).toLocaleString()}₺
+        <span className="text-primary font-bold">{formatCurrency(0)}</span> toplanan{" "}
+        {formatCurrency(funding.fundableAmount ?? 0)}
       </p>
 
       <div className="relative mx-auto mb-6 w-full">
