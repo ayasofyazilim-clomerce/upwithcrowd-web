@@ -1,19 +1,19 @@
 "use server";
 
-import {isUnauthorized} from "@repo/utils/policies";
-import {isErrorOnRequest} from "@repo/utils/api";
-import ErrorComponent from "@repo/ui/components/error-component";
 import {getAssignableRolesApi, getRoleDetailsByIdApi} from "@repo/actions/core/IdentityService/actions";
+import ErrorComponent from "@repo/ui/components/error-component";
+import {isErrorOnRequest} from "@repo/utils/api";
 import {getResourceData} from "src/language-data/core/IdentityService";
 import Form from "./_components/form";
 
 export default async function Page({params}: {params: {lang: string; roleId: string}}) {
   const {lang, roleId} = params;
   const {languageData} = await getResourceData(lang);
-  await isUnauthorized({
-    requiredPolicies: ["IdentityService.AssignableRoles"],
-    lang,
-  });
+  // Bu projede yok
+  // await isUnauthorized({
+  //   requiredPolicies: ["IdentityService.AssignableRoles"],
+  //   lang,
+  // });
 
   const assignableRolesResponse = await getAssignableRolesApi(roleId);
   if (isErrorOnRequest(assignableRolesResponse, lang, false)) {

@@ -20,7 +20,6 @@
   "AbpIdentity.OrganizationUnits.ManageOU": false,
   "AbpIdentity.OrganizationUnits.ManageRoles": false,
   "AbpIdentity.OrganizationUnits.ManageMembers": false,
-  "IdentityService.AssignableRoles": false,
   "AbpIdentity.ClaimTypes": false,
   "AbpIdentity.ClaimTypes.Create": false,
   "AbpIdentity.ClaimTypes.Update": false,
