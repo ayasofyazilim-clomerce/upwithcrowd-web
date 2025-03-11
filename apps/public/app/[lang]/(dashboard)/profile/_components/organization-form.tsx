@@ -8,6 +8,7 @@ import "react-international-phone/style.css";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Loader2} from "lucide-react";
 import {useMember} from "@/app/providers/member";
 
@@ -22,6 +23,7 @@ const formSchema = z.object({
   mail: z.string().email("Geçersiz e-posta adresi"),
   annualIncome: z.string().regex(/^(?:[1-9][0-9]{0,19})$/, "Geçersiz yıllık gelir"),
   mobile: z.string().optional(),
+  maskInvestorProfile: z.boolean().optional(),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -120,19 +122,47 @@ export function OrganizationForm({onSubmit}: OrganizationFormProps) {
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="mail"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>E-posta</FormLabel>
-              <FormControl>
-                <Input {...field} placeholder="E-posta giriniz" type="email" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="mail"
+            render={({field}) => (
+              <FormItem>
+                <FormLabel>E-posta</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="E-posta giriniz" type="email" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="maskInvestorProfile"
+            render={({field}) => (
+              <FormItem>
+                <FormLabel>Yatırımcı profilim görünsün</FormLabel>
+                <Select
+                  defaultValue={field.value ? "hayir" : "evet"}
+                  onValueChange={(value) => {
+                    field.onChange(value !== "evet");
+                  }}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seçiniz" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="evet">Evet</SelectItem>
+                    <SelectItem value="hayir">Hayır</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
           {form.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           {form.formState.isSubmitting ? "Güncelleniyor..." : "Kurumsal Hesabı Güncelle"}

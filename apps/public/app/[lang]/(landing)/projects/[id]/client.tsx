@@ -4,41 +4,40 @@ import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {toast} from "@/components/ui/sonner";
 import type {
-  PagedResultDto_ListPaymentTransactionDto,
+  PagedResultDto_ListProjectInvestorDto,
   PagedResultDto_ListProjectsMembersResponseDto,
   UpwithCrowd_Files_FileResponseListDto,
   UpwithCrowd_Payment_PaymentStatus,
   UpwithCrowd_Payment_SavePaymentTransactionDto,
   UpwithCrowd_Projects_ProjectsDetailResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import {ChevronRight} from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
+import {formatCurrency} from "@repo/ui/utils";
+import {Crown} from "lucide-react";
 import {useParams} from "next/navigation";
 import React, {useCallback, useState} from "react";
-import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
-import {formatCurrency} from "@repo/ui/utils";
 import {useMember} from "@/app/providers/member";
 import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
-import ProjectActions from "./_components/project-actions";
 import DocumentsCard from "./_components/documents-card";
+import {InvestorsDialog} from "./_components/investors-card";
+import ProjectActions from "./_components/project-actions";
 
 export default function ProjectDetails({
   data,
   isEditable,
   projectsMember,
   fileResponse,
-  paymentResponse,
+  investorResponse,
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
-  paymentResponse: PagedResultDto_ListPaymentTransactionDto;
+  investorResponse: PagedResultDto_ListProjectInvestorDto;
 }) {
   const {id: projectId} = useParams<{id: string}>();
   const [customAmount, setCustomAmount] = useState<string>("");
@@ -52,7 +51,6 @@ export default function ProjectDetails({
       setSelectedDonation(Number(value));
     }
   };
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDonation = async (amount: number) => {
@@ -121,6 +119,43 @@ export default function ProjectDetails({
 
     return Object.values(grouped);
   }, [projectsMember.items]);
+
+  const getInitialsFromMaskedName = (name: string | undefined) => {
+    if (!name) return "";
+
+    // Split the name by spaces
+    const parts = name.split(" ");
+    let initials = "";
+
+    // Extract first visible letter from each part
+    for (const part of parts) {
+      if (part.length > 0) {
+        initials += part[0];
+      }
+    }
+
+    return initials;
+  };
+
+  // Add a function to fetch all investors
+  const fetchAllInvestors = useCallback(() => {
+    // This should be replaced with actual API call to fetch all investors
+    // For now, we'll just return the current investors we have
+    return (investorResponse.items || []).map((investor) => ({
+      id: investor.id || "",
+      name: investor.name || "",
+      amount: investor.amount || 0,
+      memberQualidied: investor.memberQualidied || false,
+    }));
+  }, [investorResponse.items]);
+
+  // Map preview investors to the required format
+  const previewInvestors = (investorResponse.items || []).map((investor) => ({
+    id: investor.id || "",
+    name: investor.name || "",
+    amount: investor.amount || 0,
+    memberQualidied: investor.memberQualidied || false,
+  }));
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -194,68 +229,38 @@ export default function ProjectDetails({
           </Card>
 
           {/* Add new Investors Card */}
-          {!isEditable && Boolean(paymentResponse.items) && (
+          {!isEditable && Boolean(investorResponse.items) && (
             <Card className="mt-6">
               <CardHeader>
                 <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {paymentResponse.items?.slice(0, 3).map((payment, index) => (
+                  {investorResponse.items?.slice(0, 3).map((payment) => (
                     <div className="flex items-center space-x-4" key={payment.id}>
-                      <Avatar className="h-10 w-10">
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
+                      <div className="relative">
+                        {payment.memberQualidied ? (
+                          <div className="absolute -right-1 -top-1 z-10">
+                            <Crown className="h-4 w-4 text-yellow-500" />
+                          </div>
+                        ) : null}
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback>{getInitialsFromMaskedName(payment.name ?? "")}</AvatarFallback>
+                        </Avatar>
+                      </div>
                       <div className="flex-1">
-                        <p className="font-medium">John Doe</p>
+                        <p className="font-medium">{payment.name}</p>
                         <p className="text-muted-foreground text-sm">{formatCurrency(payment.amount)}</p>
-                        <div className="flex flex-col gap-2 text-sm">
-                          {index === 1 && <span className="text-primary">Nitelikli Yatırımcı</span>}
-                        </div>
                       </div>
                     </div>
                   ))}
 
-                  {(paymentResponse.totalCount || 0) > 3 && (
-                    <div className="bg-background flex items-center rounded-full border p-1 shadow-sm">
-                      <div className="flex -space-x-1.5">
-                        <Image
-                          alt="Avatar 01"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-03.jpg"
-                          width={20}
-                        />
-                        <Image
-                          alt="Avatar 02"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-04.jpg"
-                          width={20}
-                        />
-                        <Image
-                          alt="Avatar 03"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-05.jpg"
-                          width={20}
-                        />
-                        <Image
-                          alt="Avatar 04"
-                          className="ring-background rounded-full ring-1"
-                          height={20}
-                          src="https://originui.com/avatar-80-06.jpg"
-                          width={20}
-                        />
-                      </div>
-                      <p className="text-muted-foreground flex-1 px-2 text-xs">
-                        Projenin <strong className="text-foreground font-medium">{paymentResponse.totalCount}</strong>{" "}
-                        yatırımcısı var.
-                        <Link className="float-right" href="#">
-                          <ChevronRight className="size-4" />
-                        </Link>
-                      </p>
-                    </div>
+                  {(investorResponse.totalCount || 0) > 3 && (
+                    <InvestorsDialog
+                      fetchAllInvestors={fetchAllInvestors}
+                      previewInvestors={previewInvestors}
+                      totalCount={investorResponse.totalCount || 0}
+                    />
                   )}
                 </div>
               </CardContent>
