@@ -6,6 +6,7 @@ import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@
 import {ChevronRight, Crown, Loader2} from "lucide-react";
 import {formatCurrency} from "@repo/ui/utils";
 import {ScrollArea} from "@/components/ui/scroll-area";
+import type {PagedResultDto_ListProjectInvestorDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 
 // Helper function to get initials from masked name
 function getInitialsFromMaskedName(name: string) {
@@ -24,12 +25,12 @@ interface Investor {
 interface InvestorsDialogProps {
   previewInvestors: Investor[];
   totalCount: number;
-  fetchAllInvestors: () => Investor[];
+  investorResponse: PagedResultDto_ListProjectInvestorDto;
 }
 
-export function InvestorsDialog({previewInvestors, totalCount, fetchAllInvestors}: InvestorsDialogProps) {
+export function InvestorsDialog({previewInvestors, totalCount, investorResponse}: InvestorsDialogProps) {
   const [open, setOpen] = useState(false);
-  const [investors, setInvestors] = useState<Investor[]>([]);
+  const investors = investorResponse.items || [];
   const [loading, setLoading] = useState(false);
 
   const handleOpenChange = (newOpen: boolean) => {
@@ -37,8 +38,6 @@ export function InvestorsDialog({previewInvestors, totalCount, fetchAllInvestors
 
     if (newOpen && investors.length === 0) {
       setLoading(true);
-      const allInvestors = fetchAllInvestors();
-      setInvestors(allInvestors);
     }
   };
 
@@ -92,7 +91,7 @@ export function InvestorsDialog({previewInvestors, totalCount, fetchAllInvestors
                       </div>
                     ) : null}
                     <Avatar className="h-10 w-10">
-                      <AvatarFallback>{getInitialsFromMaskedName(investor.name)}</AvatarFallback>
+                      <AvatarFallback>{getInitialsFromMaskedName(investor.name || "")}</AvatarFallback>
                     </Avatar>
                   </div>
                   <div className="flex-1">
