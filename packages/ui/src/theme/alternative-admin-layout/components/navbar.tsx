@@ -40,7 +40,9 @@ function Tree({
           {navItem.title}
           {navItem?.id && navItem.id in navbarBadges && (
             <div className="ml-auto">
-              <Badge className="rounded-full border-0 bg-blue-600  py-0 text-xs text-white" variant="outline">
+              <Badge
+                className="w-7 min-w-7 max-w-7  justify-center rounded-full border-0  bg-blue-600 p-0 text-xs text-white"
+                variant="outline">
                 {navbarBadges[navItem.id]}
               </Badge>
             </div>
@@ -56,7 +58,7 @@ function Tree({
   return (
     <SidebarMenuItem>
       <Collapsible
-        className="group/collapsible [&[data-state=open]>button>svg:last-child]:rotate-90"
+        className="group/collapsible [&>button>div>svg]:data-[state=open]:rotate-90"
         defaultOpen={currentRoute === navItem.title}>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton
@@ -66,11 +68,13 @@ function Tree({
             {navItem.title}
             <div className="ml-auto flex flex-row items-center">
               {badgeCounts > 0 && (
-                <Badge className="rounded-full border-0 bg-blue-600 py-0 text-xs text-white" variant="outline">
+                <Badge
+                  className="w-7 min-w-7 max-w-7 justify-center rounded-full border-0 bg-blue-600  p-0 text-xs text-white"
+                  variant="outline">
                   {badgeCounts}
                 </Badge>
               )}
-              <ChevronRight className="transition-transform" />
+              <ChevronRight className="w-4 transition-transform" />
             </div>
           </SidebarMenuButton>
         </CollapsibleTrigger>
