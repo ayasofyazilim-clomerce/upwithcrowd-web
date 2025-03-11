@@ -46,6 +46,7 @@ const formSchema = z.object({
   annualIncome: z.string().regex(/^\d+$/, "Yıllık gelir sadece rakam içermelidir."),
   title: z.string().optional(),
   tel: z.string().optional(),
+  maskInvestorProfile: z.boolean().default(false),
 });
 
 export default function NewPersonalAccount() {
@@ -67,6 +68,7 @@ export default function NewPersonalAccount() {
       mobile: "",
       annualIncome: "0",
       title: "",
+      maskInvestorProfile: false,
     },
   });
 
@@ -88,6 +90,7 @@ export default function NewPersonalAccount() {
       annualIncome: parseInt(values.annualIncome),
       mobile: values.mobile,
       isValidated: isVerified, // Change this line to use the isVerified state
+      maskInvestorProfile: values.maskInvestorProfile,
     };
     postApiMember({requestBody})
       .then(async (response) => {
@@ -256,7 +259,7 @@ export default function NewPersonalAccount() {
                 />
               </div>
 
-              <div className=" grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="email"
@@ -266,6 +269,31 @@ export default function NewPersonalAccount() {
                       <FormControl>
                         <Input {...field} placeholder="E-posta girin" type="email" />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="maskInvestorProfile"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Yatırımcı profilim görünsün</FormLabel>
+                      <Select
+                        defaultValue={field.value ? "hayir" : "evet"}
+                        onValueChange={(value) => {
+                          field.onChange(value !== "evet");
+                        }}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seçiniz" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="evet">Evet</SelectItem>
+                          <SelectItem value="hayir">Hayır</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -287,7 +315,6 @@ export default function NewPersonalAccount() {
                           defaultCountry="tr"
                           inputClassName="w-full"
                         />
-                        {/* <Input {...field} placeholder="+12345678901" /> */}
                       </FormControl>
                       <FormMessage />
                     </FormItem>
