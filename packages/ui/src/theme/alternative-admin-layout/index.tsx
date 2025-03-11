@@ -12,6 +12,7 @@ import {
   Cloudy,
   Crown,
   File,
+  FileKey,
   FileStack,
   FileType,
   FileType2,
@@ -155,6 +156,7 @@ const newNavbarItems: NavItems[] = [
           {icon: FileType2, title: "Mime Types", url: "/management/file/mime-types"},
           {icon: FileStack, title: "File Type Groups", url: "/management/file/file-type-groups"},
           {icon: Cloudy, title: "Providers", url: "/management/file/providers"},
+          {icon: FileKey, title: "File Relation Entities", url: "/management/file/file-relation-entities"},
         ],
       },
       {
