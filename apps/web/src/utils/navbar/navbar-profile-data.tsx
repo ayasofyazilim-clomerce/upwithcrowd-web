@@ -1,5 +1,5 @@
 import type {ProfileMenuProps} from "@repo/ui/theme/types";
-import {Settings} from "lucide-react";
+import {BadgeCheck} from "lucide-react";
 import type {AbpUiNavigationResource} from "src/language-data/core/AbpUiNavigation";
 
 export function getProfileMenuFromDB(languageData: AbpUiNavigationResource) {
@@ -16,7 +16,7 @@ export function getProfileMenuFromDB(languageData: AbpUiNavigationResource) {
           name: languageData.MyAccount,
           href: "/account/personal-information",
           onClick: undefined,
-          icon: <Settings className="mr-2 h-5 w-5 text-gray-400" />,
+          icon: <BadgeCheck className="mr-2 w-4" />,
         },
       ],
       primary: [
