@@ -1,12 +1,22 @@
 "use client";
-import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
-import {FileUploadBase, ValidationErrors} from "./file-upload";
 import {toast} from "@repo/ayasofyazilim-ui/atoms/sonner";
+import {FileCard} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
+import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {FileFormData, FileUploadBase, ValidationErrors} from "./file-upload-base";
+import {cn} from "../../utils";
 
-export function FileUpload({ruleset, userId, propertyId}: {ruleset: Ruleset; userId: string; propertyId: string}) {
+export function FileUpload({
+  ruleset = dummyData,
+  propertyId,
+  backendUrl,
+}: {
+  ruleset: Ruleset;
+  propertyId: string;
+  backendUrl: string;
+}) {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>(null);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<FileFormData | null>(null);
   return (
     <div className="flex flex-col gap-4">
       {ruleset.map((rule) => {
@@ -28,15 +38,15 @@ export function FileUpload({ruleset, userId, propertyId}: {ruleset: Ruleset; use
 
         return (
           <FileUploadBase
+            backendUrl={backendUrl}
             key={rule.id}
             maxFileCount={config.maxFileCount}
             accept={config.accept}
             formData={{
-              RelatedEntity: rule.fileRelationsEntity[0].relatedEntityName,
-              FileType: rule.namespace,
-              Property: propertyId,
-              ValidatedUser: userId,
               ...formData,
+              relatedEntity: rule.fileRelationsEntity[0].relatedEntityName,
+              fileType: rule.namespace,
+              property: propertyId,
             }}
             onSuccess={() => {
               toast.success("File uploaded successfully");
@@ -45,9 +55,16 @@ export function FileUpload({ruleset, userId, propertyId}: {ruleset: Ruleset; use
               setValidationErrors(validationErrors);
               toast.error(message || "File upload failed");
             }}
-            label={rule.name}>
-            <Form rule={rule} validationErrors={validationErrors} formData={formData} setFormData={setFormData} />
-          </FileUploadBase>
+            fileCardRenderer={({file, onRemove}) => {
+              return (
+                <div>
+                  <FileCard file={file} onRemove={onRemove} />
+                  <Form rule={rule} validationErrors={validationErrors} formData={formData} setFormData={setFormData} />
+                </div>
+              );
+            }}
+            label={rule.name}
+          />
         );
       })}
     </div>
@@ -62,15 +79,21 @@ function Form({
 }: {
   rule: Ruleset[0];
   validationErrors: ValidationErrors;
-  formData: object;
-  setFormData: Dispatch<SetStateAction<object>>;
+  formData: FileFormData | null;
+  setFormData: Dispatch<SetStateAction<FileFormData | null>>;
 }) {
   const required = [
-    "validatedType",
     ...(rule.numberRequired ? ["documentNumber"] : []),
     ...(rule.originatorRequired ? ["documentOriginator"] : []),
     ...(rule.dateRequired ? ["documentDate"] : []),
+    // ...(rule.descriptionRequired ? ["fileDescription"] : []),
   ];
+  const fields: Record<string, {type: string; format?: string}> = {};
+  if (rule.dateRequired) fields.documentDate = {type: "string", format: "date-time"};
+  if (rule.numberRequired) fields.documentNumber = {type: "string"};
+  if (rule.originatorRequired) fields.documentOriginator = {type: "string"};
+  // if (rule.descriptionRequired) fields.fileDescription = {type: "string"};
+
   const [extraErrors, setExtraErrors] = useState<Record<string, {__errors: string[]}> | undefined>(undefined);
 
   useEffect(() => {
@@ -85,12 +108,13 @@ function Form({
     if (x) setExtraErrors(x);
   }, [validationErrors]);
   return (
-    <SchemaForm
+    <SchemaForm<FileFormData>
+      withScrollArea={false}
       className="p-px"
-      formData={formData}
+      formData={formData || undefined}
       useDefaultSubmit={false}
       uiSchema={{
-        "ui:className": "grid sm:grid-cols-2",
+        "ui:className": cn("grid", Object.keys(fields).length === 1 ? "grid-cols-1" : "sm:grid-cols-2 gap-4"),
         isValidated: {
           "ui:widget": "switch",
           "ui:className": "border px-2 rounded-md flex h-9 [&>div]:h-max self-end items-center",
@@ -99,27 +123,7 @@ function Form({
       schema={{
         type: "object",
         required: required,
-        properties: {
-          fileDescription: {
-            type: "string",
-          },
-          documentDate: {
-            type: "string",
-            format: "date-time",
-          },
-          documentNumber: {
-            type: "string",
-          },
-          documentOriginator: {
-            type: "string",
-          },
-          isValidated: {
-            type: "boolean",
-          },
-          validatedType: {
-            type: "string",
-          },
-        },
+        properties: fields,
       }}
       extraErrors={extraErrors}
       onChange={({formData}) => {
@@ -200,4 +204,3 @@ export const dummyData = [
   },
 ];
 export type Ruleset = typeof dummyData;
-export * from "./handler";
