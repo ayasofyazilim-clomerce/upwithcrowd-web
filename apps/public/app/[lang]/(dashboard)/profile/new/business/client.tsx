@@ -5,6 +5,7 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Loader2} from "lucide-react";
@@ -12,7 +13,6 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
-import {handlePostResponse} from "@repo/utils/api";
 import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
 import {useMember} from "@/app/providers/member";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
@@ -36,6 +36,7 @@ const formSchema = z.object({
   name: z.string().optional(),
   surname: z.string().optional(),
   mobile: z.string().optional(),
+  maskInvestorProfile: z.boolean().optional(),
 });
 
 export default function NewBusinessAccount() {
@@ -52,6 +53,7 @@ export default function NewBusinessAccount() {
       tel: currentMember?.mobile || "",
       mail: currentMember?.mail || "",
       annualIncome: "0",
+      maskInvestorProfile: false,
     },
   });
 
@@ -71,10 +73,11 @@ export default function NewBusinessAccount() {
       annualIncome: parseInt(values.annualIncome),
       mobile: "",
       isValidated: true,
+      maskInvestorProfile: values.maskInvestorProfile,
     };
 
-    void postApiMember({requestBody}).then((response) => {
-      handlePostResponse(response, router);
+    void postApiMember({requestBody}).then(() => {
+      setShowSuccessModal(true);
     });
 
     setIsSubmitting(false);
@@ -189,25 +192,52 @@ export default function NewBusinessAccount() {
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="mail"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel className="text-sm sm:text-base">E-posta</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className="text-sm sm:text-base"
-                        defaultValue={currentMember?.mail || ""}
-                        placeholder="E-posta adresinizi girin"
-                        type="email"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="mail"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel className="text-sm sm:text-base">E-posta</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className="text-sm sm:text-base"
+                          defaultValue={currentMember?.mail || ""}
+                          placeholder="E-posta adresinizi girin"
+                          type="email"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="maskInvestorProfile"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel className="text-sm sm:text-base">Yatırımcı profilim görünsün</FormLabel>
+                      <Select
+                        defaultValue={field.value ? "hayir" : "evet"}
+                        onValueChange={(value) => {
+                          field.onChange(value !== "evet");
+                        }}>
+                        <FormControl>
+                          <SelectTrigger className="text-sm sm:text-base">
+                            <SelectValue placeholder="Seçiniz" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="evet">Evet</SelectItem>
+                          <SelectItem value="hayir">Hayır</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </CardContent>
             <CardFooter>
               <Button className="w-full text-sm sm:text-base" disabled={isSubmitting || !isFormValid} type="submit">
