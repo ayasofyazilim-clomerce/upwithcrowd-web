@@ -110,10 +110,14 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck className="mr-2 w-4" />
-                Account
-              </DropdownMenuItem>
+              {profileMenu.menu.account.map((item, index) => (
+                <DropdownMenuItem key={index} asChild>
+                  <Link href={item.href || ""}>
+                    {item.icon}
+                    {item.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
