@@ -1,13 +1,9 @@
 "use server";
 
-import type {
-  GetApiProjectData,
-  UpwithCrowd_Projects_FundCollectionType,
-  UpwithCrowd_Projects_ProjectStateType,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
-import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import ProjectTable from "../_components/table";
@@ -25,23 +21,50 @@ async function getApiRequests(searchParams: GetApiProjectData) {
   }
 }
 
+function validateFundCollectionType(fundCollectionType?: string) {
+  switch (fundCollectionType?.toLowerCase()) {
+    case "shre":
+      return "SHRE";
+    case "dbit":
+      return "DBIT";
+    default:
+      return undefined;
+  }
+}
+
+function validateProjectStatus(projectStatus?: string) {
+  switch (projectStatus?.toLowerCase()) {
+    case "pending":
+      return "Pending";
+    case "approved":
+      return "Approved";
+    case "rejected":
+      return "Rejected";
+    case "cancelled":
+      return "Cancelled";
+    default:
+      return undefined;
+  }
+}
 export default async function Page({
   params,
   searchParams,
 }: {
   params: {
     lang: string;
-    fundCollectionType: UpwithCrowd_Projects_FundCollectionType | "ALL";
-    projectStateType: UpwithCrowd_Projects_ProjectStateType;
+    slug?: string[];
   };
   searchParams?: GetApiProjectData;
 }) {
-  const {lang} = params;
+  const {lang, slug} = params;
   const {languageData} = await getResourceData(lang);
+
+  const [projectStatus, fundCollectionType] = slug || [];
 
   const apiRequests = await getApiRequests({
     ...searchParams,
-    status: "Pending",
+    status: validateProjectStatus(projectStatus),
+    fundCollectionType: validateFundCollectionType(fundCollectionType),
   });
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
