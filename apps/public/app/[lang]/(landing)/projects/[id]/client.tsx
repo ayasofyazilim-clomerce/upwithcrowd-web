@@ -137,18 +137,6 @@ export default function ProjectDetails({
     return initials;
   };
 
-  // Add a function to fetch all investors
-  const fetchAllInvestors = useCallback(() => {
-    // This should be replaced with actual API call to fetch all investors
-    // For now, we'll just return the current investors we have
-    return (investorResponse.items || []).map((investor) => ({
-      id: investor.id || "",
-      name: investor.name || "",
-      amount: investor.amount || 0,
-      memberQualidied: investor.memberQualidied || false,
-    }));
-  }, [investorResponse.items]);
-
   // Map preview investors to the required format
   const previewInvestors = (investorResponse.items || []).map((investor) => ({
     id: investor.id || "",
@@ -257,7 +245,7 @@ export default function ProjectDetails({
 
                   {(investorResponse.totalCount || 0) > 3 && (
                     <InvestorsDialog
-                      fetchAllInvestors={fetchAllInvestors}
+                      investorResponse={investorResponse}
                       previewInvestors={previewInvestors}
                       totalCount={investorResponse.totalCount || 0}
                     />

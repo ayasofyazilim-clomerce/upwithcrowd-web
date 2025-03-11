@@ -1,5 +1,5 @@
 "use client";
-import type {PagedResultDto_FileRelationEntityListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {PagedResultDto_ListResponseFileRelationEntityDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import TanstackTable from "@repo/ayasofyazilim-ui/molecules/tanstack-table";
 import {useGrantedPolicies} from "@repo/utils/policies";
 import {useRouter} from "next/navigation";
@@ -13,7 +13,7 @@ function FileRelationEntitiesTable({
 }: {
   locale: string;
   languageData: DefaultResource;
-  response: PagedResultDto_FileRelationEntityListDto;
+  response: PagedResultDto_ListResponseFileRelationEntityDto;
 }) {
   const router = useRouter();
   const {grantedPolicies} = useGrantedPolicies();
