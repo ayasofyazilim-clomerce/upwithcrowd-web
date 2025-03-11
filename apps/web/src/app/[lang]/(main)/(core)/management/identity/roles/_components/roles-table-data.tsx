@@ -7,10 +7,10 @@ import type {
   TanstackTableTableActionsType,
 } from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
-import {FolderCheck, Layers, Plus, ShieldCheck, User2Icon} from "lucide-react";
-import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type {Policy} from "@repo/utils/policies";
 import {isActionGranted} from "@repo/utils/policies";
+import {FolderCheck, Plus, ShieldCheck, User2Icon} from "lucide-react";
+import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type {IdentityServiceResource} from "src/language-data/core/IdentityService";
 
 type RolesTable = TanstackTableCreationProps<Volo_Abp_Identity_IdentityRoleDto>;
@@ -80,17 +80,18 @@ function rolesRowActions(
       },
     });
   }
-  if (isActionGranted(["IdentityService.AssignableRoles"], grantedPolicies)) {
-    actions.push({
-      type: "simple",
-      actionLocation: "row",
-      cta: languageData["Role.Assignable"],
-      icon: Layers,
-      onClick: (row) => {
-        router.push(`roles/${row.id}/assignable-roles`);
-      },
-    });
-  }
+  // Bu projede yok
+  // if (isActionGranted(["IdentityService.AssignableRoles"], grantedPolicies)) {
+  //   actions.push({
+  //     type: "simple",
+  //     actionLocation: "row",
+  //     cta: languageData["Role.Assignable"],
+  //     icon: Layers,
+  //     onClick: (row) => {
+  //       router.push(`roles/${row.id}/assignable-roles`);
+  //     },
+  //   });
+  // }
   return actions;
 }
 const rolesColumns = (
