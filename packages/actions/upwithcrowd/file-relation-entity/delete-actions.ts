@@ -4,7 +4,7 @@ import type {DeleteApiFileRelationEntityByIdData} from "@ayasofyazilim/upwithcro
 import {structuredError, structuredResponse} from "@repo/utils/api";
 import {getUpwithcrowdClient} from "../lib";
 
-export async function deleteFileTypeByIdApi(data: DeleteApiFileRelationEntityByIdData) {
+export async function deleteFileRelationEntityByIdApi(data: DeleteApiFileRelationEntityByIdData) {
   try {
     const client = await getUpwithcrowdClient();
     const dataResponse = await client.fileRelationEntity.deleteApiFileRelationEntityById(data);
