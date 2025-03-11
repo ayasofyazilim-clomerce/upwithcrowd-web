@@ -1,6 +1,7 @@
 "use server";
 
 import type {
+  PostApiAccountLinkUserVerifyLinkTokenData,
   PostApiAccountMyProfileChangePasswordData,
   PostApiAccountProfilePictureData,
   PostApiAccountSendPasswordResetCodeData,
@@ -32,6 +33,16 @@ export async function postSendPasswordResetCodeApi(data: PostApiAccountSendPassw
   try {
     const client = await getAccountServiceClient();
     const dataResponse = await client.account.postApiAccountSendPasswordResetCode(data);
+    return structuredResponse(dataResponse);
+  } catch (error) {
+    return structuredError(error);
+  }
+}
+
+export async function postAccountLinkUserVerifyLinkTokenApi(data: PostApiAccountLinkUserVerifyLinkTokenData) {
+  try {
+    const client = await getAccountServiceClient();
+    const dataResponse = await client.user.postApiAccountLinkUserVerifyLinkToken(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
