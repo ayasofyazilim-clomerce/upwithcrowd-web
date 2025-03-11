@@ -1,24 +1,24 @@
 "use server";
 
-import {isUnauthorized} from "@repo/utils/policies";
-import type {GetApiFileTypeData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getFileTypeGroupApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
-import {getProvidersApi} from "@repo/actions/upwithcrowd/providers/actions";
 import {getFileTypeApi} from "@repo/actions/upwithcrowd/file-type/actions";
+import {getProvidersApi} from "@repo/actions/upwithcrowd/providers/actions";
+import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
+import {isUnauthorized} from "@repo/utils/policies";
 import {isRedirectError, permanentRedirect} from "next/dist/client/components/redirect";
-import ErrorComponent from "@repo/ui/components/error-component";
 import {getResourceData} from "src/language-data/core/IdentityService";
-import Form from "./_components/form";
+import EditForm from "./_components/form-edit";
+import NewForm from "./_components/form-new";
 
-async function getApiRequests(filters: GetApiFileTypeData) {
+async function getApiRequests(fileTypeId: string) {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getFileTypeApi(filters, session),
       getFileTypeGroupApi({}, session),
       getProvidersApi({}, session),
+      fileTypeId !== "new" ? getFileTypeApi({id: fileTypeId}, session) : Promise.resolve({data: {items: []}}),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -38,33 +38,28 @@ export default async function Page({params}: {params: {lang: string; fileTypeId:
   });
   const {languageData} = await getResourceData(lang);
 
-  const apiRequests = await getApiRequests({
-    id: fileTypeId,
-  });
+  const apiRequests = await getApiRequests(fileTypeId);
 
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
-  const [fileTypeResponse, fileTypeGroupResponse, providerResponse] = apiRequests.requiredRequests;
+  const [fileTypeGroupResponse, providerResponse, fileTypeResponse] = apiRequests.requiredRequests;
   const fileTypeData = fileTypeResponse.data.items?.[0];
   const fileTypeGroupData = fileTypeGroupResponse.data.items || [];
   const providerData = providerResponse.data.items || [];
 
+  if (fileTypeId === "new") {
+    return <NewForm fileTypeGroupData={fileTypeGroupData} languageData={languageData} providerData={providerData} />;
+  }
   if (!fileTypeData) {
     return permanentRedirect(`/${lang}/management/file/file-types`);
   }
-
   return (
-    <>
-      <Form
-        fileTypeData={fileTypeData}
-        fileTypeGroupData={fileTypeGroupData}
-        languageData={languageData}
-        providerData={providerData}
-      />
-      <div className="hidden" id="page-description">
-        {languageData["Role.Create.Description"]}
-      </div>
-    </>
+    <EditForm
+      fileTypeData={fileTypeData}
+      fileTypeGroupData={fileTypeGroupData}
+      languageData={languageData}
+      providerData={providerData}
+    />
   );
 }
