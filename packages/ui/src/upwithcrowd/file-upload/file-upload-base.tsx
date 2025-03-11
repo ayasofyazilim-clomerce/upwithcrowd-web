@@ -1,12 +1,21 @@
 "use client";
 import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
-import {FileUploader} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
+import {BaseFileUploaderProps, FileUploader} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
 import {useState, useTransition} from "react";
 export type ValidationErrors = Array<{
   members: string[];
   message: string;
 }> | null;
 
+export type FileFormData = {
+  fileType: string;
+  relatedEntity: string;
+  property: string;
+  fileDescription?: string;
+  documentDate?: string;
+  documentOriginator?: string;
+  documentNumber?: string;
+};
 export type OnSuccessType = ({files, ...props}: {files: File[]} & Response) => void;
 export type OnErrorType = ({
   files,
@@ -17,12 +26,13 @@ export type OnErrorType = ({
 export type FileUploadBaseProps = {
   accept: Record<string, string[]>;
   maxFileCount: number;
-  formData: Record<string, boolean | string | number>;
+  formData: FileFormData;
   onSuccess: OnSuccessType;
   onError: OnErrorType;
-  children: React.ReactNode;
   label?: string;
   description?: string;
+  backendUrl: string;
+  fileCardRenderer?: BaseFileUploaderProps["fileCardRenderer"];
 };
 export function FileUploadBase({
   accept = {"*": []},
@@ -30,13 +40,15 @@ export function FileUploadBase({
   formData,
   onSuccess,
   onError,
-  children,
   label,
   description,
+  backendUrl,
+  fileCardRenderer,
 }: FileUploadBaseProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [isSaveActive, setIsSaveActive] = useState(false);
   const [isPending, startTransition] = useTransition();
+  if (!backendUrl) throw new Error("backendUrl is required");
   return (
     <FileUploader
       label={label}
@@ -45,13 +57,12 @@ export function FileUploadBase({
       variant="button"
       maxFileCount={maxFileCount}
       disabled={isPending}
-      noDrag={true}
+      fileCardRenderer={fileCardRenderer}
       onValueChange={(_files) => {
         setFiles(_files);
         _files.length > 0 ? setIsSaveActive(true) : setIsSaveActive(false);
-      }}>
-      <div className="flex w-full flex-col justify-between gap-2">
-        {children}
+      }}
+      headerChildren={
         <Button
           className="w-full self-end sm:max-w-max"
           disabled={!isSaveActive || isPending}
@@ -59,21 +70,28 @@ export function FileUploadBase({
             startTransition(async () => {
               const _formData = new FormData();
               files.forEach((file) => _formData.append("files", file));
-              _formData.append("fileProps", JSON.stringify(formData));
-              const uploadFile = await fetch("/api/file", {method: "POST", body: _formData});
-              console.log("up", uploadFile);
-              if (uploadFile.ok) {
-                onSuccess({
-                  files: files,
-                  ...(await uploadFile.json()),
-                });
-              } else {
-                const x = await uploadFile.json();
-                console.log(x, x.error);
+              Object.entries(formData).forEach(([key, value]) => _formData.append(key, value));
+              const uploadFile = await fetch(backendUrl + "/api/file", {method: "POST", body: _formData});
+              try {
+                if (uploadFile.ok) {
+                  onSuccess({
+                    files: files,
+                    ...(await uploadFile.json()),
+                  });
+                } else {
+                  const x = await uploadFile.json();
+                  onError({
+                    files: files,
+                    validationErrors: x?.error?.validationErrors || null,
+                    message: x?.error?.message,
+                    ...uploadFile,
+                  });
+                }
+              } catch (error) {
                 onError({
                   files: files,
-                  validationErrors: x?.error?.validationErrors || null,
-                  message: x?.error?.message,
+                  validationErrors: null,
+                  message: "Unknown error",
                   ...uploadFile,
                 });
               }
@@ -81,7 +99,7 @@ export function FileUploadBase({
           }}>
           Kaydet
         </Button>
-      </div>
-    </FileUploader>
+      }
+    />
   );
 }
