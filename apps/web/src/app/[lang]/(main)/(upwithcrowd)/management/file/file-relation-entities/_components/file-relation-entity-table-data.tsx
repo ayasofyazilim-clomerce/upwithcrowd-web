@@ -94,10 +94,9 @@ function fileRelationEntityTable(
   locale: string,
 ): FileRelationEntityTable {
   const table: FileRelationEntityTable = {
-    fillerColumn: "fileTypeId",
     columnVisibility: {
       type: "hide",
-      columns: ["id"],
+      columns: ["id", "fileTypeId"],
     },
     tableActions: fileRelationEntityTableActions(router, languageData, locale),
     rowActions: fileRelationEntityRowActions(languageData, router, grantedPolicies, locale),
