@@ -27,7 +27,6 @@ export default async function Page({
   searchParams,
 }: {
   params: {
-    partyId: string;
     lang: string;
   };
   searchParams?: GetApiProviderData;
