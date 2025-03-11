@@ -28,7 +28,7 @@ function fileRelationEntityTableActions(router: AppRouterInstance, languageData:
     cta: languageData.New,
     icon: Edit,
     onClick: () => {
-      router.push(`/${locale}/management/file/file-types/new`);
+      router.push(`/${locale}/management/file/file-relation-entities/new`);
     },
   });
 
@@ -48,7 +48,7 @@ function fileRelationEntityRowActions(
       cta: languageData.Edit,
       icon: Edit,
       onClick: (row) => {
-        router.push(`/${locale}/management/file/file-types/${row.id}`);
+        router.push(`/${locale}/management/file/file-relation-entities/${row.id}`);
       },
     },
 
