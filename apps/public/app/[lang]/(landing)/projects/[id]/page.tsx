@@ -10,7 +10,7 @@ import {
   getPublicProjectDetailByIdApi,
   getProjectByIdUpdatePermissionApi,
 } from "@repo/actions/upwithcrowd/public-project/action";
-import {getApiPaymentTransactionApi} from "@repo/actions/upwithcrowd/payment-transaction/action";
+import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
 import {getResourceData} from "@/language/core/Default";
 import ProjectDetails from "./client";
 
@@ -25,13 +25,9 @@ async function getApiRequests(id: string) {
         relatedEntity: "Project",
         relatedId: id,
       }),
+      getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
     ]);
-    const optionalRequests = await Promise.allSettled([
-      getApiPaymentTransactionApi({
-        maxResultCount: 999,
-      }),
-      getProjectByIdUpdatePermissionApi({id}),
-    ]);
+    const optionalRequests = await Promise.allSettled([getProjectByIdUpdatePermissionApi({id})]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -50,9 +46,9 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
-  const [paymentsResponse, isEditableResponse] = apiRequests.optionalRequests;
-  const paymentData = paymentsResponse.status === "fulfilled" ? paymentsResponse.value.data : {totalCount: 0};
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, investorResponse] =
+    apiRequests.requiredRequests;
+  const [isEditableResponse] = apiRequests.optionalRequests;
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
 
   if (projectDetailsResponseBasics.data.status !== "Approved" && !isEditable) {
@@ -63,8 +59,8 @@ export default async function Page({params}: {params: {id: string; lang: string}
       <ProjectDetails
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
+        investorResponse={investorResponse.data}
         isEditable={isEditable}
-        paymentResponse={paymentData}
         projectsMember={projectsMemberResponse.data}
       />
     </div>
