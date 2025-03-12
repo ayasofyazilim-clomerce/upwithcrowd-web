@@ -21,6 +21,14 @@ export default function ErrorComponent({
 }) {
   const router = useRouter();
 
+  const handleHomeClick = async (e: React.MouseEvent) => {
+    if (signOutServer) {
+      e.preventDefault();
+      await signOutServer();
+      router.push("/en");
+    }
+  };
+
   return (
     <section className="from-muted to-muted/50 relative flex h-screen w-full items-center justify-center overflow-hidden bg-gradient-to-br via-white px-4 py-12">
       {/* Animated background shapes */}
@@ -141,7 +149,7 @@ export default function ErrorComponent({
             )}
           </Button>
           {showHomeButton && (
-            <Link href="/en">
+            <Link href="/en" onClick={handleHomeClick}>
               <Button className="flex items-center gap-2 px-8 py-3 text-lg" variant="outline" size="lg">
                 <Home className="h-6 w-6" />
                 <span>Go Home</span>
