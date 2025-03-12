@@ -3,6 +3,7 @@
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import type {NotificationProps} from "@repo/ui/components/notification";
+import {Notification} from "@repo/ui/components/notification";
 import {useSession} from "@repo/utils/auth";
 import {Menu, PlusCircle, X} from "lucide-react";
 import Image from "next/image";
@@ -79,14 +80,13 @@ export default function Header({
               </Link>
               <MemberSwitcher />
               {notification ? (
-                // <Notification
-                //   appId={notification.appId}
-                //   appUrl={notification.appUrl}
-                //   langugageData={{}}
-                //   popoverContentProps={{className: "rounded-lg", style: {height: "h-auto"}}}
-                //   subscriberId={notification.subscriberId}
-                // />
-                <></>
+                <Notification
+                  appId={notification.appId}
+                  appUrl={notification.appUrl}
+                  langugageData={notification.langugageData}
+                  popoverContentProps={{className: "rounded-lg", style: {height: "h-auto"}}}
+                  subscriberId={notification.subscriberId}
+                />
               ) : null}
             </div>
           ) : (
