@@ -6,7 +6,7 @@ import {structuredError} from "@repo/utils/api";
 import {getMemberApi} from "@repo/actions/upwithcrowd/member/actions";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
-import ProjectTable from "../_components/table";
+import CommunityTable from "../_components/table";
 
 async function getApiRequests(searchParams: GetApiMemberData) {
   try {
@@ -35,5 +35,5 @@ export default async function Page({params, searchParams}: {params: {lang: strin
   }
   const [projectResponse] = apiRequests.requiredRequests;
 
-  return <ProjectTable response={projectResponse.data} />;
+  return <CommunityTable response={projectResponse.data} />;
 }
