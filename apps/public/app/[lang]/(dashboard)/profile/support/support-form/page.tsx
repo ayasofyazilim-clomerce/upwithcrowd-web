@@ -1,21 +1,22 @@
 "use client";
 
-import {useState, useTransition} from "react";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
-import Link from "next/link";
-import {Info} from "lucide-react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
+import {postTasksApi} from "@repo/actions/upwithcrowd/tasks/post-action";
 import AsyncSelect from "@repo/ayasofyazilim-ui/molecules/async-select";
 import {handlePostResponse} from "@repo/utils/api";
-import {postTasksApi} from "@repo/actions/upwithcrowd/tasks/post-action";
-import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
+import {Info} from "lucide-react";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
+import {useState, useTransition} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 
 const formSchema = z.object({
   tasksType: z.enum(["Issue", "Support"], {
@@ -41,6 +42,8 @@ type FormValues = z.infer<typeof formSchema>;
 export default function SupportFormClient() {
   const [isPending, startTransition] = useTransition();
   const [selectedProject, setSelectedProject] = useState<{id: string; name: string}>();
+
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -77,6 +80,7 @@ export default function SupportFormClient() {
       }).then((res) => {
         handlePostResponse(res);
         form.reset();
+        router.push("/profile/support");
       });
     });
   }
