@@ -3,7 +3,7 @@ import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import type {UpwithCrowd_Projects_ListProjectsResponseDto as Project} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {formatCurrency} from "@repo/ui/utils";
-import {Target, Wallet} from "lucide-react";
+import {Send, Target, Wallet} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
 
   return (
     <Link className="pointer" href={`/projects/${project.id}`}>
-      <Card className="space-y-2 overflow-hidden border-none p-4 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+      <Card className="hover:scale-102 space-y-2 overflow-hidden border-none p-4 shadow-lg transition-transform duration-300 hover:shadow-xl">
         <div className="relative">
           <Image
             alt={project.projectName}
@@ -33,9 +33,18 @@ export default function ListedProjectCard({project}: {project: Project}) {
             {project.fundCollectionType}
           </Badge>
         </div>
-        <h3 className="mb-4 w-full overflow-hidden text-ellipsis text-nowrap text-lg font-semibold md:text-xl">
-          {project.projectName}
-        </h3>
+        <div className="flex flex-col justify-center gap-1">
+          <h3 className="overflow-hidden text-ellipsis text-nowrap text-lg font-semibold md:text-xl">
+            {project.projectName}
+          </h3>
+          <Link
+            className="hover:text-primary  flex w-full shrink-0 items-center gap-1 rounded-full text-sm text-gray-600 transition-colors duration-300"
+            href={`/profile/notice/${project.id}`}>
+            Bildirim Gönder
+            <Send className="text-primary h-4 w-4" />
+          </Link>
+        </div>
+
         <div className="bg-primary/5 rounded-lg p-3 md:p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-medium md:text-sm">Fonlanan: {fundedPercentage.toFixed(0)}%</span>

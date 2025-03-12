@@ -1,9 +1,11 @@
 "use client";
 
-import {useState, useTransition} from "react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {ScrollArea} from "@/components/ui/scroll-area";
+import {toast} from "@/components/ui/sonner";
+import {postProfileImageApi} from "@repo/actions/upwithcrowd/member/post-action";
+import {signOutServer} from "@repo/utils/auth";
 import {
   Bell,
   BellDot,
@@ -12,22 +14,20 @@ import {
   Camera,
   ChevronRight,
   Copy,
+  CopyCheck,
   FileText,
   HelpCircle,
   Link2,
   LogOut,
-  Shield,
-  CopyCheck,
   Settings,
+  Shield,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {toast} from "@/components/ui/sonner";
 import {useRouter} from "next/navigation";
-import {signOutServer} from "@repo/utils/auth";
-import {postProfileImageApi} from "@repo/actions/upwithcrowd/member/post-action";
-import {useMember} from "@/app/providers/member";
+import {useState, useTransition} from "react";
 import {getBaseLink} from "@/utils/lib";
+import {useMember} from "@/app/providers/member";
 
 export default function ProfileClient() {
   const {currentMember, members, setCurrentMember, setMembers} = useMember();
@@ -223,15 +223,19 @@ export default function ProfileClient() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/documents">
-                      <div className="flex items-center gap-3">
-                        <div className="bg-muted rounded-full p-2">
-                          <FileText className="h-5 w-5" />
+                    {currentMember.type === "Organization" && (
+                      <Link
+                        className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                        href="/profile/documents">
+                        <div className="flex items-center gap-3">
+                          <div className="bg-muted rounded-full p-2">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <span>Ekstreler ve belgeler</span>
                         </div>
-                        <span>Ekstreler ve belgeler</span>
-                      </div>
-                      <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </Link>
+                        <ChevronRight className="text-muted-foreground h-5 w-5" />
+                      </Link>
+                    )}
                   </div>
                 </div>
 
