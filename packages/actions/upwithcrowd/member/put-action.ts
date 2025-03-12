@@ -13,10 +13,10 @@ export async function putMemberSwitchByIdApi(data: PutApiMemberByIdSwitchData) {
   }
 }
 
-export async function putMemberApiById(id: PutApiMemberByIdData) {
+export async function putMemberApiById(data: PutApiMemberByIdData) {
   try {
     const client = await getUpwithcrowdClient();
-    const dataResponse = await client.member.putApiMemberById(id);
+    const dataResponse = await client.member.putApiMemberById(data);
     return structuredResponse(dataResponse);
   } catch (error) {
     return structuredError(error);
