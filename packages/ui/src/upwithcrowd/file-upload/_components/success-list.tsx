@@ -33,7 +33,7 @@ export const dummySuccessed = [
         webkitRelativePath: "",
         size: 1234,
         preview: "",
-        bytes: (): Promise<Uint8Array<ArrayBufferLike>> => {
+        bytes: (): Promise<Uint8Array> => {
           return new Promise(() => {});
         },
         arrayBuffer: (): Promise<ArrayBuffer> => {
@@ -78,7 +78,7 @@ export const dummySuccessed = [
         webkitRelativePath: "",
         size: 1234,
         preview: "",
-        bytes: (): Promise<Uint8Array<ArrayBufferLike>> => {
+        bytes: (): Promise<Uint8Array> => {
           return new Promise(() => {});
         },
         arrayBuffer: (): Promise<ArrayBuffer> => {
