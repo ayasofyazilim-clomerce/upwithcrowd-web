@@ -38,10 +38,10 @@ function Tree({
           className={currentRoute === navItem.title ? "font-normal text-blue-600" : ""}>
           {navItem.icon && <navItem.icon />}
           {navItem.title}
-          {navItem?.id && navItem.id in navbarBadges && (
+          {navItem?.id && navItem.id in navbarBadges && navbarBadges[navItem.id] > 0 && (
             <div className="ml-auto">
               <Badge
-                className="w-7 min-w-7 max-w-7  justify-center rounded-full border-0  bg-blue-600 p-0 text-xs text-white"
+                className="w-7 min-w-7 max-w-7 justify-center rounded-full border-0 bg-blue-600 p-0 text-xs text-white"
                 variant="outline">
                 {navbarBadges[navItem.id]}
               </Badge>
