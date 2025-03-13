@@ -15,7 +15,7 @@ async function getApiRequests(fileRelationEntityId: string) {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getFileTypeApi({}, session),
+      getFileTypeApi({maxResultCount: 100}, session),
       fileRelationEntityId !== "new"
         ? getFileRelationEntityApi({id: fileRelationEntityId}, session)
         : Promise.resolve({data: {items: []}}),

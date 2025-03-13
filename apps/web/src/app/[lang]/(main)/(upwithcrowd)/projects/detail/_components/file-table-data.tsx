@@ -1,63 +1,76 @@
+import {
+  $UpwithCrowd_Files_FileResponseListDto,
+  type UpwithCrowd_Files_FileResponseListDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {putFileValidationByIdApi} from "@repo/actions/upwithcrowd/file/put-actions";
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
-import {Download, DownloadIcon, FileIcon, FileTextIcon, ImageIcon, Trash} from "lucide-react";
+import {handlePutResponse} from "@repo/utils/api";
+import {CircleCheck, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
+import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
-import {$fileType, type FileType} from "../type";
 
-type ProjectsTable = TanstackTableCreationProps<FileType>;
+type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Files_FileResponseListDto>;
 
-const projectsColumns = (locale: string) => {
-  return tanstackTableCreateColumnsByRowData<FileType>({
-    rows: $fileType,
+const fileColumns = (locale: string) => {
+  return tanstackTableCreateColumnsByRowData<UpwithCrowd_Files_FileResponseListDto>({
+    rows: $UpwithCrowd_Files_FileResponseListDto.properties,
     languageData: {
-      fileType: "Dosya Tipi",
-      fileSize: "Dosya Boyutu",
-      creationDate: "Yüklenme Tarihi",
+      fileTypeNamespace: "Dosya Tipi",
+    },
+    faceted: {
+      fileTypeNamespace: {
+        options: [
+          {
+            icon: FileTextIcon,
+            iconClassName: "text-blue-500 size-6",
+            value: "ProjectImages",
+            label: "Proje Resimleri",
+          },
+        ],
+      },
     },
     custom: {
-      fileType: {
-        showHeader: true,
+      fullPath: {
         content(row) {
-          let icon = null;
-          switch (row.fileExtension) {
-            case "pdf":
-              icon = <FileTextIcon className="size-6 text-red-500" />;
-              break;
-            case "png":
-            case "jpg":
-              icon = <ImageIcon className="size-6 text-green-600" />;
-              break;
+          return (
+            <Link
+              className="flex items-center gap-2 text-blue-600"
+              href={row.fullPath || ""}
+              rel="noopener noreferrer"
+              target="_blank">
+              <DownloadIcon className="size-6" />
+            </Link>
+          );
+        },
+      },
+    },
+    badges: {
+      isValidated: {
+        hideColumnValue: true,
+        values: [
+          {
+            label: "Onaylandı",
+            badgeClassName: "text-green-700 bg-green-100 border-green-500",
+            conditions: [
+              {
+                when: (value) => Boolean(value),
+                conditionAccessorKey: "isValidated",
+              },
+            ],
+          },
+          {
+            label: "Onaylanmadı",
 
-            default:
-              icon = <FileIcon className="size-6 text-blue-500" />;
-          }
-          return (
-            <div className="flex items-center gap-2">
-              {icon} {row.fileType}
-            </div>
-          );
-        },
-      },
-      fileSize: {
-        showHeader: true,
-        content(row) {
-          return <>{row.fileSize}MB</>;
-        },
-      },
-      fileLink: {
-        content(row) {
-          return (
-            <div className="ml-auto">
-              <Link
-                className="flex items-center gap-2 text-blue-600"
-                href={row.fileLink}
-                rel="noopener noreferrer"
-                target="_blank">
-                <DownloadIcon className="size-6" />
-              </Link>
-            </div>
-          );
-        },
+            badgeClassName: "text-red-700 bg-red-100 border-red-500",
+            conditions: [
+              {
+                when: (value) => !value,
+                conditionAccessorKey: "isValidated",
+              },
+            ],
+          },
+        ],
       },
     },
     config: {
@@ -66,33 +79,38 @@ const projectsColumns = (locale: string) => {
   });
 };
 
-function projectsTable() {
+function fileTable(router: AppRouterInstance) {
   const table: ProjectsTable = {
     columnVisibility: {
-      type: "show",
-      columns: ["fileType", "fileSize", "creationDate"],
+      type: "hide",
+      columns: ["fileId", "validatedUser", "validatedType"],
     },
-    fillerColumn: "fileType",
-    columnOrder: ["fileType", "fileSize", "creationDate"],
-    selectedRowAction: {
-      cta: "Download",
-      icon: Download,
-      onClick() {
-        // eslint-disable-next-line no-alert -- it's an example
-        alert("Download");
-      },
-      actionLocation: "table",
-    },
+    fillerColumn: "fileDescription",
+    columnOrder: [
+      "isValidated",
+      "fileTypeNamespace",
+      "mimeType",
+      "fileDescription",
+      "documentNumber",
+      "documentOriginator",
+      "fullPath",
+    ],
+
     rowActions: [
       {
-        cta: "Download",
-        onClick() {
-          // eslint-disable-next-line no-alert -- it's an example
-          alert("Download");
+        cta: "Onayla",
+        onClick(row) {
+          void putFileValidationByIdApi({
+            id: row.fileId || "",
+            isValidated: true,
+          }).then((response) => {
+            handlePutResponse(response, router);
+          });
         },
         type: "simple",
-        icon: Download,
+        icon: CircleCheck,
         actionLocation: "row",
+        condition: (row) => !row.isValidated,
       },
       {
         cta: "Delete",
@@ -111,7 +129,7 @@ function projectsTable() {
 
 export const tableData = {
   projects: {
-    columns: projectsColumns,
-    table: projectsTable,
+    columns: fileColumns,
+    table: fileTable,
   },
 };

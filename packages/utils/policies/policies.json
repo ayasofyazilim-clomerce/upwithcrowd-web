@@ -73,6 +73,7 @@
   "UpwithCrowd.Members.List": false,
   "UpwithCrowd.Members.All": false,
   "UpwithCrowd.Members.Switch": false,
+  "UpwithCrowd.Members.Validated": false,
   "UpwithCrowd.Projects": false,
   "UpwithCrowd.Projects.Save": false,
   "UpwithCrowd.Projects.Update": false,
