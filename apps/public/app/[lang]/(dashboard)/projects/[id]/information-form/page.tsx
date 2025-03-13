@@ -1,5 +1,5 @@
 import {Card, CardContent, CardTitle} from "@/components/ui/card";
-import {getFileTypeGroupTestApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
+import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import type {Ruleset} from "@repo/ui/upwithcrowd/file-upload";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
@@ -13,7 +13,7 @@ async function getApiRequests() {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getFileTypeGroupTestApi({namespace: "OrganizationOfficialDocuments"}, session),
+      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "OrganizationOfficialDocuments"}, session),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -57,7 +57,6 @@ export default async function ImagesPage({
           <CardTitle className="px-6 py-2 text-xl  font-bold">Bilgi Formu</CardTitle>
           <CardContent className="">
             <FileUpload
-              backendUrl={process.env.BASE_URL || ""}
               propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603"
               ruleset={fileTypeGroupTestResponse.data as unknown as Ruleset}
             />

@@ -41,15 +41,7 @@ const formSchema = z.object({
   maskInvestorProfile: z.boolean().optional(),
 });
 
-export default function NewBusinessAccount({
-  backendUrl,
-  propertyId,
-  ruleset,
-}: {
-  backendUrl: string;
-  propertyId: string;
-  ruleset: Ruleset;
-}) {
+export default function NewBusinessAccount({propertyId, ruleset}: {propertyId: string; ruleset: Ruleset}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -248,7 +240,7 @@ export default function NewBusinessAccount({
                   )}
                 />
               </div>
-              <FileUpload backendUrl={backendUrl} propertyId={propertyId} ruleset={ruleset} />
+              <FileUpload propertyId={propertyId} ruleset={ruleset} />
             </CardContent>
             <CardFooter>
               <Button className="w-full text-sm sm:text-base" disabled={isSubmitting || !isFormValid} type="submit">
