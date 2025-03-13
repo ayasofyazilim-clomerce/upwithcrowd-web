@@ -15,6 +15,7 @@ import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-trans
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {formatCurrency} from "@repo/ui/utils";
+import {useSession} from "@repo/utils/auth";
 import {Crown} from "lucide-react";
 import {useParams} from "next/navigation";
 import React, {useCallback, useState} from "react";
@@ -22,6 +23,7 @@ import {useMember} from "@/app/providers/member";
 import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
+import AuthCard from "./_components/auth-card";
 import DocumentsCard from "./_components/documents-card";
 import {InvestorsDialog} from "./_components/investors-card";
 import ProjectActions from "./_components/project-actions";
@@ -52,6 +54,8 @@ export default function ProjectDetails({
     }
   };
   const [isLoading, setIsLoading] = useState(false);
+
+  const {session} = useSession();
 
   const handleDonation = async (amount: number) => {
     try {
@@ -178,83 +182,105 @@ export default function ProjectDetails({
               <FundingTable data={data} />
             </>
           )}
-          <div className="mt-6">
-            {data.privilege ? (
-              <div className="mb-8">
-                <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
-                <p>{data.privilege}</p>
-              </div>
-            ) : null}
-          </div>
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold md:text-2xl">Proje Ekibi</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {groupedMembers().map((member) => (
-                  <div className="flex items-center space-x-4" key={member.mail}>
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <p className="font-medium">
-                        {member.name} {member.surname}
-                      </p>
-                      <p className="text-muted-foreground text-sm">{member.mail}</p>
-                      <div className="flex flex-col gap-2 text-sm">
-                        {member.roles.map((role) => (
-                          <span className="text-primary" key={role.customRoleName}>
-                            {formatRoleName(role.customRoleName)}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+
+          {session?.user?.access_token ? (
+            <>
+              <div className="mt-6">
+                {data.privilege ? (
+                  <div className="mb-8">
+                    <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
+                    <p>{data.privilege}</p>
                   </div>
-                ))}
+                ) : null}
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Add new Investors Card */}
-          {!isEditable && Boolean(investorResponse.items) && (
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {investorResponse.items?.slice(0, 3).map((payment) => (
-                    <div className="flex items-center space-x-4" key={payment.id}>
-                      <div className="relative">
-                        {payment.memberQualidied ? (
-                          <div className="absolute -right-1 -top-1 z-10">
-                            <Crown className="h-4 w-4 text-yellow-500" />
-                          </div>
-                        ) : null}
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold md:text-2xl">Proje Ekibi</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {groupedMembers().map((member) => (
+                      <div className="flex items-center space-x-4" key={member.mail}>
                         <Avatar className="h-10 w-10">
-                          <AvatarFallback>{getInitialsFromMaskedName(payment.name ?? "")}</AvatarFallback>
+                          <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
                         </Avatar>
+                        <div className="flex-1">
+                          <p className="font-medium">
+                            {member.name} {member.surname}
+                          </p>
+                          <p className="text-muted-foreground text-sm">{member.mail}</p>
+                          <div className="flex flex-col gap-2 text-sm">
+                            {member.roles.map((role) => (
+                              <span className="text-primary" key={role.customRoleName}>
+                                {formatRoleName(role.customRoleName)}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-medium">{payment.name}</p>
-                        <p className="text-muted-foreground text-sm">{formatCurrency(payment.amount)}</p>
-                      </div>
-                    </div>
-                  ))}
-
-                  {(investorResponse.totalCount || 0) > 3 && (
-                    <InvestorsDialog
-                      investorResponse={investorResponse}
-                      previewInvestors={previewInvestors}
-                      totalCount={investorResponse.totalCount || 0}
-                    />
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          ) : (
+            <AuthCard description="Proje ekibini görmek için giriş yapın veya üye olun" title="Proje Ekibi" />
           )}
-          <DocumentsCard fileResponse={fileResponse} />
+
+          {/* Conditionally render investors card or auth card */}
+          {!isEditable && (
+            <>
+              {investorResponse.items && investorResponse.items.length > 0 ? (
+                <Card className="mt-6">
+                  <CardHeader>
+                    <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {investorResponse.items.slice(0, 3).map((payment) => (
+                        <div className="flex items-center space-x-4" key={payment.id}>
+                          <div className="relative">
+                            {payment.memberQualidied ? (
+                              <div className="absolute -right-1 -top-1 z-10">
+                                <Crown className="h-4 w-4 text-yellow-500" />
+                              </div>
+                            ) : null}
+                            <Avatar className="h-10 w-10">
+                              <AvatarFallback>{getInitialsFromMaskedName(payment.name ?? "")}</AvatarFallback>
+                            </Avatar>
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium">{payment.name}</p>
+                            <p className="text-muted-foreground text-sm">{formatCurrency(payment.amount)}</p>
+                          </div>
+                        </div>
+                      ))}
+
+                      {(investorResponse.totalCount || 0) > 3 && (
+                        <InvestorsDialog
+                          investorResponse={investorResponse}
+                          previewInvestors={previewInvestors}
+                          totalCount={investorResponse.totalCount || 0}
+                        />
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <AuthCard
+                  description="Yatırımcı bilgilerini görmek için giriş yapın veya üye olun"
+                  title="Yatırımcılar"
+                />
+              )}
+            </>
+          )}
+
+          {/* Conditionally render DocumentsCard or AuthCard based on authentication status */}
+          {session?.user?.access_token ? (
+            <DocumentsCard fileResponse={fileResponse} />
+          ) : (
+            <AuthCard description="Proje belgelerini görmek için giriş yapın veya üye olun" title="Belgeler" />
+          )}
         </div>
       </div>
     </main>

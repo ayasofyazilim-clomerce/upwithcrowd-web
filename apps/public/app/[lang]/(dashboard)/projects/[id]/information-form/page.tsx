@@ -54,17 +54,7 @@ export default async function ImagesPage({
           title="Proje Dökümanları"
         />
         <Card className="mb-4 w-full border-none shadow-none">
-          <CardTitle className="px-6 py-2 text-xl  font-bold">Patent, Marka ve Tescil Bilgileri</CardTitle>
-          <CardContent className="">
-            <FileUpload
-              backendUrl={process.env.BASE_URL || ""}
-              propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603"
-              ruleset={fileTypeGroupTestResponse.data as unknown as Ruleset}
-            />
-          </CardContent>
-        </Card>
-        <Card className="w-full border-none shadow-none">
-          <CardTitle className="px-6 py-2 text-xl  font-bold">Hukuki Durum</CardTitle>
+          <CardTitle className="px-6 py-2 text-xl  font-bold">Bilgi Formu</CardTitle>
           <CardContent className="">
             <FileUpload
               backendUrl={process.env.BASE_URL || ""}

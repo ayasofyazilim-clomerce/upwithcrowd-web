@@ -36,7 +36,12 @@ export default function Layout({children, params}: {children: React.ReactNode; p
           },
           {
             href: `${baseLink}${id}/documents`,
-            label: "Dökümanlar",
+            label: "Belge, Ödül, Hukuki Durum",
+            disabled: false,
+          },
+          {
+            href: `${baseLink}${id}/information-form`,
+            label: "Bilgi Formu",
             disabled: false,
           },
           {
