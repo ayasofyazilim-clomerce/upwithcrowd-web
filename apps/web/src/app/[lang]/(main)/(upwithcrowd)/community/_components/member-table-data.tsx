@@ -3,6 +3,9 @@ import {$UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithc
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
 import {CheckCircle, XCircle} from "lucide-react";
+import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
+import {handlePutResponse} from "@repo/utils/api";
+import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Members_ListMemberResponseDto>;
 
@@ -34,42 +37,7 @@ const projectsColumns = (locale: string) => {
     languageData: {
       title: "Tam Adı",
       isValidated: "Onay Durumu",
-      projectStartDate: "Başlangıç Tarihi",
-      projectEndDate: "Bitiş Tarihi",
-      overFunding: "Ek Fonlama",
     },
-    // links: {
-    //   projectName: {
-    //     prefix: getBaseLink("projects", locale),
-    //     targetAccessorKey: "id",
-    //   },
-    // },
-    // faceted: {
-    //   overFunding: {
-    //     options: [
-    //       {
-    //         label: "Yes",
-    //         when: (value) => {
-    //           return Boolean(value);
-    //         },
-    //         value: "true",
-    //         icon: CheckCircle,
-    //         iconClassName: "text-green-700",
-    //         hideColumnValue: true,
-    //       },
-    //       {
-    //         label: "No",
-    //         when: (value) => {
-    //           return !value;
-    //         },
-    //         value: "false",
-    //         icon: XCircle,
-    //         iconClassName: "text-red-700",
-    //         hideColumnValue: true,
-    //       },
-    //     ],
-    //   },
-    // },
     custom: {
       title: {
         showHeader: true,
@@ -95,7 +63,7 @@ const projectsColumns = (locale: string) => {
   });
 };
 
-function projectsTable() {
+function projectsTable(router: AppRouterInstance) {
   const table: ProjectsTable = {
     fillerColumn: "title",
     columnVisibility: {
@@ -106,8 +74,16 @@ function projectsTable() {
       {
         actionLocation: "row",
         cta: "Kimliği Onayla",
-        onClick() {
-          //
+        onClick(row) {
+          void putMemberApiById({
+            id: row.id,
+            requestBody: {
+              ...row,
+              isValidated: true,
+            },
+          }).then((response) => {
+            handlePutResponse(response, router);
+          });
         },
         type: "simple",
         icon: CheckCircle,
@@ -117,8 +93,16 @@ function projectsTable() {
         actionLocation: "row",
         cta: "Kimliği Reddet",
 
-        onClick() {
-          //
+        onClick(row) {
+          void putMemberApiById({
+            id: row.id,
+            requestBody: {
+              ...row,
+              isValidated: false,
+            },
+          }).then((response) => {
+            handlePutResponse(response);
+          });
         },
         type: "simple",
         icon: XCircle,

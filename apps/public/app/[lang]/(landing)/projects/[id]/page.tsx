@@ -1,16 +1,16 @@
 "use server";
 
+import {getFileApi} from "@repo/actions/upwithcrowd/images/action";
+import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
+import {
+  getProjectByIdUpdatePermissionApi,
+  getPublicProjectByIdMembersApi,
+  getPublicProjectDetailByIdApi,
+} from "@repo/actions/upwithcrowd/public-project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {permanentRedirect} from "next/navigation";
-import {getFileApi} from "@repo/actions/upwithcrowd/images/action";
-import {
-  getPublicProjectByIdMembersApi,
-  getPublicProjectDetailByIdApi,
-  getProjectByIdUpdatePermissionApi,
-} from "@repo/actions/upwithcrowd/public-project/action";
-import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
 import {getResourceData} from "@/language/core/Default";
 import ProjectDetails from "./client";
 
@@ -20,8 +20,7 @@ async function getApiRequests(id: string) {
       getPublicProjectDetailByIdApi(id),
       getPublicProjectByIdMembersApi(id),
       getFileApi({
-        fileType: "ProjectImages",
-        fileTypeGroup: "Project",
+        fileTypeGroup: "ProjectMaterials",
         relatedEntity: "Project",
         relatedId: id,
       }),

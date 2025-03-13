@@ -1,7 +1,5 @@
 "use client";
 
-import {postTaskCommentApi} from "@repo/actions/upwithcrowd/task-comment/post-action";
-import {putTaskByIdApi} from "@repo/actions/upwithcrowd/tasks/put-action";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
@@ -24,6 +22,8 @@ import type {
   UpwithCrowd_Tasks_ListTasksDto,
   UpwithCrowd_Tasks_TasksStatus,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {postTaskCommentApi} from "@repo/actions/upwithcrowd/task-comment/post-action";
+import {putTaskByIdApi} from "@repo/actions/upwithcrowd/tasks/put-action";
 import {handlePostResponse, handlePutResponse} from "@repo/utils/api";
 import {Calendar, CheckCircle, Clock, MessageCircle, RefreshCw} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
@@ -126,13 +126,18 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
   };
 
   const handleSubmitComment = () => {
-    void postTaskCommentApi({
-      requestBody: {
-        taskId, // Use the taskId extracted from params
-        comment: newComment || "",
-      },
-    }).then((res) => {
-      handlePostResponse(res);
+    startTransition(() => {
+      void postTaskCommentApi({
+        // Added 'void' operator to explicitly mark as ignored
+        requestBody: {
+          taskId, // Use the taskId extracted from params
+          comment: newComment || "",
+        },
+      }).then((res) => {
+        handlePostResponse(res);
+        setIsCommentDialogOpen(false);
+        router.refresh();
+      });
     });
   };
 
@@ -300,7 +305,7 @@ export function TaskCommentClient({response, responseComment}: TaskCommentClient
                 <DialogTrigger asChild>
                   <Button
                     className="text-primary border-primary hover:text-primary gap-2 border bg-white py-6 shadow-md transition-all hover:bg-white hover:shadow-lg"
-                    disabled={isCommentingDisabled}>
+                    disabled={isPending || isCommentingDisabled}>
                     <MessageCircle className="h-5 w-5" />
                     <span>Yanıt Yaz</span>
                   </Button>

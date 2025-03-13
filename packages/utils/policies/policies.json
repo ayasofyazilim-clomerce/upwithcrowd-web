@@ -171,6 +171,7 @@
   "UpwithCrowd.File.Save": false,
   "UpwithCrowd.File.Update": false,
   "UpwithCrowd.File.Delete": false,
+  "UpwithCrowd.File.Validated": false,
   "UpwithCrowd.File.List": false,
   "UpwithCrowd.Category": false,
   "UpwithCrowd.Category.Save": false,
