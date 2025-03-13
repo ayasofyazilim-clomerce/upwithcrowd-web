@@ -1,16 +1,16 @@
 "use server";
 
-import type {GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {GetApiFileData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
-import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
-import {isRedirectError, permanentRedirect} from "next/dist/client/components/redirect";
+import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import FileTable from "../_components/table";
 
-async function getApiRequests(searchParams: GetApiProjectData) {
+async function getApiRequests(searchParams: GetApiFileData) {
   try {
-    const requiredRequests = await Promise.all([getProjectApi(searchParams)]);
+    const requiredRequests = await Promise.all([getPublicFileApi(searchParams)]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -29,26 +29,25 @@ export default async function Page({
     lang: string;
     projectId: string;
   };
-  searchParams?: GetApiProjectData;
+  searchParams?: GetApiFileData;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
 
   const apiRequests = await getApiRequests({
     ...searchParams,
-    id: params.projectId,
+    relatedEntity: "Project",
+    relatedId: params.projectId,
   });
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
-  const [projectResponse] = apiRequests.requiredRequests;
-  if (!projectResponse.data.items?.[0]) {
-    return permanentRedirect(`/${lang}/home`);
-  }
+  const [fileResponse] = apiRequests.requiredRequests;
+
   return (
     <>
-      <div className="text-lg font-semibold">{projectResponse.data.items[0].projectName}</div>
-      <FileTable />
+      {/* <div className="text-lg font-semibold">{projectResponse.data.items[0].projectName}</div> */}
+      <FileTable fileResponse={fileResponse.data} />
     </>
   );
 }
