@@ -2,14 +2,17 @@ import {
   $UpwithCrowd_Files_FileResponseListDto,
   type UpwithCrowd_Files_FileResponseListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {putFileValidationByIdApi} from "@repo/actions/upwithcrowd/file/put-actions";
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
-import {Download, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
+import {handlePutResponse} from "@repo/utils/api";
+import {CircleCheck, Download, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
+import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 
 type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Files_FileResponseListDto>;
 
-const projectsColumns = (locale: string) => {
+const fileColumns = (locale: string) => {
   return tanstackTableCreateColumnsByRowData<UpwithCrowd_Files_FileResponseListDto>({
     rows: $UpwithCrowd_Files_FileResponseListDto.properties,
     languageData: {
@@ -76,7 +79,7 @@ const projectsColumns = (locale: string) => {
   });
 };
 
-function projectsTable() {
+function fileTable(router: AppRouterInstance) {
   const table: ProjectsTable = {
     columnVisibility: {
       type: "hide",
@@ -92,16 +95,23 @@ function projectsTable() {
       "documentOriginator",
       "fullPath",
     ],
-    selectedRowAction: {
-      cta: "Download",
-      icon: Download,
-      onClick() {
-        // eslint-disable-next-line no-alert -- it's an example
-        alert("Download");
-      },
-      actionLocation: "table",
-    },
+
     rowActions: [
+      {
+        cta: "Onayla",
+        onClick(row) {
+          void putFileValidationByIdApi({
+            id: row.fileId || "",
+            isValidated: true,
+          }).then((response) => {
+            handlePutResponse(response, router);
+          });
+        },
+        type: "simple",
+        icon: CircleCheck,
+        actionLocation: "row",
+        condition: (row) => !row.isValidated,
+      },
       {
         cta: "Download",
         onClick() {
@@ -129,7 +139,7 @@ function projectsTable() {
 
 export const tableData = {
   projects: {
-    columns: projectsColumns,
-    table: projectsTable,
+    columns: fileColumns,
+    table: fileTable,
   },
 };
