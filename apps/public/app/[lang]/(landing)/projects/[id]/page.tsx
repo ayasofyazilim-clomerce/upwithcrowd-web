@@ -1,7 +1,7 @@
 "use server";
 
-import {getFileApi} from "@repo/actions/upwithcrowd/images/action";
 import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
+import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {
   getProjectByIdUpdatePermissionApi,
   getPublicProjectByIdMembersApi,
@@ -19,14 +19,16 @@ async function getApiRequests(id: string) {
     const requiredRequests = await Promise.all([
       getPublicProjectDetailByIdApi(id),
       getPublicProjectByIdMembersApi(id),
-      getFileApi({
+      getPublicFileApi({
         fileTypeGroup: "ProjectMaterials",
         relatedEntity: "Project",
         relatedId: id,
       }),
+    ]);
+    const optionalRequests = await Promise.allSettled([
+      getProjectByIdUpdatePermissionApi({id}),
       getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
     ]);
-    const optionalRequests = await Promise.allSettled([getProjectByIdUpdatePermissionApi({id})]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -45,11 +47,16 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, investorResponse] =
-    apiRequests.requiredRequests;
-  const [isEditableResponse] = apiRequests.optionalRequests;
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
+  const [isEditableResponse, investorResponse] = apiRequests.optionalRequests;
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
-
+  const investorResponseData =
+    investorResponse.status === "fulfilled"
+      ? investorResponse.value.data
+      : {
+          items: [],
+          totalCount: 0,
+        };
   if (projectDetailsResponseBasics.data.status !== "Approved" && !isEditable) {
     return permanentRedirect(`/${lang}/projects`);
   }
@@ -58,7 +65,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
       <ProjectDetails
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
-        investorResponse={investorResponse.data}
+        investorResponse={investorResponseData}
         isEditable={isEditable}
         projectsMember={projectsMemberResponse.data}
       />
