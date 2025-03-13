@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@ayasofyazilim/core-saas": "latest",
-    "@ayasofyazilim/upwithcrowd-saas": "^0.0.46",
+    "@ayasofyazilim/upwithcrowd-saas": "^0.0.47",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@hookform/resolvers": "4.1.2",
     "@repo/actions": "workspace:*",
