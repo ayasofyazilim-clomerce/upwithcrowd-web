@@ -1,4 +1,8 @@
 "use server";
+import {myProfileApi} from "@repo/actions/core/AccountService/actions";
+import {getMemberApi} from "@repo/actions/upwithcrowd/member/actions";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
+import ErrorComponent from "@repo/ui/components/error-component";
 import AlternativeAdminLayout from "@repo/ui/theme/alternative-admin-layout";
 import {getGrantedPoliciesApi, structuredError} from "@repo/utils/api";
 import {signOutServer} from "@repo/utils/auth";
@@ -6,9 +10,6 @@ import {auth} from "@repo/utils/auth/next-auth";
 import type {Policy} from "@repo/utils/policies";
 import {LogOut} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import ErrorComponent from "@repo/ui/components/error-component";
-import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
-import {myProfileApi} from "@repo/actions/core/AccountService/actions";
 import unirefund from "public/unirefund.png";
 import image from "public/upwc.png";
 import {getResourceData} from "src/language-data/core/AbpUiNavigation";
@@ -27,7 +28,11 @@ async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([getGrantedPoliciesApi(), myProfileApi()]);
 
-    const optionalRequests = await Promise.allSettled([getProjectApi({status: "Pending"})]);
+    const optionalRequests = await Promise.allSettled([
+      getProjectApi({status: "Pending"}),
+      getMemberApi({isValidated: false, type: "Organization"}),
+      getMemberApi({isValidated: false, type: "Individual"}),
+    ]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -56,10 +61,15 @@ export default async function Layout({children, params}: LayoutProps) {
 
   const baseURL = getBaseLink("", lang);
   const [grantedPolicies] = apiRequests.requiredRequests;
-  const [pendingProjectsResponse] = apiRequests.optionalRequests;
+  const [pendingProjectsResponse, pendingOrganizationsResponse, pendingIndividualsResponse] =
+    apiRequests.optionalRequests;
 
   const navbarBadges = {
     pendingProjects: pendingProjectsResponse.status === "fulfilled" ? pendingProjectsResponse.value.data.totalCount : 0,
+    pendingOrganizations:
+      pendingOrganizationsResponse.status === "fulfilled" ? pendingOrganizationsResponse.value.data.totalCount : 0,
+    pendingIndividuals:
+      pendingIndividualsResponse.status === "fulfilled" ? pendingIndividualsResponse.value.data.totalCount : 0,
   };
 
   const navbarFromDB = await getNavbarFromDB(lang, languageData, grantedPolicies as Record<Policy, boolean>);

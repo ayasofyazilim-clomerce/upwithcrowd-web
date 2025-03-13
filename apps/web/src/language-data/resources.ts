@@ -1090,6 +1090,7 @@ export type UpwithCrowdResources = {
   "Permission:File.Delete": "Delete the File";
   "Permission:File.Update": "Update the File";
   "Permission:File.List": "List the File";
+  "Permission:File.Validated": "Validated the File";
   "Permission:FileType": "FileType";
   "Permission:FileType.Save": "Saving the FileType";
   "Permission:FileType.Delete": "Delete the FileType";
