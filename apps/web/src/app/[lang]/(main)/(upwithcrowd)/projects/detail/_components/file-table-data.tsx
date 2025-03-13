@@ -6,7 +6,7 @@ import {putFileValidationByIdApi} from "@repo/actions/upwithcrowd/file/put-actio
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
 import {handlePutResponse} from "@repo/utils/api";
-import {CircleCheck, Download, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
+import {CircleCheck, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 
@@ -111,16 +111,6 @@ function fileTable(router: AppRouterInstance) {
         icon: CircleCheck,
         actionLocation: "row",
         condition: (row) => !row.isValidated,
-      },
-      {
-        cta: "Download",
-        onClick() {
-          // eslint-disable-next-line no-alert -- it's an example
-          alert("Download");
-        },
-        type: "simple",
-        icon: Download,
-        actionLocation: "row",
       },
       {
         cta: "Delete",

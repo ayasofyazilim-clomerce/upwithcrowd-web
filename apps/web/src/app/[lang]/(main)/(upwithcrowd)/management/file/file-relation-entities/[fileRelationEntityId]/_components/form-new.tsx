@@ -42,7 +42,7 @@ export default function Form({
         File: CustomComboboxWidget<UpwithCrowd_FileTypes_ListFileTypeDto>({
           languageData,
           list: fileTypeData,
-          selectIdentifier: "namespace",
+          selectIdentifier: "id",
           selectLabel: "name",
         }),
       }}
