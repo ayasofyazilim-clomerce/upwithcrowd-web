@@ -44,10 +44,5 @@ export default async function Page({
   }
   const [fileResponse] = apiRequests.requiredRequests;
 
-  return (
-    <>
-      {/* <div className="text-lg font-semibold">{projectResponse.data.items[0].projectName}</div> */}
-      <FileTable fileResponse={fileResponse.data} />
-    </>
-  );
+  return <FileTable fileResponse={fileResponse.data} />;
 }
