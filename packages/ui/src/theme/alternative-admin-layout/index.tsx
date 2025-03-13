@@ -85,30 +85,26 @@ const newNavbarItems: NavItems[] = [
     title: "Topluluk",
     icon: Users,
     items: [
-      // {title: "Onay Bekleyenler", icon: Megaphone, url: "/community/organizations", id: "pendingOrganizations"},
+      {title: "Tüm Üyeler", icon: GalleryVerticalEnd, url: "/community"},
       {
-        title: "Yatırımcı",
-        icon: Landmark,
+        title: "Bireysel Üyeler",
+        icon: User,
         items: [
-          {title: "Bireysel", icon: User, url: "/community/investor/individual"},
-          {title: "Organizasyon", icon: Building2, url: "/community/investor/organization"},
+          {title: "Tümü", icon: GalleryVerticalEnd, url: "/community/individual"},
+          {title: "Onay Bekleyenler", icon: Megaphone, url: "/community/individual/pending", id: "pendingIndividuals"},
         ],
       },
       {
-        title: "Girişimci",
-        icon: Rabbit,
+        title: "Organizasyon",
+        icon: Building2,
         items: [
-          {title: "Bireysel", icon: User, url: "/community/entrepreuner/individual"},
-          {title: "Organizasyon", icon: Building2, url: "/community/entrepreuner/organization"},
-        ],
-      },
-      {
-        title: "Tümü",
-        icon: GalleryVerticalEnd,
-        items: [
-          {title: "Bireysel", icon: User, url: "/community/all/individual"},
-          {title: "Organizasyon", icon: Building2, url: "/community/all/organization"},
-          {title: "Tümü", icon: Users, url: "/community/all/all"},
+          {title: "Tümü", icon: GalleryVerticalEnd, url: "/community/organization"},
+          {
+            title: "Onay Bekleyenler",
+            icon: Megaphone,
+            url: "/community/organization/pending",
+            id: "pendingOrganizations",
+          },
         ],
       },
     ],
@@ -121,21 +117,11 @@ const newNavbarItems: NavItems[] = [
         title: "Destek Talepleri",
         icon: Landmark,
         url: "/support-center/support/all",
-        // items: [
-        //   // {title: "Girişimci", icon: Rabbit, url: "/support-center/support/investor"},
-        //   // {title: "Yatırımcı", icon: Landmark, url: "/support-center/support/entrepreuner"},
-        //   {title: "Tümü", icon: Users, url: "/support-center/support/all"},
-        // ],
       },
       {
         title: "Sorular",
         icon: Rabbit,
         url: "/support-center/issue/all",
-        // items: [
-        //   // {title: "Girişimci", icon: Rabbit, url: "/support-center/issue/investor"},
-        //   // {title: "Yatırımcı", icon: Landmark, url: "/support-center/issue/entrepreuner"},
-        //   {title: "Tümü", icon: Users, url: "/support-center/issue/all"},
-        // ],
       },
     ],
   },

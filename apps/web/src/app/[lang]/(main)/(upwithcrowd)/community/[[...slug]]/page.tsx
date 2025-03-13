@@ -1,12 +1,12 @@
 "use server";
 
-import type {GetApiMemberData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {GetApiMemberData, GetApiProjectData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getMemberApi} from "@repo/actions/upwithcrowd/member/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
-import {getMemberApi} from "@repo/actions/upwithcrowd/member/actions";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
-import ProjectTable from "../../_components/table";
+import ProjectTable from "../_components/table";
 
 async function getApiRequests(searchParams: GetApiMemberData) {
   try {
@@ -21,44 +21,41 @@ async function getApiRequests(searchParams: GetApiMemberData) {
   }
 }
 
+function validateMemberType(memberType?: string) {
+  switch (memberType?.toLowerCase()) {
+    case "individual":
+      return "Individual";
+    case "organization":
+      return "Organization";
+    default:
+      return undefined;
+  }
+}
+
+//community
+//community/organization
+//community/organization/pending
+//community/individual
+//community/individual/pending
 export default async function Page({
   params,
   searchParams,
 }: {
-  params: {lang: string; memberType: "investor" | "entrepreneur" | "all"; type: "individual" | "organization" | "all"};
-  searchParams?: GetApiMemberData;
+  params: {
+    lang: string;
+    slug?: string[];
+  };
+  searchParams?: GetApiProjectData;
 }) {
-  const {lang} = params;
+  const {lang, slug} = params;
   const {languageData} = await getResourceData(lang);
 
-  let isEntrepreneur: boolean | undefined;
-  if (params.memberType === "entrepreneur") {
-    isEntrepreneur = true;
-  } else if (params.memberType === "investor") {
-    isEntrepreneur = false;
-  }
-
-  let isInvestor: boolean | undefined;
-  if (params.memberType === "investor") {
-    isInvestor = true;
-  } else if (params.memberType === "all") {
-    isInvestor = undefined;
-  } else {
-    isInvestor = false;
-  }
-
-  let type: "Individual" | "Organization" | undefined;
-  if (params.type === "individual") {
-    type = "Individual";
-  } else if (params.type === "organization") {
-    type = "Organization";
-  }
+  const [memberType, isPending] = slug || [];
 
   const apiRequests = await getApiRequests({
     ...searchParams,
-    isEntrepreneur,
-    isInvestor,
-    type,
+    type: validateMemberType(memberType),
+    isValidated: isPending ? false : undefined,
   });
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
