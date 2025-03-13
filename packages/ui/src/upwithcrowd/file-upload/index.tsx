@@ -1,144 +1,31 @@
 "use client";
-import {toast} from "@repo/ayasofyazilim-ui/atoms/sonner";
-import {FileCard} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
-import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {FileFormData, FileUploadBase, ValidationErrors} from "./file-upload-base";
-import {cn} from "../../utils";
 
-export function FileUpload({
-  ruleset = dummyData,
-  propertyId,
-  backendUrl,
-}: {
+import {cn} from "../../utils";
+import {FileUploadContainer, FileUploadContainerProps} from "./_components/container";
+
+export type Ruleset = typeof dummyData;
+export type FileUploadProps = {
   ruleset: Ruleset;
   propertyId: string;
-  backendUrl: string;
-}) {
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(null);
-  const [formData, setFormData] = useState<FileFormData | null>(null);
+  classNames?: {
+    container?: string;
+  } & FileUploadContainerProps["classNames"];
+};
+export function FileUpload({ruleset = dummyData, propertyId, classNames}: FileUploadProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className={cn("flex flex-col gap-4", classNames?.container)}>
       {ruleset.map((rule) => {
         if (!rule || !rule.fileRelationsEntity.length) return null;
-        const config = {
-          accept: rule.mimeTypes.reduce(
-            (acc, cur) => {
-              const key = cur.mimeTypeCode.split("/")[0] + "/*";
-              if (!acc[key]) {
-                acc[key] = [];
-              }
-              acc[key].push(cur.mimeTypeExtension);
-              return acc;
-            },
-            {} as Record<string, string[]>,
-          ),
-          maxFileCount: rule.isMulti ? 3 : 1,
-        };
-
-        return (
-          <FileUploadBase
-            backendUrl={backendUrl}
-            key={rule.id}
-            maxFileCount={config.maxFileCount}
-            accept={config.accept}
-            formData={{
-              ...formData,
-              relatedEntity: rule.fileRelationsEntity[0].relatedEntityName,
-              fileType: rule.namespace,
-              property: propertyId,
-            }}
-            onSuccess={() => {
-              toast.success("File uploaded successfully");
-            }}
-            onError={({validationErrors, message}) => {
-              setValidationErrors(validationErrors);
-              toast.error(message || "File upload failed");
-            }}
-            fileCardRenderer={({file, onRemove}) => {
-              return (
-                <div>
-                  <FileCard file={file} onRemove={onRemove} />
-                  <Form rule={rule} validationErrors={validationErrors} formData={formData} setFormData={setFormData} />
-                </div>
-              );
-            }}
-            label={rule.name}
-          />
-        );
+        return <FileUploadContainer rule={rule} key={rule.id} propertyId={propertyId} classNames={classNames} />;
       })}
     </div>
-  );
-}
-
-function Form({
-  rule,
-  validationErrors,
-  formData,
-  setFormData,
-}: {
-  rule: Ruleset[0];
-  validationErrors: ValidationErrors;
-  formData: FileFormData | null;
-  setFormData: Dispatch<SetStateAction<FileFormData | null>>;
-}) {
-  const required = [
-    ...(rule.numberRequired ? ["documentNumber"] : []),
-    ...(rule.originatorRequired ? ["documentOriginator"] : []),
-    ...(rule.dateRequired ? ["documentDate"] : []),
-    // ...(rule.descriptionRequired ? ["fileDescription"] : []),
-  ];
-  const fields: Record<string, {type: string; format?: string}> = {};
-  if (rule.dateRequired) fields.documentDate = {type: "string", format: "date-time"};
-  if (rule.numberRequired) fields.documentNumber = {type: "string"};
-  if (rule.originatorRequired) fields.documentOriginator = {type: "string"};
-  // if (rule.descriptionRequired) fields.fileDescription = {type: "string"};
-
-  const [extraErrors, setExtraErrors] = useState<Record<string, {__errors: string[]}> | undefined>(undefined);
-
-  useEffect(() => {
-    if (!validationErrors) return;
-    let x = validationErrors.reduce(
-      (acc, error) => {
-        acc[error.members[0]] = {__errors: [error.message]};
-        return acc;
-      },
-      {} as Record<string, {__errors: string[]}>,
-    );
-    if (x) setExtraErrors(x);
-  }, [validationErrors]);
-  return (
-    <SchemaForm<FileFormData>
-      withScrollArea={false}
-      className="p-px"
-      formData={formData || undefined}
-      useDefaultSubmit={false}
-      uiSchema={{
-        "ui:className": cn("grid", Object.keys(fields).length === 1 ? "grid-cols-1" : "sm:grid-cols-2 gap-4"),
-        isValidated: {
-          "ui:widget": "switch",
-          "ui:className": "border px-2 rounded-md flex h-9 [&>div]:h-max self-end items-center",
-        },
-      }}
-      schema={{
-        type: "object",
-        required: required,
-        properties: fields,
-      }}
-      extraErrors={extraErrors}
-      onChange={({formData}) => {
-        if (!formData) return;
-        setFormData(formData);
-        setExtraErrors(undefined);
-      }}
-    />
   );
 }
 
 export const dummyData = [
   {
     id: "541ec6d9-2ecc-3830-ab5d-3a185832af2e",
-    fileTypeGroupId: "235e05b3-90c4-8198-3568-3a18582f6d63",
+    fileTypeGroupId: "6a91ab68-9b24-4f99-a8f0-4fbd2cc040d6",
     provider: "3e21e192-3b2b-e131-90c4-3a1839a9f883",
     name: "Proje Görselleri",
     containerName: "upwithcrowd.blobcontainers.projectimages",
@@ -150,6 +37,7 @@ export const dummyData = [
     isTenant: true,
     originatorRequired: false,
     numberRequired: false,
+    isRequired: true,
     mimeTypes: [
       {
         id: "60c354fa-050c-2205-3533-3a184e891fe5",
@@ -182,25 +70,59 @@ export const dummyData = [
         relatedEntityProperty: "ProjectId",
         required: true,
       },
+      {
+        id: "48f876d4-ca9c-5607-1a0c-3a189695abac",
+        fileTypeId: "541ec6d9-2ecc-3830-ab5d-3a185832af2e",
+        relatedEntityName: "3",
+        relatedEntityProperty: "3",
+        required: true,
+      },
+      {
+        id: "26d0d3a0-6031-44f3-a45b-ba97c52f19b6",
+        fileTypeId: "541ec6d9-2ecc-3830-ab5d-3a185832af2e",
+        relatedEntityName: "Project_",
+        relatedEntityProperty: "ProjectId_",
+        required: true,
+      },
     ],
   },
   {
+    isRequired: false,
     id: "75e90d38-935b-14fb-b8aa-3a18584e97f4",
-    fileTypeGroupId: "235e05b3-90c4-8198-3568-3a18582f6d63",
+    fileTypeGroupId: "6a91ab68-9b24-4f99-a8f0-4fbd2cc040d6",
     provider: "3e21e192-3b2b-e131-90c4-3a1839a9f883",
     name: "Proje Videoları",
-    containerName: "project Videos",
-    filePath: "upwithcrowd.blobcontainers.filecontainer2/",
+    containerName: "upwithcrowd.blobcontainers.projectimages",
+    filePath: "{0}/Videos/",
     namespace: "projectVideos",
     isPublic: true,
-    dateRequired: false,
+    dateRequired: true,
     isMulti: true,
     isTenant: false,
-    originatorRequired: false,
-    numberRequired: false,
-    mimeTypes: [],
-    fileTypeMimeTypes: [],
-    fileRelationsEntity: [],
+    originatorRequired: true,
+    numberRequired: true,
+    mimeTypes: [
+      {
+        id: "c27cae50-0c3c-eedb-3696-3a189c23aa4b",
+        mimeTypeCode: "video/mp4",
+        mimeTypeExtension: ".mp4",
+      },
+    ],
+    fileTypeMimeTypes: [
+      {
+        id: "37b9d122-33a2-755d-65ca-3a189c252636",
+        fileTypeId: "75e90d38-935b-14fb-b8aa-3a18584e97f4",
+        mimeTypeId: "c27cae50-0c3c-eedb-3696-3a189c23aa4b",
+      },
+    ],
+    fileRelationsEntity: [
+      {
+        id: "2ae132f5-0dc5-8efc-8f4a-3a189c270c03",
+        fileTypeId: "75e90d38-935b-14fb-b8aa-3a18584e97f4",
+        relatedEntityName: "Project",
+        relatedEntityProperty: "projectId",
+        required: true,
+      },
+    ],
   },
 ];
-export type Ruleset = typeof dummyData;
