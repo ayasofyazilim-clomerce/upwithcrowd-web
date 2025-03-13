@@ -1022,6 +1022,7 @@ export type UpwithCrowdResources = {
   "Permission:Members.List": "List the Members";
   "Permission:Members.All": "All Members";
   "Permission:Members.Switch": "Switch the Members";
+  "Permission:Members.Validated": "Validated the Organization Members";
   "Permission:Projects": "Projects";
   "Permission:Projects.Save": "Saving the Projects";
   "Permission:Projects.Update": "Update the Projects";
