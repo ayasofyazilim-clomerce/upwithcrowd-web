@@ -2,7 +2,7 @@ import {FileWithPath} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
 import {SchemaForm} from "@repo/ayasofyazilim-ui/organisms/schema-form";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {cn} from "../../../utils";
-import {Ruleset} from "../../file-upload";
+import {Rule} from "../../file-upload";
 
 export type FileFormData = {
   file: FileWithPath;
@@ -28,7 +28,7 @@ export function Form({
   index,
   propertyId,
 }: {
-  rule: Ruleset[0];
+  rule: Rule;
   validationErrors: ValidationErrors;
   formData: FileFormData | null;
   index: number;
@@ -39,13 +39,13 @@ export function Form({
     ...(rule.numberRequired ? ["documentNumber"] : []),
     ...(rule.originatorRequired ? ["documentOriginator"] : []),
     ...(rule.dateRequired ? ["documentDate"] : []),
-    // ...(rule.descriptionRequired ? ["fileDescription"] : []),
+    ...(rule.descriptionRequired ? ["fileDescription"] : []),
   ];
   const fields: Record<string, {type: string; format?: string}> = {};
   if (rule.dateRequired) fields.DocumentDate = {type: "string", format: "date-time"};
   if (rule.numberRequired) fields.DocumentNumber = {type: "string"};
   if (rule.originatorRequired) fields.DocumentOriginator = {type: "string"};
-  // if (rule.descriptionRequired) fields.fileDescription = {type: "string"};
+  if (rule.descriptionRequired) fields.fileDescription = {type: "string"};
 
   const [extraErrors, setExtraErrors] = useState<Record<string, {__errors: string[]}> | undefined>(undefined);
 
@@ -86,7 +86,7 @@ export function Form({
             const newData = [...prev];
             newData[index] = {
               ...formData,
-              RelatedEntity: rule.fileRelationsEntity[0].relatedEntityName,
+              RelatedEntity: rule.fileRelationsEntity?.[0].relatedEntityName || "",
               FileType: rule.namespace,
               Property: propertyId,
             };

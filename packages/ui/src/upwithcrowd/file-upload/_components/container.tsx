@@ -1,13 +1,13 @@
 import {FileCard} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
 import {useState} from "react";
-import {Ruleset} from "../../file-upload";
+import {Rule} from "../../file-upload";
 import {FileUploaderProvider, useFileUploader} from "./file-provider";
 import {FileUploadBase, FileUploadBaseProps} from "./file-upload-base";
 import {FileFormData, Form} from "./form";
 import {SuccessedFileList} from "./success-list";
 
 export type FileUploadContainerProps = {
-  rule: Ruleset[0];
+  rule: Rule;
   propertyId: string;
   classNames?: {
     core?: FileUploadBaseProps["classNames"] | undefined;
@@ -17,15 +17,15 @@ export type FileUploadContainerProps = {
 
 export function FileUploadContainer({rule, propertyId, classNames}: FileUploadContainerProps) {
   const [formData, setFormData] = useState<Array<FileFormData> | null>(null);
-
+  if (!rule || !rule.mimeTypes) return null;
   const config = {
     accept: rule.mimeTypes.reduce(
       (acc, cur) => {
-        const key = cur.mimeTypeCode.split("/")[0] + "/*";
+        const key = cur.mimeTypeCode?.split("/")[0] + "/*";
         if (!acc[key]) {
           acc[key] = [];
         }
-        acc[key].push(cur.mimeTypeExtension);
+        acc[key].push(cur.mimeTypeExtension || "");
         return acc;
       },
       {} as Record<string, string[]>,

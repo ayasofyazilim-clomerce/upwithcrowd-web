@@ -17,7 +17,7 @@
     "prepare": "husky install",
     "precommit": "turbo precommit",
     "unused": "npx knip",
-    "saas": "pnpm i @ayasofyazilim/upwithcrowd-saas@latest --filter ./apps/*"
+    "saas": "pnpm i @ayasofyazilim/upwithcrowd-saas@latest --filter ./apps/* --filter ./packages/actions"
   },
   "devDependencies": {
     "@playwright/test": "^1.47.1",

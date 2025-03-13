@@ -1,7 +1,6 @@
 import {Card} from "@/components/ui/card";
-import {getFileTypeGroupTestApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
+import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
-import type {Ruleset} from "@repo/ui/upwithcrowd/file-upload";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
@@ -13,7 +12,7 @@ async function getApiRequests() {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getFileTypeGroupTestApi({namespace: "OrganizationOfficialDocuments"}, session),
+      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "OrganizationOfficialDocuments"}, session),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -54,11 +53,7 @@ export default async function ImagesPage({
           title="Proje Dökümanları"
         />
         <Card className="w-full border-none shadow-none">
-          <FileUpload
-            backendUrl={process.env.BASE_URL || ""}
-            propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603"
-            ruleset={fileTypeGroupTestResponse.data as unknown as Ruleset}
-          />
+          <FileUpload propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603" ruleset={fileTypeGroupTestResponse.data} />
         </Card>
       </section>
     </div>

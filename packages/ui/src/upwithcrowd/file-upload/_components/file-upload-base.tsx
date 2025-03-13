@@ -43,11 +43,7 @@ export function FileUploadBase({
       states.map(async ({data}) => {
         const _formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-          if (key === "file") {
-            _formData.append("files", value);
-          } else {
-            _formData.append(key, value);
-          }
+          _formData.append(key, value);
         });
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = function (event) {
