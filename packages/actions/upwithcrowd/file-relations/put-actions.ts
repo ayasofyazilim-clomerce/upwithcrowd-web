@@ -4,7 +4,7 @@ import type {PutApiFileRelationsByIdData} from "@ayasofyazilim/upwithcrowd-saas/
 import {structuredError, structuredResponse} from "@repo/utils/api";
 import {getUpwithcrowdClient} from "../lib";
 
-export async function putFileRelationEntityApi(data: PutApiFileRelationsByIdData) {
+export async function putFileRelationsApi(data: PutApiFileRelationsByIdData) {
   try {
     const client = await getUpwithcrowdClient();
     const dataResponse = await client.fileRelations.putApiFileRelationsById(data);

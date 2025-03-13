@@ -4,7 +4,7 @@ import type {PostApiFileRelationsData} from "@ayasofyazilim/upwithcrowd-saas/UPW
 import {structuredError, structuredResponse} from "@repo/utils/api";
 import {getUpwithcrowdClient} from "../lib";
 
-export async function postFileRelationEntityApi(data: PostApiFileRelationsData) {
+export async function postFileRelationsApi(data: PostApiFileRelationsData) {
   try {
     const client = await getUpwithcrowdClient();
     const dataResponse = await client.fileRelations.postApiFileRelations(data);
