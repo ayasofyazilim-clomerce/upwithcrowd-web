@@ -51,7 +51,7 @@ const fileColumns = (locale: string) => {
         values: [
           {
             label: "Onaylandı",
-            badgeClassName: "text-green-700 bg-green-100 border-green-500",
+            badgeClassName: "text-primary-foreground bg-primary border-transparent",
             conditions: [
               {
                 when: (value) => Boolean(value),
@@ -62,7 +62,7 @@ const fileColumns = (locale: string) => {
           {
             label: "Onaylanmadı",
 
-            badgeClassName: "text-red-700 bg-red-100 border-red-500",
+            badgeClassName: "text-destructive-foreground bg-destructive border-transparent",
             conditions: [
               {
                 when: (value) => !value,
