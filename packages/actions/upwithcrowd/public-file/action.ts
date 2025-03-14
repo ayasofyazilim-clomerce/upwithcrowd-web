@@ -6,7 +6,7 @@ import {getUpwithcrowdClient} from "../lib";
 export async function getPublicFileApi(data: GetApiFileData) {
   try {
     const client = await getUpwithcrowdClient();
-    const dataResponse = await client.publicFile.getApiFile(data);
+    const dataResponse = await client.publicFile.getApiPublicFile(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
     throw structuredError(error);

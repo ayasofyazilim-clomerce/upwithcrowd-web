@@ -336,7 +336,7 @@ export default function ClientAbout({
                             {member.status === "Approved" && (
                               <span className="rounded-full bg-green-100 px-2 py-1 text-sm">Approved</span>
                             )}
-                            {member.status === "DisApproved" && (
+                            {member.status === "Rejected" && (
                               <span className="rounded-full bg-red-100 px-2 py-1 text-sm">DisApproved</span>
                             )}
                           </div>
@@ -378,7 +378,7 @@ export default function ClientAbout({
                                   {member.status === "Approved" && (
                                     <span className="rounded-full bg-green-100 px-2 py-1">Approved</span>
                                   )}
-                                  {member.status === "DisApproved" && (
+                                  {member.status === "Rejected" && (
                                     <span className="rounded-full bg-red-100 px-2 py-1">DisApproved</span>
                                   )}
                                 </TableCell>

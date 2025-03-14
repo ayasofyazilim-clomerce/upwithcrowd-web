@@ -40,8 +40,8 @@ importers:
         specifier: latest
         version: 0.0.4(magicast@0.3.5)(openapi-types@12.1.3)
       '@ayasofyazilim/upwithcrowd-saas':
-        specifier: ^0.0.47
-        version: 0.0.47(magicast@0.3.5)(openapi-types@12.1.3)
+        specifier: ^0.0.48
+        version: 0.0.48(magicast@0.3.5)(openapi-types@12.1.3)
       '@formatjs/intl-localematcher':
         specifier: ^0.5.4
         version: 0.5.10
@@ -167,8 +167,8 @@ importers:
         specifier: latest
         version: 0.0.4(magicast@0.3.5)(openapi-types@12.1.3)
       '@ayasofyazilim/upwithcrowd-saas':
-        specifier: ^0.0.47
-        version: 0.0.47(magicast@0.3.5)(openapi-types@12.1.3)
+        specifier: ^0.0.48
+        version: 0.0.48(magicast@0.3.5)(openapi-types@12.1.3)
       '@novu/react':
         specifier: ^2.6.5
         version: 2.6.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -288,8 +288,8 @@ importers:
         specifier: latest
         version: 0.0.4(magicast@0.3.5)(openapi-types@12.1.3)
       '@ayasofyazilim/upwithcrowd-saas':
-        specifier: ^0.0.47
-        version: 0.0.47(magicast@0.3.5)(openapi-types@12.1.3)
+        specifier: ^0.0.48
+        version: 0.0.48(magicast@0.3.5)(openapi-types@12.1.3)
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -1058,8 +1058,8 @@ packages:
     resolution: {integrity: sha512-Iof0t+ZKdIEJS2ddm2HBqSMncalBNyKsYYlMq1tkH8vQHgtG7kZMPy2YTRHP6WlH/CKcHC3R5ulOf8xmC2H3UA==}
     hasBin: true
 
-  '@ayasofyazilim/upwithcrowd-saas@0.0.47':
-    resolution: {integrity: sha512-J6QAhhHXSZYpHsI9Z38an0PvQR6IujxBWFhUo0pE4xt6jIF/nc0ZRNCQf/T2lQJ+GXvjN+pK7FTWnOArxPTN/Q==}
+  '@ayasofyazilim/upwithcrowd-saas@0.0.48':
+    resolution: {integrity: sha512-PHz3K3VjiQl1BYi1BdZ0ZTAueYK45CpfS/YEOSKqDN4u0xyPmXL3v3bSgN4SyQkCYrE51PEmTuvK20uSQCPryg==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -10978,7 +10978,7 @@ snapshots:
       - magicast
       - openapi-types
 
-  '@ayasofyazilim/upwithcrowd-saas@0.0.47(magicast@0.3.5)(openapi-types@12.1.3)':
+  '@ayasofyazilim/upwithcrowd-saas@0.0.48(magicast@0.3.5)(openapi-types@12.1.3)':
     dependencies:
       '@ayasofyazilim/sdk_generator': 0.0.13(magicast@0.3.5)(openapi-types@12.1.3)
       commander: 13.1.0
@@ -17770,7 +17770,7 @@ snapshots:
       is-glob: 4.0.3
       stable-hash: 0.0.4
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
