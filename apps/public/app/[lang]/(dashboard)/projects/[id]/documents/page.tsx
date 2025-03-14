@@ -1,18 +1,22 @@
-import {Card} from "@/components/ui/card";
 import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
 import ErrorComponent from "@repo/ui/components/error-component";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language/core/AccountService";
-import TextWithTitle from "../../new/_components/text-with-title";
+import DocumentsClient from "./client";
 
-async function getApiRequests() {
+async function getApiRequests(id: string) {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "OrganizationOfficialDocuments"}, session),
+      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "ProjectRelatedFiles"}, session),
+      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "ProjectLegalSituation"}, session),
+      getFileApi({
+        relatedEntity: "Project",
+        relatedId: id,
+      }),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -29,33 +33,23 @@ export default async function ImagesPage({
 }: {
   params: {
     lang: string;
+    id: string;
   };
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
-  const apiRequests = await getApiRequests();
+  const apiRequests = await getApiRequests(params.id);
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [fileTypeGroupTestResponse] = apiRequests.requiredRequests;
-
+  const [projectRelatedFilesResponse, projectLegalSituationResponse, fileResponse] = apiRequests.requiredRequests;
   return (
-    <div className="bg-muted min-h-screen w-full">
-      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
-        <TextWithTitle
-          classNames={{
-            container: "mb-8",
-            title: "text-3xl font-bold",
-            text: "text-lg",
-          }}
-          text="Projenize ait dökümanları yükleyin."
-          title="Proje Dökümanları"
-        />
-        <Card className="w-full border-none shadow-none">
-          <FileUpload propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603" ruleset={fileTypeGroupTestResponse.data} />
-        </Card>
-      </section>
-    </div>
+    <DocumentsClient
+      fileResponse={fileResponse.data}
+      projectId={params.id}
+      projectLegalSituation={projectLegalSituationResponse.data}
+      projectRelatedFiles={projectRelatedFilesResponse.data}
+    />
   );
 }

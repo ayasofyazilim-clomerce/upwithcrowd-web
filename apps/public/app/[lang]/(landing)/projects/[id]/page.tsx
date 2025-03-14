@@ -1,5 +1,6 @@
 "use server";
 
+import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
 import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
 import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {
@@ -9,26 +10,28 @@ import {
 } from "@repo/actions/upwithcrowd/public-project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
+import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {permanentRedirect} from "next/navigation";
 import {getResourceData} from "@/language/core/Default";
 import ProjectDetails from "./client";
 
-async function getApiRequests(id: string) {
+async function getApiRequests(id: string, isAuth: boolean) {
   try {
-    const requiredRequests = await Promise.all([
-      getPublicProjectDetailByIdApi(id),
-      getPublicProjectByIdMembersApi(id),
-      getPublicFileApi({
-        fileTypeGroup: "ProjectMaterials",
-        relatedEntity: "Project",
-        relatedId: id,
-      }),
-    ]);
     const optionalRequests = await Promise.allSettled([
       getProjectByIdUpdatePermissionApi({id}),
       getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
     ]);
+    const params = {
+      relatedEntity: "Project",
+      relatedId: id,
+    };
+    const requiredRequests = await Promise.all([
+      getPublicProjectDetailByIdApi(id),
+      getPublicProjectByIdMembersApi(id),
+      !isAuth ? getPublicFileApi(params) : getFileApi(params),
+    ]);
+
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -42,7 +45,9 @@ export default async function Page({params}: {params: {id: string; lang: string}
   const {lang, id} = params;
   const {languageData} = await getResourceData(lang);
 
-  const apiRequests = await getApiRequests(id);
+  const session = await auth();
+  const isAuth = Boolean(session?.user?.access_token);
+  const apiRequests = await getApiRequests(id, isAuth);
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }

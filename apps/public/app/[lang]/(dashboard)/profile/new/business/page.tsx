@@ -1,8 +1,8 @@
+import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import {getResourceData} from "@/language/core/AccountService";
 import NewBusinessAccount from "./client";
 
@@ -33,6 +33,8 @@ export default async function NewBusinessAccountServer({
   const {languageData} = await getResourceData(lang);
   const apiRequests = await getApiRequests();
 
+  const session = await auth();
+
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
@@ -41,7 +43,12 @@ export default async function NewBusinessAccountServer({
 
   return (
     <div>
-      <NewBusinessAccount propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603" ruleset={fileTypeGroupTestResponse.data} />
+      <NewBusinessAccount
+        propertyId={
+          Array.isArray(session?.user?.member_id) ? session.user.member_id[0] : session?.user?.member_id || ""
+        }
+        ruleset={fileTypeGroupTestResponse.data}
+      />
     </div>
   );
 }
