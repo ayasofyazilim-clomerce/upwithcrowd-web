@@ -12,6 +12,7 @@ import type {
   UpwithCrowd_Projects_ProjectsDetailResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
+import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {formatCurrency} from "@repo/ui/utils";
@@ -24,7 +25,6 @@ import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
 import AuthCard from "./_components/auth-card";
-import DocumentsCard from "./_components/documents-card";
 import {InvestorsDialog} from "./_components/investors-card";
 import ProjectActions from "./_components/project-actions";
 
@@ -148,6 +148,48 @@ export default function ProjectDetails({
     amount: investor.amount || 0,
     memberQualidied: investor.memberQualidied || false,
   }));
+
+  // Prepare document tabs for the DocumentsCard component
+  // Filter files for Patent, Trademark, etc.
+  const getFileNameFromPath = (fullPath: string): string => {
+    const matches = /[^/]+$/.exec(fullPath);
+    return matches ? matches[0] : fullPath;
+  };
+
+  const getFileType = (fileName: string): string => {
+    const extension = fileName.split(".").pop()?.toLowerCase() || "";
+    if (extension === "pdf") return "pdf";
+    if (["jpg", "jpeg", "png", "gif"].includes(extension)) return "image";
+    return "doc";
+  };
+
+  const fileData = fileResponse.map((i) => {
+    const fileName = getFileNameFromPath(i.fullPath || "");
+    const fileType = getFileType(fileName);
+    return {...i, fileId: i.fileId || "", fileName, fileType};
+  });
+  const legalFiles = fileData.filter((file) => file.fileTypeNamespace === "ProjectLegalDocument");
+  const patentFiles = fileData.filter((file) =>
+    ["TrademarkRegistration", "ApplicationForaPatent", "Patent", "ISOCertificate", "Other"].includes(
+      file.fileTypeNamespace ?? "",
+    ),
+  );
+
+  // Create tab configuration
+  const documentTabs = [
+    {
+      value: "patent",
+      label: "Patent, Marka ve Tescil Bilgileri",
+      files: patentFiles,
+    },
+    {
+      value: "legal",
+      label: "Hukuki Durum",
+      files: legalFiles,
+    },
+  ];
+
+  // Create document tabs
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -277,7 +319,15 @@ export default function ProjectDetails({
 
           {/* Conditionally render DocumentsCard or AuthCard based on authentication status */}
           {session?.user?.access_token ? (
-            <DocumentsCard fileResponse={fileResponse} />
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold md:text-2xl">Dokümanlar</CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <DocumentCard activeDefaultTab="patent" documentTabs={documentTabs} />
+              </CardContent>
+            </Card>
           ) : (
             <AuthCard description="Proje belgelerini görmek için giriş yapın veya üye olun" title="Belgeler" />
           )}
