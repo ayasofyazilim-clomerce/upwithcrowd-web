@@ -1,7 +1,7 @@
 "use server";
 
 import type {GetApiFileData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
@@ -10,7 +10,7 @@ import FileTable from "../_components/table";
 
 async function getApiRequests(searchParams: GetApiFileData) {
   try {
-    const requiredRequests = await Promise.all([getPublicFileApi(searchParams)]);
+    const requiredRequests = await Promise.all([getFileApi(searchParams)]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
