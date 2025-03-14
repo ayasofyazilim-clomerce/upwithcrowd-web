@@ -13,7 +13,7 @@ async function getApiRequests() {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "OrganizationOfficialDocuments"}, session),
+      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "ProjectInformationForm"}, session),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -29,6 +29,7 @@ export default async function ImagesPage({
   params,
 }: {
   params: {
+    id: string;
     lang: string;
   };
 }) {
@@ -56,10 +57,7 @@ export default async function ImagesPage({
         <Card className="mb-4 w-full border-none shadow-none">
           <CardTitle className="px-6 py-2 text-xl  font-bold">Bilgi Formu</CardTitle>
           <CardContent className="">
-            <FileUpload
-              propertyId="dd1e83c0-57a8-8439-c731-3a17f2dbc603"
-              ruleset={fileTypeGroupTestResponse.data as unknown as Ruleset}
-            />
+            <FileUpload propertyId={params.id} ruleset={fileTypeGroupTestResponse.data as unknown as Ruleset} />
           </CardContent>
         </Card>
       </section>
