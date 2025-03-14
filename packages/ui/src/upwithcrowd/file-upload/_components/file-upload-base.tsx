@@ -59,7 +59,7 @@ export function FileUploadBase({
               setFiles((prev) => prev.filter((x) => x.relativePath !== data.file.relativePath));
             } else {
               const x = JSON.parse(xhr.response);
-              const message = x?.error?.code || x?.error?.message || xhr.responseText;
+              const message = x?.error?.message || x?.error?.code || xhr.responseText;
               console.log(x);
               setFailed({data, message, validationErrors: x?.error?.validationErrors});
             }
