@@ -140,5 +140,12 @@
   "preferences.title": "Bildirim Tercihleri",
   "preferences.global": "Genel Tercihler",
   "preferences.workflow.disabled.notice": "Bu kritik bildirim için abonelik yönetimini etkinleştirmek için yöneticiyle iletişime geçin.",
-  "preferences.workflow.disabled.tooltip": "Düzenlemek için yöneticiyle iletişime geçin"
+  "preferences.workflow.disabled.tooltip": "Düzenlemek için yöneticiyle iletişime geçin",
+  "error": "Hata",
+  "trigger_not_active": "Tetikleyici aktif değil",
+  "no_workflow_active_steps_defined": "Aktif akış adımı tanımlanmadı",
+  "no_workflow_steps_defined": "Akış adımı tanımlanmadı",
+  "processed": "İşlendi",
+  "no_tenant_found": "Kiracı bulunamadı",
+  "invalid_recipients": "Geçersiz alıcı"
 }
