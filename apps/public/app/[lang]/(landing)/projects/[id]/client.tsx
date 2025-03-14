@@ -39,7 +39,7 @@ export default function ProjectDetails({
   isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
-  investorResponse: PagedResultDto_ListProjectInvestorDto;
+  investorResponse: PagedResultDto_ListProjectInvestorDto | null;
 }) {
   const {id: projectId} = useParams<{id: string}>();
   const [customAmount, setCustomAmount] = useState<string>("");
@@ -142,7 +142,7 @@ export default function ProjectDetails({
   };
 
   // Map preview investors to the required format
-  const previewInvestors = (investorResponse.items || []).map((investor) => ({
+  const previewInvestors = (investorResponse?.items || []).map((investor) => ({
     id: investor.id || "",
     name: investor.name || "",
     amount: investor.amount || 0,
@@ -230,7 +230,7 @@ export default function ProjectDetails({
           {/* Conditionally render investors card or auth card */}
           {!isEditable && (
             <>
-              {investorResponse.items && investorResponse.items.length > 0 ? (
+              {investorResponse?.items && investorResponse.items.length > 0 ? (
                 <Card className="mt-6">
                   <CardHeader>
                     <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>

@@ -50,13 +50,8 @@ export default async function Page({params}: {params: {id: string; lang: string}
   const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
   const [isEditableResponse, investorResponse] = apiRequests.optionalRequests;
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
-  const investorResponseData =
-    investorResponse.status === "fulfilled"
-      ? investorResponse.value.data
-      : {
-          items: [],
-          totalCount: 0,
-        };
+  const investorResponseData = investorResponse.status === "fulfilled" ? investorResponse.value.data : null;
+
   if (projectDetailsResponseBasics.data.status !== "Approved" && !isEditable) {
     return permanentRedirect(`/${lang}/projects`);
   }
