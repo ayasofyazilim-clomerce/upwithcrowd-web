@@ -6,6 +6,7 @@ import {CheckCircle, XCircle} from "lucide-react";
 import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
 import {handlePutResponse} from "@repo/utils/api";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import {getBaseLink} from "@/utils";
 
 type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Members_ListMemberResponseDto>;
 
@@ -44,6 +45,12 @@ const projectsColumns = (locale: string) => {
         content(row) {
           return <div>{row.title || `${row.name} ${row.surname}`}</div>;
         },
+      },
+    },
+    links: {
+      title: {
+        prefix: getBaseLink("community/detail", locale),
+        targetAccessorKey: "id",
       },
     },
     faceted: {
