@@ -79,7 +79,7 @@ export function FileUploadBase({
       description={description}
       accept={accept}
       variant="button"
-      maxSize={99999999}
+      maxSize={1024 * 1024 * 2}
       maxFileCount={maxFileCount}
       disabled={pending.length > 0}
       fileCardRenderer={fileCardRenderer}
