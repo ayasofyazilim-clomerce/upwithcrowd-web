@@ -3,7 +3,7 @@ import {$UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithc
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
 import {CheckCircle, XCircle} from "lucide-react";
-import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
+import {putMemberValidatedById} from "@repo/actions/upwithcrowd/member/put-action";
 import {handlePutResponse} from "@repo/utils/api";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {getBaseLink} from "@/utils";
@@ -82,12 +82,9 @@ function projectsTable(router: AppRouterInstance) {
         actionLocation: "row",
         cta: "Kimliği Onayla",
         onClick(row) {
-          void putMemberApiById({
+          void putMemberValidatedById({
             id: row.id,
-            requestBody: {
-              ...row,
-              isValidated: true,
-            },
+            isValidated: true,
           }).then((response) => {
             handlePutResponse(response, router);
           });
@@ -101,12 +98,9 @@ function projectsTable(router: AppRouterInstance) {
         cta: "Kimliği Reddet",
 
         onClick(row) {
-          void putMemberApiById({
+          void putMemberValidatedById({
             id: row.id,
-            requestBody: {
-              ...row,
-              isValidated: false,
-            },
+            isValidated: false,
           }).then((response) => {
             handlePutResponse(response);
           });
