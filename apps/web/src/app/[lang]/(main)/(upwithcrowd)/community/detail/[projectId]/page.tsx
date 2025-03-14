@@ -36,7 +36,7 @@ export default async function Page({
 
   const apiRequests = await getApiRequests({
     ...searchParams,
-    relatedEntity: "Project",
+    relatedEntity: "Member",
     relatedId: params.projectId,
   });
   if ("message" in apiRequests) {

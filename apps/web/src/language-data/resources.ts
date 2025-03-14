@@ -1281,6 +1281,8 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:EPR70": "You can only upload one file for this file type. Please select only one file and try again.";
   "UpwithCrowd:EPR71": "The refund amount you requested cannot exceed the deposited amount.";
   "UpwithCrowd:EPR73": "If the isMulti field is true, the maxFileCount value cannot be null.";
+  "UpwithCrowd:EPR74": "This member has not been associated with any user before";
+  "UpwithCrowd:EPR75": "Only files with the following extensions are allowed for {fileTypeName}: {mimeTypes}.The file type you attempted to upload: {fileContentType}.";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";
