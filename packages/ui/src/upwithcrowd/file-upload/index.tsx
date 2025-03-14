@@ -1,7 +1,9 @@
 "use client";
 
+import {MultiSelect} from "@repo/ayasofyazilim-ui/molecules/multi-select";
 import {cn} from "../../utils";
 import {FileUploadContainer, FileUploadContainerProps} from "./_components/container";
+import {useState} from "react";
 
 export type Rule = {
   id: string;
@@ -45,15 +47,29 @@ export type FileUploadProps = {
   propertyId: string;
   classNames?: {
     container?: string;
+    multiSelect?: string;
   } & FileUploadContainerProps["classNames"];
+  children?: JSX.Element;
 };
-export function FileUpload({ruleset, propertyId, classNames}: FileUploadProps) {
+export function FileUpload({ruleset, propertyId, classNames, children}: FileUploadProps) {
+  const clearedRules = ruleset.filter((rule) => rule.fileRelationsEntity?.length);
+  const [visibleRuleIds, setVisibleRuleIds] = useState<string[]>([]);
   return (
     <div className={cn("flex flex-col gap-4", classNames?.container)}>
-      {ruleset.map((rule) => {
-        if (!rule || !rule.fileRelationsEntity?.length) return null;
+      <MultiSelect
+        className={cn("border p-4 shadow-none", classNames?.multiSelect)}
+        defaultValue={Object.keys(clearedRules.filter((rule) => rule.isFileTypeRequired))}
+        options={clearedRules.map((rule) => ({
+          label: rule.name,
+          value: rule.id,
+        }))}
+        onValueChange={setVisibleRuleIds}
+      />
+      {clearedRules.map((rule) => {
+        if (!rule || !visibleRuleIds.includes(rule.id)) return null;
         return <FileUploadContainer rule={rule} key={rule.id} propertyId={propertyId} classNames={classNames} />;
       })}
+      {children}
     </div>
   );
 }
