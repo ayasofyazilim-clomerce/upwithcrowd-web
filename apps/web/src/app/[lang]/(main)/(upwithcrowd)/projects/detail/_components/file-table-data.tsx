@@ -10,7 +10,7 @@ import {CircleCheck, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 
-type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Files_FileResponseListDto>;
+type FileTable = TanstackTableCreationProps<UpwithCrowd_Files_FileResponseListDto>;
 
 const fileColumns = (locale: string) => {
   return tanstackTableCreateColumnsByRowData<UpwithCrowd_Files_FileResponseListDto>({
@@ -80,7 +80,7 @@ const fileColumns = (locale: string) => {
 };
 
 function fileTable(router: AppRouterInstance) {
-  const table: ProjectsTable = {
+  const table: FileTable = {
     columnVisibility: {
       type: "hide",
       columns: ["fileId", "validatedUser", "validatedType"],
