@@ -21,7 +21,7 @@ export function FileUploadContainer({rule, propertyId, classNames}: FileUploadCo
   const config = {
     accept: rule.mimeTypes.reduce(
       (acc, cur) => {
-        const key = cur.mimeTypeCode?.split("/")[0] + "/*";
+        const key = cur.mimeTypeCode || "";
         if (!acc[key]) {
           acc[key] = [];
         }
@@ -30,7 +30,7 @@ export function FileUploadContainer({rule, propertyId, classNames}: FileUploadCo
       },
       {} as Record<string, string[]>,
     ),
-    maxFileCount: rule.isMulti ? 3 : 1,
+    maxFileCount: rule.isMulti ? rule.maxFileCount || 5 : 1,
   };
 
   return (
@@ -44,7 +44,6 @@ export function FileUploadContainer({rule, propertyId, classNames}: FileUploadCo
         fileCardRenderer={({file, onRemove, index}) => {
           const {pending, failed} = useFileUploader();
           const error = failed.find((x) => x.data.file.relativePath === file.relativePath);
-          console.log(error);
           return (
             <div>
               <FileCard

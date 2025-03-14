@@ -13,7 +13,7 @@ export function SuccessedFileList({className}: {className?: string}) {
           <FileCard
             file={successedFiles.data.file}
             classNames={{
-              container: "bg-emerald-50 border-emerald-400 border text-emerald-500 w-[calc(33.33%-.5rem)]",
+              container: "bg-emerald-50 border-emerald-400 border text-emerald-500 w-[calc(33.33%-.7rem)]",
             }}
           />
         );
