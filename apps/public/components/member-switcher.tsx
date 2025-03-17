@@ -18,7 +18,7 @@ import {cn} from "@/lib/utils";
 import {signOutServer, useSession} from "@repo/utils/auth";
 import {BadgeCheck, LogOut, PlusCircle, UserIcon, HelpCircle} from "lucide-react";
 import Link from "next/link";
-import {useParams, useRouter} from "next/navigation";
+import {useParams, usePathname, useRouter} from "next/navigation";
 import * as React from "react";
 import {useEffect} from "react";
 import {getBaseLink} from "@/utils/lib";
@@ -27,6 +27,7 @@ import type {Member} from "@/app/providers/member";
 
 export default function MemberSwitcher() {
   const router = useRouter();
+  const path = usePathname();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [open, setOpen] = React.useState(false);
   const {session} = useSession();
@@ -34,7 +35,7 @@ export default function MemberSwitcher() {
   let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
 
   useEffect(() => {
-    if (!currentMember || currentMember.isValidated === false) {
+    if ((!currentMember || currentMember.isValidated === false) && path.includes("/profile")) {
       router.push("/profile/new/personal");
     }
   }, [_currentMember]);
