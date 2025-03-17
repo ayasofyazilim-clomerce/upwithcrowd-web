@@ -178,10 +178,10 @@ function fileTypeMimeTypesTable(
   fileTypeData: UpwithCrowd_FileTypes_ListFileTypeDto[],
 ): FileRelationEntityTable {
   const table: FileRelationEntityTable = {
-    fillerColumn: "fileTypeId",
+    fillerColumn: "fileTypeName",
     columnVisibility: {
       type: "hide",
-      columns: ["id"],
+      columns: ["id", "fileTypeId", "mimeTypeId"],
     },
     tableActions: fileTypeMimeTypesTableActions(router, languageData, mimeTypeData, fileTypeData),
     rowActions: fileTypeMimeTypesRowActions(languageData, router, grantedPolicies, mimeTypeData, fileTypeData),
