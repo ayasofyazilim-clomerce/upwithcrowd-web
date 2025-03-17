@@ -882,9 +882,15 @@ importers:
       '@radix-ui/react-icons':
         specifier: ^1.3.0
         version: 1.3.2(react@18.3.1)
+      '@repo/actions':
+        specifier: workspace:*
+        version: link:../actions
       '@repo/ayasofyazilim-ui':
         specifier: workspace:*
         version: link:../ayasofyazilim-ui
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../utils
       embla-carousel-auto-scroll:
         specifier: ^8.1.3
         version: 8.5.2(embla-carousel@8.5.2)

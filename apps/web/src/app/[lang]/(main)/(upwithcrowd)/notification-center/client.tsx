@@ -2,12 +2,12 @@
 import type {ActivityStatsResponseDto} from "@repo/actions/core/NovuService/types";
 import Infocard from "@repo/ayasofyazilim-ui/molecules/infocard";
 import {Bell} from "lucide-react";
-import SendNotificationForm from "./_components/send-notification-form";
+import SendNotificationForm from "@repo/ui/upwithcrowd/novu/send-notification-form";
 
 function Form({notificationStats}: {notificationStats: ActivityStatsResponseDto | undefined}) {
   return (
     <div className="grid grid-cols-2 gap-3">
-      <SendNotificationForm />
+      <SendNotificationForm broadcastEnabled membersEnabled />
       <div>
         <div className="grid grid-cols-2 gap-2">
           <Infocard

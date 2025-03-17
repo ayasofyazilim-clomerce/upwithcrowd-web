@@ -1,9 +1,10 @@
 "use client";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
+
+import {Textarea} from "@repo/ayasofyazilim-ui/atoms/textarea";
 import {postNovuBroadcast, postNovuTrigger} from "@repo/actions/core/NovuService/actions";
+import {Input} from "@repo/ayasofyazilim-ui/atoms/input";
 import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
 import {MultiSelect} from "@repo/ayasofyazilim-ui/molecules/multi-select";
 import SelectTabs, {SelectTabsContent} from "@repo/ayasofyazilim-ui/molecules/select-tabs";
@@ -12,13 +13,27 @@ import {GalleryVerticalEnd, Send, Users} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useState, useTransition} from "react";
 
-function SendNotificationForm() {
+function SendNotificationForm({
+  broadcastEnabled,
+  membersEnabled,
+  workflow,
+}: {
+  broadcastEnabled?: boolean;
+  membersEnabled?: boolean;
+  workflow?: string;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [notificationType, setNotificationType] = useState<string>();
-  const [workflowType, setWorkflowType] = useState<{value: string; label: string} | null>();
-  const [receivers, setReceivers] = useState<string[]>([]);
+  const [notificationType, setNotificationType] = useState<string>(() => {
+    if (membersEnabled && !broadcastEnabled) return "members";
+    if (!membersEnabled && broadcastEnabled) return "broadcast";
+    return "";
+  });
 
+  const [workflowType, setWorkflowType] = useState<{value: string; label: string} | null | undefined>(
+    workflow ? {value: workflow, label: workflow} : null,
+  );
+  const [receivers, setReceivers] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>();
   const [message, setMessage] = useState<string>();
 
@@ -79,39 +94,48 @@ function SendNotificationForm() {
               placeholder="Mesaj"
             />
           </div>
-          <div className="my-2">
-            <div className="text-bold mb-0.5 block text-sm ">Bildirim Tipi</div>
-            <SelectTabs deselect onValueChange={setNotificationType}>
-              <SelectTabsContent value="broadcast">
-                <div className="flex flex-row items-center gap-1">
-                  <GalleryVerticalEnd />
-                  Herkes
-                </div>
-              </SelectTabsContent>
-              <SelectTabsContent value="members">
-                <div className="flex flex-row items-center gap-1">
-                  <Users />
-                  Members
-                </div>
-              </SelectTabsContent>
-            </SelectTabs>
-          </div>
-          <div className="my-2">
-            <label className="text-bold mb-0.5 block text-sm " htmlFor="workflow">
-              Workflow
-            </label>
-            <Combobox
-              id="workflow"
-              list={[
-                {value: "upwithcrowd-projeniz-onaylandi", label: "UpwithcrowdProjenizOnaylandı"},
-                {value: "on-boarding-notification-w5ZrZcvEu", label: "On-boarding Notification"},
-              ]}
-              onValueChange={setWorkflowType}
-              selectIdentifier="value"
-              selectLabel="label"
-              value={workflowType}
-            />
-          </div>
+          {broadcastEnabled && membersEnabled && (
+            <div className="my-2">
+              <div className="text-bold mb-0.5 block text-sm ">Bildirim Tipi</div>
+              <SelectTabs
+                deselect
+                onValueChange={setNotificationType}
+                disabled={!broadcastEnabled || !membersEnabled}
+                value={notificationType}>
+                <SelectTabsContent value="broadcast">
+                  <div className="flex flex-row items-center gap-1">
+                    <GalleryVerticalEnd />
+                    Herkes
+                  </div>
+                </SelectTabsContent>
+                <SelectTabsContent value="members">
+                  <div className="flex flex-row items-center gap-1">
+                    <Users />
+                    Members
+                  </div>
+                </SelectTabsContent>
+              </SelectTabs>
+            </div>
+          )}
+          {!workflow && (
+            <div className="my-2">
+              <label className="text-bold mb-0.5 block text-sm " htmlFor="workflow">
+                Workflow
+              </label>
+              <Combobox
+                id="workflow"
+                list={[
+                  {value: "upwithcrowd-projeniz-onaylandi", label: "UpwithcrowdProjenizOnaylandı"},
+                  {value: "on-boarding-notification-w5ZrZcvEu", label: "On-boarding Notification"},
+                ]}
+                onValueChange={setWorkflowType}
+                selectIdentifier="value"
+                selectLabel="label"
+                value={workflowType}
+              />
+            </div>
+          )}
+
           {notificationType === "members" && (
             <div className="my-2">
               <label className="text-bold mb-0.5 block text-sm " htmlFor="receivers">
