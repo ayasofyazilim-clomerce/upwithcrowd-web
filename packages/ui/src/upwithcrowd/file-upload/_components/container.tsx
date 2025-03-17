@@ -1,4 +1,8 @@
+import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import * as Hover from "@repo/ayasofyazilim-ui/atoms/hover-card";
 import {FileCard} from "@repo/ayasofyazilim-ui/organisms/file-uploader";
+import {FileQuestion} from "lucide-react";
 import {useState} from "react";
 import {Rule} from "../../file-upload";
 import {FileUploaderProvider, useFileUploader} from "./file-provider";
@@ -6,16 +10,25 @@ import {FileUploadBase, FileUploadBaseProps} from "./file-upload-base";
 import {FileFormData, Form} from "./form";
 import {SuccessedFileList} from "./success-list";
 
-export type FileUploadContainerProps = {
+export type FileUploadContainerProps<T> = {
   rule: Rule;
   propertyId: string;
   classNames?: {
-    core?: FileUploadBaseProps["classNames"] | undefined;
+    core?: FileUploadBaseProps<T>["classNames"] | undefined;
     successList?: string;
+    childrenContainer?: string;
   };
+  onSuccess: FileUploadBaseProps<T>["onSuccess"];
+  children?: React.ReactNode;
 };
 
-export function FileUploadContainer({rule, propertyId, classNames}: FileUploadContainerProps) {
+export function FileUploadContainer<T>({
+  rule,
+  propertyId,
+  classNames,
+  onSuccess,
+  children,
+}: FileUploadContainerProps<T>) {
   const [formData, setFormData] = useState<Array<FileFormData> | null>(null);
   if (!rule || !rule.mimeTypes) return null;
   const config = {
@@ -36,6 +49,7 @@ export function FileUploadContainer({rule, propertyId, classNames}: FileUploadCo
   return (
     <FileUploaderProvider>
       <FileUploadBase
+        onSuccess={onSuccess}
         key={rule.id}
         maxFileCount={config.maxFileCount}
         accept={config.accept}
@@ -69,9 +83,42 @@ export function FileUploadContainer({rule, propertyId, classNames}: FileUploadCo
             </div>
           );
         }}
-        label={rule.name}>
-        <SuccessedFileList className={classNames?.successList} />
+        label={
+          <div className="flex items-center">
+            <FileTypeInfo accept={config.accept} />
+            {rule.name}
+            {rule.isFileTypeRequired && <span className="text-sm text-red-500">*</span>}
+          </div>
+        }>
+        <div className={classNames?.childrenContainer}>
+          <SuccessedFileList className={classNames?.successList} />
+          {children}
+        </div>
       </FileUploadBase>
     </FileUploaderProvider>
+  );
+}
+
+function FileTypeInfo({accept}: {accept: Record<string, string[]>}) {
+  return (
+    <Hover.HoverCard>
+      <Hover.HoverCardTrigger asChild>
+        <Button variant="ghost" className="h-auto p-0 px-1">
+          <FileQuestion className="w-4" />
+        </Button>
+      </Hover.HoverCardTrigger>
+      <Hover.HoverCardContent className="w-max max-w-60">
+        <div className="flex flex-wrap gap-1">
+          {Object.keys(accept).map((key) => (
+            <Badge
+              className="max-w-40 overflow-hidden text-ellipsis rounded-full text-xs"
+              variant={"outline"}
+              key={key}>
+              {key}
+            </Badge>
+          ))}
+        </div>
+      </Hover.HoverCardContent>
+    </Hover.HoverCard>
   );
 }

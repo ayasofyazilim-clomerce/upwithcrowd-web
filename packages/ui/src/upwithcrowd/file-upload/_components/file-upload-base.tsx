@@ -6,18 +6,15 @@ import {useFileUploader} from "./file-provider";
 import {FileFormData} from "./form";
 import {cn} from "../../../utils";
 
-export type FileUploadBaseProps = {
-  accept: Record<string, string[]>;
-  maxFileCount: number;
+export type FileUploadBaseProps<T> = Pick<
+  BaseFileUploaderProps,
+  "accept" | "maxFileCount" | "label" | "description" | "fileCardRenderer" | "classNames" | "children"
+> & {
   formData: FileFormData[];
-  label?: string;
-  description?: string;
-  children?: React.ReactNode;
-  fileCardRenderer?: BaseFileUploaderProps["fileCardRenderer"];
-  classNames?: BaseFileUploaderProps["classNames"];
+  onSuccess?: (response: T) => void;
 };
 
-export function FileUploadBase({
+export function FileUploadBase<T>({
   accept = {"*": []},
   maxFileCount = 1,
   formData,
@@ -26,7 +23,8 @@ export function FileUploadBase({
   fileCardRenderer,
   children,
   classNames,
-}: FileUploadBaseProps) {
+  onSuccess,
+}: FileUploadBaseProps<T>) {
   const {pending, setPending, setProgress, setSuccessed, setFailed} = useFileUploader();
   const [files, setFiles] = useState<FileWithPath[]>([]);
 
@@ -57,6 +55,7 @@ export function FileUploadBase({
             if (xhr.status === 200) {
               setSuccessed({data, message: "Uploaded successfully"});
               setFiles((prev) => prev.filter((x) => x.relativePath !== data.file.relativePath));
+              if (onSuccess) onSuccess(JSON.parse(xhr.response));
             } else {
               const x = JSON.parse(xhr.response);
               const message = x?.error?.message || x?.error?.code || xhr.responseText;
