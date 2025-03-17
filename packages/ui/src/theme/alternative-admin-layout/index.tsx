@@ -5,6 +5,7 @@ import {ThemeProvider} from "../../providers/theme";
 
 import {
   Ban,
+  Bell,
   BriefcaseBusiness,
   Building2,
   ChartPie,
@@ -126,6 +127,7 @@ const newNavbarItems: NavItems[] = [
       },
     ],
   },
+  {title: "Bildirim Merkezi", icon: Bell, url: "/notification-center"},
   {
     title: "Management",
     icon: Settings,
