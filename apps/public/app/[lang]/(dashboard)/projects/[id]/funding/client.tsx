@@ -1,25 +1,25 @@
 "use client";
+import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
+import {DatePicker} from "@/components/ui/date-picker";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
 import type {UpwithCrowd_Projects_UpdateProjectFundingDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {$UpwithCrowd_Projects_FundCollectionType} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {useParams, useRouter} from "next/navigation";
-import {Button} from "@/components/ui/button";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Checkbox} from "@/components/ui/checkbox";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {putProjectFundingByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
+import {handlePutResponse} from "@repo/utils/api";
+import {useParams, useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {toast} from "@/components/ui/sonner";
-import {DatePicker} from "@/components/ui/date-picker";
-import {Label} from "@/components/ui/label";
-import {useState, useEffect} from "react";
-import {putProjectFundingByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
-import TextWithTitle from "../../new/_components/text-with-title";
-import {Section} from "../../new/_components/section";
-import {FormContainer} from "../../new/_components/form";
 import BudgetCard from "../../new/_components/budget-card";
+import {FormContainer} from "../../new/_components/form";
+import {Section} from "../../new/_components/section";
+import TextWithTitle from "../../new/_components/text-with-title";
 
 const fundingSchema = z.object({
   fundCollectionType: z.enum($UpwithCrowd_Projects_FundCollectionType.enum).optional(),
@@ -84,31 +84,19 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
   }, [showCashValue, form]);
 
   const onSubmit = (data: FundingFormValues) => {
-    try {
-      // The values are already converted to numbers by the schema
-      const formattedData = {
-        ...data,
-        overFunding: Boolean(data.overFunding),
-      };
+    // The values are already converted to numbers by the schema
+    const formattedData = {
+      ...data,
+      overFunding: Boolean(data.overFunding),
+    };
 
-      void putProjectFundingByIdApi({
-        requestBody: formattedData,
-        id: projectId,
-      }).then((response) => {
-        if (response.type === "success") {
-          toast.success("Funding details updated successfully");
-          router.push(`/projects/${projectId}/finish-project`);
-        } else {
-          toast.error("An unexpected error occurred");
-        }
-      });
-      // ...rest of the code...
-    } catch (error) {
-      toast.error("An unexpected error occurred");
-      return error;
-    }
+    void putProjectFundingByIdApi({
+      requestBody: formattedData,
+      id: projectId,
+    }).then((response) => {
+      handlePutResponse(response, router, `/projects/${projectId}/information-form`);
+    });
   };
-
   return (
     <div className="bg-muted w-full">
       <section className="mx-auto w-full max-w-7xl p-4 md:p-8">

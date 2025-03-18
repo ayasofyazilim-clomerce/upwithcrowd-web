@@ -1,19 +1,22 @@
-import {Card, CardContent, CardTitle} from "@/components/ui/card";
 import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
 import ErrorComponent from "@repo/ui/components/error-component";
-import type {Ruleset} from "@repo/ui/upwithcrowd/file-upload";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language/core/AccountService";
-import TextWithTitle from "../../new/_components/text-with-title";
+import InformationFormClient from "./client";
 
-async function getApiRequests() {
+async function getApiRequests(id: string) {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
       getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "ProjectInformationForm"}, session),
+      getFileApi({
+        fileTypeGroup: "ProjectInformationForm",
+        relatedEntity: "Project",
+        relatedId: id,
+      }),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -25,7 +28,7 @@ async function getApiRequests() {
   }
 }
 
-export default async function ImagesPage({
+export default async function InformationFormPage({
   params,
 }: {
   params: {
@@ -35,32 +38,18 @@ export default async function ImagesPage({
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
-  const apiRequests = await getApiRequests();
+  const apiRequests = await getApiRequests(params.id);
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [fileTypeGroupTestResponse] = apiRequests.requiredRequests;
+  const [fileTypeGroupResponse, fileResponse] = apiRequests.requiredRequests;
 
   return (
-    <div className="bg-muted min-h-screen w-full">
-      <section className="mx-auto w-full max-w-7xl p-4 md:p-8">
-        <TextWithTitle
-          classNames={{
-            container: "mb-8",
-            title: "text-3xl font-bold",
-            text: "text-lg",
-          }}
-          text="Projenize ait dökümanları yükleyin."
-          title="Proje Dökümanları"
-        />
-        <Card className="mb-4 w-full border-none shadow-none">
-          <CardTitle className="px-6 py-2 text-xl  font-bold">Bilgi Formu</CardTitle>
-          <CardContent className="">
-            <FileUpload propertyId={params.id} ruleset={fileTypeGroupTestResponse.data as unknown as Ruleset} />
-          </CardContent>
-        </Card>
-      </section>
-    </div>
+    <InformationFormClient
+      fileResponse={fileResponse.data}
+      fileTypeGroupResponse={fileTypeGroupResponse.data}
+      projectId={params.id}
+    />
   );
 }
