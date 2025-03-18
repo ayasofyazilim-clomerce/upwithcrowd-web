@@ -1,5 +1,5 @@
 "use client";
-import {useMember} from "@/app/providers/member";
+import {handlePostResponse} from "@repo/utils/api";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -8,8 +8,6 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
-import type {Ruleset} from "@repo/ui/upwithcrowd/file-upload";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
@@ -17,6 +15,7 @@ import {useForm} from "react-hook-form";
 import {PhoneInput} from "react-international-phone";
 import "react-international-phone/style.css";
 import * as z from "zod";
+import {useMember} from "@/app/providers/member";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
@@ -41,7 +40,7 @@ const formSchema = z.object({
   maskInvestorProfile: z.boolean().optional(),
 });
 
-export default function NewBusinessAccount({propertyId, ruleset}: {propertyId: string; ruleset: Ruleset}) {
+export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -58,7 +57,6 @@ export default function NewBusinessAccount({propertyId, ruleset}: {propertyId: s
       maskInvestorProfile: false,
     },
   });
-
   // Check if the form is valid
   const isFormValid = form.formState.isValid;
 
@@ -74,11 +72,12 @@ export default function NewBusinessAccount({propertyId, ruleset}: {propertyId: s
       mail: values.mail,
       annualIncome: parseInt(values.annualIncome),
       mobile: "",
-      isValidated: true,
+      isValidated: false,
       maskInvestorProfile: values.maskInvestorProfile,
     };
 
-    void postApiMember({requestBody}).then(() => {
+    void postApiMember({requestBody}).then((res) => {
+      handlePostResponse(res);
       setShowSuccessModal(true);
     });
 
@@ -103,7 +102,7 @@ export default function NewBusinessAccount({propertyId, ruleset}: {propertyId: s
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              void form.handleSubmit(onSubmit)(e); // void kullanımı
+              void form.handleSubmit(onSubmit)(e);
             }}>
             <CardContent className="grid gap-4 sm:gap-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -240,7 +239,6 @@ export default function NewBusinessAccount({propertyId, ruleset}: {propertyId: s
                   )}
                 />
               </div>
-              <FileUpload propertyId={propertyId} ruleset={ruleset} />
             </CardContent>
             <CardFooter>
               <Button className="w-full text-sm sm:text-base" disabled={isSubmitting || !isFormValid} type="submit">

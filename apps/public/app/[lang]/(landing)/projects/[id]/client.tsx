@@ -10,6 +10,7 @@ import type {
   UpwithCrowd_Payment_PaymentStatus,
   UpwithCrowd_Payment_SavePaymentTransactionDto,
   UpwithCrowd_Projects_ProjectsDetailResponseDto,
+  UpwithCrowd_Projects_ProjectStatisticsDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
@@ -27,6 +28,7 @@ import ProjectSummary from "../_components/project-summary";
 import AuthCard from "./_components/auth-card";
 import {InvestorsDialog} from "./_components/investors-card";
 import ProjectActions from "./_components/project-actions";
+import StatsCard from "./_components/stats-card";
 
 export default function ProjectDetails({
   data,
@@ -34,12 +36,14 @@ export default function ProjectDetails({
   projectsMember,
   fileResponse,
   investorResponse,
+  statsResponse,
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
   investorResponse: PagedResultDto_ListProjectInvestorDto | null;
+  statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto | null;
 }) {
   const {id: projectId} = useParams<{id: string}>();
   const [customAmount, setCustomAmount] = useState<string>("");
@@ -272,14 +276,14 @@ export default function ProjectDetails({
           {/* Conditionally render investors card or auth card */}
           {!isEditable && (
             <>
-              {investorResponse?.items && investorResponse.items.length > 0 ? (
+              {session ? (
                 <Card className="mt-6">
                   <CardHeader>
                     <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {investorResponse.items.slice(0, 3).map((payment) => (
+                      {investorResponse?.items?.slice(0, 3).map((payment) => (
                         <div className="flex items-center space-x-4" key={payment.id}>
                           <div className="relative">
                             {payment.memberQualidied ? (
@@ -298,13 +302,13 @@ export default function ProjectDetails({
                         </div>
                       ))}
 
-                      {(investorResponse.totalCount || 0) > 3 && (
+                      {investorResponse?.totalCount && investorResponse.totalCount > 3 ? (
                         <InvestorsDialog
                           investorResponse={investorResponse}
                           previewInvestors={previewInvestors}
                           totalCount={investorResponse.totalCount || 0}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </CardContent>
                 </Card>
@@ -331,6 +335,7 @@ export default function ProjectDetails({
           ) : (
             <AuthCard description="Proje belgelerini görmek için giriş yapın veya üye olun" title="Belgeler" />
           )}
+          <StatsCard stats={statsResponse} />
         </div>
       </div>
     </main>

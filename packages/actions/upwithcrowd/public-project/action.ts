@@ -46,3 +46,13 @@ export async function getProjectByIdUpdatePermissionApi(data: GetApiPublicProjec
     throw structuredError(error);
   }
 }
+
+export async function getPublicProjectByIdStatisticsApi(id: string) {
+  try {
+    const client = await getUpwithcrowdClient();
+    const dataResponse = await client.publicProject.getApiPublicProjectByIdStatistics({id});
+    return structuredSuccessResponse(dataResponse);
+  } catch (error) {
+    throw structuredError(error);
+  }
+}

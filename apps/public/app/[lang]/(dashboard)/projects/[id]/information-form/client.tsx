@@ -10,19 +10,15 @@ import Link from "next/link";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
-export default function DocumentsClient({
-  projectRelatedFiles,
-  projectLegalSituation,
+export default function InformationFormClient({
+  fileTypeGroupResponse,
   fileResponse,
   projectId,
 }: {
-  projectRelatedFiles: GetApiFileTypeGroupRulesetResponse;
-  projectLegalSituation: GetApiFileTypeGroupRulesetResponse;
+  fileTypeGroupResponse: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
 }) {
-  // Pre-filter files for each tab directly in the client
-
   const getFileNameFromPath = (fullPath: string): string => {
     const matches = /[^/]+$/.exec(fullPath);
     return matches ? matches[0] : fullPath;
@@ -40,23 +36,24 @@ export default function DocumentsClient({
     const fileType = getFileType(fileName);
     return {...i, fileId: i.fileId || "", fileName, fileType};
   });
-  const legalFiles = fileData.filter((file) => file.fileTypeNamespace === "ProjectLegalDocument");
-  const patentFiles = fileData.filter((file) =>
-    ["TrademarkRegistration", "ApplicationForaPatent", "Patent", "ISOCertificate", "Other"].includes(
-      file.fileTypeNamespace ?? "",
-    ),
+  const informationFiles = fileData.filter((file) =>
+    [
+      "ArticlesOfAssociation",
+      "InformationForm",
+      "FundUsageForm",
+      "ShareSalesReport",
+      "Attachments",
+      "Swot",
+      "InvestorPresentation",
+      "Cv",
+    ].includes(file.fileTypeNamespace ?? ""),
   );
-  // Create custom tabs with pre-filtered files
+
   const documentTabs = [
     {
-      value: "patent",
-      label: "Patent, Marka ve Tescil Bilgileri",
-      files: patentFiles,
-    },
-    {
-      value: "legal",
-      label: "Hukuki Durum",
-      files: legalFiles,
+      value: "information",
+      label: "Bilgi Formu",
+      files: informationFiles,
     },
   ];
 
@@ -69,41 +66,29 @@ export default function DocumentsClient({
             title: "text-3xl font-bold",
             text: "text-lg",
           }}
-          text="Projenize ait dökümanları yükleyin ve düzenleyin."
-          title="Belge, Ödül, Hukuki Durum"
+          text="Projenize ait görselleri yükleyin."
+          title="Bilgi Formu"
         />
-
         <Section
-          className="grid-cols-1"
-          text="Projenize ait gerekli belgeleri yükleyin."
-          title="Patent, Marka ve Tescil Belgeleri">
+          className="w-full grid-cols-1"
+          text="Bilgi Formu proje hakkında detaylı bilgiler içeren bir belgeler bütünüdür. Projenizin detaylarını ve hedeflerinizi içeren bu belgeleri yükleyerek projenizi daha iyi tanıtabilirsiniz."
+          title="Bilgi Formu">
           <FileUpload
-            classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+            classNames={{container: "md:col-span-full ", multiSelect: "bg-white"}}
             propertyId={projectId}
-            ruleset={projectRelatedFiles}
-          />
-        </Section>
-        <Section
-          className="grid-cols-1"
-          text="Projenize ait gerekli belgeleri yükleyin."
-          title="Hukuki Durum Belgeleri">
-          <FileUpload
-            classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
-            propertyId={projectId}
-            ruleset={projectLegalSituation}
+            ruleset={fileTypeGroupResponse}
           />
         </Section>
         <Card className="mb-4 mt-6">
           <CardHeader>
-            <CardTitle className="text-xl font-bold md:text-2xl">Dokümanlar</CardTitle>
+            <CardTitle className="text-xl font-bold md:text-2xl">Bilgi Formu</CardTitle>
           </CardHeader>
 
           <CardContent>
-            <DocumentCard activeDefaultTab="patent" documentTabs={documentTabs} />
+            <DocumentCard activeDefaultTab="information" documentTabs={documentTabs} />
           </CardContent>
         </Card>
-
-        <Link className=" w-full" href={`/projects/${projectId}/information-form`}>
+        <Link className="w-full" href={`/projects/${projectId}/images`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
