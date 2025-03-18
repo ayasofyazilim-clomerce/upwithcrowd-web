@@ -1,10 +1,11 @@
+import {getProfileImageApi} from "@repo/actions/upwithcrowd/profile/actions";
+import {getUserMembersApi} from "@repo/actions/upwithcrowd/user-members/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {signOutServer} from "@repo/utils/auth";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {Inter} from "next/font/google";
-import {getMemberApi, getProfileImageApi} from "@repo/actions/upwithcrowd/member/actions";
 import {myProfileApi} from "@repo/actions/core/AccountService/actions";
 import {getLocalizationResources} from "@/utils/lib";
 import {getResourceData} from "@/language/core/Default";
@@ -43,7 +44,7 @@ async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([myProfileApi()]);
 
-    const optionalRequests = await Promise.allSettled([getMemberApi(), getProfileImageApi()]);
+    const optionalRequests = await Promise.allSettled([getUserMembersApi(), getProfileImageApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -71,7 +72,7 @@ export default async function RootLayout({children, params}: {children: React.Re
     }
     const [memberResponse, profileImageResponse] = apiRequests.optionalRequests;
     const profileImage = profileImageResponse.status === "fulfilled" ? profileImageResponse.value.data : undefined;
-    members = memberResponse.status === "fulfilled" ? memberResponse.value.data.items || [] : [];
+    members = memberResponse.status === "fulfilled" ? memberResponse.value.data : [];
 
     const activeMember = findActiveMember(members, session.user?.member_id);
     if (profileImage) {

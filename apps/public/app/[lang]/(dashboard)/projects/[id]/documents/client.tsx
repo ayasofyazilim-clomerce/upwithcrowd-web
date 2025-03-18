@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
-  GetApiFileTypeGroupFileTypeGroupRulesetResponse,
+  GetApiFileTypeGroupRulesetResponse,
   GetApiPublicFileResponse,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
@@ -16,8 +16,8 @@ export default function DocumentsClient({
   fileResponse,
   projectId,
 }: {
-  projectRelatedFiles: GetApiFileTypeGroupFileTypeGroupRulesetResponse;
-  projectLegalSituation: GetApiFileTypeGroupFileTypeGroupRulesetResponse;
+  projectRelatedFiles: GetApiFileTypeGroupRulesetResponse;
+  projectLegalSituation: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
 }) {

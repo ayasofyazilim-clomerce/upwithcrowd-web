@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
-  GetApiFileTypeGroupFileTypeGroupRulesetResponse,
+  GetApiFileTypeGroupRulesetResponse,
   GetApiPublicFileResponse,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
@@ -15,7 +15,7 @@ export default function InformationFormClient({
   fileResponse,
   projectId,
 }: {
-  fileTypeGroupResponse: GetApiFileTypeGroupFileTypeGroupRulesetResponse;
+  fileTypeGroupResponse: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
 }) {

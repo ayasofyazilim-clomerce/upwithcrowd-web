@@ -2,7 +2,7 @@
 
 import type {
   GetApiFileTypeGroupData,
-  GetApiFileTypeGroupFileTypeGroupRulesetData,
+  GetApiFileTypeGroupRulesetData,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {structuredError, structuredSuccessResponse} from "@repo/utils/api";
 import type {Session} from "next-auth";
@@ -17,13 +17,10 @@ export async function getFileTypeGroupApi(data: GetApiFileTypeGroupData, session
     throw structuredError(error);
   }
 }
-export async function getApiFileTypeGroupFileTypeGroupRulesetApi(
-  data?: GetApiFileTypeGroupFileTypeGroupRulesetData,
-  session?: Session | null,
-) {
+export async function getApiFileTypeGroupRulesetApi(data?: GetApiFileTypeGroupRulesetData, session?: Session | null) {
   try {
     const client = await getUpwithcrowdClient(session);
-    const dataResponse = await client.fileTypeGroup.getApiFileTypeGroupFileTypeGroupRuleset(data);
+    const dataResponse = await client.fileTypeGroup.getApiFileTypeGroupRuleset(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
     throw structuredError(error);

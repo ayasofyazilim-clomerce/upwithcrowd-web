@@ -1,4 +1,4 @@
-import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
+import {getApiFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
@@ -11,7 +11,7 @@ async function getApiRequests(id: string) {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "ProjectMaterials"}, session),
+      getApiFileTypeGroupRulesetApi({namespace: "ProjectMaterials"}, session),
       getFileApi({
         fileTypeGroup: "ProjectMaterials",
         relatedEntity: "Project",

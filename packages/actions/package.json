@@ -12,7 +12,7 @@
   "dependencies": {
     "@auth/core": "^0.30.0",
     "@ayasofyazilim/core-saas": "latest",
-    "@ayasofyazilim/upwithcrowd-saas": "^0.0.49",
+    "@ayasofyazilim/upwithcrowd-saas": "^0.0.50",
     "@novu/api": "latest",
     "@repo/utils": "workspace:*",
     "@types/react": "18.3.18",
