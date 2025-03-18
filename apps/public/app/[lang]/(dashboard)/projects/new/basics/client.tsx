@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -7,19 +6,18 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
-import {zodResolver} from "@hookform/resolvers/zod";
-import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import {Globe, Instagram, Linkedin, Search, Twitter} from "lucide-react";
-import {useRouter, useSearchParams} from "next/navigation";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
 import type {
   PagedResultDto_CategoryListDto,
   PagedResultDto_TypeListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {postProjectApi} from "@repo/actions/upwithcrowd/project/post-action";
-import {FormContainer, FormField} from "../_components/form";
+import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {FormContainer} from "../_components/form";
 import {Section} from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
 
@@ -222,94 +220,7 @@ export default function BasicsClient({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-            <Section
-              text={[
-                "Projenizi görsel olarak temsil edecek logo ve görselleri ekleyin.",
-                "Kaliteli görseller, projenizin profesyonelliğini artırır ve destekçilerinizin güvenini kazanmanıza yardımcı olur.",
-              ]}
-              title="Görsel Kimlik">
-              <FormContainer>
-                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
-                  <p>
-                    Not: Görsel yükleme özelliği şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş
-                    bırakabilirsiniz.
-                  </p>
-                </div>
-                <FormFieldUI
-                  control={form.control}
-                  name="projectLogo"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Proje Logo (1:1)</FormLabel>
-                      <FormControl>
-                        <Input
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            field.onChange(file ? URL.createObjectURL(file) : "");
-                          }}
-                          type="file"
-                        />
-                      </FormControl>
-                      {field.value ? (
-                        <div className="mt-2 h-24 w-24 overflow-hidden rounded-lg border sm:h-32 sm:w-32">
-                          <img alt="Logo preview" className="h-full w-full object-cover" src={field.value} />
-                        </div>
-                      ) : null}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormFieldUI
-                  control={form.control}
-                  name="projectImage"
-                  render={({field}) => (
-                    <FormItem className="mt-2">
-                      <FormLabel>Proje Görseli (16:9)</FormLabel>
-                      <FormControl>
-                        <Input
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            field.onChange(file ? URL.createObjectURL(file) : "");
-                          }}
-                          type="file"
-                        />
-                      </FormControl>
-                      {field.value ? (
-                        <div className="mt-2 h-[140px] w-[250px] overflow-hidden rounded-lg border sm:h-[180px] sm:w-[320px]">
-                          <img alt="Project  preview" className="h-full w-full object-cover" src={field.value} />
-                        </div>
-                      ) : null}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormFieldUI
-                  control={form.control}
-                  name="projectVideo"
-                  render={({field}) => (
-                    <FormItem className="mt-2">
-                      <FormLabel>Proje Videosu (URL)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://youtube.com/... (Opsiyonel)" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </FormContainer>
-            </Section>
-            <Section text="Projenizin yürütüleceği veya etki edeceği lokasyonu belirtin." title="Proje Konumu">
-              <FormContainer>
-                <FormField htmlFor="location">
-                  <div className="relative">
-                    <Input className="peer pl-8" id="location" placeholder="Şehir veya bölge adı girin..." />
-                    <Search className="text-muted-foreground absolute left-2 top-0 flex h-9 w-4 peer-focus:text-black" />
-                  </div>
-                </FormField>
-              </FormContainer>
-            </Section>
+
             <Section
               text={[
                 "Projenizin kategorisini seçin.",
@@ -348,87 +259,7 @@ export default function BasicsClient({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-            <Section
-              text={[
-                "Projenizin web sitesini ve sosyal medya hesaplarını ekleyin.",
-                "Bu bilgiler, destekçilerinizin sizinle iletişim kurmasını ve projenizi takip etmesini sağlar.",
-              ]}
-              title="İletişim ve Sosyal Medya">
-              <FormContainer>
-                <div className="mb-4 rounded-md bg-blue-50 p-4 text-sm text-blue-800">
-                  <p>
-                    Not: Sosyal medya entegrasyonu şu anda geliştirme aşamasındadır. Bu alanları şimdilik boş
-                    bırakabilirsiniz.
-                  </p>
-                </div>
-                <div className="space-y-4 sm:space-y-6">
-                  <FormFieldUI
-                    control={form.control}
-                    name="websiteUrl"
-                    render={({field}) => (
-                      <FormItem>
-                        <FormLabel>Website </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Globe className="text-muted-foreground absolute left-2 top-2 h-5 w-5" />
-                            <Input className="pl-9" placeholder="https://www.example.com" {...field} />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormFieldUI
-                    control={form.control}
-                    name="instagramUrl"
-                    render={({field}) => (
-                      <FormItem>
-                        <FormLabel>Instagram </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Instagram className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
-                            <Input className="pl-9" placeholder="https://instagram.com/username" {...field} />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormFieldUI
-                    control={form.control}
-                    name="twitterUrl"
-                    render={({field}) => (
-                      <FormItem>
-                        <FormLabel>Twitter </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Twitter className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
-                            <Input className="pl-9" placeholder="https://twitter.com/username" {...field} />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormFieldUI
-                    control={form.control}
-                    name="linkedinUrl"
-                    render={({field}) => (
-                      <FormItem>
-                        <FormLabel>LinkedIn </FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Linkedin className="text-muted-foreground absolute left-2 top-2.5 h-5 w-5" />
-                            <Input className="pl-9" placeholder="https://linkedin.com/in/username" {...field} />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </FormContainer>
-            </Section>
+
             <Button className="w-full" type="submit">
               Projeyi Kaydet ve İlerle
             </Button>

@@ -1,14 +1,14 @@
+import {getCategoryApi, getTypeApi} from "@repo/actions/upwithcrowd/category-project/action";
+import {getProjectDetailsByIdApi} from "@repo/actions/upwithcrowd/project/action";
+import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import ErrorComponent from "@repo/ui/components/error-component";
-import {getCategoryApi, getTypeApi} from "@repo/actions/upwithcrowd/category-project/action";
-import {getPublicProjectDetailByIdApi} from "@repo/actions/upwithcrowd/public-project/action";
 import {getResourceData} from "@/language/core/Default";
 import ClientBasics from "./client";
 
 async function getApiRequests(id: string) {
   try {
-    const requiredRequests = await Promise.all([getPublicProjectDetailByIdApi(id)]);
+    const requiredRequests = await Promise.all([getProjectDetailsByIdApi(id)]);
     const optionalRequests = await Promise.allSettled([getCategoryApi(), getTypeApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {

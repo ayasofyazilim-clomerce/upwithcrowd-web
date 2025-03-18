@@ -8,7 +8,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ListedProjectCard({project}: {project: Project}) {
-  const fundedPercentage = 0;
+  // Calculate the correct funding percentage
+  const fundedPercentage =
+    project.fundableAmount > 0 ? ((project.totalRemainingAmount ?? 0) / project.fundableAmount) * 100 : 0;
 
   const getDaysLeft = () => {
     const endDate = new Date(project.projectEndDate ?? Date.now());
@@ -47,7 +49,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
 
         <div className="bg-primary/5 rounded-lg p-3 md:p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium md:text-sm">Fonlanan: {fundedPercentage.toFixed(0)}%</span>
+            <span className="text-xs font-medium md:text-sm">Fonlanan: {fundedPercentage.toFixed(2)}%</span>
             <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} gün kaldı</span>
           </div>
           <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
@@ -55,7 +57,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
             <div className="flex items-center">
               <Wallet className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">{formatCurrency(0)}</p>
+                <p className="font-semibold">{formatCurrency(project.totalRemainingAmount)}</p>
                 <p className="text-muted-foreground text-xs">toplandı</p>
               </div>
             </div>
