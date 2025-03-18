@@ -6,6 +6,7 @@ import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {
   getProjectByIdUpdatePermissionApi,
   getPublicProjectByIdMembersApi,
+  getPublicProjectByIdStatisticsApi,
   getPublicProjectDetailByIdApi,
 } from "@repo/actions/upwithcrowd/public-project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
@@ -21,6 +22,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
     const optionalRequests = await Promise.allSettled([
       getProjectByIdUpdatePermissionApi({id}),
       getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
+      getPublicProjectByIdStatisticsApi(id),
     ]);
     const params = {
       relatedEntity: "Project",
@@ -29,6 +31,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
     const requiredRequests = await Promise.all([
       getPublicProjectDetailByIdApi(id),
       getPublicProjectByIdMembersApi(id),
+
       !isAuth ? getPublicFileApi(params) : getFileApi(params),
     ]);
 
@@ -53,9 +56,10 @@ export default async function Page({params}: {params: {id: string; lang: string}
   }
 
   const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
-  const [isEditableResponse, investorResponse] = apiRequests.optionalRequests;
+  const [isEditableResponse, investorResponse, statsResponse] = apiRequests.optionalRequests;
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
   const investorResponseData = investorResponse.status === "fulfilled" ? investorResponse.value.data : null;
+  const statsResponseData = statsResponse.status === "fulfilled" ? statsResponse.value.data : null;
 
   if (projectDetailsResponseBasics.data.status !== "Approved" && !isEditable) {
     return permanentRedirect(`/${lang}/projects`);
@@ -68,6 +72,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
         investorResponse={investorResponseData}
         isEditable={isEditable}
         projectsMember={projectsMemberResponse.data}
+        statsResponse={statsResponseData}
       />
     </div>
   );
