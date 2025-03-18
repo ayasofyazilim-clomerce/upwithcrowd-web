@@ -1,22 +1,16 @@
 "use server";
 
+import type {GetApiFileData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getFileApi} from "@repo/actions/upwithcrowd/file/actions";
-import {getProjectApi, getProjectStatisticsByIdApi} from "@repo/actions/upwithcrowd/project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
+import ClientPage from "./client";
 
-async function getApiRequests(projectId: string) {
+async function getApiRequests(searchParams: GetApiFileData) {
   try {
-    const requiredRequests = await Promise.all([
-      getProjectApi({id: projectId}),
-      getProjectStatisticsByIdApi({id: projectId}),
-      getFileApi({
-        relatedEntity: "Project",
-        relatedId: projectId,
-      }),
-    ]);
+    const requiredRequests = await Promise.all([getFileApi(searchParams)]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -29,19 +23,26 @@ async function getApiRequests(projectId: string) {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
-  params: {
-    lang: string;
-    projectId: string;
-  };
+  params: {lang: string; projectId: string};
+  searchParams?: GetApiFileData;
 }) {
   const {lang, projectId} = params;
   const {languageData} = await getResourceData(lang);
 
-  const apiRequests = await getApiRequests(projectId);
+  const apiRequests = await getApiRequests({
+    ...searchParams,
+    fileType: "ProjectImages",
+    relatedEntity: "Project",
+    relatedId: projectId,
+  });
+
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  return <>test</>;
+  const [imageResponse] = apiRequests.requiredRequests;
+
+  return <ClientPage imageResponse={imageResponse.data} />;
 }
