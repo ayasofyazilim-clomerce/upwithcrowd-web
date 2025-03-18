@@ -1,7 +1,9 @@
 "use client";
 import {Badge} from "@/components/ui/badge";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import ListView from "@repo/ayasofyazilim-ui/molecules/list-view";
+import SendNotificationForm from "@repo/ui/upwithcrowd/novu/send-notification-form";
 import {formatCurrency} from "@repo/ui/utils";
 
 function prepareListViewData(projectDetail: UpwithCrowd_Projects_ListProjectsResponseDto) {
@@ -47,8 +49,18 @@ function ClientPage({projectDetail}: {projectDetail: UpwithCrowd_Projects_ListPr
   const listViewData = prepareListViewData(projectDetail);
 
   return (
-    <div className="mt-2 grid lg:grid-cols-2">
-      <ListView list={listViewData} title="Yatırım Bilgileri" />
+    <div className="mt-2 grid grid-cols-2 gap-3">
+      <Card className="py- col-span-1">
+        <CardHeader className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-6">
+          <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+            <CardTitle className="text-lg sm:text-xl">Yatırım Bilgileri</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4 p-4 pt-0 sm:space-y-6 sm:p-6 sm:pt-0">
+          <ListView list={listViewData} />
+        </CardContent>
+      </Card>
+      <SendNotificationForm membersEnabled />
     </div>
   );
 }

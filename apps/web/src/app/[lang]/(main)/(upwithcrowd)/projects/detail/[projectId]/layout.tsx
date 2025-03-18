@@ -93,7 +93,7 @@ export default async function Layout({
         tabList={[
           {
             href: baseLink,
-            label: "Genel Bilgiler",
+            label: "Genel",
           },
           {
             href: `${baseLink}images`,
