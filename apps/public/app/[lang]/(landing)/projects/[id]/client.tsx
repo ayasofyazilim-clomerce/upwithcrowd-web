@@ -229,7 +229,7 @@ export default function ProjectDetails({
             </>
           )}
 
-          {session?.user?.access_token ? (
+          {session ? (
             <>
               <div className="mt-6">
                 {data.privilege ? (
@@ -322,7 +322,7 @@ export default function ProjectDetails({
           )}
 
           {/* Conditionally render DocumentsCard or AuthCard based on authentication status */}
-          {session?.user?.access_token ? (
+          {session ? (
             <Card className="mt-6">
               <CardHeader>
                 <CardTitle className="text-xl font-bold md:text-2xl">Dokümanlar</CardTitle>
@@ -335,7 +335,11 @@ export default function ProjectDetails({
           ) : (
             <AuthCard description="Proje belgelerini görmek için giriş yapın veya üye olun" title="Belgeler" />
           )}
-          <StatsCard stats={statsResponse} />
+          {session ? (
+            <StatsCard stats={statsResponse} />
+          ) : (
+            <AuthCard description="İstatistikleri görmek için giriş yapın veya üye olun" title="İstatistikler" />
+          )}
         </div>
       </div>
     </main>
