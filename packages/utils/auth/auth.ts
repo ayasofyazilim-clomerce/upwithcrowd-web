@@ -74,9 +74,17 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
-    async jwt({token, user}) {
+    async jwt({token, trigger, session, user}) {
       if (user) {
         token.user = user;
+      }
+      if (trigger === "update") {
+        if (session.info) {
+          token.user = {
+            ...(token.user as object),
+            ...session.info,
+          };
+        }
       }
       return token;
     },

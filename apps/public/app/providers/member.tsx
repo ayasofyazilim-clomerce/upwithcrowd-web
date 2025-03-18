@@ -4,6 +4,7 @@ import type {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upw
 import {useRouter} from "next/navigation";
 import {createContext, useContext, useEffect, useState} from "react";
 import {putMemberSwitchByIdApi} from "@repo/actions/upwithcrowd/member/put-action";
+import {useSession} from "@repo/utils/auth";
 
 export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
   profileImage?: string;
@@ -37,6 +38,7 @@ export default function MemberProvider({
 }) {
   const [__member, setCurrentMember] = useState<Member | null>(currentMember);
   const [memberList, setMemberList] = useState<Member[]>(members);
+  const {sessionUpdate} = useSession();
   const router = useRouter();
   let _currentMember = currentMember;
   if (typeof window !== "undefined") {
@@ -53,6 +55,12 @@ export default function MemberProvider({
     void putMemberSwitchByIdApi({id: _member.id}).then((res) => {
       if (res.type === "success") {
         setCurrentMember(_member);
+        void sessionUpdate({
+          info: {
+            member_id: _member.id,
+            member_type: _member.type,
+          },
+        });
         router.refresh();
       } else {
         toast.error("Cannot switch member at the moment. Please try again later.");
