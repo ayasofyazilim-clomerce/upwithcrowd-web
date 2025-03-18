@@ -6,6 +6,7 @@ import {signOutServer} from "@repo/utils/auth";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {Inter} from "next/font/google";
+import {myProfileApi} from "@repo/actions/core/AccountService/actions";
 import {getLocalizationResources} from "@/utils/lib";
 import {getResourceData} from "@/language/core/Default";
 import "../globals.css";
@@ -41,7 +42,7 @@ function findActiveMember(memberList: Member[], memberIdFromSession?: string | s
 
 async function getApiRequests() {
   try {
-    const requiredRequests = await Promise.all([]);
+    const requiredRequests = await Promise.all([myProfileApi()]);
 
     const optionalRequests = await Promise.allSettled([getUserMembersApi(), getProfileImageApi()]);
     return {requiredRequests, optionalRequests};
