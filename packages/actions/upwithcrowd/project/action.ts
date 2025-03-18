@@ -2,9 +2,10 @@
 
 import type {
   GetApiProjectByIdProjectInvestorData,
+  GetApiProjectByIdStatisticsData,
   GetApiProjectData,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {structuredResponse, structuredError, structuredSuccessResponse} from "@repo/utils/api";
+import {structuredError, structuredResponse, structuredSuccessResponse} from "@repo/utils/api";
 import {getUpwithcrowdClient} from "../lib";
 
 export async function getProjectApi(data?: GetApiProjectData) {
@@ -41,6 +42,15 @@ export async function getProjectByIdProjectInvestorApi(data: GetApiProjectByIdPr
   try {
     const client = await getUpwithcrowdClient();
     const dataResponse = await client.project.getApiProjectByIdProjectInvestor(data);
+    return structuredSuccessResponse(dataResponse);
+  } catch (error) {
+    throw structuredError(error);
+  }
+}
+export async function getProjectStatisticsByIdApi(data: GetApiProjectByIdStatisticsData) {
+  try {
+    const client = await getUpwithcrowdClient();
+    const dataResponse = await client.project.getApiProjectByIdStatistics(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
     throw structuredError(error);
