@@ -26,7 +26,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
             alt={project.projectName}
             className="h-64 w-full rounded-lg object-cover"
             height={300}
-            src={project.url || "https://placehold.co/200x300"}
+            src={project.filePath || "https://placehold.co/200x300"}
             width={300}
           />
           <Badge className="bg-primary text-primary-foreground absolute bottom-2 left-2 font-medium">
