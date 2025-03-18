@@ -1,5 +1,5 @@
 import {Card, CardContent, CardTitle} from "@/components/ui/card";
-import {getApiFileTypeGroupFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
+import {getApiFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import type {Ruleset} from "@repo/ui/upwithcrowd/file-upload";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
@@ -13,7 +13,7 @@ async function getApiRequests() {
   try {
     const session = await auth();
     const requiredRequests = await Promise.all([
-      getApiFileTypeGroupFileTypeGroupRulesetApi({namespace: "ProjectInformationForm"}, session),
+      getApiFileTypeGroupRulesetApi({namespace: "ProjectInformationForm"}, session),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
