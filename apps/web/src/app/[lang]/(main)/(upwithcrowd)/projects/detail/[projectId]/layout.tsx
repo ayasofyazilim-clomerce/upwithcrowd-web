@@ -59,26 +59,31 @@ export default async function Layout({
       </div>
       <div className="grid grid-cols-5 gap-2">
         <Infocard
+          className="min-w-full"
           content={projectStatistics.investorCount?.toString() || "0"}
           icon={<Wallet2 className="h-5 w-5" />}
           title="Yatırımcı sayısı"
         />
         <Infocard
+          className="min-w-full"
           content={projectStatistics.qualifiedInvestorCount?.toString() || "0"}
           icon={<WalletCards className="h-5 w-5" />}
           title="Nitelikli yatırımcı sayısı"
         />
         <Infocard
+          className="min-w-full"
           content={projectStatistics.investmentRate?.toString() || "0"}
           icon={<Coins className="h-5 w-5" />}
           title="Yatırım oranı"
         />
         <Infocard
+          className="min-w-full"
           content={projectStatistics.qualifiedInvestmentRate?.toString() || "0"}
           icon={<Landmark className="h-5 w-5" />}
           title="Nitelikli yatırım oranı"
         />
         <Infocard
+          className="min-w-full"
           content={projectStatistics.totalInvestment?.toString() || "0"}
           icon={<CircleDollarSign className="h-5 w-5" />}
           title="Toplam yatırım"

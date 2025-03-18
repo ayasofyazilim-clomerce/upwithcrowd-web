@@ -44,7 +44,6 @@ export async function getProjectByIdProjectInvestorApi(data: GetApiProjectByIdPr
     const dataResponse = await client.project.getApiProjectByIdProjectInvestor(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    console.log(error);
     throw structuredError(error);
   }
 }
@@ -54,7 +53,6 @@ export async function getProjectStatisticsByIdApi(data: GetApiProjectByIdStatist
     const dataResponse = await client.project.getApiProjectByIdStatistics(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    console.log(error);
     throw structuredError(error);
   }
 }
