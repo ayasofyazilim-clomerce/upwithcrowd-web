@@ -99,6 +99,10 @@ export default async function Layout({
             href: `${baseLink}images`,
             label: "Proje Görselleri",
           },
+          {
+            href: `${baseLink}files`,
+            label: "Projeyle İlgili Dosyalar",
+          },
         ]}>
         {children}
       </TabLayout>
