@@ -276,14 +276,14 @@ export default function ProjectDetails({
           {/* Conditionally render investors card or auth card */}
           {!isEditable && (
             <>
-              {investorResponse?.items && investorResponse.items.length > 0 ? (
+              {session ? (
                 <Card className="mt-6">
                   <CardHeader>
                     <CardTitle className="text-xl font-bold md:text-2xl">Yatırımcılar</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {investorResponse.items.slice(0, 3).map((payment) => (
+                      {investorResponse?.items?.slice(0, 3).map((payment) => (
                         <div className="flex items-center space-x-4" key={payment.id}>
                           <div className="relative">
                             {payment.memberQualidied ? (
@@ -302,13 +302,13 @@ export default function ProjectDetails({
                         </div>
                       ))}
 
-                      {(investorResponse.totalCount || 0) > 3 && (
+                      {investorResponse?.totalCount && investorResponse.totalCount > 3 ? (
                         <InvestorsDialog
                           investorResponse={investorResponse}
                           previewInvestors={previewInvestors}
                           totalCount={investorResponse.totalCount || 0}
                         />
-                      )}
+                      ) : null}
                     </div>
                   </CardContent>
                 </Card>
