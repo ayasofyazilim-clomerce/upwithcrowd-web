@@ -1,10 +1,10 @@
 "use client";
 import {toast} from "@/components/ui/sonner";
 import type {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {useRouter} from "next/navigation";
-import {createContext, useContext, useEffect, useState} from "react";
 import {putMemberSwitchByIdApi} from "@repo/actions/upwithcrowd/member/put-action";
 import {useSession} from "@repo/utils/auth";
+import {useRouter} from "next/navigation";
+import {createContext, useContext, useEffect, useState} from "react";
 
 export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
   profileImage?: string;
@@ -60,8 +60,9 @@ export default function MemberProvider({
             member_id: _member.id,
             member_type: _member.type,
           },
+        }).finally(() => {
+          router.refresh();
         });
-        router.refresh();
       } else {
         toast.error("Cannot switch member at the moment. Please try again later.");
       }

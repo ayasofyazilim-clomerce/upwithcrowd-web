@@ -18,6 +18,16 @@ export async function getProjectApi(data?: GetApiProjectData) {
   }
 }
 
+export async function getProjectDetailsByIdApi(id: string) {
+  try {
+    const client = await getUpwithcrowdClient();
+    const dataResponse = await client.project.getApiProjectById({id});
+    return structuredSuccessResponse(dataResponse);
+  } catch (error) {
+    throw structuredError(error);
+  }
+}
+
 export async function getPublicProjectDetailsFundingApi(id: string) {
   try {
     const client = await getUpwithcrowdClient();
