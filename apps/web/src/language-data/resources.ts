@@ -1122,6 +1122,12 @@ export type UpwithCrowdResources = {
   "Permission:FileTypeMimeType.Delete": "Delete the FileTypeMimeType";
   "Permission:FileTypeMimeType.Update": "Update the FileTypeMimeType";
   "Permission:FileTypeMimeType.List": "List the FileTypeMimeType";
+  "Permission:LLMSettings": "LLM Settings";
+  "Permission:LLMSettings.View": "View LLM settings";
+  "Permission:LLMSettings.Update": "Update LLM settings";
+  "Permission:NotificationSettings": "Notification Settings";
+  "Permission:NotificationSettings.View": "View Notification settings";
+  "Permission:NotificationSettings.Update": "Update Notification settings";
   "UpwithCrowd:CustomRoles:BoardMember": "Board Member";
   "UpwithCrowd:CustomRoles:Co-Founder": "Co-Founder";
   "UpwithCrowd:CustomRoles:TeamMember": "Team Member";
@@ -1283,6 +1289,7 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:EPR73": "If the isMulti field is true, the maxFileCount value cannot be null.";
   "UpwithCrowd:EPR74": "This member has not been associated with any user before";
   "UpwithCrowd:EPR75": "Only files with the following extensions are allowed for {fileTypeName}: {mimeTypes}.The file type you attempted to upload: {fileContentType}.";
+  "UpwithCrowd:EPR76": "This member has not been validated. Please proceed with a valid membership.";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";
