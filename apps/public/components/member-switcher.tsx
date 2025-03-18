@@ -35,7 +35,7 @@ export default function MemberSwitcher() {
   let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
 
   useEffect(() => {
-    if ((!currentMember || currentMember.isValidated === false) && path.includes("/profile")) {
+    if (!currentMember && path.includes("/profile")) {
       router.push("/profile/new/personal");
     }
   }, [_currentMember]);
