@@ -3,10 +3,7 @@ import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/
 import {$UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
-import {handlePutResponse} from "@repo/utils/api";
-import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
-import {Ban, CheckCircle, XCircle} from "lucide-react";
-import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
+import {CheckCircle, XCircle} from "lucide-react";
 import {getBaseLink} from "@/utils";
 
 type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Projects_ListProjectsResponseDto>;
@@ -88,7 +85,7 @@ const projectsColumns = (locale: string) => {
   });
 };
 
-function projectsTable(router: AppRouterInstance) {
+function projectsTable() {
   const table: ProjectsTable = {
     fillerColumn: "projectName",
     columnVisibility: {
@@ -96,55 +93,6 @@ function projectsTable(router: AppRouterInstance) {
       columns: ["projectName", "projectStartDate", "projectEndDate", "fundableAmount", "overFunding"],
     },
     columnOrder: ["fundableAmount", "projectName"],
-    rowActions: [
-      {
-        actionLocation: "row",
-        cta: "Projeyi Onayla",
-        onClick(row) {
-          void putProjectStatusByIdApi({
-            id: row.id,
-            status: "Approved",
-          }).then((response) => {
-            handlePutResponse(response, router);
-          });
-        },
-        type: "simple",
-        icon: CheckCircle,
-        condition: (row) => row.status === "Pending",
-      },
-      {
-        actionLocation: "row",
-        cta: "Projeyi Reddet",
-
-        onClick(row) {
-          void putProjectStatusByIdApi({
-            id: row.id,
-            status: "Rejected",
-          }).then((response) => {
-            handlePutResponse(response, router);
-          });
-        },
-        type: "simple",
-        icon: XCircle,
-        condition: (row) => row.status === "Pending",
-      },
-      {
-        actionLocation: "row",
-        cta: "Projeyi İptal Et",
-
-        onClick(row) {
-          void putProjectStatusByIdApi({
-            id: row.id,
-            status: "Cancelled",
-          }).then((response) => {
-            handlePutResponse(response, router);
-          });
-        },
-        type: "simple",
-        icon: Ban,
-        condition: (row) => row.status === "Pending",
-      },
-    ],
   };
   return table;
 }
