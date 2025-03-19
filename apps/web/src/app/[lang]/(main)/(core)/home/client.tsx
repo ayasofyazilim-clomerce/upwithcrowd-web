@@ -9,6 +9,7 @@ import type {
   UpwithCrowd_Projects_ListProjectsResponseDto,
   UpwithCrowd_Members_ListMemberResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import PageHeader from "@repo/ui/upwithcrowd/header";
 
 // Update the chartColors object to have more harmonious colors
 const chartColors = {
@@ -154,58 +155,49 @@ export default function DashboardClient({data}: DashboardProps) {
 
   return (
     <div className="space-y-6 overflow-auto sm:space-y-8">
-      {/* Platform Introduction Section */}
-      <div className="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6">
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-xl font-bold text-gray-800 sm:text-2xl">Upwithcrowd Admin Paneline Hoş Geldiniz</h1>
-          <p className="mt-1 text-sm text-gray-600 sm:mt-2">Kitle fonlaması projelerinizi yönetmek için tek platform</p>
-        </div>
-        <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
-          <Card className="bg-white/80 backdrop-blur">
-            <CardContent className="p-3 pt-4 sm:p-6 sm:pt-6">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-full bg-blue-100 p-2 sm:p-3">
-                  <AlertCircle className="h-5 w-5 text-blue-600 sm:h-6 sm:w-6" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold sm:text-base">Kolay Proje Yönetimi</h3>
-                  <p className="text-xs text-gray-600 sm:text-sm">
-                    Pay ve borç tabanlı projeleri tek platformda yönetin
-                  </p>
-                </div>
+      <PageHeader
+        description="Kitle fonlaması projelerinizi yönetmek için tek platform"
+        title="Upwithcrowd Admin Paneli">
+        <Card className="bg-white/80 backdrop-blur">
+          <CardContent className="p-3 pt-4 sm:p-6 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="rounded-full bg-blue-100 p-2 sm:p-3">
+                <AlertCircle className="h-5 w-5 text-blue-600 sm:h-6 sm:w-6" />
               </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/80 backdrop-blur">
-            <CardContent className="p-3 pt-4 sm:p-6 sm:pt-6">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-full bg-green-100 p-2 sm:p-3">
-                  <Users className="h-5 w-5 text-green-600 sm:h-6 sm:w-6" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold sm:text-base">Üye Yönetimi</h3>
-                  <p className="text-xs text-gray-600 sm:text-sm">
-                    Bireysel ve kurumsal üyelerinizi kolayca takip edin
-                  </p>
-                </div>
+              <div>
+                <h3 className="text-sm font-semibold sm:text-base">Kolay Proje Yönetimi</h3>
+                <p className="text-xs text-gray-600 sm:text-sm">Pay ve borç tabanlı projeleri tek platformda yönetin</p>
               </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white/80 backdrop-blur">
-            <CardContent className="p-3 pt-4 sm:p-6 sm:pt-6">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="rounded-full bg-purple-100 p-2 sm:p-3">
-                  <PieChartIcon className="h-5 w-5 text-purple-600 sm:h-6 sm:w-6" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold sm:text-base">Detaylı Analizler</h3>
-                  <p className="text-xs text-gray-600 sm:text-sm">Projelerinizin performansını anlık olarak izleyin</p>
-                </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="bg-white/80 backdrop-blur">
+          <CardContent className="p-3 pt-4 sm:p-6 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="rounded-full bg-green-100 p-2 sm:p-3">
+                <Users className="h-5 w-5 text-green-600 sm:h-6 sm:w-6" />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+              <div>
+                <h3 className="text-sm font-semibold sm:text-base">Üye Yönetimi</h3>
+                <p className="text-xs text-gray-600 sm:text-sm">Bireysel ve kurumsal üyelerinizi kolayca takip edin</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="bg-white/80 backdrop-blur">
+          <CardContent className="p-3 pt-4 sm:p-6 sm:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="rounded-full bg-purple-100 p-2 sm:p-3">
+                <PieChartIcon className="h-5 w-5 text-purple-600 sm:h-6 sm:w-6" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold sm:text-base">Detaylı Analizler</h3>
+                <p className="text-xs text-gray-600 sm:text-sm">Projelerinizin performansını anlık olarak izleyin</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </PageHeader>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2">
         {/* Proje Bilgileri Card'ı */}
