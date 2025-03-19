@@ -74,7 +74,9 @@ export default function Header({
         <div className="hidden shrink-0 md:flex">
           {session !== null ? (
             <div className="flex items-center space-x-6">
-              <Link className="flex items-center justify-center gap-2" href={getBaseLink("projects/new", lang)}>
+              <Link
+                className="flex items-center justify-center gap-2"
+                href={getBaseLink("dashboard/projects/new", lang)}>
                 <PlusCircle className="text-primary size-5" />
                 Proje Başlat
               </Link>
@@ -137,7 +139,7 @@ export default function Header({
               <div className="flex flex-col items-center space-y-4">
                 <Link
                   className="hover:text-secondary flex items-center justify-center gap-2 text-white transition-colors duration-200"
-                  href={getBaseLink("projects/new", lang)}
+                  href={getBaseLink("dashboard/projects/new", lang)}
                   onClick={() => {
                     setIsMenuOpen(false);
                   }}>

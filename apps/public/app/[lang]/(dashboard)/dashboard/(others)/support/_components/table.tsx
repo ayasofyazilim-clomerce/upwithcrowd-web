@@ -49,7 +49,7 @@ export default function SupportTable({taskResponse}: PaymentsTableProps) {
     },
     links: {
       summary: {
-        prefix: getBaseLink("profile/support"),
+        prefix: getBaseLink("dashboard/support"),
         targetAccessorKey: "id",
       },
     },

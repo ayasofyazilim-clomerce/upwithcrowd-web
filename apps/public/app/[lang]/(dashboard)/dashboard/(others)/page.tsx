@@ -68,7 +68,7 @@ export default function ProfileClient() {
               }
             })
             .finally(() => {
-              router.push("/profile");
+              router.push("/dashboard");
             });
         });
       };
@@ -147,7 +147,7 @@ export default function ProfileClient() {
           )}
 
           <Card className="hover:bg-muted w-full cursor-pointer text-nowrap border-dashed shadow-none transition-colors hover:border-none hover:shadow-md">
-            <Link href={getBaseLink("profile/new/business")}>
+            <Link href={getBaseLink("dashboard/member/new/business")}>
               <CardContent className="flex items-center justify-between p-4 md:p-6">
                 <div className="flex items-center gap-4">
                   <BriefcaseBusiness className="text-primary h-8 w-8" />
@@ -203,7 +203,7 @@ export default function ProfileClient() {
                     </Link>
                     <Link
                       className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                      href="/profile/settings">
+                      href="/dashboard/member/settings">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <div className="bg-muted rounded-full p-2">
@@ -226,7 +226,7 @@ export default function ProfileClient() {
                     {currentMember.type === "Organization" && (
                       <Link
                         className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                        href="/profile/documents">
+                        href="/dashboard/documents">
                         <div className="flex items-center gap-3">
                           <div className="bg-muted rounded-full p-2">
                             <FileText className="h-5 w-5" />
