@@ -68,7 +68,7 @@ export default async function Layout({
   return (
     <div className="space-y-6">
       <PageHeader description={projectDetail.projectDefinition} title={projectDetail.projectName}>
-        <ProjectActions projectId={projectId} />
+        {projectDetail.status === "Pending" && <ProjectActions projectId={projectId} />}
         <div className="absolute right-10 top-10">
           <Badge className={statusBgColor(projectDetail.status)} variant="default">
             {projectDetail.status}
