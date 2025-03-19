@@ -49,16 +49,7 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             label: "Görseller",
             disabled: true,
           },
-          {
-            href: `${baseLink}new/faq`,
-            label: "S.S.S",
-            disabled: true,
-          },
-          {
-            href: `${baseLink}new/terms-conditions`,
-            label: "Şartlar ve Koşullar",
-            disabled: true,
-          },
+
           {
             href: `${baseLink}new/finish-project`,
             label: "Bitir",

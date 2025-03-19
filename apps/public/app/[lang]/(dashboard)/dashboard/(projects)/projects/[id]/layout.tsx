@@ -50,16 +50,6 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             disabled: false,
           },
           {
-            href: `${baseLink}${id}/faq`,
-            label: "S.S.S",
-            disabled: false,
-          },
-          {
-            href: `${baseLink}${id}/terms-conditions`,
-            label: "Şartlar ve Koşullar",
-            disabled: false,
-          },
-          {
             href: `${baseLink}${id}/finish-project`,
             label: "Bitir",
             disabled: false,

@@ -1,8 +1,8 @@
 "use client";
 
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {ChevronRight, Rocket, Coins, BookOpen, Users, Layout, CreditCard} from "lucide-react";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {BookOpen, ChevronRight, Coins, Layout, Rocket} from "lucide-react";
 import Link from "next/link";
 import {useState} from "react";
 
@@ -75,27 +75,7 @@ export default function ProjectOnboarding() {
         "Proje ilerlemesini gösterin",
       ],
     },
-    {
-      id: "faq",
-      icon: <Users className="h-6 w-6" />,
-      title: "SSS",
-      description: "Sık sorulan sorular",
-      content: "Destekçilerden gelebilecek potansiyel soruları yanıtlayın.",
-      tips: ["Yaygın soruları yanıtlayın", "Proje risklerini açıklayın", "Endişeleri giderin", "Net bilgiler sağlayın"],
-    },
-    {
-      id: "terms",
-      icon: <CreditCard className="h-6 w-6" />,
-      title: "Şartlar ve Koşullar",
-      description: "Yasal gereklilikler",
-      content: "Proje şartlarını ve koşullarını gözden geçirin ve kabul edin.",
-      tips: [
-        "Şartları dikkatlice okuyun",
-        "Yükümlülükleri anlayın",
-        "Koşulları kabul edin",
-        "Yasal gereklilikleri inceleyin",
-      ],
-    },
+
     {
       id: "finish",
       icon: <Rocket className="h-6 w-6" />,
@@ -164,7 +144,9 @@ export default function ProjectOnboarding() {
                     <h4 className="mb-2 text-sm font-medium md:text-base">Önemli İpuçları:</h4>
                     <ul className="space-y-2">
                       {step.tips.map((tip, i) => (
-                        <li className="text-muted-foreground flex items-center gap-2 text-xs md:text-sm" key={i}>
+                        <li
+                          className="text-muted-foreground flex items-center gap-2 text-xs md:text-sm"
+                          key={`${step.id}-tip-${i}`}>
                           <div className="bg-primary h-1 w-1 rounded-full" />
                           {tip}
                         </li>
