@@ -3,7 +3,7 @@ import {getBaseLink} from "@/utils/lib";
 
 export default function Layout({children, params}: {children: React.ReactNode; params: {lang: string}}) {
   const {lang} = params;
-  const baseLink = getBaseLink("projects/", lang);
+  const baseLink = getBaseLink("dashboard", lang);
   return (
     <div className="bg-muted h-full ">
       <TabLayout
@@ -19,39 +19,39 @@ export default function Layout({children, params}: {children: React.ReactNode; p
         orientation="vertical"
         tabList={[
           {
-            href: `${baseLink}new`,
+            href: `${baseLink}/projects/new`,
             label: "Proje Başlat",
             disabled: false,
           },
           {
-            href: `${baseLink}new/basics/?type=Project`,
+            href: `${baseLink}/projects/new/basics/?type=Project`,
             label: "Temel Bilgiler",
             disabled: false,
           },
           {
-            href: `${baseLink}new/about`,
+            href: `${baseLink}/projects/new/about`,
             label: "Hakkımızda",
             disabled: true,
           },
           {
-            href: `${baseLink}new/funding`,
+            href: `${baseLink}/projects/new/funding`,
             label: "Fonlama Bilgilerim",
             disabled: true,
           },
 
           {
-            href: `${baseLink}new/documents`,
+            href: `${baseLink}/projects/new/documents`,
             label: "Dökümanlar",
             disabled: true,
           },
           {
-            href: `${baseLink}new/images`,
+            href: `${baseLink}/projects/new/images`,
             label: "Görseller",
             disabled: true,
           },
 
           {
-            href: `${baseLink}new/finish-project`,
+            href: `${baseLink}/projects/new/finish-project`,
             label: "Bitir",
             disabled: true,
           },
