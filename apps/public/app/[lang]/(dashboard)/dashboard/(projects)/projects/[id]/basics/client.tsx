@@ -13,9 +13,11 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {putProjectBasicsByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import {handlePostResponse} from "@repo/utils/api";
 import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {getBaseLink} from "@/utils/lib";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
@@ -58,16 +60,15 @@ interface PageData {
   type: PagedResultDto_TypeListDto | null;
 }
 
-interface CategoryItem {
-  id: string;
-  name: string;
-}
-
 export default function ClientBasics({data}: {data: PageData}) {
   const router = useRouter();
   const {id: projectId} = useParams<{id: string}>();
   const search = useSearchParams();
   const params = new URLSearchParams(search);
+
+  const paramsBaseLink = useParams();
+  const {lang} = paramsBaseLink;
+  const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
@@ -75,7 +76,7 @@ export default function ClientBasics({data}: {data: PageData}) {
       projectName: data.projectDetail.projectName ?? "",
       projectDefinition: data.projectDetail.projectDefinition ?? "",
       sectorId: data.projectDetail.sectorId ?? "",
-      categoryTypes: data.category?.items?.map((category) => category.id) ?? [],
+      categoryTypes: data.projectDetail.categoryTypes ?? [],
       projectTypes: (() => {
         const typeId = data.type?.items?.find((type) => type.name === params.get("type"))?.id;
         return typeId ? [typeId] : [];
@@ -90,8 +91,7 @@ export default function ClientBasics({data}: {data: PageData}) {
       id: projectId,
     }).then((res) => {
       if (res.type === "success") {
-        toast.success("Proje başarıyla kaydedildi");
-        router.push(`/projects/${res.data.projectId}/about`);
+        handlePostResponse(res, router, `${baseLink}/projects/${res.data.projectId}/about`);
       } else {
         toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
       }
@@ -211,18 +211,18 @@ export default function ClientBasics({data}: {data: PageData}) {
                       <FormLabel>Kategori Türleri</FormLabel>
                       <FormControl>
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
-                          {data.category?.items?.map((cat: CategoryItem) => (
+                          {data.category?.items?.map((categoryItem) => (
                             <Button
-                              key={cat.id}
+                              key={categoryItem.id}
                               onClick={() => {
-                                const newValue = field.value.includes(cat.id)
-                                  ? field.value.filter((v) => v !== cat.id)
-                                  : [...field.value, cat.id];
+                                const newValue = field.value.includes(categoryItem.id)
+                                  ? field.value.filter((v) => v !== categoryItem.id)
+                                  : [...field.value, categoryItem.id];
                                 field.onChange(newValue);
                               }}
                               type="button"
-                              variant={field.value.includes(cat.id) ? "default" : "outline"}>
-                              {cat.name}
+                              variant={field.value.includes(categoryItem.id) ? "default" : "outline"}>
+                              {categoryItem.name}
                             </Button>
                           ))}
                         </div>
