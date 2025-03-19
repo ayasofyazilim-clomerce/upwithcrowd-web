@@ -1,14 +1,17 @@
+import {Badge} from "@/components/ui/badge";
 import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getProjectApi, getProjectStatisticsByIdApi} from "@repo/actions/upwithcrowd/project/action";
 import Infocard from "@repo/ayasofyazilim-ui/molecules/infocard";
 import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
 import ErrorComponent from "@repo/ui/components/error-component";
+import PageHeader from "@repo/ui/upwithcrowd/header";
 import {structuredError} from "@repo/utils/api";
-import {Wallet2, WalletCards, Coins, Landmark, CircleDollarSign} from "lucide-react";
+import {CircleDollarSign, Coins, Landmark, Wallet2, WalletCards} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getBaseLink} from "@/utils";
 import {checkNonEmptyArray} from "@/types";
 import {getResourceData} from "@/language-data/core/Default";
+import ProjectActions from "./_components/project-actions";
 
 async function getApiRequests(projectId: string) {
   try {
@@ -23,6 +26,19 @@ async function getApiRequests(projectId: string) {
       return structuredError(error);
     }
     throw error;
+  }
+}
+
+function statusBgColor(status?: string) {
+  switch (status) {
+    case "Approved":
+      return "bg-green-700";
+    case "Pending":
+      return "bg-yellow-700";
+    case "Rejected":
+      return "bg-red-700";
+    default:
+      return "bg-gray-700";
   }
 }
 
@@ -51,12 +67,14 @@ export default async function Layout({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6">
-        <div className="">
-          <h1 className="text-xl font-bold text-gray-800 sm:text-2xl">{projectDetail.projectName}</h1>
-          <p className="mt-1 text-sm text-gray-600 sm:mt-2">{projectDetail.projectDefinition}</p>
+      <PageHeader description={projectDetail.projectDefinition} title={projectDetail.projectName}>
+        <ProjectActions projectId={projectId} />
+        <div className="absolute right-10 top-10">
+          <Badge className={statusBgColor(projectDetail.status)} variant="default">
+            {projectDetail.status}
+          </Badge>
         </div>
-      </div>
+      </PageHeader>
       <div className="grid grid-cols-5 gap-2">
         <Infocard
           className="min-w-full"
@@ -89,6 +107,7 @@ export default async function Layout({
           title="Toplam yatırım"
         />
       </div>
+
       <TabLayout
         tabList={[
           {
