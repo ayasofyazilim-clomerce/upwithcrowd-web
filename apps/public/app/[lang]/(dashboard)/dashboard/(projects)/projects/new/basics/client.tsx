@@ -14,9 +14,11 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {postProjectApi} from "@repo/actions/upwithcrowd/project/post-action";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import {useRouter, useSearchParams} from "next/navigation";
+import {handlePostResponse} from "@repo/utils/api";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {getBaseLink} from "@/utils/lib";
 import {FormContainer} from "../_components/form";
 import {Section} from "../_components/section";
 import TextWithTitle from "../_components/text-with-title";
@@ -30,12 +32,15 @@ const projectSchema = z.object({
   projectName: z
     .string()
     .min(1, "Proje adı zorunludur")
-    .max(60, "Proje adı en fazla 60 karakter olabilir")
-    .regex(/[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]{1,600}/, "Geçersiz karakterler içeriyor"),
+    .max(600, "Proje adı en fazla 600 karakter olabilir")
+    .regex(/^[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]+$/, "Geçersiz karakterler içeriyor"),
+
   projectDefinition: z
     .string()
     .min(1, "Proje açıklaması zorunludur")
-    .regex(/[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]{1,2000}/, "Geçersiz karakterler içeriyor"),
+    .max(2000, "Proje açıklaması en fazla 2000 karakter olabilir")
+    .regex(/^[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]+$/, "Geçersiz karakterler içeriyor"),
+
   categorys: z.array(z.string().uuid()),
   types: z.array(z.string().uuid()),
   sectorId: z.string().uuid(),
@@ -55,6 +60,9 @@ export default function BasicsClient({data}: {data: PageData}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
+  const params = useParams();
+  const {lang} = params;
+  const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
 
   // Add this helper to find the matching type ID
   const getTypeId = () => {
@@ -65,6 +73,7 @@ export default function BasicsClient({data}: {data: PageData}) {
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
+    mode: "onChange", // Enable validation as the user types
     defaultValues: {
       projectName: "",
       projectDefinition: "",
@@ -113,8 +122,7 @@ export default function BasicsClient({data}: {data: PageData}) {
       requestBody: finalFormData,
     }).then((res) => {
       if (res.type === "success") {
-        toast.success("Proje başarıyla kaydedildi");
-        router.push(`/projects/${res.data.projectId}/about`);
+        handlePostResponse(res, router, `${baseLink}/projects/${res.data.projectId}/about`);
       } else {
         toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
       }
@@ -160,7 +168,17 @@ export default function BasicsClient({data}: {data: PageData}) {
                     <FormItem>
                       <FormLabel>Proje Adı</FormLabel>
                       <FormControl>
-                        <Input placeholder="Örnek: Sürdürülebilir Tarım Teknolojileri" {...field} />
+                        <div className="space-y-1">
+                          <Input placeholder="Örnek: Sürdürülebilir Tarım Teknolojileri" {...field} />
+                          <div className="text-muted-foreground flex justify-between text-xs">
+                            <span>
+                              {field.value.length > 0 ? `${field.value.length} / 600 karakter` : "Zorunlu alan"}
+                            </span>
+                            {field.value.length > 0 && !/^[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]+$/.test(field.value) && (
+                              <span className="text-destructive">Geçersiz karakterler içeriyor</span>
+                            )}
+                          </div>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -173,11 +191,21 @@ export default function BasicsClient({data}: {data: PageData}) {
                     <FormItem>
                       <FormLabel>Proje Açıklaması</FormLabel>
                       <FormControl>
-                        <Textarea
-                          placeholder="Projenizin amacını ve hedeflerini kısaca açıklayın..."
-                          {...field}
-                          rows={3}
-                        />
+                        <div className="space-y-1">
+                          <Textarea
+                            placeholder="Projenizin amacını ve hedeflerini kısaca açıklayın..."
+                            {...field}
+                            rows={3}
+                          />
+                          <div className="text-muted-foreground flex justify-between text-xs">
+                            <span>
+                              {field.value.length > 0 ? `${field.value.length} / 2000 karakter` : "Zorunlu alan"}
+                            </span>
+                            {field.value.length > 0 && !/^[a-zA-Z0-9ıüğşöçĞÜŞİÖÇ ,.'-]+$/.test(field.value) && (
+                              <span className="text-destructive">Geçersiz karakterler içeriyor</span>
+                            )}
+                          </div>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -253,6 +281,9 @@ export default function BasicsClient({data}: {data: PageData}) {
                           ))}
                         </div>
                       </FormControl>
+                      {field.value.length === 0 && (
+                        <p className="text-muted-foreground text-xs">En az bir kategori seçilmelidir</p>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

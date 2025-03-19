@@ -1,15 +1,15 @@
-import type {
-  UpwithCrowd_Projects_ProjectsResponseDto,
-  UpwithCrowd_Projects_ProjectsFundingResponseDto,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+import type {
+  UpwithCrowd_Projects_ProjectsFundingResponseDto,
+  UpwithCrowd_Projects_ProjectsResponseDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {formatCurrency} from "@repo/ui/utils";
 import {ChevronLeft, ChevronRight, Info} from "lucide-react";
 import Image from "next/image";
-import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {useRouter} from "next/navigation";
-import {formatCurrency} from "@repo/ui/utils";
 
 // Info button component
 function InfoButton({href}: {href: string}) {
@@ -48,7 +48,6 @@ export default function ProjectSummary({
   fundedPercentage: number;
   editLinks: {
     basics: string;
-    content: string;
   };
 }) {
   return (
