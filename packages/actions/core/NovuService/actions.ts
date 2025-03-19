@@ -73,7 +73,10 @@ export async function postNovuTrigger(
     const result = await novu.trigger({
       workflowId: workflowId,
       payload: payload,
-      to: receivers,
+      to: receivers.map((to) => ({
+        topicKey: to,
+        type: "Topic",
+      })),
     });
     return structuredSuccessResponse(result);
   } catch (error) {

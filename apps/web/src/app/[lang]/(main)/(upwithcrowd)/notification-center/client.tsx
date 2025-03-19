@@ -7,7 +7,7 @@ import SendNotificationForm from "@repo/ui/upwithcrowd/novu/send-notification-fo
 function Form({notificationStats}: {notificationStats: ActivityStatsResponseDto | undefined}) {
   return (
     <div className="grid grid-cols-2 gap-3">
-      <SendNotificationForm broadcastEnabled membersEnabled />
+      <SendNotificationForm notificationType="broadcast" />
       <div>
         <div className="grid grid-cols-2 gap-2">
           <Infocard
