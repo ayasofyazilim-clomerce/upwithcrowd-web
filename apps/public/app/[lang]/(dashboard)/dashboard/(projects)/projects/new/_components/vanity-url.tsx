@@ -6,7 +6,7 @@ import {CircleAlert} from "lucide-react";
 import {useState} from "react";
 
 function ProfileLinkInput() {
-  const baseLink = "https://kickstarter.com/profile/";
+  const baseLink = "https://kickstarter.com/dashboard/";
   const maxUrlLength = 20;
   const [url, setUrl] = useState("");
 

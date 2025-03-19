@@ -35,8 +35,8 @@ export default function MemberSwitcher() {
   let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
 
   useEffect(() => {
-    if (!currentMember && path.includes("/profile")) {
-      router.push("/profile/new/personal");
+    if (!currentMember && path.includes("/dashboard")) {
+      router.push("/dashboard/member/new/personal");
     }
   }, [_currentMember]);
   if (!_currentMember) {
@@ -57,13 +57,13 @@ export default function MemberSwitcher() {
         <Button
           aria-expanded={open}
           aria-label="Üye seçin"
-          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
+          className={cn("h-auto w-[300px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
           <MemberItem member={_currentMember} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent align="end" className="min-w-[300px] p-0">
         <Content currentMember={_currentMember} setOpen={setOpen} />
       </PopoverContent>
     </Popover>
@@ -75,7 +75,7 @@ export default function MemberSwitcher() {
         <Button
           aria-expanded={open}
           aria-label="Üye seçin"
-          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
+          className={cn("h-auto w-[300px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
           <MemberItem member={_currentMember} />
@@ -198,38 +198,40 @@ function Commands() {
   const {lang} = useParams<{lang: string}>();
   return (
     <CommandList>
-      <CommandList>
-        <CommandGroup>
-          <CommandItem>
-            <Link className="flex items-center gap-2" href={getBaseLink("profile/new/business", lang)}>
-              <PlusCircle className="size-4" />
-              Kurumsal hesap oluştur
-            </Link>
-          </CommandItem>
-          <CommandSeparator />
-          <CommandItem>
-            <Link className="flex items-center gap-2" href={getBaseLink("profile", lang)}>
-              <UserIcon className="size-4" />
-              Profil
-            </Link>
-          </CommandItem>
-          <CommandItem>
-            <Link className="flex items-center gap-2" href={getBaseLink("profile/support/support-form", lang)}>
-              <HelpCircle className="size-4" />
-              Destek Talebi Oluştur
-            </Link>
-          </CommandItem>
-          <CommandItem
-            className="flex items-center gap-2 text-red-500 hover:cursor-pointer aria-selected:text-red-500"
-            onSelect={() => {
-              window.sessionStorage.removeItem("current_member");
-              void signOutServer();
-            }}>
-            <LogOut className="size-4" />
-            Çıkış yap
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
+      <CommandGroup className="p-0">
+        <CommandItem className="rounded-none p-0">
+          <Link
+            className="flex w-full items-center gap-2 rounded-none p-2"
+            href={getBaseLink("dashboard/member/new/business", lang)}>
+            <PlusCircle className="size-4" />
+            Kurumsal hesap oluştur
+          </Link>
+        </CommandItem>
+        <CommandSeparator />
+        <CommandItem className="rounded-none p-0">
+          <Link className="flex w-full items-center gap-2 rounded-none p-2" href={getBaseLink("dashboard", lang)}>
+            <UserIcon className="size-4" />
+            Profil
+          </Link>
+        </CommandItem>
+        <CommandItem className="rounded-none p-0">
+          <Link
+            className="flex w-full items-center gap-2 rounded-none p-2"
+            href={getBaseLink("dashboard/support/support-form", lang)}>
+            <HelpCircle className="size-4" />
+            Destek Talebi Oluştur
+          </Link>
+        </CommandItem>
+        <CommandItem
+          className="flex h-9 items-center gap-2 rounded-none text-red-500 hover:cursor-pointer aria-selected:text-red-500"
+          onSelect={() => {
+            window.sessionStorage.removeItem("current_member");
+            void signOutServer();
+          }}>
+          <LogOut className="size-4" />
+          Çıkış yap
+        </CommandItem>
+      </CommandGroup>
     </CommandList>
   );
 }

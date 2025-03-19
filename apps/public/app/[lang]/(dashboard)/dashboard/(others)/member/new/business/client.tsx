@@ -86,7 +86,7 @@ export default function NewBusinessAccount() {
 
   const handleModalClose = () => {
     setShowSuccessModal(false);
-    router.replace("/profile");
+    router.replace("/dashboard");
   };
 
   return (

@@ -80,7 +80,7 @@ export default function SupportFormClient() {
       }).then((res) => {
         handlePostResponse(res);
         form.reset();
-        router.push("/profile/support");
+        router.push("/dashboard/support");
       });
     });
   }
@@ -95,7 +95,7 @@ export default function SupportFormClient() {
               Talebinizi oluşturun ve destek ekibimizden yardım alın.
             </CardDescription>
           </div>
-          <Link href="/profile/support">
+          <Link href="/dashboard/support">
             <Button className="flex items-center gap-2" variant="default">
               Taleplerimi Görüntüle <Info className="h-5 w-5" />
             </Button>

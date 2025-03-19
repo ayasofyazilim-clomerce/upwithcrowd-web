@@ -41,7 +41,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
           </h3>
           <Link
             className="hover:text-primary  flex w-full shrink-0 items-center gap-1 rounded-full text-sm text-gray-600 transition-colors duration-300"
-            href={`/profile/notice/${project.id}`}>
+            href={`/dashboard/notice/${project.id}`}>
             Bildirim Gönder
             <Send className="text-primary h-4 w-4" />
           </Link>
