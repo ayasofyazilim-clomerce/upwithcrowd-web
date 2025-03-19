@@ -1,23 +1,22 @@
 "use client";
-import React, {useCallback, useMemo, useState} from "react";
 import {Button} from "@/components/ui/button";
+import {Form, FormLabel} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
 import {toast} from "@/components/ui/sonner";
-import {useRouter, useParams} from "next/navigation";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Search, UserPlus} from "lucide-react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import type {
   PagedResultDto_ListCustomRolesDto,
   PagedResultDto_ListProjectsMembersResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {postProjectAffiliationApi} from "@repo/actions/upwithcrowd/project/post-action";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {getMemberMailApi} from "@repo/actions/upwithcrowd/member/actions";
-import {useMember} from "@/app/providers/member";
+import {postProjectAffiliationApi} from "@repo/actions/upwithcrowd/project/post-action";
+import {UserPlus} from "lucide-react";
+import {useParams, useRouter} from "next/navigation";
+import {useCallback, useMemo, useState} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {getBaseLink} from "@/utils/lib";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
@@ -44,6 +43,9 @@ export default function ClientAbout({
 }) {
   const router = useRouter();
   const {id: projectId} = useParams<{id: string}>();
+  const paramsBaseLink = useParams();
+  const {lang} = paramsBaseLink;
+  const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
 
   const form = useForm<AboutFormValues>({
     resolver: zodResolver(aboutSchema),
@@ -52,15 +54,13 @@ export default function ClientAbout({
   const onSubmit = () => {
     // Mock API response
     toast.success("Ekip bilgileri başarıyla kaydedildi");
-    router.push(`/projects/${projectId}/funding`);
+    router.push(`${baseLink}/projects/${projectId}/funding`);
   };
 
   // Add team management state and functions
   const [teamEmail, setTeamEmail] = useState<string>("");
   const [selectedRoleName, setSelectedRoleName] = useState<string>("");
-  const [selectedRoleType, setSelectedRoleType] = useState<string>("");
   const [roleId, setRoleId] = useState<string>("");
-  const {currentMember} = useMember();
 
   const formatRoleName = useCallback((name: string) => {
     return name
@@ -71,20 +71,20 @@ export default function ClientAbout({
   }, []);
 
   const uniqueRoleNames = useMemo(() => {
-    return Array.from(new Set(roles.items?.map((role) => role.name) ?? []));
+    // Check if roles.items exists and has length
+    if (!roles.items || roles.items.length === 0) {
+      return [];
+    }
+
+    // Get all role names, filter out undefined/null, and create a Set of unique names
+    const names = Array.from(new Set(roles.items.map((role) => role.name).filter(Boolean)));
+    return names;
   }, [roles.items]);
 
-  const getAvailableRoleTypes = useCallback(
-    (roleName: string) => {
-      return roles.items?.filter((role) => role.name === roleName).map((role) => role.customRoleType) ?? [];
-    },
-    [roles.items],
-  );
-
   const updateRoleId = useCallback(
-    (name: string, type: string) => {
-      // Change 'role' to 'matchingRole' to avoid shadowing
-      const matchingRole = roles.items?.find((r) => r.name === name && r.customRoleType === type);
+    (name: string) => {
+      // Always use "Entrepreneur" as the role type
+      const matchingRole = roles.items?.find((r) => r.name === name && r.customRoleType === "Entrepreneur");
       setRoleId(matchingRole?.id ?? "");
     },
     [roles.items],
@@ -110,7 +110,6 @@ export default function ClientAbout({
           // Reset only team member form fields
           setTeamEmail("");
           setSelectedRoleName("");
-          setSelectedRoleType("");
           setRoleId("");
           // Refresh the page to update the team members list
           router.refresh();
@@ -125,54 +124,66 @@ export default function ClientAbout({
     }
   };
 
-  // Replace the single selectedLeader state with an array
-  const [selectedLeaders, setSelectedLeaders] = useState<
-    {
-      id: string;
-      name?: string;
-      surname?: string;
-      title?: string;
-      mail?: string;
-    }[]
-  >([]);
+  // // Replace the single selectedLeader state with an array
+  // const [selectedLeaders, setSelectedLeaders] = useState<
+  //   {
+  //     id: string;
+  //     name?: string;
+  //     surname?: string;
+  //     title?: string;
+  //     mail?: string;
+  //     role?: string; // Add role field to the type
+  //   }[]
+  // >([]);
 
-  const leaderOptions = useMemo(() => {
-    const options = [];
+  // const leaderOptions = useMemo(() => {
+  //   const options = [];
+  //   const addedIds = new Set(); // Track already added members to prevent duplicates
 
-    // Add current member
-    if (currentMember) {
-      const displayName =
-        currentMember.name && currentMember.surname
-          ? `${currentMember.name} ${currentMember.surname}`
-          : currentMember.title || currentMember.mail;
+  // Add current member (project creator)
+  // if (currentMember) {
+  //   const displayName =
+  //     currentMember.name && currentMember.surname
+  //       ? `${currentMember.name} ${currentMember.surname}`
+  //       : currentMember.title || currentMember.mail;
 
-      options.push({
-        id: currentMember.id,
-        name: currentMember.name || undefined,
-        surname: currentMember.surname || undefined,
-        title: currentMember.title || undefined,
-        mail: currentMember.mail || undefined,
-        label: displayName,
-      });
-    }
+  //   options.push({
+  //     id: currentMember.id,
+  //     name: currentMember.name || undefined,
+  //     surname: currentMember.surname || undefined,
+  //     title: currentMember.title || undefined,
+  //     mail: currentMember.mail || undefined,
+  //     role: "Proje Sahibi", // Default role for project creator
+  //     label: displayName,
+  //   });
 
-    // Add project members
-    if (projectMember.items) {
-      projectMember.items.forEach((member) => {
-        const displayName = member.name && member.surname ? `${member.name} ${member.surname}` : member.mail;
+  //   addedIds.add(currentMember.id);
+  // }
 
-        options.push({
-          id: member.customRoleID,
-          name: member.name || undefined,
-          surname: member.surname || undefined,
-          mail: member.mail || undefined,
-          label: displayName,
-        });
-      });
-    }
+  // // Add project members (excluding those already added)
+  // if (projectMember.items) {
+  //   projectMember.items.forEach((member) => {
+  //     // Skip if member ID is already in the list, if it's missing an ID, or if status is not Approved
+  //     if (!member.customRoleID || addedIds.has(member.customRoleID) || member.status !== "Approved") return;
 
-    return options;
-  }, [currentMember, projectMember.items]);
+  //     const displayName = member.name && member.surname ? `${member.name} ${member.surname}` : member.mail;
+  //     const roleName = member.customRoleName ? formatRoleName(member.customRoleName) : "Ekip Üyesi";
+
+  //     options.push({
+  //       id: member.customRoleID,
+  //       name: member.name || undefined,
+  //       surname: member.surname || undefined,
+  //       mail: member.mail || undefined,
+  //       role: roleName,
+  //       label: displayName,
+  //     });
+
+  //     addedIds.add(member.customRoleID);
+  //   });
+  // }
+
+  // return options;
+  // }, [currentMember, projectMember.items, formatRoleName]);
 
   return (
     <div>
@@ -188,17 +199,17 @@ export default function ClientAbout({
         />
         <Form {...form}>
           <form
-            className="space-y-6 md:space-y-8"
+            className="w-full space-y-8"
             onSubmit={(e) => {
               void form.handleSubmit(onSubmit)(e);
             }}>
-            <Section text="Bu projeyi kimler yönetiyor?" title="Proje Liderleri">
+            {/* <Section text="Bu projeyi kimler yönetiyor?" title="Proje Liderleri">
               <FormContainer>
                 <div className="space-y-4">
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-2">
                       <select
-                        className="w-full rounded-md border p-2"
+                        className="w-full rounded-md border p-2 text-sm"
                         onChange={(e) => {
                           const leader = leaderOptions.find((option) => option.id === e.target.value);
                           if (leader && !selectedLeaders.some((l) => l.id === leader.id)) {
@@ -209,11 +220,18 @@ export default function ClientAbout({
                         <option value="">Lider ekle</option>
                         {leaderOptions
                           .filter((option) => !selectedLeaders.some((leader) => leader.id === option.id))
-                          .map((option) => (
-                            <option key={option.id} value={option.id}>
-                              {option.label}
-                            </option>
-                          ))}
+                          .map((option) => {
+                            const fullName =
+                              option.name && option.surname
+                                ? `${option.name} ${option.surname}`
+                                : option.title || "İsimsiz";
+
+                            return (
+                              <option key={option.id} value={option.id} className="py-2">
+                                {fullName} • {option.mail} • {option.role || "Rol belirtilmemiş"}
+                              </option>
+                            );
+                          })}
                       </select>
                     </div>
 
@@ -224,7 +242,10 @@ export default function ClientAbout({
                             <h4 className="font-medium">
                               {leader.name && leader.surname ? `${leader.name} ${leader.surname}` : leader.title}
                             </h4>
-                            <p className="text-sm text-gray-600">{leader.mail}</p>
+                            <div className="text-sm text-gray-600">
+                              <p>{leader.mail}</p>
+                              {leader.role && <p className="font-medium text-gray-700">{leader.role}</p>}
+                            </div>
                           </div>
                           <Button
                             className="text-red-500 hover:text-red-700"
@@ -247,7 +268,7 @@ export default function ClientAbout({
                   </div>
                 </div>
               </FormContainer>
-            </Section>
+            </Section> */}
 
             {/* Add the team management section before the final submit button */}
             <Section text="Projenin gerçekleştirilmesinde görev alacak ekip üyelerini ekleyin." title="Proje Ekibi">
@@ -267,7 +288,7 @@ export default function ClientAbout({
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4">
                     <div>
                       <FormLabel>Rol</FormLabel>
                       <select
@@ -275,37 +296,25 @@ export default function ClientAbout({
                         onChange={(e) => {
                           const newRoleName = e.target.value;
                           setSelectedRoleName(newRoleName);
-                          setSelectedRoleType(""); // Reset role type when role name changes
-                          updateRoleId(newRoleName, "");
+                          updateRoleId(newRoleName);
                         }}
                         value={selectedRoleName}>
                         <option value="">Rol seçiniz</option>
-                        {uniqueRoleNames.map((name) => (
-                          <option key={name} value={name}>
-                            {formatRoleName(name)}
+                        {uniqueRoleNames.length > 0 ? (
+                          uniqueRoleNames.map((name) => (
+                            <option key={name} value={name}>
+                              {formatRoleName(name)}
+                            </option>
+                          ))
+                        ) : (
+                          <option disabled value="">
+                            Roller yükleniyor veya mevcut değil
                           </option>
-                        ))}
+                        )}
                       </select>
-                    </div>
-
-                    <div>
-                      <FormLabel>Rol Tipi</FormLabel>
-                      <select
-                        className="w-full rounded-md border p-2"
-                        disabled={!selectedRoleName}
-                        onChange={(e) => {
-                          const newRoleType = e.target.value;
-                          setSelectedRoleType(newRoleType);
-                          updateRoleId(selectedRoleName, newRoleType);
-                        }}
-                        value={selectedRoleType}>
-                        <option value="">Rol tipi seçiniz</option>
-                        {getAvailableRoleTypes(selectedRoleName).map((type) => (
-                          <option key={type} value={type}>
-                            {type}
-                          </option>
-                        ))}
-                      </select>
+                      {uniqueRoleNames.length === 0 && (
+                        <p className="mt-1 text-xs text-red-500">Roller yüklenemedi veya mevcut değil</p>
+                      )}
                     </div>
                   </div>
 
@@ -324,8 +333,8 @@ export default function ClientAbout({
 
                     {/* Mobile View - Card Layout */}
                     <div className="block space-y-4 md:hidden">
-                      {projectMember.items.map((member, index) => (
-                        <div className="space-y-2 rounded-lg border p-4" key={index}>
+                      {projectMember.items.map((member) => (
+                        <div className="space-y-2 rounded-lg border p-4" key={member.customRoleID}>
                           <div className="flex items-center justify-between">
                             <h4 className="font-medium">
                               {member.name} {member.surname}
@@ -343,7 +352,6 @@ export default function ClientAbout({
                           <div className="text-sm text-gray-600">
                             <p>E-posta: {member.mail}</p>
                             <p>Rol: {formatRoleName(member.customRoleName ?? "")}</p>
-                            <p>Rol Tipi: {member.customRoleType}</p>
                           </div>
                         </div>
                       ))}
@@ -358,19 +366,17 @@ export default function ClientAbout({
                               <TableHead>İsim</TableHead>
                               <TableHead>E-posta</TableHead>
                               <TableHead>Rol</TableHead>
-                              <TableHead>Rol Tipi</TableHead>
                               <TableHead>Durum</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {projectMember.items.map((member, index) => (
-                              <TableRow key={index}>
+                            {projectMember.items.map((member) => (
+                              <TableRow key={member.customRoleID}>
                                 <TableCell className="font-medium">
                                   {member.name} {member.surname}
                                 </TableCell>
                                 <TableCell>{member.mail}</TableCell>
                                 <TableCell>{formatRoleName(member.customRoleName ?? "")}</TableCell>
-                                <TableCell>{member.customRoleType}</TableCell>
                                 <TableCell>
                                   {member.status === "Draft" && (
                                     <span className="rounded-full bg-yellow-100 px-2 py-1">Draft</span>
@@ -392,7 +398,7 @@ export default function ClientAbout({
                 ) : null}
               </FormContainer>
             </Section>
-            <Section text="Temel bilgilerinizi girin" title="Kişisel Bilgiler">
+            {/* <Section text="Temel bilgilerinizi girin" title="Kişisel Bilgiler">
               <FormContainer>
                 <div className="space-y-4">
                   <div className="w-full md:w-2/3">
@@ -417,9 +423,9 @@ export default function ClientAbout({
                   />
                 </div>
               </FormContainer>
-            </Section>
+            </Section> */}
 
-            <Section text="İş deneyiminiz ve uzmanlık alanlarınız" title="Profesyonel Deneyim">
+            {/* <Section text="İş deneyiminiz ve uzmanlık alanlarınız" title="Profesyonel Deneyim">
               <FormContainer>
                 <div className="space-y-4">
                   <FormField
@@ -473,9 +479,9 @@ export default function ClientAbout({
                   </div>
                 </div>
               </FormContainer>
-            </Section>
+            </Section> */}
 
-            <Section text="Sosyal medya ve iletişim bilgileriniz" title="İletişim Bilgileri">
+            {/* <Section text="Sosyal medya ve iletişim bilgileriniz" title="İletişim Bilgileri">
               <FormContainer>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <FormField
@@ -521,9 +527,9 @@ export default function ClientAbout({
                   />
                 </div>
               </FormContainer>
-            </Section>
+            </Section> */}
 
-            <Button className="w-full md:w-auto md:min-w-[200px]" type="submit">
+            <Button className="w-full " type="submit">
               Devam Et
             </Button>
           </form>

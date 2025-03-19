@@ -16,7 +16,6 @@ import {useParams, useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import BudgetCard from "../../new/_components/budget-card";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
@@ -35,6 +34,14 @@ const fundingSchema = z.object({
   cashValue: z.coerce.number().min(0, "Cash value must be greater than or equal to 0"),
 });
 
+// Add this mapping object for fund collection type labels
+const fundCollectionTypeLabels: Record<string, string> = {
+  NONE: "Seçiniz",
+  SHRE: "Paya Dayalı",
+  DBIT: "Borca Dayalı",
+  SHRE_DBIT: "Paya ve Borca Dayalı",
+};
+
 export type FundingFormValues = z.infer<typeof fundingSchema>;
 export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCrowd_Projects_UpdateProjectFundingDto}) {
   const {id: projectId} = useParams<{id: string}>();
@@ -47,6 +54,8 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
       ...fundingDetail,
       cashValue: fundingDetail.cashValue ?? 0,
     },
+    mode: "onChange", // Enable validation as the user types
+    reValidateMode: "onChange", // Re-validate when inputs change
   });
 
   const [spesifDate, setSpesifDate] = useState(false);
@@ -129,12 +138,16 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                       <FormLabel>Fonlama Tipi</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select fund collection type" />
+                          <SelectValue placeholder="Select fund collection type">
+                            {field.value
+                              ? fundCollectionTypeLabels[field.value] || field.value
+                              : "Select fund collection type"}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           {$UpwithCrowd_Projects_FundCollectionType.enum.map((type) => (
                             <SelectItem key={type} value={type}>
-                              {type}
+                              {fundCollectionTypeLabels[type] || type}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -157,7 +170,11 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                         <FormLabel>Başlangıç Tarihi</FormLabel>
                         <FormControl>
                           <DatePicker
-                            date={field.value ? new Date(field.value) : undefined}
+                            date={
+                              field.value && !isNaN(new Date(field.value).getTime())
+                                ? new Date(field.value)
+                                : new Date()
+                            }
                             setDate={(date?: Date) => {
                               field.onChange(date?.toISOString() || "");
                             }}
@@ -251,14 +268,14 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                       <FormLabel>Fundable Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₺</span>
                           <Input
                             className="pl-7"
                             min="0"
-                            placeholder="0"
+                            placeholder="1"
                             type="number"
                             {...field}
-                            value={field.value.toString()}
+                            value={field.value.toString() || ""}
                           />
                         </div>
                       </FormControl>
@@ -282,11 +299,11 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                       <FormLabel>Min Fund Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₺</span>
                           <Input
                             className="pl-7"
                             min="0"
-                            placeholder="0"
+                            placeholder="1"
                             type="number"
                             {...field}
                             onChange={(e) => {
@@ -316,11 +333,11 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                       <FormLabel>Nominal Amount</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₺</span>
                           <Input
                             className="pl-7"
                             min="0"
-                            placeholder="0"
+                            placeholder="1"
                             type="number"
                             {...field}
                             value={field.value.toString()}
@@ -422,7 +439,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
               </FormContainer>
             </Section>
 
-            <Section
+            {/* <Section
               text={[
                 "Google Sheets şablonumuzu kullanarak projenizi hayata geçirmek için gereken maliyetleri belirleyin.",
                 "Belgenize erişimimiz olacak, ancak bilgileriniz hiçbir zaman başkalarıyla paylaşılmayacak.",
@@ -431,7 +448,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
               <FormContainer className="">
                 <BudgetCard />
               </FormContainer>
-            </Section>
+            </Section> */}
             <Button className="w-full" type="submit">
               Submit
             </Button>
