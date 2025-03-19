@@ -83,7 +83,7 @@ export default async function Page({
             <FilterSelector />
             <SortSelector />
           </div>
-          <Link className="w-full sm:w-auto" href="/projects/new">
+          <Link className="w-full sm:w-auto" href="/dashboard/projects/new">
             <Button className="w-full sm:w-auto" size="sm">
               Yeni Proje Oluştur <Plus className="ml-2 h-5 w-5" />
             </Button>
