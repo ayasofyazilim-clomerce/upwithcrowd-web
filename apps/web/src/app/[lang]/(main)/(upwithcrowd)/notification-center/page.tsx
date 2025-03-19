@@ -3,6 +3,7 @@ import {getNovuNotificationStatistics} from "@repo/actions/core/NovuService/acti
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import PageHeader from "@repo/ui/upwithcrowd/header";
 import {getResourceData} from "@/language-data/core/Default";
 import ClientPage from "./client";
 
@@ -37,12 +38,8 @@ export default async function Page({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-4 sm:p-6">
-        <div className="">
-          <h1 className="text-xl font-bold text-gray-800 sm:text-2xl">Bildirim Merkezi</h1>
-          <p className="mt-1 text-sm text-gray-600 sm:mt-2">Bildirim oluşturun veya yönetin.</p>
-        </div>
-      </div>
+      <PageHeader description="Bildirim oluşturun veya yönetin." title="Bildirim Merkezi" />
+
       <ClientPage notificationStats={notificationStats.data} />
     </div>
   );
