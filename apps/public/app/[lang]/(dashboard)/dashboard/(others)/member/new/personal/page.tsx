@@ -31,7 +31,7 @@ export default async function Page({params}: {params: {lang: string}}) {
   const [memberResponse] = apiRequests.optionalRequests;
 
   if (memberResponse.status === "fulfilled" && memberResponse.value.data.items?.length !== 0) {
-    return permanentRedirect(`/${lang}/profile`);
+    return permanentRedirect(`/${lang}/dashboard`);
   }
 
   return <NewPersonalAccount />;

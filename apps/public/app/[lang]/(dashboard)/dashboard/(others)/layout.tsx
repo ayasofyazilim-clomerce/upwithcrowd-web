@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function Layout({children, params}: {children: React.ReactNode; params: {lang: string}}) {
   const {lang} = params;
-  const baseLink = getBaseLink("profile/", lang);
+  const baseLink = getBaseLink("dashboard/", lang);
   return (
     <TabLayout
       classNames={{
