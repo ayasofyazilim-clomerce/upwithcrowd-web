@@ -8,7 +8,7 @@ import {handlePutResponse} from "@repo/utils/api";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {getBaseLink} from "@/utils";
 
-type ProjectsTable = TanstackTableCreationProps<UpwithCrowd_Members_ListMemberResponseDto>;
+type MemberTable = TanstackTableCreationProps<UpwithCrowd_Members_ListMemberResponseDto>;
 
 const facetedOptions = [
   {
@@ -32,7 +32,7 @@ const facetedOptions = [
     hideColumnValue: true,
   },
 ];
-const projectsColumns = (locale: string) => {
+const memberColumns = (locale: string) => {
   return tanstackTableCreateColumnsByRowData<UpwithCrowd_Members_ListMemberResponseDto>({
     rows: $UpwithCrowd_Members_ListMemberResponseDto.properties,
     languageData: {
@@ -70,8 +70,8 @@ const projectsColumns = (locale: string) => {
   });
 };
 
-function projectsTable(router: AppRouterInstance) {
-  const table: ProjectsTable = {
+function memberTable(router: AppRouterInstance) {
+  const table: MemberTable = {
     fillerColumn: "title",
     columnVisibility: {
       type: "show",
@@ -115,8 +115,8 @@ function projectsTable(router: AppRouterInstance) {
 }
 
 export const tableData = {
-  projects: {
-    columns: projectsColumns,
-    table: projectsTable,
+  member: {
+    columns: memberColumns,
+    table: memberTable,
   },
 };

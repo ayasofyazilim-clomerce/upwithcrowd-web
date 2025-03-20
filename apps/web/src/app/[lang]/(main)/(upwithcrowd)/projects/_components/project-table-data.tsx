@@ -55,17 +55,18 @@ const projectsColumns = (locale: string) => {
         showHeader: true,
 
         content(row) {
+          const fundedPercentage = row.fundableAmount > 0 ? ((row.totalInvestment ?? 0) / row.fundableAmount) * 100 : 0;
           return (
             <div className="w-full min-w-80 px-4">
               <div className="my-2 flex justify-between text-xs">
                 <div>
-                  <div>{row.fundNominalAmount}₺</div>
+                  <div>{row.totalInvestment}₺</div>
                 </div>
                 <div className="text-right">
                   <div>{row.fundableAmount}₺</div>
                 </div>
               </div>
-              <Progress className="w-full" value={(row.fundNominalAmount / row.fundableAmount) * 100} />
+              <Progress className="w-full" value={fundedPercentage} />
               <div className="my-2 flex justify-between text-xs">
                 <div>
                   <div className="text-muted-foreground">Fonlanan Tutar</div>
