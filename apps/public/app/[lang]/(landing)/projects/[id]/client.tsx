@@ -88,8 +88,6 @@ export default function ProjectDetails({
     }
   };
 
-  const fundedPercentage = 0;
-
   const getInitialsFromMaskedName = (name: string | undefined) => {
     if (!name) return "";
 
@@ -161,12 +159,7 @@ export default function ProjectDetails({
     <main className="container mx-auto px-4 py-8">
       <div className="flex flex-col gap-8 md:gap-20 lg:flex-row">
         <div className="lg:w-3/5">
-          <ProjectSummary
-            basics={data}
-            fileResponse={fileResponse}
-            fundedPercentage={fundedPercentage}
-            funding={data}
-          />
+          <ProjectSummary basics={data} fileResponse={fileResponse} funding={data} statsResponse={statsResponse} />
 
           <TipTapEditor
             editorClassName="mt-8"
