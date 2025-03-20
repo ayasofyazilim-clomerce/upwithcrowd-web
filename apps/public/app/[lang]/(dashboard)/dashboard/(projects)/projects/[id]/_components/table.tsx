@@ -22,6 +22,7 @@ export default function ProjectInvestorTable({investorResponse}: ProjectInvestor
     custom: {
       amount: {
         content: (row) => AmountRow(row),
+        showHeader: true,
       },
     },
     languageData: {
