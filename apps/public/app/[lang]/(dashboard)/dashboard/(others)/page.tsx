@@ -15,7 +15,6 @@ import {
   ChevronRight,
   Copy,
   CopyCheck,
-  FileText,
   HelpCircle,
   Link2,
   LogOut,
@@ -223,7 +222,7 @@ export default function ProfileClient() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    {currentMember.type === "Organization" && (
+                    {/* {currentMember.type === "Organization" && (
                       <Link
                         className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
                         href="/dashboard/documents">
@@ -235,7 +234,7 @@ export default function ProfileClient() {
                         </div>
                         <ChevronRight className="text-muted-foreground h-5 w-5" />
                       </Link>
-                    )}
+                    )} */}
                   </div>
                 </div>
 
