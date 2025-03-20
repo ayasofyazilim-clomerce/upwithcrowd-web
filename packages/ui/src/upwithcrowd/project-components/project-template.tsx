@@ -78,7 +78,7 @@ function ProjectTemplate({
           memberID: currentMember?.id,
           amount,
           paymentType: "CreditCard",
-          type: "Increase",
+          type: "Decrease",
           paymentStatus: "Pending" as UpwithCrowd_Payment_PaymentStatus,
         } as UpwithCrowd_Payment_SavePaymentTransactionDto,
       });
