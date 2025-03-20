@@ -16,12 +16,13 @@ import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-trans
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import FundingTable from "@repo/ui/upwithcrowd/project-components/funding-card";
+import ProjectTeam from "@repo/ui/upwithcrowd/project-components/project-team";
 import {formatCurrency} from "@repo/ui/utils";
 import {useSession} from "@repo/utils/auth";
 import {Crown} from "lucide-react";
 import {useParams} from "next/navigation";
-import React, {useCallback, useState} from "react";
-import FundingTable from "@repo/ui/upwithcrowd/project-components/funding-card";
+import React, {useState} from "react";
 import {useMember} from "@/app/providers/member";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
@@ -40,7 +41,7 @@ export default function ProjectDetails({
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
   isEditable?: boolean;
-  projectsMember: PagedResultDto_ListProjectsMembersResponseDto;
+  projectsMember: PagedResultDto_ListProjectsMembersResponseDto | null;
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
   investorResponse: PagedResultDto_ListProjectInvestorDto | null;
   statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto | null;
@@ -86,45 +87,6 @@ export default function ProjectDetails({
       setIsLoading(false);
     }
   };
-
-  const formatRoleName = useCallback((name: string) => {
-    return name
-      .replace("UpwithCrowd:CustomRoles:", "")
-      .split(/(?=[A-Z])/)
-      .join(" ")
-      .trim();
-  }, []);
-
-  const groupedMembers = useCallback(() => {
-    const grouped = (projectsMember.items ?? [])
-      .filter((member) => member.customRoleType !== "Investor")
-      .reduce<
-        Record<
-          string,
-          {
-            name: string | undefined;
-            surname: string | undefined;
-            mail: string | undefined;
-            roles: {customRoleName: string}[];
-          }
-        >
-      >((acc, member) => {
-        const key = member.mail;
-        acc[key] = {
-          name: member.name || undefined,
-          surname: member.surname || undefined,
-          mail: member.mail,
-          roles: [],
-        };
-
-        acc[key].roles.push({
-          customRoleName: member.customRoleName || "",
-        });
-        return acc;
-      }, {});
-
-    return Object.values(grouped);
-  }, [projectsMember.items]);
 
   const getInitialsFromMaskedName = (name: string | undefined) => {
     if (!name) return "";
@@ -223,49 +185,18 @@ export default function ProjectDetails({
           )}
 
           {session ? (
-            <>
-              <div className="mt-6">
-                {data.privilege ? (
-                  <div className="mb-8">
-                    <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
-                    <p>{data.privilege}</p>
-                  </div>
-                ) : null}
-              </div>
-              <Card className="mt-6">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold md:text-2xl">Proje Ekibi</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {groupedMembers().map((member) => (
-                      <div className="flex items-center space-x-4" key={member.mail}>
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback>{(member.name?.[0] || "") + (member.surname?.[0] || "")}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <p className="font-medium">
-                            {member.name} {member.surname}
-                          </p>
-                          <p className="text-muted-foreground text-sm">{member.mail}</p>
-                          <div className="flex flex-col gap-2 text-sm">
-                            {member.roles.map((role) => (
-                              <span className="text-primary" key={role.customRoleName}>
-                                {formatRoleName(role.customRoleName)}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </>
+            <div className="mt-6">
+              {data.privilege ? (
+                <div className="mb-8">
+                  <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
+                  <p>{data.privilege}</p>
+                </div>
+              ) : null}
+            </div>
           ) : (
-            <AuthCard description="Proje ekibini görmek için giriş yapın veya üye olun" title="Proje Ekibi" />
+            <AuthCard description="Ayrıcalıkları görmek için giriş yapın veya üye olun" title="Ayrıcalıklar" />
           )}
-
+          <ProjectTeam memberResponse={projectsMember} />
           {/* Conditionally render investors card or auth card */}
           {!isEditable && (
             <>
