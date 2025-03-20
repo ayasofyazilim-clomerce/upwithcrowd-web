@@ -1,23 +1,12 @@
 "use client";
 
+import {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@repo/actions/upwithcrowd/types";
 import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
-import {Card, CardHeader, CardTitle, CardContent} from "@repo/ayasofyazilim-ui/atoms/card";
+import {Card, CardContent, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
 import ListView from "@repo/ayasofyazilim-ui/molecules/list-view";
 import {formatCurrency} from "@repo/ui/utils";
-import {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@repo/actions/upwithcrowd/types";
 
-function prepareListViewData(
-  projectDetail: Pick<
-    UpwithCrowd_Projects_ProjectsDetailResponseDto,
-    | "fundNominalAmount"
-    | "additionalFundRate"
-    | "qualifiedFundRate"
-    | "overFunding"
-    | "cashValue"
-    | "fundableAmount"
-    | "fundCollectionType"
-  >,
-) {
+function prepareListViewData(projectDetail: UpwithCrowd_Projects_ProjectsDetailResponseDto) {
   return [
     {
       label: "Nominal Fon Miktarı",
@@ -57,20 +46,7 @@ function prepareListViewData(
   ];
 }
 
-export default function FundingTable({
-  projectDetail,
-}: {
-  projectDetail: Pick<
-    UpwithCrowd_Projects_ProjectsDetailResponseDto,
-    | "fundNominalAmount"
-    | "additionalFundRate"
-    | "qualifiedFundRate"
-    | "overFunding"
-    | "cashValue"
-    | "fundableAmount"
-    | "fundCollectionType"
-  >;
-}) {
+export default function FundingTable({projectDetail}: {projectDetail: UpwithCrowd_Projects_ProjectsDetailResponseDto}) {
   const listViewData = prepareListViewData(projectDetail);
   return (
     <div className="mt-8 rounded-md">
