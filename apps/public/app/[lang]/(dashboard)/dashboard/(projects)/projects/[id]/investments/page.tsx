@@ -1,3 +1,4 @@
+import type {GetApiProjectByIdMyprojectInvestorData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {
   getProjectByIdMyprojectInvestorApi,
   getProjectStatisticsByIdApi,
@@ -7,10 +8,10 @@ import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import ProjectInvestorClient from "./client";
 
-async function getApiRequests(id: string) {
+async function getApiRequests(id: string, searchParams: GetApiProjectByIdMyprojectInvestorData) {
   try {
     const requiredRequests = await Promise.all([
-      getProjectByIdMyprojectInvestorApi({id}),
+      getProjectByIdMyprojectInvestorApi({...searchParams, id}),
       getProjectStatisticsByIdApi({id}),
     ]);
     const optionalRequests = await Promise.allSettled([]);
@@ -23,8 +24,14 @@ async function getApiRequests(id: string) {
   }
 }
 
-export default async function ProjectInvestorPage({params}: {params: {id: string}}) {
-  const apiRequests = await getApiRequests(params.id);
+export default async function ProjectInvestorPage({
+  params,
+  searchParams,
+}: {
+  params: {id: string};
+  searchParams: GetApiProjectByIdMyprojectInvestorData;
+}) {
+  const apiRequests = await getApiRequests(params.id, searchParams);
 
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={{SomethingWentWrong: "Something went wrong"}} message={apiRequests.message} />;
