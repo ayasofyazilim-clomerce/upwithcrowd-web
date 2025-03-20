@@ -1,6 +1,7 @@
 "use server";
 
 import type {
+  GetApiProjectByIdMyprojectInvestorData,
   GetApiProjectByIdProjectInvestorData,
   GetApiProjectByIdStatisticsData,
   GetApiProjectData,
@@ -61,6 +62,16 @@ export async function getProjectStatisticsByIdApi(data: GetApiProjectByIdStatist
   try {
     const client = await getUpwithcrowdClient();
     const dataResponse = await client.project.getApiProjectByIdStatistics(data);
+    return structuredSuccessResponse(dataResponse);
+  } catch (error) {
+    throw structuredError(error);
+  }
+}
+
+export async function getProjectByIdMyprojectInvestorApi(data: GetApiProjectByIdMyprojectInvestorData) {
+  try {
+    const client = await getUpwithcrowdClient();
+    const dataResponse = await client.project.getApiProjectByIdMyprojectInvestor(data);
     return structuredSuccessResponse(dataResponse);
   } catch (error) {
     throw structuredError(error);

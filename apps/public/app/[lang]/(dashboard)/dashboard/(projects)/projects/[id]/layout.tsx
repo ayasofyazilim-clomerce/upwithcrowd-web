@@ -50,6 +50,11 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             disabled: false,
           },
           {
+            href: `${baseLink}/projects/${id}/investments`,
+            label: "Yatırımlar",
+            disabled: false,
+          },
+          {
             href: `${baseLink}/projects/${id}/finish-project`,
             label: "Bitir",
             disabled: false,

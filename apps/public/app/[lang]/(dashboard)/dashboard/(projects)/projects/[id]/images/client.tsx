@@ -1,3 +1,5 @@
+"use client";
+
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
@@ -7,6 +9,8 @@ import type {
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
 import Link from "next/link";
+import {useParams} from "next/navigation";
+import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
@@ -19,6 +23,10 @@ export default function ImagesClient({
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
 }) {
+  const params = useParams();
+  const {lang} = params;
+  const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
+
   const getFileNameFromPath = (fullPath: string): string => {
     const matches = /[^/]+$/.exec(fullPath);
     return matches ? matches[0] : fullPath;
@@ -90,7 +98,7 @@ export default function ImagesClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`/projects/${projectId}/finish-project`}>
+        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/investments`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
