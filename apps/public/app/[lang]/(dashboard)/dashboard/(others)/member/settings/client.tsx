@@ -65,7 +65,7 @@ export default function NewPersonalAccount({
         </CardContent>
       </Card>
 
-      <Card className="mx-auto w-full p-2 sm:p-6">
+      <Card className="mx-auto w-full p-2 sm:p-6" id="document">
         <CardHeader className="space-y-1">
           <CardTitle className="text-xl font-bold sm:text-2xl">Belgeleriniz</CardTitle>
           <CardDescription className="text-sm sm:text-base">
