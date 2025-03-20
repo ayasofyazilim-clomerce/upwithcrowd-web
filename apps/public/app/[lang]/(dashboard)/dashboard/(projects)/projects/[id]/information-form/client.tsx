@@ -1,12 +1,16 @@
+"use client";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
   GetApiFileTypeGroupRulesetResponse,
   GetApiPublicFileResponse,
+  UpwithCrowd_Files_FileResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {FileTypeForFileCard} from "@repo/ayasofyazilim-ui/molecules/document-card";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
+import {useState} from "react";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
@@ -36,17 +40,20 @@ export default function InformationFormClient({
     const fileType = getFileType(fileName);
     return {...i, fileId: i.fileId || "", fileName, fileType};
   });
-  const informationFiles = fileData.filter((file) =>
-    [
-      "ArticlesOfAssociation",
-      "InformationForm",
-      "FundUsageForm",
-      "ShareSalesReport",
-      "Attachments",
-      "Swot",
-      "InvestorPresentation",
-      "Cv",
-    ].includes(file.fileTypeNamespace ?? ""),
+
+  const [informationFiles, setInformationFiles] = useState<FileTypeForFileCard[]>(
+    fileData.filter((file) =>
+      [
+        "ArticlesOfAssociation",
+        "InformationForm",
+        "FundUsageForm",
+        "ShareSalesReport",
+        "Attachments",
+        "Swot",
+        "InvestorPresentation",
+        "Cv",
+      ].includes(file.fileTypeNamespace ?? ""),
+    ),
   );
 
   const documentTabs = [
@@ -73,8 +80,17 @@ export default function InformationFormClient({
           className="w-full grid-cols-1"
           text="Bilgi Formu proje hakkında detaylı bilgiler içeren bir belgeler bütünüdür. Projenizin detaylarını ve hedeflerinizi içeren bu belgeleri yükleyerek projenizi daha iyi tanıtabilirsiniz."
           title="Bilgi Formu">
-          <FileUpload
-            classNames={{container: "md:col-span-full ", multiSelect: "bg-white"}}
+          <FileUpload<UpwithCrowd_Files_FileResponseDto>
+            classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+            onSuccess={(file) => {
+              setInformationFiles((prev) => [
+                ...prev,
+                {
+                  fileName: file.name || "",
+                  fileType: file.fullPath.split(".").at(-1) || "",
+                },
+              ]);
+            }}
             propertyId={projectId}
             ruleset={fileTypeGroupResponse}
           />

@@ -1,12 +1,16 @@
+"use client";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
   GetApiFileTypeGroupRulesetResponse,
   GetApiPublicFileResponse,
+  UpwithCrowd_Files_FileResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {FileTypeForFileCard} from "@repo/ayasofyazilim-ui/molecules/document-card";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
+import {useState} from "react";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
@@ -40,10 +44,15 @@ export default function DocumentsClient({
     const fileType = getFileType(fileName);
     return {...i, fileId: i.fileId || "", fileName, fileType};
   });
-  const legalFiles = fileData.filter((file) => file.fileTypeNamespace === "ProjectLegalDocument");
-  const patentFiles = fileData.filter((file) =>
-    ["TrademarkRegistration", "ApplicationForaPatent", "Patent", "ISOCertificate", "Other"].includes(
-      file.fileTypeNamespace ?? "",
+
+  const [legalFiles, setLegalFiles] = useState<FileTypeForFileCard[]>(
+    fileData.filter((file) => file.fileTypeNamespace === "ProjectLegalDocument"),
+  );
+  const [patentFiles, setPatentFiles] = useState<FileTypeForFileCard[]>(
+    fileData.filter((file) =>
+      ["TrademarkRegistration", "ApplicationForaPatent", "Patent", "ISOCertificate", "Other"].includes(
+        file.fileTypeNamespace ?? "",
+      ),
     ),
   );
   // Create custom tabs with pre-filtered files
@@ -77,8 +86,18 @@ export default function DocumentsClient({
           className="grid-cols-1"
           text="Projenize ait gerekli belgeleri yükleyin."
           title="Patent, Marka ve Tescil Belgeleri">
-          <FileUpload
+          <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+            onSuccess={(file) => {
+              setPatentFiles((prev) => [
+                ...prev,
+                {
+                  ...file,
+                  fileName: file.name || "",
+                  fileType: file.fullPath.split(".").at(-1) || "",
+                },
+              ]);
+            }}
             propertyId={projectId}
             ruleset={projectRelatedFiles}
           />
@@ -87,8 +106,17 @@ export default function DocumentsClient({
           className="grid-cols-1"
           text="Projenize ait gerekli belgeleri yükleyin."
           title="Hukuki Durum Belgeleri">
-          <FileUpload
+          <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+            onSuccess={(file) => {
+              setLegalFiles((prev) => [
+                ...prev,
+                {
+                  fileName: file.name || "",
+                  fileType: file.fullPath.split(".").at(-1) || "",
+                },
+              ]);
+            }}
             propertyId={projectId}
             ruleset={projectLegalSituation}
           />
