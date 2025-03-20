@@ -40,6 +40,7 @@ export default function ProjectInvestorTable({investorResponse}: ProjectInvestor
       }}
       columns={columns}
       data={investorResponse.items || []}
+      rowCount={investorResponse.totalCount}
     />
   );
 }
