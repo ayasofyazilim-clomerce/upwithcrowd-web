@@ -29,7 +29,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
   };
 
   return (
-    <Link className="pointer" href={`${baseLink}/projects/${project.id}`}>
+    <Link className="pointer" href={`${baseLink}/projects/${project.id}/basics`}>
       <Card className="hover:scale-102 space-y-2 overflow-hidden border-none p-4 shadow-lg transition-transform duration-300 hover:shadow-xl">
         <div className="relative">
           <Image

@@ -24,7 +24,12 @@ async function getApiRequests(id: string, isAuth: boolean) {
       getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
       getPublicProjectByIdStatisticsApi(id),
     ]);
-    const params = {
+    const paramsMaterials = {
+      relatedEntity: "Project",
+      relatedId: id,
+      fileTypeGroup: "ProjectMaterials",
+    };
+    const paramsFiles = {
       relatedEntity: "Project",
       relatedId: id,
     };
@@ -32,7 +37,8 @@ async function getApiRequests(id: string, isAuth: boolean) {
       getPublicProjectDetailByIdApi(id),
       !isAuth ? {data: null} : getPublicProjectByIdMembersApi(id),
 
-      !isAuth ? getPublicFileApi(params) : getFileApi(params),
+      !isAuth ? getPublicFileApi(paramsFiles) : getFileApi(paramsFiles),
+      !isAuth ? getPublicFileApi(paramsMaterials) : getFileApi(paramsMaterials),
     ]);
 
     return {requiredRequests, optionalRequests};
@@ -55,7 +61,8 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
 
-  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse] = apiRequests.requiredRequests;
+  const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, imageResponse] =
+    apiRequests.requiredRequests;
   const [isEditableResponse, investorResponse, statsResponse] = apiRequests.optionalRequests;
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
   const investorResponseData = investorResponse.status === "fulfilled" ? investorResponse.value.data : null;
@@ -65,10 +72,11 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return permanentRedirect(`/${lang}/projects`);
   }
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen">
       <ProjectDetails
         data={projectDetailsResponseBasics.data}
         fileResponse={fileResponse.data}
+        imageResponse={imageResponse.data}
         investorResponse={investorResponseData}
         isEditable={isEditable}
         projectsMember={projectsMemberResponse.data}
