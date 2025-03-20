@@ -336,9 +336,7 @@ export default function ClientAbout({
                       {projectMember.items.map((member) => (
                         <div className="space-y-2 rounded-lg border p-4" key={member.customRoleID}>
                           <div className="flex items-center justify-between">
-                            <h4 className="font-medium">
-                              {member.name} {member.surname}
-                            </h4>
+                            <h4 className="font-medium">{member.fullname || member.title}</h4>
                             {member.status === "Draft" && (
                               <span className="rounded-full bg-yellow-100 px-2 py-1 text-sm">Draft</span>
                             )}
@@ -372,9 +370,7 @@ export default function ClientAbout({
                           <TableBody>
                             {projectMember.items.map((member) => (
                               <TableRow key={member.customRoleID}>
-                                <TableCell className="font-medium">
-                                  {member.name} {member.surname}
-                                </TableCell>
+                                <TableCell className="font-medium">{member.fullname || member.title}</TableCell>
                                 <TableCell>{member.mail}</TableCell>
                                 <TableCell>{formatRoleName(member.customRoleName ?? "")}</TableCell>
                                 <TableCell>

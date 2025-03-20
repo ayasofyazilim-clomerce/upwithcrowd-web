@@ -30,7 +30,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
     };
     const requiredRequests = await Promise.all([
       getPublicProjectDetailByIdApi(id),
-      getPublicProjectByIdMembersApi(id),
+      !isAuth ? {data: null} : getPublicProjectByIdMembersApi(id),
 
       !isAuth ? getPublicFileApi(params) : getFileApi(params),
     ]);
