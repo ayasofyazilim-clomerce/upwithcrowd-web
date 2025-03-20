@@ -14,12 +14,12 @@ import type {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@ayasofyazili
 import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TipTapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import FundingTable from "@repo/ui/upwithcrowd/project-components/funding-card";
 import {handlePutResponse} from "@repo/utils/api";
 import {Info} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
 import {useState} from "react";
 import {getBaseLink} from "@/utils/lib";
-import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
 
@@ -70,7 +70,7 @@ export default function ProjectDetails({data}: {data: UpwithCrowd_Projects_Proje
           </div>
           <div className="lg:w-1/3">
             <MobileSupportDrawer donationOptions={previewDonationOptions} selectedDonation={previewSelectedAmount} />
-            <FundingTable data={data} editLink={`${baseLink}/projects/${projectId}/funding`} />
+            <FundingTable projectDetail={data} />
             <div className="mt-6">
               {data.privilege ? (
                 <div className="mb-8">
