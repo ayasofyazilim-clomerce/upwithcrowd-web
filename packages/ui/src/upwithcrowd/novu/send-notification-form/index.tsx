@@ -2,58 +2,49 @@
 import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
 
-import {Textarea} from "@repo/ayasofyazilim-ui/atoms/textarea";
 import {postNovuBroadcast, postNovuTrigger} from "@repo/actions/core/NovuService/actions";
 import {Input} from "@repo/ayasofyazilim-ui/atoms/input";
+import {Textarea} from "@repo/ayasofyazilim-ui/atoms/textarea";
 import {Combobox} from "@repo/ayasofyazilim-ui/molecules/combobox";
 import {MultiSelect} from "@repo/ayasofyazilim-ui/molecules/multi-select";
-import SelectTabs, {SelectTabsContent} from "@repo/ayasofyazilim-ui/molecules/select-tabs";
 import {handlePostResponse} from "@repo/utils/api";
-import {GalleryVerticalEnd, Send, Users} from "lucide-react";
+import {Send} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useState, useTransition} from "react";
 
-function SendNotificationForm({
-  broadcastEnabled,
-  membersEnabled,
-  workflow,
-}: {
-  broadcastEnabled?: boolean;
-  membersEnabled?: boolean;
-  workflow?: string;
-}) {
+type SendNotificationFormProps =
+  | {
+      notificationType: "broadcast";
+    }
+  | {
+      notificationType: "topics";
+      topics: {label: string; value: string}[];
+    };
+
+function SendNotificationForm(props: SendNotificationFormProps) {
+  const {notificationType} = props;
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [notificationType, setNotificationType] = useState<string>(() => {
-    if (membersEnabled && !broadcastEnabled) return "members";
-    if (!membersEnabled && broadcastEnabled) return "broadcast";
-    return "";
-  });
 
-  const [workflowType, setWorkflowType] = useState<{value: string; label: string} | null | undefined>(
-    workflow ? {value: workflow, label: workflow} : null,
-  );
+  const [workflowType, setWorkflowType] = useState<{value: string; label: string} | undefined | null>(null);
   const [receivers, setReceivers] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>();
   const [message, setMessage] = useState<string>();
 
   const isFormDisabled =
-    !notificationType ||
-    !workflowType ||
-    !subject ||
-    !message ||
-    (notificationType === "members" && receivers.length === 0) ||
-    isPending;
+    isPending || !workflowType || (!receivers.length && notificationType === "topics") || !subject || !message;
 
   function handleSendNotification() {
     if (isFormDisabled) return;
 
     startTransition(async () => {
-      if (notificationType === "members") {
+      if (notificationType === "topics") {
         await postNovuTrigger(workflowType.value, {subject, message}, receivers).then((response) => {
           handlePostResponse(response, router);
         });
-      } else {
+      }
+
+      if (notificationType === "broadcast") {
         await postNovuBroadcast(workflowType.value, {subject, message}).then((response) => {
           handlePostResponse(response, router);
         });
@@ -94,62 +85,30 @@ function SendNotificationForm({
               placeholder="Mesaj"
             />
           </div>
-          {broadcastEnabled && membersEnabled && (
-            <div className="my-2">
-              <div className="text-bold mb-0.5 block text-sm ">Bildirim Tipi</div>
-              <SelectTabs
-                deselect
-                onValueChange={setNotificationType}
-                disabled={!broadcastEnabled || !membersEnabled}
-                value={notificationType}>
-                <SelectTabsContent value="broadcast">
-                  <div className="flex flex-row items-center gap-1">
-                    <GalleryVerticalEnd />
-                    Herkes
-                  </div>
-                </SelectTabsContent>
-                <SelectTabsContent value="members">
-                  <div className="flex flex-row items-center gap-1">
-                    <Users />
-                    Members
-                  </div>
-                </SelectTabsContent>
-              </SelectTabs>
-            </div>
-          )}
-          {!workflow && (
-            <div className="my-2">
-              <label className="text-bold mb-0.5 block text-sm " htmlFor="workflow">
-                Workflow
-              </label>
-              <Combobox
-                id="workflow"
-                list={[
-                  {value: "upwithcrowd-projeniz-onaylandi", label: "UpwithcrowdProjenizOnaylandı"},
-                  {value: "on-boarding-notification-w5ZrZcvEu", label: "On-boarding Notification"},
-                ]}
-                onValueChange={setWorkflowType}
-                selectIdentifier="value"
-                selectLabel="label"
-                value={workflowType}
-              />
-            </div>
-          )}
 
-          {notificationType === "members" && (
+          <div className="my-2">
+            <label className="text-bold mb-0.5 block text-sm " htmlFor="workflow">
+              Workflow
+            </label>
+            <Combobox
+              id="workflow"
+              list={[
+                {value: "duyuru-inapp", label: "Uygulama İçi Bildirim"},
+                {value: "duyuru-email", label: "E-Posta Bildirimi"},
+              ]}
+              onValueChange={setWorkflowType}
+              selectIdentifier="value"
+              selectLabel="label"
+              value={workflowType}
+            />
+          </div>
+
+          {notificationType === "topics" && (
             <div className="my-2">
               <label className="text-bold mb-0.5 block text-sm " htmlFor="receivers">
                 Alıcılar
               </label>
-              <MultiSelect
-                id="receivers"
-                onValueChange={setReceivers}
-                options={[
-                  {value: "investors", label: "Investors"},
-                  {value: "entrepreneurs", label: "Entrepreneurs"},
-                ]}
-                value={receivers}
-              />
+              <MultiSelect id="receivers" onValueChange={setReceivers} options={props.topics} value={receivers} />
             </div>
           )}
 

@@ -45,9 +45,24 @@ function prepareListViewData(projectDetail: UpwithCrowd_Projects_ListProjectsRes
     {label: "Fon Toplama Tipi", value: projectDetail.fundCollectionType, info: "Fon toplama yöntemi"},
   ];
 }
+
 function ClientPage({projectDetail}: {projectDetail: UpwithCrowd_Projects_ListProjectsResponseDto}) {
   const listViewData = prepareListViewData(projectDetail);
 
+  const topics = [
+    {
+      value: `${projectDetail.id}_followers`,
+      label: "Proje takipçileri",
+    },
+    {
+      value: `${projectDetail.id}_investors`,
+      label: "Proje yatırımcıları",
+    },
+    {
+      value: `${projectDetail.id}_entrepreneurs`,
+      label: "Proje ekibi",
+    },
+  ];
   return (
     <div className="mt-2 grid grid-cols-2 gap-3">
       <Card className="py- col-span-1">
@@ -60,7 +75,7 @@ function ClientPage({projectDetail}: {projectDetail: UpwithCrowd_Projects_ListPr
           <ListView list={listViewData} />
         </CardContent>
       </Card>
-      <SendNotificationForm membersEnabled />
+      <SendNotificationForm notificationType="topics" topics={topics} />
     </div>
   );
 }
