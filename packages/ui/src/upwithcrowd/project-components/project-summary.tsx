@@ -45,6 +45,11 @@ export default function ProjectSummary({
   const currentFile = hasFiles ? fileResponse[currentImageIndex] : null;
   const isCurrentFileVideo = currentFile ? isVideoFile(currentFile.fullPath) : false;
 
+  const fundedPercentage =
+    funding.fundableAmount && funding.fundableAmount > 0
+      ? ((statsResponse?.totalInvestment ?? 0) / funding.fundableAmount) * 100
+      : 0;
+
   const nextImage = () => {
     if (!isTransitioning) {
       setIsTransitioning(true);
@@ -277,15 +282,15 @@ export default function ProjectSummary({
         </div>
       ) : null}
 
-      <Progress className="mb-4 h-3" value={10} />
+      <Progress className="mb-4 h-3" value={fundedPercentage} />
 
       <div className="mb-6 flex justify-between text-sm">
         <span>{formatCurrency(statsResponse?.totalInvestment)} toplandı</span>
         <span>
           {funding.projectEndDate
-            ? Math.ceil((new Date(funding.projectEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+            ? Math.ceil((new Date(funding.projectEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) +
+              " gün kaldı"
             : "N/A"}
-          gün kaldı
         </span>
         <span> {formatCurrency(funding.fundableAmount)} hedef</span>
       </div>

@@ -1,15 +1,16 @@
-import ErrorComponent from "@repo/ui/components/error-component";
-import {structuredError} from "@repo/utils/api";
-import {isRedirectError} from "next/dist/client/components/redirect";
+import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
+import {getProjectApi, getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
+import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {
   getProjectByIdUpdatePermissionApi,
   getPublicProjectByIdMembersApi,
   getPublicProjectByIdStatisticsApi,
-  getPublicProjectDetailByIdApi,
 } from "@repo/actions/upwithcrowd/public-project/action";
-import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
-import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
-import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
+import ErrorComponent from "@repo/ui/components/error-component";
+import {checkNonEmptyArray} from "@repo/ui/utils";
+import {structuredError} from "@repo/utils/api";
+import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language/core/Default";
 import ProjectDetails from "./client";
 
@@ -30,7 +31,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
       relatedId: id,
     };
     const requiredRequests = await Promise.all([
-      getPublicProjectDetailByIdApi(id),
+      getProjectApi({id}),
       !isAuth ? {data: null} : getPublicProjectByIdMembersApi(id),
 
       !isAuth ? getPublicFileApi(paramsFiles) : getFileApi(paramsFiles),
@@ -56,6 +57,12 @@ export default async function Page({params}: {params: {id: string; lang: string}
 
   const [projectDetailsResponseBasics, projectsMemberResponse, fileResponse, imageResponse] =
     apiRequests.requiredRequests;
+
+  const projectDetail = projectDetailsResponseBasics.data.items || [];
+  if (!checkNonEmptyArray<UpwithCrowd_Projects_ListProjectsResponseDto>(projectDetail)) {
+    return null;
+  }
+
   const [isEditableResponse, investorResponse, statsResponse] = apiRequests.optionalRequests;
   const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
   const investorResponseData = investorResponse.status === "fulfilled" ? investorResponse.value.data : null;
@@ -64,7 +71,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
   return (
     <div className="h-auto">
       <ProjectDetails
-        data={projectDetailsResponseBasics.data}
+        data={projectDetail[0]}
         fileResponse={fileResponse.data}
         imageResponse={imageResponse.data}
         investorResponse={investorResponseData}
