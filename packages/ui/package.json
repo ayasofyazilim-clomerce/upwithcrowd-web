@@ -51,6 +51,7 @@
     "lucide-react": "^0.445.0",
     "mini-svg-data-uri": "^1.4.4",
     "react-hook-form": "7.53.0",
+    "recharts": "^2.12.7",
     "simplex-noise": "^4.0.1"
   }
 }
