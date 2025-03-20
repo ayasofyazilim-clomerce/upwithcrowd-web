@@ -103,7 +103,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
       requestBody: formattedData,
       id: projectId,
     }).then((response) => {
-      handlePutResponse(response, router, `/projects/${projectId}/information-form`);
+      handlePutResponse(response, router, `/dashboard/projects/${projectId}/information-form`);
     });
   };
   return (

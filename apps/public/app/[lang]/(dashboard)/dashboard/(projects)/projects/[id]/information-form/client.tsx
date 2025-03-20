@@ -88,7 +88,7 @@ export default function InformationFormClient({
             <DocumentCard activeDefaultTab="information" documentTabs={documentTabs} />
           </CardContent>
         </Card>
-        <Link className="w-full" href={`/projects/${projectId}/images`}>
+        <Link className="w-full" href={`/dashboard/projects/${projectId}/images`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
