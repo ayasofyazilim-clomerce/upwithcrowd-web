@@ -201,7 +201,7 @@ export default function ProjectDetails({
               ) : null}
             </div>
           ) : (
-            <AuthCard description="Proje ekibini görmek için giriş yapın veya üye olun" title="Proje Ekibi" />
+            <AuthCard description="Ayrıcalıkları görmek için giriş yapın veya üye olun" title="Ayrıcalıklar" />
           )}
           <ProjectTeam memberResponse={projectsMember} />
           {/* Conditionally render investors card or auth card */}
