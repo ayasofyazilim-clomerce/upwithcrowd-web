@@ -122,6 +122,10 @@ export default async function Layout({
             href: `${baseLink}files`,
             label: "Projeyle İlgili Dosyalar",
           },
+          {
+            href: `${baseLink}investors`,
+            label: "Proje Yatırımcıları",
+          },
         ]}>
         {children}
       </TabLayout>
