@@ -8,6 +8,7 @@ import type {
   UpwithCrowd_Files_FileResponseListDto,
   UpwithCrowd_Projects_ProjectsFundingResponseDto,
   UpwithCrowd_Projects_ProjectsResponseDto,
+  UpwithCrowd_Projects_ProjectStatisticsDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {formatCurrency} from "@repo/ui/utils";
 import {ChevronLeft, ChevronRight, Film} from "lucide-react";
@@ -28,13 +29,13 @@ const isVideoFile = (filePath: string | null | undefined): boolean => {
 export default function ProjectSummary({
   basics,
   funding,
-  fundedPercentage,
   fileResponse,
+  statsResponse,
 }: {
   basics: UpwithCrowd_Projects_ProjectsResponseDto;
   funding: UpwithCrowd_Projects_ProjectsFundingResponseDto;
-  fundedPercentage: number;
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
+  statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto | null;
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -117,8 +118,8 @@ export default function ProjectSummary({
       <h2 className="mb-2 text-2xl font-bold md:text-3xl">{basics.projectName}</h2>
       <p className="text-md mb-4 font-medium md:text-lg">{basics.projectDefinition}</p>
       <p className="text-normal mb-4">
-        <span className="text-primary font-bold">{formatCurrency(0)}</span> of {formatCurrency(funding.fundableAmount)}{" "}
-        raised
+        <span className="text-primary font-bold">{formatCurrency(statsResponse?.totalInvestment)}</span> of{" "}
+        {formatCurrency(funding.fundableAmount)} toplandı
       </p>
 
       <div className="relative mx-auto mb-2 w-full overflow-hidden rounded-xl bg-gray-100 shadow-lg">
@@ -277,17 +278,17 @@ export default function ProjectSummary({
         </div>
       ) : null}
 
-      <Progress className="mb-4 h-3" value={fundedPercentage} />
+      <Progress className="mb-4 h-3" value={10} />
 
       <div className="mb-6 flex justify-between text-sm">
-        <span>{formatCurrency(0)} raised</span>
+        <span>{formatCurrency(statsResponse?.totalInvestment)} toplandı</span>
         <span>
           {funding.projectEndDate
             ? Math.ceil((new Date(funding.projectEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
             : "N/A"}
-          days left
+          gün kaldı
         </span>
-        <span>{formatCurrency(funding.fundableAmount)} goal</span>
+        <span> {formatCurrency(funding.fundableAmount)} hedef</span>
       </div>
     </>
   );
