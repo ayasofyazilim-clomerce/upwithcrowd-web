@@ -1,12 +1,12 @@
 "use client";
 
 import {useState} from "react";
-import {Avatar, AvatarFallback} from "@/components/ui/avatar";
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {Avatar, AvatarFallback} from "@repo/ayasofyazilim-ui/atoms/avatar";
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@repo/ayasofyazilim-ui/atoms/dialog";
 import {ChevronRight, Crown, Loader2} from "lucide-react";
 import {formatCurrency} from "@repo/ui/utils";
-import {ScrollArea} from "@/components/ui/scroll-area";
-import type {PagedResultDto_ListProjectInvestorDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {ScrollArea} from "@repo/ayasofyazilim-ui/atoms/scroll-area";
+import type {PagedResultDto_ListProjectInvestorDto} from "@repo/actions/upwithcrowd/types";
 
 // Helper function to get initials from masked name
 function getInitialsFromMaskedName(name: string) {

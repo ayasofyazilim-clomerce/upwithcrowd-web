@@ -1,8 +1,8 @@
 "use client";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardFooter} from "@/components/ui/card";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import {Card, CardContent, CardFooter} from "@repo/ayasofyazilim-ui/atoms/card";
 import {Wallet} from "lucide-react";
-import {Input} from "@/components/ui/input";
+import {Input} from "@repo/ayasofyazilim-ui/atoms/input";
 import {formatCurrency} from "@repo/ui/utils";
 
 export default function SupportCard({

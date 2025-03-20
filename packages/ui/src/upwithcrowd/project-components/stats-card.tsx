@@ -3,10 +3,11 @@
 import {TrendingUp} from "lucide-react";
 import * as React from "react";
 import {Label, Pie, PieChart} from "recharts";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import type {UpwithCrowd_Projects_ProjectStatisticsDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
+import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@repo/ayasofyazilim-ui/atoms/chart";
 import {formatCurrency} from "@repo/ui/utils";
+
+import type {UpwithCrowd_Projects_ProjectStatisticsDto} from "@repo/actions/upwithcrowd/types";
 import type {ViewBox} from "recharts/types/util/types";
 
 interface StatsCardProps {
