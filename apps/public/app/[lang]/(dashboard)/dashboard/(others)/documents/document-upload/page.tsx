@@ -1,6 +1,6 @@
 import {getApiFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
+import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";
 import {isRedirectError} from "next/dist/client/components/redirect";
