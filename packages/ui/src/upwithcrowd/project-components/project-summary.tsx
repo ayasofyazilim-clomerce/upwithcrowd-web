@@ -1,16 +1,15 @@
 "use client";
 
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import {Progress} from "@/components/ui/progress";
-import {cn} from "@/lib/utils";
-import type {
-  UpwithCrowd_Files_FileResponseListDto,
-  UpwithCrowd_Projects_ProjectsFundingResponseDto,
+import {
   UpwithCrowd_Projects_ProjectsResponseDto,
+  UpwithCrowd_Projects_ProjectsFundingResponseDto,
+  UpwithCrowd_Files_FileResponseListDto,
   UpwithCrowd_Projects_ProjectStatisticsDto,
-} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {formatCurrency} from "@repo/ui/utils";
+} from "@repo/actions/upwithcrowd/types";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import {Progress} from "@repo/ayasofyazilim-ui/atoms/progress";
+import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
+import {cn, formatCurrency} from "@repo/ui/utils";
 import {ChevronLeft, ChevronRight, Film} from "lucide-react";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";

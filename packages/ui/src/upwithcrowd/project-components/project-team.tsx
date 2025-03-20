@@ -44,7 +44,7 @@ export default function ProjectTeam({
             {teamData.map((member) => (
               <div className="flex items-center space-x-4" key={member.mail}>
                 <Avatar className="h-10 w-10">
-                  <AvatarFallback>{member.fullname?.[0] || "X"}</AvatarFallback>
+                  <AvatarFallback>{member.fullname?.[0] || member.title?.[0] || "X"}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <p className="font-medium">{member.fullname || member.title || ""}</p>

@@ -1,15 +1,14 @@
 "use client";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import {Card, CardContent, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
 import {ConfirmationDialog} from "@repo/ayasofyazilim-ui/molecules/confirmation-dialog";
 import {handlePutResponse} from "@repo/utils/api";
-import Link from "next/link";
-import {useParams, useRouter} from "next/navigation";
-import {putProjectStatusByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
+import {useRouter} from "next/navigation";
 
 function ProjectActions({projectId}: {projectId: string}) {
   const router = useRouter();
-  const {lang} = useParams<{lang: string}>();
+
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -17,11 +16,6 @@ function ProjectActions({projectId}: {projectId: string}) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-row flex-wrap gap-4">
-          <Link href={`/${lang}/projects/${projectId}/basics`}>
-            <Button className="w-full rounded-md md:w-auto md:rounded-full" size="lg" type="button">
-              Projeyi Düzenle
-            </Button>
-          </Link>
           <ConfirmationDialog
             cancelText="Vazgeç"
             confirmText="Sil"
@@ -38,6 +32,23 @@ function ProjectActions({projectId}: {projectId: string}) {
               type="button"
               variant="destructive">
               Projeyi Sil
+            </Button>
+          </ConfirmationDialog>
+          <ConfirmationDialog
+            cancelText="Vazgeç"
+            confirmText="Gönder"
+            description="Bu işlem geri alınamaz. Devam etmek istediğinize emin misiniz?"
+            onConfirm={async () => {
+              const response = await putProjectStatusByIdApi({
+                id: projectId,
+                status: "Pending",
+              });
+              handlePutResponse(response, router);
+            }}
+            title="Projeyi Onaya Gönder"
+            type="danger">
+            <Button className="w-full rounded-md md:w-auto md:rounded-full" size="lg" type="button" variant="default">
+              Projeyi Onaya Gönder
             </Button>
           </ConfirmationDialog>
         </div>

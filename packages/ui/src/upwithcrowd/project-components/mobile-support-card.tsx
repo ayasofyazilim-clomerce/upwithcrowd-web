@@ -1,9 +1,9 @@
 "use client";
 
 import React, {useState, useEffect} from "react";
-import {Button} from "@/components/ui/button";
-import {Drawer, DrawerContent, DrawerTrigger} from "@/components/ui/drawer";
-import {useMediaQuery} from "@/components/ui/useMediaQuery";
+import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
+import {Drawer, DrawerContent, DrawerTrigger} from "@repo/ayasofyazilim-ui/atoms/drawer";
+import {useMediaQuery} from "@repo/ayasofyazilim-ui/hooks/useMediaQuery";
 import SupportCard from "./support-card";
 
 export default function MobileSupportDrawer({
