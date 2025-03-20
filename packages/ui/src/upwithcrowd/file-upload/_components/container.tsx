@@ -54,6 +54,11 @@ export function FileUploadContainer<T>({
         maxFileCount={config.maxFileCount}
         accept={config.accept}
         classNames={classNames?.core}
+        constantValues={{
+          RelatedEntity: rule.fileRelationsEntity?.[0].relatedEntityName || "",
+          FileType: rule.namespace,
+          Property: propertyId,
+        }}
         formData={formData || []}
         fileCardRenderer={({file, onRemove, index}) => {
           const {pending, failed} = useFileUploader();
@@ -75,7 +80,7 @@ export function FileUploadContainer<T>({
               <Form
                 rule={rule}
                 validationErrors={error?.validationErrors || null}
-                formData={formData?.at(index) || null}
+                formData={formData && {...formData[index]}}
                 index={index}
                 propertyId={propertyId}
                 setFormData={setFormData}

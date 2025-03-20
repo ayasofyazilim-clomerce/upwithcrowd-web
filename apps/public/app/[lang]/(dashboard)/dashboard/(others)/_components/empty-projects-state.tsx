@@ -19,7 +19,7 @@ export default function EmptyProjectsState() {
         </p>
 
         <Button asChild className="gap-2" size="lg">
-          <Link href="/projects/new">
+          <Link href="/dashboard/projects/new">
             <PlusCircle className="h-5 w-5" />
             Yeni Proje Oluştur
           </Link>

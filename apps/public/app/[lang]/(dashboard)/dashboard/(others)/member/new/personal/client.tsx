@@ -51,7 +51,7 @@ const formSchema = z.object({
 
 export default function NewPersonalAccount() {
   const router = useRouter();
-  const {session} = useSession();
+  const {session, sessionUpdate} = useSession();
 
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -100,6 +100,12 @@ export default function NewPersonalAccount() {
               name: values.name,
               surname: values.surname,
               userName: session?.user?.name || "",
+            },
+          });
+          await sessionUpdate({
+            info: {
+              member_id: response.data.memberID,
+              member_type: "Individual",
             },
           });
           handlePostResponse(response, router);

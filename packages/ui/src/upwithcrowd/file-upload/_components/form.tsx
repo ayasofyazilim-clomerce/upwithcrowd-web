@@ -84,12 +84,7 @@ export function Form({
         setFormData((prev) => {
           if (prev) {
             const newData = [...prev];
-            newData[index] = {
-              ...formData,
-              RelatedEntity: rule.fileRelationsEntity?.[0].relatedEntityName || "",
-              FileType: rule.namespace,
-              Property: propertyId,
-            };
+            newData[index] = formData;
             return newData;
           }
           return [formData];

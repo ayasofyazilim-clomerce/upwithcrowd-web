@@ -12,6 +12,11 @@ export type FileUploadBaseProps<T> = Pick<
 > & {
   formData: FileFormData[];
   onSuccess?: (response: T) => void;
+  constantValues: {
+    RelatedEntity: string;
+    FileType: string;
+    Property: string;
+  };
 };
 
 export function FileUploadBase<T>({
@@ -23,6 +28,7 @@ export function FileUploadBase<T>({
   fileCardRenderer,
   children,
   classNames,
+  constantValues,
   onSuccess,
 }: FileUploadBaseProps<T>) {
   const {pending, setPending, setProgress, setSuccessed, setFailed} = useFileUploader();
@@ -32,6 +38,7 @@ export function FileUploadBase<T>({
     let states = formData.map((data, index) => ({
       data: {
         ...data,
+        ...constantValues,
         file: files[index],
       },
       progress: 0,
