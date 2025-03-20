@@ -66,8 +66,8 @@ export default function PaymentsTable({payments}: PaymentsTableProps) {
             const transactionData: UpwithCrowd_Payment_SavePaymentTransactionDto = {
               ...row,
               relatedTransactionID: row.id,
-              type: "Decrease",
-              decreaseType: "Rescission",
+              type: "Increase",
+              increaseType: "InvestmentWithdrawn",
             };
 
             await postApiPaymentTransaction({
