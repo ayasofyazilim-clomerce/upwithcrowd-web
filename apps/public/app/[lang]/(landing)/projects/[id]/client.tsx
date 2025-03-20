@@ -21,8 +21,8 @@ import {useSession} from "@repo/utils/auth";
 import {Crown} from "lucide-react";
 import {useParams} from "next/navigation";
 import React, {useCallback, useState} from "react";
+import FundingTable from "@repo/ui/upwithcrowd/project-components/funding-card";
 import {useMember} from "@/app/providers/member";
-import FundingTable from "../_components/funding-card";
 import MobileSupportDrawer from "../_components/mobile-support-card";
 import ProjectSummary from "../_components/project-summary";
 import AuthCard from "./_components/auth-card";
@@ -225,7 +225,7 @@ export default function ProjectDetails({
                 selectedDonation={selectedDonation}
                 setSelectedDonation={setSelectedDonation}
               />
-              <FundingTable data={data} />
+              <FundingTable projectDetail={data} />
             </>
           )}
 

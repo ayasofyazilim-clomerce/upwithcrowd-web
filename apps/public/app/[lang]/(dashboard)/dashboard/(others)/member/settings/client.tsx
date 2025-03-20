@@ -8,7 +8,7 @@ import {
   type UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
+import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import {useMember} from "@/app/providers/member";
 import {IndividualForm} from "../_components/indiviual-form";
 import {OrganizationForm} from "../_components/organization-form";

@@ -7,7 +7,7 @@ import type {
   GetApiPublicFileResponse,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload";
+import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
 import {useParams} from "next/navigation";
 import {getBaseLink} from "@/utils/lib";
