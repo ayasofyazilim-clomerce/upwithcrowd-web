@@ -6,11 +6,11 @@ import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
-import FileTable from "../_components/table";
+import FileTable from "./_components/table";
 
-async function getApiRequests(searchParams: GetApiFileData) {
+async function getApiRequests(params: GetApiFileData) {
   try {
-    const requiredRequests = await Promise.all([getFileApi(searchParams)]);
+    const requiredRequests = await Promise.all([getFileApi(params)]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -27,17 +27,18 @@ export default async function Page({
 }: {
   params: {
     lang: string;
-    projectId: string;
+    memberId: string;
   };
   searchParams?: GetApiFileData;
 }) {
-  const {lang} = params;
+  const {lang, memberId} = params;
   const {languageData} = await getResourceData(lang);
 
   const apiRequests = await getApiRequests({
     ...searchParams,
     relatedEntity: "Member",
-    relatedId: params.projectId,
+    relatedId: memberId,
+    fileTypeGroup: "OrganizationOfficialDocuments",
   });
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
