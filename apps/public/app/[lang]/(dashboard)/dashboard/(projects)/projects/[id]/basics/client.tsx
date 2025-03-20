@@ -178,10 +178,10 @@ export default function ClientBasics({data}: {data: PageData}) {
                             canEditable
                             editOnStart
                             editorClassName="overflow-y-auto max-h-[500px]"
-                            editorContent={JSON.parse(field.value || "{}") as JSONContent}
+                            editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                             editorId="story"
                             minWordCount={1}
-                            onSaveFunction={async (content) => {
+                            onSaveFunction={async (_, content) => {
                               field.onChange(content);
                               return await Promise.resolve("OK");
                             }}

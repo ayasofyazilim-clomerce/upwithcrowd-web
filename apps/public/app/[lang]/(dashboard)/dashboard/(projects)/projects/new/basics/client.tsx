@@ -87,6 +87,7 @@ export default function BasicsClient({data}: {data: PageData}) {
       instagramUrl: "",
       twitterUrl: "",
       linkedinUrl: "",
+      projectContent: "",
     },
   });
 
@@ -235,9 +236,9 @@ export default function BasicsClient({data}: {data: PageData}) {
                             editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                             editorId="story"
                             minWordCount={1}
-                            onSaveFunction={async (id, content) => {
+                            onSaveFunction={async (_, content) => {
                               field.onChange(content);
-                              return Promise.resolve(id);
+                              return await Promise.resolve("OK");
                             }}
                           />
                         </FormControl>

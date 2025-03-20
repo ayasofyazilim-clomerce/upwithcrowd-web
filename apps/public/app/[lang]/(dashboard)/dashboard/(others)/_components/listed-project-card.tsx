@@ -1,3 +1,4 @@
+"use client";
 import {Badge} from "@/components/ui/badge";
 import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
@@ -6,11 +7,18 @@ import {formatCurrency} from "@repo/ui/utils";
 import {Send, Target, Wallet} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {useParams} from "next/navigation";
+import {getBaseLink} from "@/utils/lib";
 
 export default function ListedProjectCard({project}: {project: Project}) {
+  const params = useParams<{lang: string | string[]}>();
+  const {lang} = params;
+
+  const safeLang = Array.isArray(lang) ? lang[0] : lang;
+  const baseLink = getBaseLink("dashboard", safeLang);
   // Calculate the correct funding percentage
   const fundedPercentage =
-    project.fundableAmount > 0 ? ((project.totalRemainingAmount ?? 0) / project.fundableAmount) * 100 : 0;
+    project.fundableAmount > 0 ? ((project.totalInvestment ?? 0) / project.fundableAmount) * 100 : 0;
 
   const getDaysLeft = () => {
     const endDate = new Date(project.projectEndDate ?? Date.now());
@@ -21,7 +29,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
   };
 
   return (
-    <Link className="pointer" href={`/projects/${project.id}`}>
+    <Link className="pointer" href={`${baseLink}/projects/${project.id}`}>
       <Card className="hover:scale-102 space-y-2 overflow-hidden border-none p-4 shadow-lg transition-transform duration-300 hover:shadow-xl">
         <div className="relative">
           <Image
@@ -57,7 +65,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
             <div className="flex items-center">
               <Wallet className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">{formatCurrency(project.totalRemainingAmount)}</p>
+                <p className="font-semibold">{formatCurrency(project.totalInvestment)}</p>
                 <p className="text-muted-foreground text-xs">toplandı</p>
               </div>
             </div>
