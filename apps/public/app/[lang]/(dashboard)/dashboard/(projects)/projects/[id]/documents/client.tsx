@@ -103,7 +103,7 @@ export default function DocumentsClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`/projects/${projectId}/information-form`}>
+        <Link className=" w-full" href={`/dashboard/projects/${projectId}/information-form`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
