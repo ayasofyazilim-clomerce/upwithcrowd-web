@@ -15,10 +15,11 @@ interface Project {
   fundCollectionType: string;
   projectTypes?: string[] | null; // Changed from projectType: string[]
   url: string | null;
+  totalInvestment: number;
 }
 
 export default function ListedProjectCard({project}: {project: Project}) {
-  const fundedPercentage = 0;
+  const fundedPercentage = project.fundableAmount > 0 ? (project.totalInvestment / project.fundableAmount) * 100 : 0;
 
   // Calculate days left
   const getDaysLeft = () => {
@@ -53,23 +54,23 @@ export default function ListedProjectCard({project}: {project: Project}) {
         </h3>
         <div className="bg-primary/5 rounded-lg p-3 md:p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium md:text-sm">Funded: {fundedPercentage.toFixed(0)}%</span>
-            <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} days left</span>
+            <span className="text-xs font-medium md:text-sm">Toplandı: {fundedPercentage.toFixed(0)}%</span>
+            <span className="text-muted-foreground text-xs md:text-sm">{getDaysLeft()} gün kaldı</span>
           </div>
           <Progress className="mb-3 md:mb-4" value={fundedPercentage} />
           <div className="flex items-center justify-between text-xs md:text-sm">
             <div className="flex items-center">
               <Wallet className="text-primary mr-2 h-5 w-5" />
               <div>
-                <p className="font-semibold">{formatCurrency(0)}</p>
-                <p className="text-muted-foreground text-xs">raised</p>
+                <p className="font-semibold">{formatCurrency(project.totalInvestment)}</p>
+                <p className="text-muted-foreground text-xs">toplandı</p>
               </div>
             </div>
             <div className="flex items-center">
               <Target className="text-primary mr-2 h-5 w-5" />
               <div>
                 <p className="font-semibold">{formatCurrency(project.fundableAmount)}</p>
-                <p className="text-muted-foreground text-xs">goal</p>
+                <p className="text-muted-foreground text-xs">hedef</p>
               </div>
             </div>
           </div>

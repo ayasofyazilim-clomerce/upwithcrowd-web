@@ -57,6 +57,7 @@ export default async function Page({
                   fundNominalAmount: project.fundNominalAmount,
                   fundCollectionType: project.fundCollectionType?.toString() || "",
                   url: project.filePath || "",
+                  totalInvestment: project.totalInvestment || 0,
                 }}
               />
             ))}
