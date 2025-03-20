@@ -4,7 +4,7 @@ import {getProjectApi, getProjectStatisticsByIdApi} from "@repo/actions/upwithcr
 import Infocard from "@repo/ayasofyazilim-ui/molecules/infocard";
 import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
 import ErrorComponent from "@repo/ui/components/error-component";
-import PageHeader from "@repo/ui/upwithcrowd/header";
+import PageHeader from "@repo/ui/upwithcrowd/theme/header";
 import {structuredError} from "@repo/utils/api";
 import {CircleDollarSign, Coins, Landmark, Wallet2, WalletCards} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";

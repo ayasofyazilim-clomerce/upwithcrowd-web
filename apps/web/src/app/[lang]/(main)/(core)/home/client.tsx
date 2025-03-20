@@ -9,7 +9,7 @@ import type {
   UpwithCrowd_Projects_ListProjectsResponseDto,
   UpwithCrowd_Members_ListMemberResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import PageHeader from "@repo/ui/upwithcrowd/header";
+import PageHeader from "@repo/ui/upwithcrowd/theme/header";
 
 // Update the chartColors object to have more harmonious colors
 const chartColors = {

@@ -3,7 +3,7 @@ import {getNovuNotificationStatistics} from "@repo/actions/core/NovuService/acti
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import PageHeader from "@repo/ui/upwithcrowd/header";
+import PageHeader from "@repo/ui/upwithcrowd/theme/header";
 import {getResourceData} from "@/language-data/core/Default";
 import ClientPage from "./client";
 
