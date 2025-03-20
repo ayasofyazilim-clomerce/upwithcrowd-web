@@ -8,8 +8,8 @@ import {tableData} from "./member-table-data";
 function CommunityTable({response}: {response: GetApiMemberResponse}) {
   const {lang} = useParams<{lang: string}>();
   const router = useRouter();
-  const columns = tableData.projects.columns(lang);
-  const table = tableData.projects.table(router);
+  const columns = tableData.member.columns(lang);
+  const table = tableData.member.table(router);
 
   return <TanstackTable {...table} columns={columns} data={response.items || []} rowCount={response.totalCount} />;
 }
