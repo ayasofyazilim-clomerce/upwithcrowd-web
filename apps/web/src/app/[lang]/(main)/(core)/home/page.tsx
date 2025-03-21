@@ -8,7 +8,10 @@ import DashboardClient from "./client";
 
 async function getApiRequests() {
   try {
-    const requiredRequests = await Promise.all([getMemberApi({maxResultCount: 999})]);
+    const requiredRequests = await Promise.all([
+      getMemberApi({maxResultCount: 999}),
+      getPublicProjectsApi({maxResultCount: 999}),
+    ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -23,24 +26,17 @@ export default async function Page({params}: {params: {lang: string}}) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
 
-  const projectsResponse = await getPublicProjectsApi({maxResultCount: 999});
-
-  if (projectsResponse.type !== "success") {
-    return null;
-  }
-
-  const {items: projectItems} = projectsResponse.data;
-  const projects = projectItems || [];
-  const debtProjects = projects.filter((project) => project.fundCollectionType === "DBIT");
-  const shareProjects = projects.filter((project) => project.fundCollectionType === "SHRE");
-  const shareDebtProjects = projects.filter((project) => project.fundCollectionType === "SHRE_DBIT");
-
   const apiRequests = await getApiRequests();
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
-  const [memberResponse] = apiRequests.requiredRequests;
+  const [memberResponse, projectsResponse] = apiRequests.requiredRequests;
+  const {items: projectItems} = projectsResponse.data;
 
+  const projects = projectItems || [];
+  const debtProjects = projects.filter((project) => project.fundCollectionType === "DBIT");
+  const shareProjects = projects.filter((project) => project.fundCollectionType === "SHRE");
+  const shareDebtProjects = projects.filter((project) => project.fundCollectionType === "SHRE_DBIT");
   const {items: memberItems} = memberResponse.data;
   const members = memberItems || [];
   const individualMembers = members.filter((member) => member.type.toLowerCase() === "individual");

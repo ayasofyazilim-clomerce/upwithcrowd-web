@@ -65,7 +65,13 @@ export default async function RootLayout({children, params}: {children: React.Re
       return (
         <html lang="en">
           <body className={inter.className}>
-            <ErrorComponent languageData={languageData} message={apiRequests.message} signOutServer={signOutServer} />;
+            <ErrorComponent
+              clearSession
+              languageData={languageData}
+              message={apiRequests.message}
+              signOutServer={signOutServer}
+            />
+            ;
           </body>
         </html>
       );

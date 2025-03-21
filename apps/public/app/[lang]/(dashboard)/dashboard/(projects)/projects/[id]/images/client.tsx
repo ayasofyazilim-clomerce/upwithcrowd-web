@@ -5,11 +5,14 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import type {
   GetApiFileTypeGroupRulesetResponse,
   GetApiPublicFileResponse,
+  UpwithCrowd_Files_FileResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {FileTypeForFileCard} from "@repo/ayasofyazilim-ui/molecules/document-card";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
 import {useParams} from "next/navigation";
+import {useState} from "react";
 import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
@@ -44,9 +47,15 @@ export default function ImagesClient({
     const fileType = getFileType(fileName);
     return {...i, fileId: i.fileId || "", fileName, fileType};
   });
-  const thumbnails = fileData.filter((file) => file.fileTypeNamespace === "ProjectThumbnails");
-  const images = fileData.filter((file) => file.fileTypeNamespace === "ProjectImages");
-  const videos = fileData.filter((file) => file.fileTypeNamespace === "ProjectVideos");
+  const [thumbnails, setThumbnails] = useState<FileTypeForFileCard[]>(
+    fileData.filter((file) => file.fileTypeNamespace === "ProjectThumbnails"),
+  );
+  const [images, setImages] = useState<FileTypeForFileCard[]>(
+    fileData.filter((file) => file.fileTypeNamespace === "ProjectImages"),
+  );
+  const [videos, setVideos] = useState<FileTypeForFileCard[]>(
+    fileData.filter((file) => file.fileTypeNamespace === "ProjectVideos"),
+  );
 
   const documentTabs = [
     {
@@ -82,8 +91,40 @@ export default function ImagesClient({
           className="w-full grid-cols-1"
           text="Projenizin kapak fotoğrafı, görselleri ve videolarını yükleyin ve projenizi daha çekici hale getirin."
           title="Görseller">
-          <FileUpload
+          <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full ", multiSelect: "bg-white"}}
+            onSuccess={(file) => {
+              if (file.fileTypeNamespace === "ProjectThumbnails") {
+                setThumbnails((prev) => [
+                  ...prev,
+                  {
+                    ...file,
+                    fileName: file.name || "",
+                    fileType: file.fullPath.split(".").at(-1) || "",
+                  },
+                ]);
+              }
+              if (file.fileTypeNamespace === "ProjectImages") {
+                setImages((prev) => [
+                  ...prev,
+                  {
+                    ...file,
+                    fileName: file.name || "",
+                    fileType: file.fullPath.split(".").at(-1) || "",
+                  },
+                ]);
+              }
+              if (file.fileTypeNamespace === "ProjectVideos") {
+                setVideos((prev) => [
+                  ...prev,
+                  {
+                    ...file,
+                    fileName: file.name || "",
+                    fileType: file.fullPath.split(".").at(-1) || "",
+                  },
+                ]);
+              }
+            }}
             propertyId={projectId}
             ruleset={fileTypeGroupResponse}
           />
