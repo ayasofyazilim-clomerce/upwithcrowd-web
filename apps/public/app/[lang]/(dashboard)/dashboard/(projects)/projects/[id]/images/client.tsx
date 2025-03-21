@@ -21,14 +21,16 @@ export default function ImagesClient({
   fileTypeGroupResponse,
   fileResponse,
   projectId,
+  isDisable,
 }: {
   fileTypeGroupResponse: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
+  isDisable: boolean;
 }) {
-  const params = useParams();
-  const {lang} = params;
-  const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
+  const {lang} = useParams<{lang: string}>();
+
+  const baseLink = getBaseLink("dashboard", lang);
 
   const getFileNameFromPath = (fullPath: string): string => {
     const matches = /[^/]+$/.exec(fullPath);
@@ -93,6 +95,7 @@ export default function ImagesClient({
           title="Görseller">
           <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full ", multiSelect: "bg-white"}}
+            disabled={!isDisable}
             onSuccess={(file) => {
               if (file.fileTypeNamespace === "ProjectThumbnails") {
                 setThumbnails((prev) => [
@@ -139,9 +142,15 @@ export default function ImagesClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/investments`}>
-          <Button className="w-full">Kaydet</Button>
-        </Link>
+        {isDisable ? (
+          <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/investments`}>
+            <Button className="w-full">Kaydet</Button>
+          </Link>
+        ) : (
+          <Button className="w-full" disabled>
+            Kaydet
+          </Button>
+        )}
       </section>
     </div>
   );

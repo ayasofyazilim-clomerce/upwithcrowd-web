@@ -11,6 +11,8 @@ import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
 import {useState} from "react";
+import {useParams} from "next/navigation";
+import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
@@ -18,11 +20,16 @@ export default function InformationFormClient({
   fileTypeGroupResponse,
   fileResponse,
   projectId,
+  isDisable,
 }: {
   fileTypeGroupResponse: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
+  isDisable: boolean;
 }) {
+  const {lang} = useParams<{lang: string}>();
+  const baseLink = getBaseLink("dashboard", lang);
+
   const getFileNameFromPath = (fullPath: string): string => {
     const matches = /[^/]+$/.exec(fullPath);
     return matches ? matches[0] : fullPath;
@@ -82,6 +89,7 @@ export default function InformationFormClient({
           title="Bilgi Formu">
           <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+            disabled={!isDisable}
             onSuccess={(file) => {
               setInformationFiles((prev) => [
                 ...prev,
@@ -104,9 +112,15 @@ export default function InformationFormClient({
             <DocumentCard activeDefaultTab="information" documentTabs={documentTabs} />
           </CardContent>
         </Card>
-        <Link className="w-full" href={`/dashboard/projects/${projectId}/images`}>
-          <Button className="w-full">Kaydet</Button>
-        </Link>
+        {isDisable ? (
+          <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/images`}>
+            <Button className="w-full">Kaydet</Button>
+          </Link>
+        ) : (
+          <Button className="w-full" disabled>
+            Kaydet
+          </Button>
+        )}
       </section>
     </div>
   );
