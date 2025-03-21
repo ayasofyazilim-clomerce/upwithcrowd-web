@@ -11,9 +11,9 @@ export async function getPublicProjectsApi(data?: GetApiPublicProjectProjectList
   try {
     const client = await getUpwithcrowdClient();
     const dataResponse = await client.publicProject.getApiPublicProjectProjectList({...data, maxResultCount: 999});
-    return structuredResponse(dataResponse);
+    return structuredSuccessResponse(dataResponse);
   } catch (error) {
-    return structuredError(error);
+    throw structuredError(error);
   }
 }
 
