@@ -11,7 +11,7 @@ import {getMemberMailApi} from "@repo/actions/upwithcrowd/member/actions";
 import {postProjectAffiliationApi} from "@repo/actions/upwithcrowd/project/post-action";
 import {UserPlus} from "lucide-react";
 import {useParams, useRouter} from "next/navigation";
-import {useCallback, useState} from "react";
+import {useCallback, useState, useTransition} from "react";
 import {Label} from "@/components/ui/label";
 import Link from "next/link";
 import {getBaseLink} from "@/utils/lib";
@@ -28,9 +28,11 @@ export default function ClientAbout({
   roles: PagedResultDto_ListCustomRolesDto;
 }) {
   const router = useRouter();
-  const {isProjectEditable} = useProject();
 
-  const isFormDisabled = !isProjectEditable;
+  const {isProjectEditable} = useProject();
+  const [isPending, startTransition] = useTransition();
+  const isFormDisabled = !isProjectEditable || isPending;
+
   const {id: projectId, lang} = useParams<{id: string; lang: string}>();
   const baseLink = getBaseLink("dashboard", lang);
 
@@ -144,8 +146,12 @@ export default function ClientAbout({
 
               <Button
                 className="w-full"
-                disabled={!teamEmail || !roleId || !isFormDisabled}
-                onClick={() => void handleAddMember()}
+                disabled={!teamEmail || !roleId || isFormDisabled}
+                onClick={() => {
+                  startTransition(async () => {
+                    await handleAddMember();
+                  });
+                }}
                 type="button">
                 <UserPlus className="mr-2 h-4 w-4" />
                 Ekip Üyesi Ekle

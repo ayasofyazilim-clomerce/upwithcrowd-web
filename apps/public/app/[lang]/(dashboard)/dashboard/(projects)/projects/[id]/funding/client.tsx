@@ -13,7 +13,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {putProjectFundingByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import {handlePutResponse} from "@repo/utils/api";
 import {useParams, useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useTransition} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {FormContainer} from "../../new/_components/form";
@@ -48,9 +48,10 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
   const {id: projectId} = useParams<{id: string}>();
 
   const router = useRouter();
-  const {isProjectEditable} = useProject();
 
-  const isFormDisabled = !isProjectEditable;
+  const {isProjectEditable} = useProject();
+  const [isPending, startTransition] = useTransition();
+  const isFormDisabled = !isProjectEditable || isPending;
 
   const form = useForm<FundingFormValues>({
     resolver: zodResolver(fundingSchema),
@@ -103,10 +104,11 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
       overFunding: Boolean(data.overFunding),
     };
 
-    void putProjectFundingByIdApi({
-      requestBody: formattedData,
-      id: projectId,
-    }).then((response) => {
+    startTransition(async () => {
+      const response = await putProjectFundingByIdApi({
+        requestBody: formattedData,
+        id: projectId,
+      });
       handlePutResponse(response, router, `/dashboard/projects/${projectId}/information-form`);
     });
   };
@@ -453,7 +455,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                 <BudgetCard />
               </FormContainer>
             </Section> */}
-              <Button className="w-full" type="submit">
+              <Button className="w-full" disabled={isFormDisabled} type="submit">
                 Submit
               </Button>
             </fieldset>

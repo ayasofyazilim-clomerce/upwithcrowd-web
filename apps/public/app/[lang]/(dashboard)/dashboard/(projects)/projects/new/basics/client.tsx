@@ -18,6 +18,7 @@ import {handlePostResponse} from "@repo/utils/api";
 import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {useTransition} from "react";
 import {getBaseLink} from "@/utils/lib";
 import {FormContainer} from "../_components/form";
 import {Section} from "../_components/section";
@@ -58,6 +59,9 @@ type ProjectFormValues = z.infer<typeof projectSchema>;
 
 export default function BasicsClient({data}: {data: PageData}) {
   const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
+
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
   const params = useParams();
@@ -119,13 +123,14 @@ export default function BasicsClient({data}: {data: PageData}) {
       types: [typeId],
     };
 
-    void postProjectApi({
-      requestBody: finalFormData,
-    }).then((res) => {
-      if (res.type === "success") {
-        handlePostResponse(res, router, `${baseLink}/projects/${res.data.projectId}/about`);
+    startTransition(async () => {
+      const response = await postProjectApi({
+        requestBody: finalFormData,
+      });
+      if (response.type === "success") {
+        handlePostResponse(response, router, `${baseLink}/projects/${response.data.projectId}/about`);
       } else {
-        toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
+        toast.error(response.message || "Proje kaydedilirken bir hata oluştu");
       }
     });
   };
@@ -292,7 +297,7 @@ export default function BasicsClient({data}: {data: PageData}) {
               </FormContainer>
             </Section>
 
-            <Button className="w-full" type="submit">
+            <Button className="w-full" disabled={isPending} type="submit">
               Projeyi Kaydet ve İlerle
             </Button>
           </form>

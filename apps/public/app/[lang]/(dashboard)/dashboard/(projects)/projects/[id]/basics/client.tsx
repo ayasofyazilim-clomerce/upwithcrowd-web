@@ -2,7 +2,6 @@
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
 import type {
   PagedResultDto_CategoryListDto,
@@ -15,6 +14,7 @@ import type {JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import TiptapEditor from "@repo/ayasofyazilim-ui/organisms/tiptap";
 import {handlePostResponse} from "@repo/utils/api";
 import {useParams, useRouter, useSearchParams} from "next/navigation";
+import {useTransition} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {getBaseLink} from "@/utils/lib";
@@ -68,8 +68,9 @@ export default function ClientBasics({data}: {data: PageData}) {
   const params = new URLSearchParams(search);
 
   const {isProjectEditable} = useProject();
+  const [isPending, startTransition] = useTransition();
+  const isFormDisabled = !isProjectEditable || isPending;
 
-  const isFormDisabled = !isProjectEditable;
   const paramsBaseLink = useParams();
   const {lang} = paramsBaseLink;
   const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
@@ -90,15 +91,12 @@ export default function ClientBasics({data}: {data: PageData}) {
   });
 
   const onSubmit = (values: ProjectFormValues) => {
-    void putProjectBasicsByIdApi({
-      requestBody: values,
-      id: projectId,
-    }).then((res) => {
-      if (res.type === "success") {
-        handlePostResponse(res, router, `${baseLink}/projects/${res.data.projectId}/about`);
-      } else {
-        toast.error(res.message || "Proje kaydedilirken bir hata oluştu");
-      }
+    startTransition(async () => {
+      const response = await putProjectBasicsByIdApi({
+        requestBody: values,
+        id: projectId,
+      });
+      handlePostResponse(response, router, `${baseLink}/projects/${projectId}/about`);
     });
   };
 

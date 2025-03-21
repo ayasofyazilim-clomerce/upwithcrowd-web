@@ -3,7 +3,6 @@ import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
 import {getProjectApi, getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
 import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {
-  getProjectByIdUpdatePermissionApi,
   getPublicProjectByIdMembersApi,
   getPublicProjectByIdStatisticsApi,
 } from "@repo/actions/upwithcrowd/public-project/action";
@@ -17,7 +16,6 @@ import ProjectDetails from "./client";
 async function getApiRequests(id: string, isAuth: boolean) {
   try {
     const optionalRequests = await Promise.allSettled([
-      getProjectByIdUpdatePermissionApi({id}),
       getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
       getPublicProjectByIdStatisticsApi(id),
     ]);
@@ -63,8 +61,7 @@ export default async function Page({params}: {params: {id: string; lang: string}
     return null;
   }
 
-  const [isEditableResponse, investorResponse, statsResponse] = apiRequests.optionalRequests;
-  const isEditable = isEditableResponse.status === "fulfilled" ? isEditableResponse.value.data : false;
+  const [investorResponse, statsResponse] = apiRequests.optionalRequests;
   const investorResponseData = investorResponse.status === "fulfilled" ? investorResponse.value.data : null;
   const statsResponseData = statsResponse.status === "fulfilled" ? statsResponse.value.data : null;
 
@@ -75,7 +72,6 @@ export default async function Page({params}: {params: {id: string; lang: string}
         fileResponse={fileResponse.data}
         imageResponse={imageResponse.data}
         investorResponse={investorResponseData}
-        isEditable={isEditable}
         projectsMember={projectsMemberResponse.data}
         statsResponse={statsResponseData}
       />
