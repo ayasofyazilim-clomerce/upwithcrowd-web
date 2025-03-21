@@ -1,9 +1,45 @@
+import React from "react";
 import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
+import {getProjectByIdUpdatePermissionApi} from "@repo/actions/upwithcrowd/public-project/action";
+import {structuredError} from "@repo/utils/api";
+import {isRedirectError} from "next/dist/client/components/redirect";
+import ErrorComponent from "@repo/ui/components/error-component";
+import {getResourceData} from "@/language/core/Default";
 import {getBaseLink} from "@/utils/lib";
 
-export default function Layout({children, params}: {children: React.ReactNode; params: {id: string; lang: string}}) {
+async function getApiRequests(id: string) {
+  try {
+    const optionalRequests = await Promise.allSettled([]);
+
+    const requiredRequests = await Promise.all([getProjectByIdUpdatePermissionApi({id})]);
+
+    return {requiredRequests, optionalRequests};
+  } catch (error) {
+    if (!isRedirectError(error)) {
+      return structuredError(error);
+    }
+    throw error;
+  }
+}
+
+export default async function Layout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: {id: string; lang: string};
+}) {
   const {lang, id} = params;
   const baseLink = getBaseLink("dashboard", lang);
+
+  const {languageData} = await getResourceData(lang);
+  const apiRequests = await getApiRequests(id);
+  if ("message" in apiRequests) {
+    return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
+  }
+
+  const [updatePermissionResponse] = apiRequests.requiredRequests;
+  const isDisable = updatePermissionResponse.data;
   return (
     <div className="bg-muted h-full ">
       <TabLayout
@@ -60,7 +96,7 @@ export default function Layout({children, params}: {children: React.ReactNode; p
             disabled: false,
           },
         ]}>
-        {children}
+        {React.cloneElement(children as React.ReactElement, {isDisable})}
       </TabLayout>
     </div>
   );

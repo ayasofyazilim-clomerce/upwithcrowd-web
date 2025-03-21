@@ -23,8 +23,8 @@ import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 
 const projectSchema = z.object({
-  projectName: z.string().min(1, "Proje adı zorunludur").max(60, "Proje adı en fazla 60 karakter olabilir"),
-  projectDefinition: z.string().max(135, "Proje açıklaması en fazla 135 karakter olabilir").nullable(),
+  projectName: z.string().min(1, "Proje adı zorunludur").max(600, "Proje adı en fazla 600 karakter olabilir"),
+  projectDefinition: z.string().max(2000, "Proje açıklaması en fazla 2000 karakter olabilir").nullable(),
   sectorId: z.string().nullable(),
   categoryTypes: z.array(z.string()), // Changed to accept any string from category items
   projectTypes: z.array(z.string()), // Changed to accept any string from type items
@@ -60,7 +60,7 @@ interface PageData {
   type: PagedResultDto_TypeListDto | null;
 }
 
-export default function ClientBasics({data}: {data: PageData}) {
+export default function ClientBasics({data, isDisable}: {data: PageData; isDisable: boolean}) {
   const router = useRouter();
   const {id: projectId} = useParams<{id: string}>();
   const search = useSearchParams();
@@ -116,127 +116,129 @@ export default function ClientBasics({data}: {data: PageData}) {
             onSubmit={(e) => {
               void form.handleSubmit(onSubmit)(e);
             }}>
-            {/* Proje Özeti Section */}
-            <Section
-              text={[
-                "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
-                "Bu bilgiler, projenizin ilk izlenimini oluşturacak ve destekçilerinizin dikkatini çekecektir.",
-              ]}
-              title="Proje Özeti">
-              <FormContainer>
-                <FormFieldUI
-                  control={form.control}
-                  name="projectName"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Proje Adı</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Örnek: Sürdürülebilir Tarım Teknolojileri" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormFieldUI
-                  control={form.control}
-                  name="projectDefinition"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Proje Açıklaması</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Projenizin amacını ve hedeflerini kısaca açıklayın..."
-                          {...field}
-                          rows={3}
-                          value={field.value ?? ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </FormContainer>
-            </Section>
-
-            <Section
-              text={[
-                "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
-                "Bu bilgiler, projenizin ilk izlenimini oluşturacak ve destekçilerinizin dikkatini çekecektir.",
-              ]}
-              title="Proje Hikayesi">
-              <FormContainer className="w-full">
-                <FormFieldUI
-                  control={form.control}
-                  name="projectContent"
-                  render={({field}) => {
-                    return (
-                      <FormItem className="w-full">
-                        <FormLabel>Proje Hikayesi</FormLabel>
+            <fieldset disabled={!isDisable}>
+              {/* Proje Özeti Section */}
+              <Section
+                text={[
+                  "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
+                  "Bu bilgiler, projenizin ilk izlenimini oluşturacak ve destekçilerinizin dikkatini çekecektir.",
+                ]}
+                title="Proje Özeti">
+                <FormContainer>
+                  <FormFieldUI
+                    control={form.control}
+                    name="projectName"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Proje Adı</FormLabel>
                         <FormControl>
-                          <TiptapEditor
-                            canEditable
-                            editOnStart
-                            editorClassName="overflow-y-auto max-h-[500px]"
-                            editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
-                            editorId="story"
-                            minWordCount={1}
-                            onSaveFunction={async (_, content) => {
-                              field.onChange(content);
-                              return await Promise.resolve("OK");
-                            }}
+                          <Input placeholder="Örnek: Sürdürülebilir Tarım Teknolojileri" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormFieldUI
+                    control={form.control}
+                    name="projectDefinition"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Proje Açıklaması</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Projenizin amacını ve hedeflerini kısaca açıklayın..."
+                            {...field}
+                            rows={3}
+                            value={field.value ?? ""}
                           />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
-                    );
-                  }}
-                />
-              </FormContainer>
-            </Section>
+                    )}
+                  />
+                </FormContainer>
+              </Section>
 
-            {/* Proje Sınıflandırması Section */}
-            <Section
-              text={[
-                "Projenizin kategorisini seçin.",
-                "Doğru sınıflandırma, projenizin hedef kitlesine ulaşmasını kolaylaştırır.",
-              ]}
-              title="Proje Sınıflandırması">
-              <FormContainer className="grid gap-4">
-                <FormFieldUI
-                  control={form.control}
-                  name="categoryTypes"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>Kategori Türleri</FormLabel>
-                      <FormControl>
-                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
-                          {data.category?.items?.map((categoryItem) => (
-                            <Button
-                              key={categoryItem.id}
-                              onClick={() => {
-                                const newValue = field.value.includes(categoryItem.id)
-                                  ? field.value.filter((v) => v !== categoryItem.id)
-                                  : [...field.value, categoryItem.id];
-                                field.onChange(newValue);
+              <Section
+                text={[
+                  "Projenizi kısaca tanımlayan bir başlık ve açıklama ekleyin.",
+                  "Bu bilgiler, projenizin ilk izlenimini oluşturacak ve destekçilerinizin dikkatini çekecektir.",
+                ]}
+                title="Proje Hikayesi">
+                <FormContainer className="w-full">
+                  <FormFieldUI
+                    control={form.control}
+                    name="projectContent"
+                    render={({field}) => {
+                      return (
+                        <FormItem className="w-full">
+                          <FormLabel>Proje Hikayesi</FormLabel>
+                          <FormControl>
+                            <TiptapEditor
+                              canEditable={isDisable}
+                              editOnStart={isDisable}
+                              editorClassName="overflow-y-auto max-h-[500px]"
+                              editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
+                              editorId="story"
+                              minWordCount={1}
+                              onSaveFunction={async (_, content) => {
+                                field.onChange(content);
+                                return await Promise.resolve("OK");
                               }}
-                              type="button"
-                              variant={field.value.includes(categoryItem.id) ? "default" : "outline"}>
-                              {categoryItem.name}
-                            </Button>
-                          ))}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </FormContainer>
-            </Section>
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </FormContainer>
+              </Section>
 
-            <Button className="w-full" type="submit">
-              Değişiklikleri Kaydet
-            </Button>
+              {/* Proje Sınıflandırması Section */}
+              <Section
+                text={[
+                  "Projenizin kategorisini seçin.",
+                  "Doğru sınıflandırma, projenizin hedef kitlesine ulaşmasını kolaylaştırır.",
+                ]}
+                title="Proje Sınıflandırması">
+                <FormContainer className="grid gap-4">
+                  <FormFieldUI
+                    control={form.control}
+                    name="categoryTypes"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Kategori Türleri</FormLabel>
+                        <FormControl>
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
+                            {data.category?.items?.map((categoryItem) => (
+                              <Button
+                                key={categoryItem.id}
+                                onClick={() => {
+                                  const newValue = field.value.includes(categoryItem.id)
+                                    ? field.value.filter((v) => v !== categoryItem.id)
+                                    : [...field.value, categoryItem.id];
+                                  field.onChange(newValue);
+                                }}
+                                type="button"
+                                variant={field.value.includes(categoryItem.id) ? "default" : "outline"}>
+                                {categoryItem.name}
+                              </Button>
+                            ))}
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </FormContainer>
+              </Section>
+
+              <Button className="w-full" type="submit">
+                Değişiklikleri Kaydet
+              </Button>
+            </fieldset>
           </form>
         </Form>
       </section>
