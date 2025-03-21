@@ -20,7 +20,7 @@ async function getApiRequests(searchParams: GetApiProjectByIdProjectInvestorData
   }
 }
 
-export default async function PhotoModal({
+export default async function Page({
   params,
   searchParams,
 }: {
