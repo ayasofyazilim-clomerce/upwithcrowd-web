@@ -24,7 +24,7 @@ export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListPr
     .slice(0, 5);
 
   return (
-    <section className="px-6 py-20">
+    <section className="my-32 px-6 py-20 md:my-0">
       <div className="container mx-auto">
         <div className="mb-10 flex flex-col items-center">
           <h4 className="text-2xl uppercase">Projelerimiz</h4>
