@@ -18,7 +18,7 @@ async function getApiRequests(id: string) {
     throw error;
   }
 }
-export default async function Basics({params, isDisable}: {params: {id: string; lang: string}; isDisable: boolean}) {
+export default async function Basics({params}: {params: {id: string; lang: string}}) {
   const {id, lang} = params;
   const {languageData} = await getResourceData(lang);
 
@@ -38,7 +38,7 @@ export default async function Basics({params, isDisable}: {params: {id: string; 
 
   return (
     <div className="bg-muted">
-      <ClientBasics data={pageData} isDisable={isDisable} />
+      <ClientBasics data={pageData} />
     </div>
   );
 }

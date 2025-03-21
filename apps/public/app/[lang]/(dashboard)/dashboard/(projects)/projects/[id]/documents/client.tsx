@@ -15,23 +15,25 @@ import {useParams} from "next/navigation";
 import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
+import {useProject} from "../_components/project-provider";
 
 export default function DocumentsClient({
   projectRelatedFiles,
   projectLegalSituation,
   fileResponse,
   projectId,
-  isDisable,
 }: {
   projectRelatedFiles: GetApiFileTypeGroupRulesetResponse;
   projectLegalSituation: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
   projectId: string;
-  isDisable: boolean;
 }) {
   const {lang} = useParams<{lang: string}>();
   const baseLink = getBaseLink("dashboard", lang);
   // Pre-filter files for each tab directly in the client
+  const {isProjectEditable} = useProject();
+
+  const isFormDisabled = !isProjectEditable;
 
   const getFileNameFromPath = (fullPath: string): string => {
     const matches = /[^/]+$/.exec(fullPath);
@@ -94,7 +96,7 @@ export default function DocumentsClient({
           title="Patent, Marka ve Tescil Belgeleri">
           <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
-            disabled={!isDisable}
+            disabled={isFormDisabled}
             onSuccess={(file) => {
               setPatentFiles((prev) => [
                 ...prev,
@@ -115,7 +117,7 @@ export default function DocumentsClient({
           title="Hukuki Durum Belgeleri">
           <FileUpload<UpwithCrowd_Files_FileResponseDto>
             classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
-            disabled={!isDisable}
+            disabled={isFormDisabled}
             onSuccess={(file) => {
               setLegalFiles((prev) => [
                 ...prev,
@@ -138,15 +140,10 @@ export default function DocumentsClient({
             <DocumentCard activeDefaultTab="patent" documentTabs={documentTabs} />
           </CardContent>
         </Card>
-        {isDisable ? (
-          <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/information-form`}>
-            <Button className="w-full">Kaydet</Button>
-          </Link>
-        ) : (
-          <Button className="w-full" disabled>
-            Kaydet
-          </Button>
-        )}
+
+        <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/information-form`}>
+          <Button className="w-full">Kaydet</Button>
+        </Link>
       </section>
     </div>
   );

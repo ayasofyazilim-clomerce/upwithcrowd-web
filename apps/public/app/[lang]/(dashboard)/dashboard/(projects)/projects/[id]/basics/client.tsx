@@ -21,6 +21,7 @@ import {getBaseLink} from "@/utils/lib";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
+import {useProject} from "../_components/project-provider";
 
 const projectSchema = z.object({
   projectName: z.string().min(1, "Proje adı zorunludur").max(600, "Proje adı en fazla 600 karakter olabilir"),
@@ -60,12 +61,15 @@ interface PageData {
   type: PagedResultDto_TypeListDto | null;
 }
 
-export default function ClientBasics({data, isDisable}: {data: PageData; isDisable: boolean}) {
+export default function ClientBasics({data}: {data: PageData}) {
   const router = useRouter();
   const {id: projectId} = useParams<{id: string}>();
   const search = useSearchParams();
   const params = new URLSearchParams(search);
 
+  const {isProjectEditable} = useProject();
+
+  const isFormDisabled = !isProjectEditable;
   const paramsBaseLink = useParams();
   const {lang} = paramsBaseLink;
   const baseLink = getBaseLink("dashboard", Array.isArray(lang) ? lang[0] : lang);
@@ -116,7 +120,7 @@ export default function ClientBasics({data, isDisable}: {data: PageData; isDisab
             onSubmit={(e) => {
               void form.handleSubmit(onSubmit)(e);
             }}>
-            <fieldset disabled={!isDisable}>
+            <fieldset disabled={isFormDisabled}>
               {/* Proje Özeti Section */}
               <Section
                 text={[
@@ -176,8 +180,8 @@ export default function ClientBasics({data, isDisable}: {data: PageData; isDisab
                           <FormLabel>Proje Hikayesi</FormLabel>
                           <FormControl>
                             <TiptapEditor
-                              canEditable={isDisable}
-                              editOnStart={isDisable}
+                              canEditable={!isFormDisabled}
+                              editOnStart={!isFormDisabled}
                               editorClassName="overflow-y-auto max-h-[500px]"
                               editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                               editorId="story"

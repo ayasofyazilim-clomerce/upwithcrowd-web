@@ -1,3 +1,4 @@
+"use server";
 import React from "react";
 import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
 import {getProjectByIdUpdatePermissionApi} from "@repo/actions/upwithcrowd/public-project/action";
@@ -6,6 +7,7 @@ import {isRedirectError} from "next/dist/client/components/redirect";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {getResourceData} from "@/language/core/Default";
 import {getBaseLink} from "@/utils/lib";
+import {ProjectProvider} from "./_components/project-provider";
 
 async function getApiRequests(id: string) {
   try {
@@ -39,7 +41,8 @@ export default async function Layout({
   }
 
   const [updatePermissionResponse] = apiRequests.requiredRequests;
-  const isDisable = updatePermissionResponse.data;
+  const isProjectEditable = updatePermissionResponse.data;
+
   return (
     <div className="bg-muted h-full ">
       <TabLayout
@@ -96,7 +99,7 @@ export default async function Layout({
             disabled: false,
           },
         ]}>
-        {React.cloneElement(children as React.ReactElement, {isDisable})}
+        <ProjectProvider isProjectEditable={isProjectEditable}>{children}</ProjectProvider>
       </TabLayout>
     </div>
   );

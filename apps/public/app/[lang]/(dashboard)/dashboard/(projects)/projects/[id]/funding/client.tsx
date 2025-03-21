@@ -19,6 +19,7 @@ import {z} from "zod";
 import {FormContainer} from "../../new/_components/form";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
+import {useProject} from "../_components/project-provider";
 
 const fundingSchema = z.object({
   fundCollectionType: z.enum($UpwithCrowd_Projects_FundCollectionType.enum).optional(),
@@ -43,16 +44,13 @@ const fundCollectionTypeLabels: Record<string, string> = {
 };
 
 export type FundingFormValues = z.infer<typeof fundingSchema>;
-export default function ClientFunding({
-  fundingDetail,
-  isDisable,
-}: {
-  fundingDetail: UpwithCrowd_Projects_UpdateProjectFundingDto;
-  isDisable: boolean;
-}) {
+export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCrowd_Projects_UpdateProjectFundingDto}) {
   const {id: projectId} = useParams<{id: string}>();
 
   const router = useRouter();
+  const {isProjectEditable} = useProject();
+
+  const isFormDisabled = !isProjectEditable;
 
   const form = useForm<FundingFormValues>({
     resolver: zodResolver(fundingSchema),
@@ -132,7 +130,7 @@ export default function ClientFunding({
               void form.handleSubmit(onSubmit)(e);
             }}>
             {/* Privilege Section */}
-            <fieldset disabled={!isDisable}>
+            <fieldset disabled={isFormDisabled}>
               {/* Fund Collection Type Section */}
               <Section text={["Select the funding type"]} title="Fund Collection Type">
                 <FormContainer>
@@ -142,7 +140,7 @@ export default function ClientFunding({
                     render={({field}) => (
                       <FormItem>
                         <FormLabel>Fonlama Tipi</FormLabel>
-                        <Select disabled={!isDisable} onValueChange={field.onChange} value={field.value}>
+                        <Select disabled={isFormDisabled} onValueChange={field.onChange} value={field.value}>
                           <SelectTrigger>
                             <SelectValue placeholder="Select fund collection type">
                               {field.value
