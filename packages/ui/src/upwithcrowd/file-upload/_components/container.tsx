@@ -20,6 +20,7 @@ export type FileUploadContainerProps<T> = {
   };
   onSuccess: FileUploadBaseProps<T>["onSuccess"];
   children?: React.ReactNode;
+  disabled?: boolean;
 };
 
 export function FileUploadContainer<T>({
@@ -28,6 +29,7 @@ export function FileUploadContainer<T>({
   classNames,
   onSuccess,
   children,
+  disabled,
 }: FileUploadContainerProps<T>) {
   const [formData, setFormData] = useState<Array<FileFormData> | null>(null);
   if (!rule || !rule.mimeTypes) return null;
@@ -54,6 +56,7 @@ export function FileUploadContainer<T>({
         maxFileCount={config.maxFileCount}
         accept={config.accept}
         classNames={classNames?.core}
+        disabled={disabled}
         constantValues={{
           RelatedEntity: rule.fileRelationsEntity?.[0].relatedEntityName || "",
           FileType: rule.namespace,
