@@ -53,8 +53,9 @@ export type FileUploadProps<T> = {
   } & FileUploadContainerProps<T>["classNames"];
   children?: React.ReactNode;
   onSuccess?: FileUploadBaseProps<T>["onSuccess"];
+  disabled?: boolean;
 };
-export function FileUpload<T>({ruleset, propertyId, classNames, children, onSuccess}: FileUploadProps<T>) {
+export function FileUpload<T>({ruleset, propertyId, classNames, children, onSuccess, disabled}: FileUploadProps<T>) {
   const clearedRules = ruleset.filter((rule) => rule.fileRelationsEntity?.length);
   const nonRequireds = clearedRules.map((rule) => !rule.isFileTypeRequired);
   const [visibleRuleIds, setVisibleRuleIds] = useState<string[]>(
@@ -68,6 +69,7 @@ export function FileUpload<T>({ruleset, propertyId, classNames, children, onSucc
     <div className={cn("flex flex-col gap-4", classNames?.container)}>
       {nonRequireds.length > 1 && (
         <MultiSelect
+          disabled={disabled}
           className={cn("min-h-16 border p-4 shadow-none", classNames?.multiSelect)}
           defaultValue={clearedRules.filter((r) => r.isFileTypeRequired).map((r) => r.id)}
           options={clearedRules.map((rule) => ({
@@ -88,6 +90,7 @@ export function FileUpload<T>({ruleset, propertyId, classNames, children, onSucc
         if (!rule || !visibleRuleIds.includes(rule.id)) return null;
         return (
           <FileUploadContainer
+            disabled={disabled}
             onSuccess={onSuccess}
             rule={rule}
             key={rule.id}
