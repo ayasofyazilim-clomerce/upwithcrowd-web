@@ -17,6 +17,7 @@ export type FileUploadBaseProps<T> = Pick<
     FileType: string;
     Property: string;
   };
+  disabled?: boolean;
 };
 
 export function FileUploadBase<T>({
@@ -30,6 +31,7 @@ export function FileUploadBase<T>({
   classNames,
   constantValues,
   onSuccess,
+  disabled,
 }: FileUploadBaseProps<T>) {
   const {pending, setPending, setProgress, setSuccessed, setFailed} = useFileUploader();
   const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -86,7 +88,7 @@ export function FileUploadBase<T>({
       variant="button"
       maxSize={1024 * 1024 * 2}
       maxFileCount={maxFileCount}
-      disabled={pending.length > 0}
+      disabled={pending.length > 0 || disabled}
       fileCardRenderer={fileCardRenderer}
       value={files}
       onValueChange={(_files) => {
@@ -100,7 +102,7 @@ export function FileUploadBase<T>({
       headerChildren={
         <Button
           className="w-full self-end sm:max-w-max"
-          disabled={files.length === 0 || pending.length > 0}
+          disabled={disabled || files.length === 0 || pending.length > 0}
           onClick={handleUpload}>
           Kaydet
         </Button>
