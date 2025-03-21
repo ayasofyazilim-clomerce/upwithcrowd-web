@@ -4,12 +4,10 @@ import ClientFunding from "./client";
 
 export default async function Funding({
   params,
-  isDisable,
 }: {
   params: {
     id: string;
   };
-  isDisable: boolean;
 }) {
   const {id} = params;
   const projectDetail = await getPublicProjectDetailsFundingApi(id);
@@ -31,7 +29,7 @@ export default async function Funding({
   };
   return (
     <div>
-      <ClientFunding fundingDetail={fundingDetail} isDisable={isDisable} />
+      <ClientFunding fundingDetail={fundingDetail} />
     </div>
   );
 }

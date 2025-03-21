@@ -18,17 +18,19 @@ import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 import {FormContainer} from "../../new/_components/form";
+import {useProject} from "../_components/project-provider";
 
 export default function ClientAbout({
   projectMember,
   roles,
-  isDisable,
 }: {
   projectMember: PagedResultDto_ListProjectsMembersResponseDto;
   roles: PagedResultDto_ListCustomRolesDto;
-  isDisable: boolean;
 }) {
   const router = useRouter();
+  const {isProjectEditable} = useProject();
+
+  const isFormDisabled = !isProjectEditable;
   const {id: projectId, lang} = useParams<{id: string; lang: string}>();
   const baseLink = getBaseLink("dashboard", lang);
 
@@ -100,7 +102,7 @@ export default function ClientAbout({
               <div>
                 <Label>Ekip Üyesi E-posta</Label>
                 <Input
-                  disabled={!isDisable}
+                  disabled={isFormDisabled}
                   onChange={(e) => {
                     setTeamEmail(e.target.value);
                   }}
@@ -115,7 +117,7 @@ export default function ClientAbout({
                   <Label>Rol</Label>
                   <select
                     className="w-full rounded-md border p-2"
-                    disabled={!isDisable}
+                    disabled={isFormDisabled}
                     onChange={(e) => {
                       const newRoleName = e.target.value;
                       setRoleId(newRoleName);
@@ -142,7 +144,7 @@ export default function ClientAbout({
 
               <Button
                 className="w-full"
-                disabled={!teamEmail || !roleId || !isDisable}
+                disabled={!teamEmail || !roleId || !isFormDisabled}
                 onClick={() => void handleAddMember()}
                 type="button">
                 <UserPlus className="mr-2 h-4 w-4" />
@@ -216,17 +218,12 @@ export default function ClientAbout({
             ) : null}
           </FormContainer>
         </Section>
-        {isDisable ? (
-          <Link className="w-full" href={`${baseLink}/projects/${projectId}/funding`}>
-            <Button className="mt-6 w-full" type="button">
-              Devam Et
-            </Button>
-          </Link>
-        ) : (
-          <Button className="mt-6 w-full" disabled type="button">
+
+        <Link className="w-full" href={`${baseLink}/projects/${projectId}/funding`}>
+          <Button className="mt-6 w-full" type="button">
             Devam Et
           </Button>
-        )}
+        </Link>
       </section>
     </div>
   );

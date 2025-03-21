@@ -13,14 +13,14 @@ import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
 import ProjectInvestorTable from "../_components/table";
+import {useProject} from "../_components/project-provider";
 
 interface ProjectInvestorProps {
   investorResponse: PagedResultDto_ListProjectInvestorDto;
   statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto;
-  isDisable?: boolean;
 }
 
-export default function ProjectInvestorClient({investorResponse, statsResponse, isDisable}: ProjectInvestorProps) {
+export default function ProjectInvestorClient({investorResponse, statsResponse}: ProjectInvestorProps) {
   const formatPercentage = (value: number) => {
     return new Intl.NumberFormat("tr-TR", {
       style: "percent",
@@ -30,7 +30,9 @@ export default function ProjectInvestorClient({investorResponse, statsResponse, 
   };
   const params = useParams();
   const {lang, id} = params;
+  const {isProjectEditable} = useProject();
 
+  const isFormDisabled = !isProjectEditable;
   // id ve lang değişkenlerinin string olmasını garanti altına alıyoruz
   const safeLang = Array.isArray(lang) ? lang[0] : lang;
   const safeId = Array.isArray(id) ? id[0] : id;
@@ -116,7 +118,7 @@ export default function ProjectInvestorClient({investorResponse, statsResponse, 
         <ProjectInvestorTable investorResponse={investorResponse} />
       </Section>
       <Link className="w-full" href={`${baseLink}/projects/${safeId}/finish-project`}>
-        <Button className="w-full" disabled={!isDisable}>
+        <Button className="w-full" disabled={isFormDisabled}>
           Devam Et
         </Button>
       </Link>

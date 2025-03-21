@@ -30,13 +30,11 @@ async function getApiRequests(id: string) {
 
 export default async function ImagesPage({
   params,
-  isDisable,
 }: {
   params: {
     lang: string;
     id: string;
   };
-  isDisable: boolean;
 }) {
   const {lang} = params;
   const {languageData} = await getResourceData(lang);
@@ -49,7 +47,6 @@ export default async function ImagesPage({
   return (
     <DocumentsClient
       fileResponse={fileResponse.data}
-      isDisable={isDisable}
       projectId={params.id}
       projectLegalSituation={projectLegalSituationResponse.data}
       projectRelatedFiles={projectRelatedFilesResponse.data}

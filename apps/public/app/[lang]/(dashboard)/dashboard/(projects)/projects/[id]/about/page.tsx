@@ -3,7 +3,7 @@ import {getCustomRolesApi} from "@repo/actions/upwithcrowd/roles/action";
 import {getProjectByIdMembersApi} from "@repo/actions/upwithcrowd/project/action";
 import ClientAbout from "./client";
 
-export default async function About({params, isDisable}: {params: {id: string}; isDisable: boolean}) {
+export default async function About({params}: {params: {id: string}}) {
   const responseRoles = await getCustomRolesApi();
   const projectMemberResponse = await getProjectByIdMembersApi(params.id);
 
@@ -21,7 +21,7 @@ export default async function About({params, isDisable}: {params: {id: string}; 
 
   return (
     <div>
-      <ClientAbout isDisable={isDisable} projectMember={projectMember} roles={roles} />
+      <ClientAbout projectMember={projectMember} roles={roles} />
     </div>
   );
 }
