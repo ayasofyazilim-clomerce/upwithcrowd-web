@@ -10,18 +10,17 @@ import type {
 import ProjectTemplate from "@repo/ui/upwithcrowd/project-components/project-template";
 import {useSession} from "@repo/utils/auth";
 import {useMember} from "@/app/providers/member";
+import {useProject} from "../_components/project-provider";
 
 export default function ProjectDetails({
   data,
   projectsMember,
-  isEditable,
   imageResponse,
   fileResponse,
   investorResponse,
   statsResponse,
 }: {
   data: UpwithCrowd_Projects_ProjectsDetailResponseDto;
-  isEditable?: boolean;
   projectsMember: PagedResultDto_ListProjectsMembersResponseDto | null;
   imageResponse: UpwithCrowd_Files_FileResponseListDto[];
   fileResponse: UpwithCrowd_Files_FileResponseListDto[];
@@ -30,6 +29,7 @@ export default function ProjectDetails({
 }) {
   const {currentMember} = useMember();
   const {session} = useSession();
+  const {isProjectEditable} = useProject();
   return (
     <div className="bg-muted w-full overflow-hidden pb-24 md:pb-0">
       <ProjectTemplate
@@ -38,7 +38,7 @@ export default function ProjectDetails({
         fileResponse={fileResponse}
         imageResponse={imageResponse}
         investorResponse={investorResponse}
-        isEditable={isEditable}
+        isEditable={isProjectEditable}
         isPreview
         projectsMember={projectsMember}
         session={session}

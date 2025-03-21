@@ -31,8 +31,8 @@ export default function DocumentsClient({
   const {lang} = useParams<{lang: string}>();
   const baseLink = getBaseLink("dashboard", lang);
   // Pre-filter files for each tab directly in the client
-  const {isProjectEditable} = useProject();
 
+  const {isProjectEditable} = useProject();
   const isFormDisabled = !isProjectEditable;
 
   const getFileNameFromPath = (fullPath: string): string => {
