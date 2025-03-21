@@ -36,7 +36,7 @@ export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListPr
             loop: true,
             align: "center",
           }}>
-          <CarouselContent className="m-0">
+          <CarouselContent className="m-0 justify-center">
             {sortedProjects.map((project) => (
               <CarouselItem className="cursor-pointer p-2 md:basis-1/2 md:p-4 lg:basis-1/3" key={project.id}>
                 <Card
@@ -65,7 +65,7 @@ function ProjectImage({project}: {project: UpwithCrowd_Projects_ListProjectsResp
         alt={project.projectName || ""}
         className="h-52 w-full rounded-lg object-cover"
         height={200}
-        src="https://placehold.co/200x300" // Varsayılan bir resim ekleyin
+        src={project.filePath ?? "https://placehold.co/200x300"} // Varsayılan bir resim ekleyin
         width={300}
       />
       <Badge className="bg-primary text-primary-foreground absolute bottom-4 left-4">
