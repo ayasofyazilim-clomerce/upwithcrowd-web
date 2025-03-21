@@ -39,13 +39,13 @@ export default function AuthCard({
           </div>
           <p className="mb-4 text-center text-gray-600">{description}</p>
           <div className="flex gap-3">
-            <Link href={`/${lang}/login`}>
+            <Link href={`/${lang}/login?redirectTo=${window.location.pathname}`}>
               <Button className="gap-2" variant="outline">
                 Giriş Yap
                 <LogIn className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href={`/${lang}/register`}>
+            <Link href={`/${lang}/register?redirectTo=${window.location.pathname}`}>
               <Button className="gap-2">
                 Üye Ol
                 <UserPlusIcon className="h-4 w-4" />

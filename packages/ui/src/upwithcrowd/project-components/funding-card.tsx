@@ -73,17 +73,15 @@ export default function FundingTable({
 }) {
   const listViewData = prepareListViewData(projectDetail);
   return (
-    <div className="mt-8 rounded-md">
-      <Card className="py- col-span-1">
-        <CardHeader className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-6">
-          <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-            <CardTitle className="text-lg sm:text-xl">Yatırım Bilgileri</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4 p-4 pt-0 sm:space-y-6 sm:p-6 sm:pt-0">
-          <ListView list={listViewData} />
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="py- col-span-1">
+      <CardHeader className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-6">
+        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+          <CardTitle className="text-lg sm:text-xl">Yatırım Bilgileri</CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4 p-4 pt-0 sm:space-y-6 sm:p-6 sm:pt-0">
+        <ListView list={listViewData} />
+      </CardContent>
+    </Card>
   );
 }
