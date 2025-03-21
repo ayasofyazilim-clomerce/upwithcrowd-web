@@ -55,10 +55,12 @@ function ProjectTemplate({
     | null;
   isPreview?: boolean;
 }) {
-  const {id: projectId} = useParams<{id: string}>();
+  const {id: projectId, lang} = useParams<{id: string; lang: string}>();
   const [customAmount, setCustomAmount] = useState<string>("");
   const donationOptions = [10, 25, 50, 100, 250, 500];
   const [selectedDonation, setSelectedDonation] = useState(donationOptions[0]);
+
+  const allInvestorsLink = !isPreview ? `/${lang}/projects/${projectId}/investors` : undefined;
 
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "");
@@ -230,11 +232,11 @@ function ProjectTemplate({
                         </div>
                       ))}
 
-                      {investorResponse?.totalCount && investorResponse.totalCount > 3 ? (
+                      {allInvestorsLink && investorResponse?.totalCount && investorResponse.totalCount > 3 ? (
                         <InvestorsDialog
-                          investorResponse={investorResponse}
                           previewInvestors={previewInvestors}
                           totalCount={investorResponse.totalCount || 0}
+                          allInvestorsLink={allInvestorsLink}
                         />
                       ) : null}
                     </div>

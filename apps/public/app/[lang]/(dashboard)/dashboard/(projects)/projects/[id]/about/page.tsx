@@ -4,7 +4,9 @@ import {getProjectByIdMembersApi} from "@repo/actions/upwithcrowd/project/action
 import ClientAbout from "./client";
 
 export default async function About({params}: {params: {id: string}}) {
-  const responseRoles = await getCustomRolesApi();
+  const responseRoles = await getCustomRolesApi({
+    customRoleType: "Member",
+  });
   const projectMemberResponse = await getProjectByIdMembersApi(params.id);
 
   const roles = {

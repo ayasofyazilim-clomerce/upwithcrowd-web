@@ -21,7 +21,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
   try {
     const optionalRequests = await Promise.allSettled([
       getProjectByIdUpdatePermissionApi({id}),
-      getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 999}),
+      getProjectByIdProjectInvestorApi({id, sorting: "amount desc", maxResultCount: 5}),
       getPublicProjectByIdStatisticsApi(id),
     ]);
     const paramsMaterials = {
