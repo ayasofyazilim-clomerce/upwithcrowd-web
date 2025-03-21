@@ -11,6 +11,7 @@ export default function ErrorComponent({
   languageData,
   signOutServer,
   showHomeButton = true,
+  clearSession,
 }: {
   message?: string;
   languageData: {SomethingWentWrong: string};
@@ -18,6 +19,7 @@ export default function ErrorComponent({
     error: string;
   }>;
   showHomeButton?: boolean;
+  clearSession?: boolean;
 }) {
   const router = useRouter();
 
@@ -129,6 +131,9 @@ export default function ErrorComponent({
             className="flex items-center gap-2 px-8 py-3 text-lg"
             onClick={() => {
               if (signOutServer) {
+                if (clearSession) {
+                  sessionStorage.clear();
+                }
                 void signOutServer();
                 return;
               }
