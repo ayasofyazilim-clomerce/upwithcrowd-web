@@ -52,10 +52,10 @@ export default function Header({
       <div className="container mx-auto flex items-center justify-between px-12 md:px-0">
         <Link className="flex shrink-0 items-center" href={getBaseLink("", lang)}>
           <Image alt="" height={60} src={UPWC.src} width={60} />
-          <span className="text-primary hidden text-2xl font-bold md:flex">{appName}</span>
+          <span className="text-primary hidden text-2xl font-bold lg:flex">{appName}</span>
         </Link>
 
-        <div className="hidden flex-1 items-center justify-center md:flex">
+        <div className="hidden flex-1 items-center justify-center lg:flex">
           <nav className="mx-8">
             <ul className="flex space-x-8 text-lg">
               {PublicLinks.map((link) => (
@@ -71,7 +71,7 @@ export default function Header({
           </nav>
         </div>
 
-        <div className="hidden shrink-0 md:flex">
+        <div className="hidden shrink-0 lg:flex">
           {session !== null ? (
             <div className="flex items-center space-x-6">
               <Link
@@ -105,7 +105,7 @@ export default function Header({
 
         <button
           aria-label="Toggle menu"
-          className="z-50 md:hidden"
+          className="z-50 lg:hidden"
           onClick={() => {
             setIsMenuOpen(!isMenuOpen);
           }}>
@@ -114,7 +114,9 @@ export default function Header({
       </div>
 
       {isMenuOpen ? (
-        <div className="bg-primary fixed inset-0 z-40 flex flex-col items-center justify-center md:hidden">
+        <div
+          className="bg-primary lg :hidden fixed inset-0 z-40 flex flex-col items-center
+        justify-center">
           <nav className="w-full max-w-md px-6">
             <ul className="flex flex-col space-y-6 text-center">
               {PublicLinks.map((link) => (
