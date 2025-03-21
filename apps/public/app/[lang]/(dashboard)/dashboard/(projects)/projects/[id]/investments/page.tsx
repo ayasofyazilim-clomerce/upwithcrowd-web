@@ -27,9 +27,11 @@ async function getApiRequests(id: string, searchParams: GetApiProjectByIdMyproje
 export default async function ProjectInvestorPage({
   params,
   searchParams,
+  isDisable,
 }: {
   params: {id: string};
   searchParams: GetApiProjectByIdMyprojectInvestorData;
+  isDisable: boolean;
 }) {
   const apiRequests = await getApiRequests(params.id, searchParams);
 
@@ -38,5 +40,11 @@ export default async function ProjectInvestorPage({
   }
   const [projectsResponse, statsResponse] = apiRequests.requiredRequests;
 
-  return <ProjectInvestorClient investorResponse={projectsResponse.data} statsResponse={statsResponse.data} />;
+  return (
+    <ProjectInvestorClient
+      investorResponse={projectsResponse.data}
+      isDisable={isDisable}
+      statsResponse={statsResponse.data}
+    />
+  );
 }

@@ -22,9 +22,11 @@ import {FormContainer} from "../../new/_components/form";
 export default function ClientAbout({
   projectMember,
   roles,
+  isDisable,
 }: {
   projectMember: PagedResultDto_ListProjectsMembersResponseDto;
   roles: PagedResultDto_ListCustomRolesDto;
+  isDisable: boolean;
 }) {
   const router = useRouter();
   const {id: projectId, lang} = useParams<{id: string; lang: string}>();
@@ -98,6 +100,7 @@ export default function ClientAbout({
               <div>
                 <Label>Ekip Üyesi E-posta</Label>
                 <Input
+                  disabled={!isDisable}
                   onChange={(e) => {
                     setTeamEmail(e.target.value);
                   }}
@@ -112,6 +115,7 @@ export default function ClientAbout({
                   <Label>Rol</Label>
                   <select
                     className="w-full rounded-md border p-2"
+                    disabled={!isDisable}
                     onChange={(e) => {
                       const newRoleName = e.target.value;
                       setRoleId(newRoleName);
@@ -138,7 +142,7 @@ export default function ClientAbout({
 
               <Button
                 className="w-full"
-                disabled={!teamEmail || !roleId}
+                disabled={!teamEmail || !roleId || !isDisable}
                 onClick={() => void handleAddMember()}
                 type="button">
                 <UserPlus className="mr-2 h-4 w-4" />
@@ -212,11 +216,17 @@ export default function ClientAbout({
             ) : null}
           </FormContainer>
         </Section>
-        <Link className="w-full" href={`${baseLink}/projects/${projectId}/funding`}>
-          <Button className="mt-6 w-full" type="button">
+        {isDisable ? (
+          <Link className="w-full" href={`${baseLink}/projects/${projectId}/funding`}>
+            <Button className="mt-6 w-full" type="button">
+              Devam Et
+            </Button>
+          </Link>
+        ) : (
+          <Button className="mt-6 w-full" disabled type="button">
             Devam Et
           </Button>
-        </Link>
+        )}
       </section>
     </div>
   );

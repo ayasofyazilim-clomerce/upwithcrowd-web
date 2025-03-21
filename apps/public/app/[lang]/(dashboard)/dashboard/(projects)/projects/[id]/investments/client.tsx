@@ -17,9 +17,10 @@ import ProjectInvestorTable from "../_components/table";
 interface ProjectInvestorProps {
   investorResponse: PagedResultDto_ListProjectInvestorDto;
   statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto;
+  isDisable?: boolean;
 }
 
-export default function ProjectInvestorClient({investorResponse, statsResponse}: ProjectInvestorProps) {
+export default function ProjectInvestorClient({investorResponse, statsResponse, isDisable}: ProjectInvestorProps) {
   const formatPercentage = (value: number) => {
     return new Intl.NumberFormat("tr-TR", {
       style: "percent",
@@ -115,7 +116,9 @@ export default function ProjectInvestorClient({investorResponse, statsResponse}:
         <ProjectInvestorTable investorResponse={investorResponse} />
       </Section>
       <Link className="w-full" href={`${baseLink}/projects/${safeId}/finish-project`}>
-        <Button className="w-full">Devam Et</Button>
+        <Button className="w-full" disabled={!isDisable}>
+          Devam Et
+        </Button>
       </Link>
     </div>
   );
