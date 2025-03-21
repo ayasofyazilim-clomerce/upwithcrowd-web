@@ -1,5 +1,3 @@
-"use server";
-
 import {permanentRedirect} from "next/navigation";
 
 export default function Page({params}: {params: {id: string; lang: string}}) {
