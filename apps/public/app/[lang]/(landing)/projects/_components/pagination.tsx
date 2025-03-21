@@ -9,26 +9,28 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {cn} from "@repo/ui/utils";
 import {usePathname, useSearchParams} from "next/navigation";
 
 interface PaginationControlsProps {
-  totalPages: number;
-  currentPage: number;
+  totalCount: number;
+  maxResultCount?: number;
 }
 
-export default function PaginationControls({totalPages, currentPage}: PaginationControlsProps) {
+export default function PaginationControls({totalCount, maxResultCount = 10}: PaginationControlsProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const createPageURL = (pageNumber: number | string) => {
+  const skipCount = parseInt(searchParams.get("skipCount") || "0") || 0;
+  const totalPages = Math.ceil(totalCount / maxResultCount);
+  const createPageURL = (_skipCount: number | string) => {
     const params = new URLSearchParams(searchParams);
-    params.set("page", pageNumber.toString());
+    params.set("skipCount", _skipCount.toString());
     return `${pathname}?${params.toString()}`;
   };
-
+  const currentPage = Math.floor(skipCount / maxResultCount + 1);
   const renderPageLinks = () => {
     const pageNumbers = [];
-    const maxVisiblePages = 5;
+    const maxVisiblePages = 3;
 
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
@@ -55,31 +57,38 @@ export default function PaginationControls({totalPages, currentPage}: Pagination
       pageNumbers.push("...");
       pageNumbers.push(totalPages);
     }
-
     return pageNumbers.map((pageNumber) => (
       <PaginationItem key={pageNumber}>
         {pageNumber === "..." ? (
           <PaginationEllipsis />
         ) : (
-          <PaginationLink href={createPageURL(pageNumber)} isActive={pageNumber === currentPage}>
+          <PaginationLink
+            href={createPageURL(Number(pageNumber) * maxResultCount - maxResultCount)}
+            isActive={pageNumber === currentPage}>
             {pageNumber}
           </PaginationLink>
         )}
       </PaginationItem>
     ));
   };
-
+  const prevPage = skipCount - maxResultCount < 0 ? 0 : skipCount - maxResultCount;
+  const nextPage = skipCount + maxResultCount > totalPages / currentPage ? 0 : skipCount + maxResultCount;
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious aria-disabled={currentPage === 1} href={createPageURL(Math.max(1, currentPage - 1))} />
+          <PaginationPrevious
+            className={cn(currentPage === 1 ? "pointer-events-none opacity-50" : "")}
+            href={createPageURL(prevPage)}
+            isActive={currentPage === 1}
+          />
         </PaginationItem>
         {renderPageLinks()}
         <PaginationItem>
           <PaginationNext
-            aria-disabled={currentPage === totalPages}
-            href={createPageURL(Math.min(totalPages, currentPage + 1))}
+            className={cn(nextPage === 0 ? "pointer-events-none opacity-50" : "")}
+            href={createPageURL(nextPage)}
+            isActive={nextPage === 0}
           />
         </PaginationItem>
       </PaginationContent>
