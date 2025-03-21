@@ -173,7 +173,7 @@ function ProjectTemplate({
             mode={isEditable ? "preview" : "live"}
           />
         </div>
-        <div className="lg:w-1/3">
+        <div className="space-y-8 lg:w-1/3">
           {isEditable ? <ProjectActions projectId={projectId} /> : null}
           {!isEditable && !isPreview && (
             <>
