@@ -143,7 +143,7 @@ export default function ImagesClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/investments`}>
+        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/investments`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
