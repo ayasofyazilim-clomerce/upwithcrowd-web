@@ -141,7 +141,7 @@ export default function DocumentsClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/information-form`}>
+        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/information-form`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>

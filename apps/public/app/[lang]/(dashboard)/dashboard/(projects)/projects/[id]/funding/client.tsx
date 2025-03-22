@@ -109,7 +109,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
         requestBody: formattedData,
         id: projectId,
       });
-      handlePutResponse(response, router, `/dashboard/projects/${projectId}/information-form`);
+      handlePutResponse(response, router, `/dashboard/projects/${projectId}/documents`);
     });
   };
   return (

@@ -114,7 +114,7 @@ export default function InformationFormClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`${baseLink}/dashboard/projects/${projectId}/images`}>
+        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/images`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
