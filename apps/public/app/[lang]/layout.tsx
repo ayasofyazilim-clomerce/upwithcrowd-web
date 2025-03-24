@@ -21,25 +21,6 @@ export const metadata = {
   description: "Empowering ideas through crowdfunding",
 };
 
-function findActiveMember(memberList: Member[], memberIdFromSession?: string | string[]) {
-  if (memberList.length === 0) return null;
-
-  // Eğer backend'den member listesi geldiyse ama session'da bu member id yoksa kullanıcı ilk defa member oluşturmuş demektir.
-  // İlk member oluşturulduğunda backend bu member'ı aktif member olarak kaydediyor.
-  // Bu sebeple memberIdFromSession gelmediğinde ilk member'ı aktif member olarak set edebiliriz.
-  if (!memberIdFromSession) {
-    return memberList[0];
-  }
-
-  if (Array.isArray(memberIdFromSession)) {
-    return (
-      memberList.find((memberFromDB) => memberIdFromSession.find((member) => member === memberFromDB.id)) ||
-      memberList[0]
-    );
-  }
-  return memberList.find((memberFromDB) => memberFromDB.id === memberIdFromSession) || memberList[0];
-}
-
 async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([myProfileApi()]);
@@ -80,14 +61,16 @@ export default async function RootLayout({children, params}: {children: React.Re
     const profileImage = profileImageResponse.status === "fulfilled" ? profileImageResponse.value.data : undefined;
     members = memberResponse.status === "fulfilled" ? memberResponse.value.data : [];
 
-    const activeMember = findActiveMember(members, session.user?.member_id);
-    if (profileImage) {
-      const activeMemberIndex = members.findIndex((_member) => _member.id === activeMember?.id);
-      if (activeMember && activeMemberIndex !== -1) {
-        members[activeMemberIndex].profileImage = profileImage;
+    const activeMember = members.find((memberFromDB) => memberFromDB.id === session.user?.member_id);
+    if (activeMember) {
+      if (profileImage) {
+        const activeMemberIndex = members.findIndex((_member) => _member.id === activeMember.id);
+        if (activeMemberIndex !== -1) {
+          members[activeMemberIndex].profileImage = profileImage;
+        }
       }
+      member = activeMember;
     }
-    member = activeMember;
   }
 
   const resources = await getLocalizationResources(lang);
