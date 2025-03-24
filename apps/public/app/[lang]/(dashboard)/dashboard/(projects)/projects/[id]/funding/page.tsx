@@ -16,8 +16,6 @@ export default async function Funding({
 
   const fundingDetail: Required<UpwithCrowd_Projects_UpdateProjectFundingDto> = {
     fundCollectionType: projectDetail.data.fundCollectionType || "NONE",
-    projectStartDate: projectDetail.data.projectStartDate || "",
-    projectEndDate: projectDetail.data.projectEndDate || "",
     fundNominalAmount: projectDetail.data.fundNominalAmount || 0,
     fundableAmount: projectDetail.data.fundableAmount || 0,
     additionalFundRate: projectDetail.data.additionalFundRate || "",
