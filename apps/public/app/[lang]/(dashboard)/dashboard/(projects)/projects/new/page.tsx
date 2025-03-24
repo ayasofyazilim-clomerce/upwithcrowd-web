@@ -159,7 +159,7 @@ export default function ProjectOnboarding() {
           ))}
 
           <div className="mx-auto flex flex-col gap-4 pt-4 md:mx-0 md:ml-16 md:flex-row">
-            <Link className="w-full md:w-auto" href="/dashboard/projects/new/basics/?type=Project">
+            <Link className="w-full md:w-auto" href="/dashboard/projects/new/basics?type=Project">
               <Button className="bg-primary hover:bg-primary/90 w-full gap-2 md:w-auto" size="lg">
                 Proje Oluşturmaya Başla
                 <ChevronRight className="h-4 w-4" />
