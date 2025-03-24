@@ -201,7 +201,7 @@ function ProjectTemplate({
                 selectedDonation={selectedDonation}
                 setSelectedDonation={setSelectedDonation}
               />
-              <FundingTable projectDetail={data} />
+              <FundingTable projectDetail={data} statsResponse={statsResponse} />
             </>
           )}
 
