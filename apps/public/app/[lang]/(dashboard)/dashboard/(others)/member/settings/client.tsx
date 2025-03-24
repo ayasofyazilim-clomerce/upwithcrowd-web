@@ -1,15 +1,16 @@
 "use client";
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {toast} from "@/components/ui/sonner";
 import {
-  type UpwithCrowd_Files_FileResponseDto,
   type GetApiFileTypeGroupRulesetResponse,
   type GetApiPublicFileResponse,
+  type UpwithCrowd_Files_FileResponseDto,
   type UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
+import {handlePutResponse} from "@repo/utils/api";
+import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {useMember} from "@/app/providers/member";
 import {IndividualForm} from "../_components/indiviual-form";
@@ -25,29 +26,19 @@ export default function NewPersonalAccount({
   fileResponse: GetApiPublicFileResponse;
   memberId: string;
 }) {
-  const {setCurrentMember, currentMember} = useMember();
-  async function onSubmit(values: unknown) {
-    try {
-      const result = await putMemberApiById({
-        id: currentMember?.id || "",
-        requestBody: {
-          ...(values as UpwithCrowd_Members_SaveMemberDto),
-          type: currentMember?.type || "Organization",
-          isValidated: true,
-        },
-      });
-
-      if (result.type === "success") {
-        //@ts-expect-error we know it's a Member
-        //eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- This is safe
-        setCurrentMember({...currentMember, ...values});
-        toast.success("Hesabınız başarıyla güncellendi.");
-      } else {
-        toast.error(result.message || "Hesabınız güncellenirken bir hata oluştu.");
-      }
-    } catch (error) {
-      toast.error("Hesabınız güncellenirken bir hata oluştu. Lütfen tekrar deneyin.");
-    }
+  const router = useRouter();
+  const {currentMember} = useMember();
+  function onSubmit(values: unknown) {
+    void putMemberApiById({
+      id: currentMember?.id || "",
+      requestBody: {
+        ...(values as UpwithCrowd_Members_SaveMemberDto),
+        type: currentMember?.type || "Organization",
+        isValidated: true,
+      },
+    }).then((result) => {
+      handlePutResponse(result, router);
+    });
   }
   const [files, setFiles] = useState<GetApiPublicFileResponse>(fileResponse);
   useEffect(() => {
