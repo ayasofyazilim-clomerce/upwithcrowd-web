@@ -1,7 +1,8 @@
 import {Button} from "@/components/ui/button";
 import type {UpwithCrowd_Payment_ListPaymentTransactionDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {formatCurrency} from "@repo/ui/utils";
-import {CreditCard, Link, ArrowUpRight, AlertCircle} from "lucide-react";
+import {CreditCard, ArrowUpRight, AlertCircle} from "lucide-react";
+import Link from "next/link";
 import {getBaseLink} from "@/utils/lib";
 import type {Payment} from "../types";
 
