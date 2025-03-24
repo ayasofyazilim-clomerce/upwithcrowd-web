@@ -1122,6 +1122,16 @@ export type UpwithCrowdResources = {
   "Permission:FileTypeMimeType.Delete": "Delete the FileTypeMimeType";
   "Permission:FileTypeMimeType.Update": "Update the FileTypeMimeType";
   "Permission:FileTypeMimeType.List": "List the FileTypeMimeType";
+  "Permission:NotificationSubscribers": "NotificationSubscribers";
+  "Permission:NotificationSubscribers.Save": "Saving the NotificationSubscribers";
+  "Permission:NotificationSubscribers.Delete": "Delete the NotificationSubscribers";
+  "Permission:NotificationSubscribers.Update": "Update the NotificationSubscribers";
+  "Permission:NotificationSubscribers.List": "List the NotificationSubscribers";
+  "Permission:NotificationTopics": "NotificationTopics";
+  "Permission:NotificationTopics.Save": "Saving the NotificationTopics";
+  "Permission:NotificationTopics.Delete": "Delete the NotificationTopics";
+  "Permission:NotificationTopics.Update": "Update the NotificationTopics";
+  "Permission:NotificationTopics.List": "List the NotificationTopics";
   "Permission:LLMSettings": "LLM Settings";
   "Permission:LLMSettings.View": "View LLM settings";
   "Permission:LLMSettings.Update": "Update LLM settings";
@@ -1290,6 +1300,7 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:EPR74": "This member has not been associated with any user before";
   "UpwithCrowd:EPR75": "Only files with the following extensions are allowed for {fileTypeName}: {mimeTypes}.The file type you attempted to upload: {fileContentType}.";
   "UpwithCrowd:EPR76": "This member has not been validated. Please proceed with a valid membership.";
+  "UpwithCrowd:UPW0001": "File could not be fetched from file storage!";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";
