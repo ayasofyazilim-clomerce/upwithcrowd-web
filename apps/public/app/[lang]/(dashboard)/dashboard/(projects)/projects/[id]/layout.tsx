@@ -3,8 +3,9 @@ import React from "react";
 import {TabLayout} from "@repo/ayasofyazilim-ui/templates/tab-layout";
 import {getProjectByIdUpdatePermissionApi} from "@repo/actions/upwithcrowd/public-project/action";
 import {structuredError} from "@repo/utils/api";
-import {isRedirectError} from "next/dist/client/components/redirect";
+import {isRedirectError, permanentRedirect} from "next/dist/client/components/redirect";
 import ErrorComponent from "@repo/ui/components/error-component";
+import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import {getResourceData} from "@/language/core/Default";
 import {getBaseLink} from "@/utils/lib";
 import {ProjectProvider} from "./_components/project-provider";
@@ -13,7 +14,7 @@ async function getApiRequests(id: string) {
   try {
     const optionalRequests = await Promise.allSettled([]);
 
-    const requiredRequests = await Promise.all([getProjectByIdUpdatePermissionApi({id})]);
+    const requiredRequests = await Promise.all([getProjectByIdUpdatePermissionApi({id}), getProjectApi({id})]);
 
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -39,9 +40,11 @@ export default async function Layout({
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
-
-  const [updatePermissionResponse] = apiRequests.requiredRequests;
+  const [updatePermissionResponse, test] = apiRequests.requiredRequests;
   const isProjectEditable = updatePermissionResponse.data;
+  if (test.data.totalCount === 0) {
+    return permanentRedirect(`/${lang}/dashboard`);
+  }
   return (
     <div className="bg-muted h-full ">
       <TabLayout
