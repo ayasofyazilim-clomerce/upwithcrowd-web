@@ -33,7 +33,7 @@ export default async function Page({
 
   const apiRequests = await getApiRequests({
     ...searchParams,
-    fileType: "ProjectImages",
+    fileTypeGroup: "ProjectMaterials",
     relatedEntity: "Project",
     relatedId: projectId,
   });
