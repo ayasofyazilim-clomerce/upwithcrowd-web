@@ -8,7 +8,7 @@ import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
 import {handleFileDownload} from "@repo/ui/upwithcrowd/file-upload/index";
 import {handlePutResponse} from "@repo/utils/api";
-import {CircleCheck, FileTextIcon, Trash} from "lucide-react";
+import {CircleCheck, FileImageIcon, FileTextIcon, Trash} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 
@@ -107,7 +107,7 @@ function fileTable(router: AppRouterInstance) {
           });
         },
         type: "simple",
-        icon: CircleCheck,
+        icon: FileTextIcon,
         condition: (row) => row.mimeType === "application/pdf",
         actionLocation: "row",
       },
@@ -128,7 +128,7 @@ function fileTable(router: AppRouterInstance) {
           </div>
         ),
         type: "custom-dialog",
-        icon: CircleCheck,
+        icon: FileImageIcon,
         condition: (row) => row.mimeType !== "application/pdf",
         actionLocation: "row",
         title: "Dosya Görüntüleme",
