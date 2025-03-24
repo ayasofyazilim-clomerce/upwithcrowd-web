@@ -1,6 +1,6 @@
 "use server";
 
-import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/actions";
 import {getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
 import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {

@@ -1,5 +1,5 @@
 import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
-import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/actions";
 import {getProjectApi, getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
 import {getPublicFileApi} from "@repo/actions/upwithcrowd/public-file/action";
 import {

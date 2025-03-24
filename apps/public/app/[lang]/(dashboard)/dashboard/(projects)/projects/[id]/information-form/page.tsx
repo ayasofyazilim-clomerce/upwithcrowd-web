@@ -1,5 +1,5 @@
 import {getApiFileTypeGroupRulesetApi} from "@repo/actions/upwithcrowd/file-type-group/actions";
-import {getFileApi} from "@repo/actions/upwithcrowd/file/action";
+import {getFileApi} from "@repo/actions/upwithcrowd/file/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {auth} from "@repo/utils/auth/next-auth";

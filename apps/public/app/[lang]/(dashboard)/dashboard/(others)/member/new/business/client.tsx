@@ -1,5 +1,5 @@
 "use client";
-import {handlePostResponse} from "@repo/utils/api";
+import {useMember} from "@/app/providers/member";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -8,6 +8,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import type {UpwithCrowd_Members_SaveMemberDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
+import {handlePostResponse} from "@repo/utils/api";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
@@ -15,7 +16,6 @@ import {useForm} from "react-hook-form";
 import {PhoneInput} from "react-international-phone";
 import "react-international-phone/style.css";
 import * as z from "zod";
-import {useMember} from "@/app/providers/member";
 import {BusinessAccountModal} from "../../_components/business-account-modal";
 
 const formSchema = z.object({
@@ -44,7 +44,7 @@ export default function NewBusinessAccount() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const {currentMember} = useMember();
+  const {currentMember, setCurrentMember} = useMember();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -78,7 +78,14 @@ export default function NewBusinessAccount() {
 
     void postApiMember({requestBody}).then((res) => {
       handlePostResponse(res);
-      setShowSuccessModal(true);
+      if (res.type === "success") {
+        setCurrentMember({
+          ...requestBody,
+          isValidated: false,
+          id: res.data.memberID || "", // Assuming 'id' is the correct property in Member type
+        });
+        setShowSuccessModal(true);
+      }
     });
 
     setIsSubmitting(false);
