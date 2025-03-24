@@ -1,10 +1,10 @@
 import {Badge} from "@/components/ui/badge";
 import {Card} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
+import {formatCurrency} from "@repo/ui/utils";
 import {Target, Wallet} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {formatCurrency} from "@repo/ui/utils";
 
 interface Project {
   id: string;
@@ -16,6 +16,7 @@ interface Project {
   projectTypes?: string[] | null; // Changed from projectType: string[]
   url: string | null;
   totalInvestment: number;
+  categoryTypes?: string[] | null; // Changed from categoryType: string[]
 }
 
 export default function ListedProjectCard({project}: {project: Project}) {
@@ -42,13 +43,10 @@ export default function ListedProjectCard({project}: {project: Project}) {
             width={300}
           />
           <Badge className="bg-primary text-primary-foreground absolute bottom-2 left-2 font-medium">
-            {project.fundCollectionType}
+            {project.categoryTypes && project.categoryTypes.length > 0 ? project.categoryTypes.join(" - ") : "Genel"}
           </Badge>
         </div>
-        {/* <div className="text-muted-foreground flex items-center text-xs md:text-sm">
-          <MapPin className="mr-1 h-3 w-3 md:h-4 md:w-4" />
-          California, Bay Area
-        </div> */}
+
         <h3 className="mb-4 w-full overflow-hidden text-ellipsis text-nowrap text-lg font-semibold md:text-xl">
           {project.projectName}
         </h3>
