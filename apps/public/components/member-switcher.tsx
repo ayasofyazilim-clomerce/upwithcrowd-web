@@ -38,7 +38,8 @@ export default function MemberSwitcher() {
     if (!currentMember && path.includes("/dashboard")) {
       router.push("/dashboard/member/new/personal");
     }
-  }, [_currentMember]);
+  }, [_currentMember, path]);
+
   if (!_currentMember) {
     _currentMember = {
       id: session?.user?.member_id || "",
