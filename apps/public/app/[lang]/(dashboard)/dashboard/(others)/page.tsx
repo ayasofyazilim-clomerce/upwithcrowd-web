@@ -152,7 +152,6 @@ export default function ProfileClient() {
             <Button
               className="flex w-full items-center justify-center rounded-full text-red-500 hover:text-red-700 md:w-1/3"
               onClick={() => {
-                window.sessionStorage.removeItem("current_member");
                 void signOutServer();
               }}
               variant="outline">

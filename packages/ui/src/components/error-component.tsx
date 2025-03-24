@@ -26,6 +26,9 @@ export default function ErrorComponent({
   const handleHomeClick = async (e: React.MouseEvent) => {
     if (signOutServer) {
       e.preventDefault();
+      if (clearSession) {
+        sessionStorage.clear();
+      }
       await signOutServer();
       router.push("/en");
     }
