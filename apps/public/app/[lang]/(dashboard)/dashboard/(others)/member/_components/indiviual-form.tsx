@@ -25,7 +25,7 @@ const formSchema = z.object({
 export type IndividualFormValues = z.infer<typeof formSchema>;
 
 interface IndividualFormProps {
-  onSubmit: (values: IndividualFormValues) => Promise<void>;
+  onSubmit: (values: IndividualFormValues) => Promise<void> | void;
 }
 
 export function IndividualForm({onSubmit}: IndividualFormProps) {

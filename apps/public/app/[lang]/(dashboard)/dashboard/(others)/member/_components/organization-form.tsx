@@ -29,7 +29,7 @@ const formSchema = z.object({
 export type FormValues = z.infer<typeof formSchema>;
 
 interface OrganizationFormProps {
-  onSubmit: (values: FormValues) => Promise<void>;
+  onSubmit: (values: FormValues) => Promise<void> | void;
 }
 
 export function OrganizationForm({onSubmit}: OrganizationFormProps) {

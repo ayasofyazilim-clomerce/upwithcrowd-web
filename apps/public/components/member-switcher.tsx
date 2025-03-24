@@ -41,7 +41,7 @@ export default function MemberSwitcher() {
   }, [_currentMember]);
   if (!_currentMember) {
     _currentMember = {
-      id: Array.isArray(session?.user?.member_id) ? session.user.member_id[0] : session?.user?.member_id || "",
+      id: session?.user?.member_id || "",
       name: session?.user?.name || "",
       surname: session?.user?.surname || "",
       identifier: session?.user?.email || "",
@@ -225,7 +225,6 @@ function Commands() {
         <CommandItem
           className="flex h-9 items-center gap-2 rounded-none text-red-500 hover:cursor-pointer aria-selected:text-red-500"
           onSelect={() => {
-            window.sessionStorage.removeItem("current_member");
             void signOutServer();
           }}>
           <LogOut className="size-4" />

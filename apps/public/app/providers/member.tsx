@@ -4,7 +4,7 @@ import type {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upw
 import {putMemberSwitchByIdApi} from "@repo/actions/upwithcrowd/member/put-action";
 import {useSession} from "@repo/utils/auth";
 import {useRouter} from "next/navigation";
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useContext, useState} from "react";
 
 export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
   profileImage?: string;
@@ -40,18 +40,9 @@ export default function MemberProvider({
   const [memberList, setMemberList] = useState<Member[]>(members);
   const {sessionUpdate} = useSession();
   const router = useRouter();
-  let _currentMember = currentMember;
-  if (typeof window !== "undefined") {
-    if (window.sessionStorage.getItem("current_member")) {
-      //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- we know it's a Member
-      _currentMember = JSON.parse(window.sessionStorage.getItem("current_member") || "");
-    }
-  }
+  const _currentMember = currentMember;
 
   const saveMember = (_member: Member) => {
-    if (typeof window !== "undefined") {
-      window.sessionStorage.setItem("current_member", JSON.stringify(_member));
-    }
     void putMemberSwitchByIdApi({id: _member.id}).then((res) => {
       if (res.type === "success") {
         setCurrentMember(_member);
@@ -71,12 +62,6 @@ export default function MemberProvider({
   const saveMembers = (_members: Member[]) => {
     setMemberList(_members);
   };
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && _currentMember) {
-      window.sessionStorage.setItem("current_member", JSON.stringify(_currentMember));
-    }
-  }, [_currentMember]);
 
   return (
     <MemberContext.Provider

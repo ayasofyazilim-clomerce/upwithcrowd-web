@@ -1,3 +1,4 @@
+import {Button} from "@/components/ui/button";
 import type {UpwithCrowd_Files_FileResponseListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {$UpwithCrowd_Files_FileResponseListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
@@ -5,6 +6,9 @@ import {
   BooleanOptions,
   tanstackTableCreateColumnsByRowData,
 } from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
+import {handleFileDownload} from "@repo/ui/upwithcrowd/file-upload/index";
+import Image from "next/image";
+import {FileImageIcon, FileTextIcon} from "lucide-react";
 
 type OrganizationTable = TanstackTableCreationProps<UpwithCrowd_Files_FileResponseListDto>;
 
@@ -40,44 +44,47 @@ const organizationColumns = (locale: string) => {
 
 function organizationTable() {
   const table: OrganizationTable = {
+    rowActions: [
+      {
+        cta: "Görüntüle",
+        onClick(row) {
+          void fetch(`/api/file/${row.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: row, actionType: "open"});
+          });
+        },
+        type: "simple",
+        icon: FileTextIcon,
+        condition: (row) => row.mimeType === "application/pdf",
+        actionLocation: "row",
+      },
+      {
+        cta: "Görüntüle",
+        content: (row) => (
+          <div>
+            <Image alt={row.fileId || ""} height={200} src={`${row.fullPath}`} width={200} />
+            <Button
+              onClick={() => {
+                void fetch(`/api/file/${row.fileId}/download`).then((response) => {
+                  handleFileDownload({response, file: row, actionType: "download"});
+                });
+              }}
+              type="button">
+              İndir
+            </Button>
+          </div>
+        ),
+        type: "custom-dialog",
+        icon: FileImageIcon,
+        condition: (row) => row.mimeType !== "application/pdf",
+        actionLocation: "row",
+        title: "Dosya Görüntüleme",
+      },
+    ],
     fillerColumn: "fullPath",
     columnVisibility: {
       type: "show",
       columns: ["mimeType", "fileDescription", "isValidated", "fullPath"],
     },
-    // rowActions: [
-    //   {
-    //     actionLocation: "row",
-    //     cta: "Kimliği Onayla",
-    //     onClick(row) {
-    //       void putMemberValidatedById({
-    //         id: row.id,
-    //         isValidated: true,
-    //       }).then((response) => {
-    //         handlePutResponse(response, router);
-    //       });
-    //     },
-    //     type: "simple",
-    //     icon: CheckCircle,
-    //     condition: (row) => !row.isValidated,
-    //   },
-    //   {
-    //     actionLocation: "row",
-    //     cta: "Kimliği Reddet",
-
-    //     onClick(row) {
-    //       void putMemberValidatedById({
-    //         id: row.id,
-    //         isValidated: false,
-    //       }).then((response) => {
-    //         handlePutResponse(response);
-    //       });
-    //     },
-    //     type: "simple",
-    //     icon: XCircle,
-    //     condition: (row) => !row.isValidated,
-    //   },
-    // ],
   };
   return table;
 }

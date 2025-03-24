@@ -9,7 +9,7 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {FileTypeForFileCard} from "@repo/ayasofyazilim-ui/molecules/document-card";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
+import {FileUpload, handleFileDownload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
 import {useParams} from "next/navigation";
 import {useState} from "react";
@@ -28,7 +28,6 @@ export default function ImagesClient({
   projectId: string;
 }) {
   const {lang} = useParams<{lang: string}>();
-
   const baseLink = getBaseLink("dashboard", lang);
   const {isProjectEditable} = useProject();
 
@@ -64,17 +63,38 @@ export default function ImagesClient({
     {
       value: "thumbnails",
       label: "Proje Kapak Fotoğrafı",
-      files: thumbnails,
+      files: thumbnails.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
     {
       value: "images",
       label: "Proje Görselleri",
-      files: images,
+      files: images.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
     {
       value: "videos",
       label: "Proje Videoları",
-      files: videos,
+      files: videos.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
   ];
 
@@ -143,7 +163,7 @@ export default function ImagesClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/investments`}>
+        <Link className="w-full" href={`${baseLink}/projects/${projectId}/finish-project`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
