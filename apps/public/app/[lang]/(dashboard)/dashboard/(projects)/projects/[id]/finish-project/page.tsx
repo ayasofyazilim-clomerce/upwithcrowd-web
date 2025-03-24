@@ -1,3 +1,4 @@
+"use server";
 import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getFileApi} from "@repo/actions/upwithcrowd/file/actions";
 import {getProjectApi, getProjectByIdProjectInvestorApi} from "@repo/actions/upwithcrowd/project/action";
@@ -10,6 +11,7 @@ import ErrorComponent from "@repo/ui/components/error-component";
 import {checkNonEmptyArray} from "@repo/ui/utils";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import {unstable_noStore as noStore} from "next/cache";
 import {getResourceData} from "@/language/core/Default";
 import ProjectDetails from "./client";
 
@@ -27,6 +29,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
     const paramsFiles = {
       relatedEntity: "Project",
       relatedId: id,
+      fileTypeGroup: "ProjectRelatedFiles",
     };
     const requiredRequests = await Promise.all([
       getProjectApi({id}),
@@ -45,6 +48,7 @@ async function getApiRequests(id: string, isAuth: boolean) {
   }
 }
 export default async function Page({params}: {params: {id: string; lang: string}}) {
+  noStore();
   const {lang, id} = params;
   const {languageData} = await getResourceData(lang);
 

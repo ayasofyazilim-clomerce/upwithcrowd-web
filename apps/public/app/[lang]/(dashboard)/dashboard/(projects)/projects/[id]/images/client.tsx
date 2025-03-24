@@ -28,7 +28,6 @@ export default function ImagesClient({
   projectId: string;
 }) {
   const {lang} = useParams<{lang: string}>();
-
   const baseLink = getBaseLink("dashboard", lang);
   const {isProjectEditable} = useProject();
 
@@ -143,7 +142,7 @@ export default function ImagesClient({
           </CardContent>
         </Card>
 
-        <Link className=" w-full" href={`${baseLink}/projects/${projectId}/finish-project`}>
+        <Link className="w-full" href={`${baseLink}/projects/${projectId}/finish-project`}>
           <Button className="w-full">Kaydet</Button>
         </Link>
       </section>
