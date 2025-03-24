@@ -1,6 +1,6 @@
 import {
-  $UpwithCrowd_FileRelationEntity_FileRelationEntityListDto,
-  type UpwithCrowd_FileRelationEntity_FileRelationEntityListDto,
+  $UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto,
+  type UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {deleteFileRelationEntityByIdApi} from "@repo/actions/upwithcrowd/file-relation-entity/delete-actions";
 import type {
@@ -18,7 +18,8 @@ import {Edit, Trash} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type {DefaultResource} from "@/language-data/core/Default";
 
-type FileRelationEntityTable = TanstackTableCreationProps<UpwithCrowd_FileRelationEntity_FileRelationEntityListDto>;
+type FileRelationEntityTable =
+  TanstackTableCreationProps<UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto>;
 
 function fileRelationEntityTableActions(router: AppRouterInstance, languageData: DefaultResource, locale: string) {
   const actions: TanstackTableTableActionsType[] = [];
@@ -40,8 +41,8 @@ function fileRelationEntityRowActions(
   router: AppRouterInstance,
   grantedPolicies: Record<Policy, boolean>,
   locale: string,
-): TanstackTableRowActionsType<UpwithCrowd_FileRelationEntity_FileRelationEntityListDto>[] {
-  const actions: TanstackTableRowActionsType<UpwithCrowd_FileRelationEntity_FileRelationEntityListDto>[] = [
+): TanstackTableRowActionsType<UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto>[] {
+  const actions: TanstackTableRowActionsType<UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto>[] = [
     {
       type: "simple",
       actionLocation: "row",
@@ -76,8 +77,8 @@ function fileRelationEntityRowActions(
 }
 
 function fileRelationEntityColumns(locale: string) {
-  return tanstackTableCreateColumnsByRowData<UpwithCrowd_FileRelationEntity_FileRelationEntityListDto>({
-    rows: $UpwithCrowd_FileRelationEntity_FileRelationEntityListDto.properties,
+  return tanstackTableCreateColumnsByRowData<UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto>({
+    rows: $UpwithCrowd_FileRelationEntity_ListResponseFileRelationEntityDto.properties,
     config: {
       locale,
     },

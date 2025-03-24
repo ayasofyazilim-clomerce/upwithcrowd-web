@@ -5,6 +5,7 @@ import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import {getPublicProjectByIdStatisticsApi} from "@repo/actions/upwithcrowd/public-project/action";
 import {getResourceData} from "@/language-data/core/Default";
 import {checkNonEmptyArray} from "../../../../../../../types";
 import ClientPage from "./client";
@@ -12,7 +13,7 @@ import ClientPage from "./client";
 async function getApiRequests(projectId: string) {
   try {
     const requiredRequests = await Promise.all([getProjectApi({id: projectId})]);
-    const optionalRequests = await Promise.allSettled([]);
+    const optionalRequests = await Promise.allSettled([getPublicProjectByIdStatisticsApi(projectId)]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -38,10 +39,12 @@ export default async function Page({
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
   const [projectDetailResponse] = apiRequests.requiredRequests;
+  const [statsResponse] = apiRequests.optionalRequests;
+  const stats = statsResponse.status === "fulfilled" ? statsResponse.value.data : null;
   const projectDetail = projectDetailResponse.data.items || [];
   if (!checkNonEmptyArray<UpwithCrowd_Projects_ListProjectsResponseDto>(projectDetail)) {
     return null;
   }
 
-  return <ClientPage projectDetail={projectDetail[0]} />;
+  return <ClientPage projectDetail={projectDetail[0]} stats={stats} />;
 }

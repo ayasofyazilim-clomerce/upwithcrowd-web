@@ -1,9 +1,9 @@
 import {
-  $UpwithCrowd_Members_MimeTypeDto,
-  $UpwithCrowd_Members_MimeTypeListDto,
+  $UpwithCrowd_MimeTypes_MimeTypeDto,
+  $UpwithCrowd_MimeTypes_MimeTypeListDto,
   $UpwithCrowd_MimeTypes_MimeTypeUpdateDto,
-  type UpwithCrowd_Members_MimeTypeDto,
-  type UpwithCrowd_Members_MimeTypeListDto,
+  type UpwithCrowd_MimeTypes_MimeTypeDto,
+  type UpwithCrowd_MimeTypes_MimeTypeListDto,
   type UpwithCrowd_MimeTypes_MimeTypeUpdateDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {deleteMimeTypeByIdApi} from "@repo/actions/upwithcrowd/mime-type/delete-actions";
@@ -22,7 +22,7 @@ import {Edit, Plus, Trash} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import type {DefaultResource} from "@/language-data/core/Default";
 
-type MimeTypesTable = TanstackTableCreationProps<UpwithCrowd_Members_MimeTypeListDto>;
+type MimeTypesTable = TanstackTableCreationProps<UpwithCrowd_MimeTypes_MimeTypeListDto>;
 
 function mimeTypesTableActions(router: AppRouterInstance) {
   const actions: TanstackTableTableActionsType[] = [];
@@ -33,7 +33,7 @@ function mimeTypesTableActions(router: AppRouterInstance) {
     title: "Yeni Ekle",
     icon: Plus,
     content: (
-      <SchemaForm<UpwithCrowd_Members_MimeTypeDto>
+      <SchemaForm<UpwithCrowd_MimeTypes_MimeTypeDto>
         className="flex flex-col gap-4"
         onSubmit={({formData}) => {
           if (!formData) return;
@@ -43,7 +43,7 @@ function mimeTypesTableActions(router: AppRouterInstance) {
             handlePostResponse(res, router);
           });
         }}
-        schema={$UpwithCrowd_Members_MimeTypeDto}
+        schema={$UpwithCrowd_MimeTypes_MimeTypeDto}
         submitText="Kaydet"
       />
     ),
@@ -56,8 +56,8 @@ function mimeTypesRowActions(
   languageData: DefaultResource,
   router: AppRouterInstance,
   grantedPolicies: Record<Policy, boolean>,
-): TanstackTableRowActionsType<UpwithCrowd_Members_MimeTypeListDto>[] {
-  const actions: TanstackTableRowActionsType<UpwithCrowd_Members_MimeTypeListDto>[] = [
+): TanstackTableRowActionsType<UpwithCrowd_MimeTypes_MimeTypeListDto>[] {
+  const actions: TanstackTableRowActionsType<UpwithCrowd_MimeTypes_MimeTypeListDto>[] = [
     {
       type: "custom-dialog",
       cta: languageData.Edit,
@@ -110,8 +110,8 @@ function mimeTypesRowActions(
 }
 
 function mimeTypesColumns(locale: string) {
-  return tanstackTableCreateColumnsByRowData<UpwithCrowd_Members_MimeTypeListDto>({
-    rows: $UpwithCrowd_Members_MimeTypeListDto.properties,
+  return tanstackTableCreateColumnsByRowData<UpwithCrowd_MimeTypes_MimeTypeListDto>({
+    rows: $UpwithCrowd_MimeTypes_MimeTypeListDto.properties,
     config: {
       locale,
     },

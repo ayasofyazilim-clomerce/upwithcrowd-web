@@ -2,7 +2,7 @@
 import type {
   PagedResultDto_FileTypeMimeTypesListDto,
   UpwithCrowd_FileTypes_ListFileTypeDto,
-  UpwithCrowd_Members_MimeTypeListDto,
+  UpwithCrowd_MimeTypes_MimeTypeListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import TanstackTable from "@repo/ayasofyazilim-ui/molecules/tanstack-table";
 import {useGrantedPolicies} from "@repo/utils/policies";
@@ -20,7 +20,7 @@ function FileTypeMimeTypesTable({
   locale: string;
   languageData: DefaultResource;
   response: PagedResultDto_FileTypeMimeTypesListDto;
-  mimeTypeData: UpwithCrowd_Members_MimeTypeListDto[];
+  mimeTypeData: UpwithCrowd_MimeTypes_MimeTypeListDto[];
   fileTypeData: UpwithCrowd_FileTypes_ListFileTypeDto[];
 }) {
   const router = useRouter();
