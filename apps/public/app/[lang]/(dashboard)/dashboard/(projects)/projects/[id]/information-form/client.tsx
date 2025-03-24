@@ -8,7 +8,7 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {FileTypeForFileCard} from "@repo/ayasofyazilim-ui/molecules/document-card";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
+import {FileUpload, handleFileDownload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
 import {useState} from "react";
 import {useParams} from "next/navigation";
@@ -68,7 +68,14 @@ export default function InformationFormClient({
     {
       value: "information",
       label: "Bilgi Formu",
-      files: informationFiles,
+      files: informationFiles.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
   ];
 

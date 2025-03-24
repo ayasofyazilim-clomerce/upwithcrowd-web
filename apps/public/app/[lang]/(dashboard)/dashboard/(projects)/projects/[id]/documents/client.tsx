@@ -8,10 +8,10 @@ import type {
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {FileTypeForFileCard} from "@repo/ayasofyazilim-ui/molecules/document-card";
 import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
-import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
+import {FileUpload, handleFileDownload} from "@repo/ui/upwithcrowd/file-upload/index";
 import Link from "next/link";
-import {useState} from "react";
 import {useParams} from "next/navigation";
+import {useState} from "react";
 import {getBaseLink} from "@/utils/lib";
 import {Section} from "../../new/_components/section";
 import TextWithTitle from "../../new/_components/text-with-title";
@@ -68,12 +68,26 @@ export default function DocumentsClient({
     {
       value: "patent",
       label: "Patent, Marka ve Tescil Bilgileri",
-      files: patentFiles,
+      files: patentFiles.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
     {
       value: "legal",
       label: "Hukuki Durum",
-      files: legalFiles,
+      files: legalFiles.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
   ];
 
