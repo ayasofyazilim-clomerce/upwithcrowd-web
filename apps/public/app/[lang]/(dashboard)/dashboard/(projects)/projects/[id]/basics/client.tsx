@@ -1,10 +1,13 @@
 "use client";
 import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
 import {Form, FormControl, FormField as FormFieldUI, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import type {
   PagedResultDto_CategoryListDto,
+  PagedResultDto_SectorListDto,
   PagedResultDto_TypeListDto,
   UpwithCrowd_Projects_ProjectsResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
@@ -26,7 +29,7 @@ import {useProject} from "../_components/project-provider";
 const projectSchema = z.object({
   projectName: z.string().min(1, "Proje adı zorunludur").max(600, "Proje adı en fazla 600 karakter olabilir"),
   projectDefinition: z.string().max(2000, "Proje açıklaması en fazla 2000 karakter olabilir").nullable(),
-  sectorId: z.string().nullable(),
+  sectorId: z.string(),
   categoryTypes: z.array(z.string()), // Changed to accept any string from category items
   projectTypes: z.array(z.string()), // Changed to accept any string from type items
   projectLogo: z.string().optional(),
@@ -42,7 +45,7 @@ const projectSchema = z.object({
 interface ProjectFormValues {
   projectName: string;
   projectDefinition: string | null;
-  sectorId: string | null;
+  sectorId: string;
   categoryTypes: string[];
   projectTypes: string[];
   projectLogo?: string;
@@ -59,6 +62,7 @@ interface PageData {
   projectDetail: UpwithCrowd_Projects_ProjectsResponseDto;
   category: PagedResultDto_CategoryListDto | null;
   type: PagedResultDto_TypeListDto | null;
+  sector: PagedResultDto_SectorListDto | null;
 }
 
 export default function ClientBasics({data}: {data: PageData}) {
@@ -80,8 +84,11 @@ export default function ClientBasics({data}: {data: PageData}) {
     defaultValues: {
       projectName: data.projectDetail.projectName ?? "",
       projectDefinition: data.projectDetail.projectDefinition ?? "",
-      sectorId: data.projectDetail.sectorId ?? "",
-      categoryTypes: data.projectDetail.categoryTypes ?? [],
+      sectorId: data.sector?.items?.find((sector) => data.projectDetail.sectorId === sector.name)?.id ?? "",
+      categoryTypes:
+        data.category?.items
+          ?.filter((category) => data.projectDetail.categoryTypes?.findIndex((i) => i === category.name) !== -1)
+          .map((i) => i.id) ?? [],
       projectTypes: (() => {
         const typeId = data.type?.items?.find((type) => type.name === params.get("type"))?.id;
         return typeId ? [typeId] : [];
@@ -99,7 +106,11 @@ export default function ClientBasics({data}: {data: PageData}) {
       handlePostResponse(response, router, `${baseLink}/projects/${projectId}/about`);
     });
   };
-
+  const sectorOptions =
+    data.sector?.items?.map((sector) => ({
+      label: sector.name,
+      value: sector.id,
+    })) || [];
   return (
     <div className="bg-muted w-full overflow-auto pb-8">
       <section className="mx-auto w-full max-w-7xl p-2 sm:p-4 md:p-8">
@@ -198,6 +209,44 @@ export default function ClientBasics({data}: {data: PageData}) {
                 </FormContainer>
               </Section>
 
+              <Section
+                text={[
+                  "Projenizin sektörünü seçin.",
+                  "Doğru sektör seçimi, projenizin hedef kitlesine ulaşmasını kolaylaştırır.",
+                ]}
+                title="Proje Sektörü">
+                <FormContainer className="grid gap-4">
+                  <FormFieldUI
+                    control={form.control}
+                    name="sectorId"
+                    render={({field}) => (
+                      <FormItem>
+                        <FormLabel>Sektör Türleri</FormLabel>
+                        <FormControl>
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
+                            {sectorOptions.map((sector) => (
+                              <div className="flex items-center space-x-2" key={sector.value}>
+                                <Checkbox
+                                  checked={field.value === sector.value}
+                                  id={sector.value}
+                                  onCheckedChange={() => {
+                                    field.onChange(sector.value);
+                                  }}
+                                />
+                                <Label htmlFor={sector.value}>{sector.label}</Label>
+                              </div>
+                            ))}
+                          </div>
+                        </FormControl>
+                        {field.value.length === 0 && (
+                          <p className="text-muted-foreground text-xs">Bir sektör seçilmelidir</p>
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </FormContainer>
+              </Section>
               {/* Proje Sınıflandırması Section */}
               <Section
                 text={[
