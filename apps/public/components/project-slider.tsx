@@ -23,6 +23,9 @@ export function ProjectSlider({projects}: {projects: UpwithCrowd_Projects_ListPr
     .sort((a, b) => getDaysLeft(b.projectEndDate || 0) - getDaysLeft(a.projectEndDate || 0))
     .slice(0, 5);
 
+  if (sortedProjects.length === 0) {
+    return null;
+  }
   return (
     <section className="my-32 px-6 py-20 md:my-0">
       <div className="container mx-auto">

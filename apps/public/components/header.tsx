@@ -57,7 +57,7 @@ export default function Header({
 
         <div className="hidden flex-1 items-center justify-center lg:flex">
           <nav className="mx-8">
-            <ul className="flex space-x-8 text-lg">
+            <ul className="flex items-center space-x-8 text-lg">
               {PublicLinks.map((link) => (
                 <li key={link.href}>
                   <Link
