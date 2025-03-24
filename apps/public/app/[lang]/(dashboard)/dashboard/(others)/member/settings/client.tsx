@@ -2,8 +2,8 @@
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {toast} from "@/components/ui/sonner";
-import type {
-  UpwithCrowd_Files_FileResponseDto,
+import {
+  type UpwithCrowd_Files_FileResponseDto,
   type GetApiFileTypeGroupRulesetResponse,
   type GetApiPublicFileResponse,
   type UpwithCrowd_Members_SaveMemberDto,
