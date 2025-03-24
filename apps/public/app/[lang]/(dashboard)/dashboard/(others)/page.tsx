@@ -13,8 +13,6 @@ import {
   Building2,
   Camera,
   ChevronRight,
-  Copy,
-  CopyCheck,
   HelpCircle,
   Link2,
   LogOut,
@@ -24,27 +22,16 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {useState, useTransition} from "react";
+import {useTransition} from "react";
 import {getBaseLink} from "@/utils/lib";
 import {useMember} from "@/app/providers/member";
 
 export default function ProfileClient() {
   const {currentMember, members, setCurrentMember, setMembers} = useMember();
   const [isPending, startTransition] = useTransition();
-  const [isCopied, setIsCopied] = useState(false);
   const router = useRouter();
 
   if (!currentMember) return null;
-
-  const handleCopy = () => {
-    if (currentMember.id) {
-      void navigator.clipboard.writeText(currentMember.id);
-      setIsCopied(true);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 3000);
-    }
-  };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -157,7 +144,7 @@ export default function ProfileClient() {
             </Link>
           </Card>
 
-          <div className="text-muted-foreground flex w-full flex-col items-center justify-center gap-2 px-2 text-center text-sm md:flex-row md:px-0 md:text-base">
+          {/* <div className="text-muted-foreground flex w-full flex-col items-center justify-center gap-2 px-2 text-center text-sm md:flex-row md:px-0 md:text-base">
             <p className="break-all">Üye Id: {currentMember.id}</p>
             <Button
               className="text-muted-foreground hover:text-primary cursor-pointer border-none bg-transparent shadow-none transition-transform hover:scale-110 hover:bg-transparent md:ml-2"
@@ -165,7 +152,7 @@ export default function ProfileClient() {
               type="button">
               {isCopied ? <CopyCheck className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
             </Button>
-          </div>
+          </div> */}
 
           <div className="flex w-full items-center justify-center px-2 md:px-0">
             <Button
@@ -188,7 +175,9 @@ export default function ProfileClient() {
                 <div>
                   <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Hesabınız</h2>
                   <div className="space-y-2">
-                    <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/inbox">
+                    <div
+                      aria-disabled="true"
+                      className="hover:bg-muted pointer-events-none flex items-center justify-between rounded-lg p-2 opacity-70">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <div className="bg-muted rounded-full p-2">
@@ -199,7 +188,7 @@ export default function ProfileClient() {
                         <span>Gelen Kutusu</span>
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </Link>
+                    </div>
                     <Link
                       className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
                       href="/dashboard/member/settings">
@@ -213,7 +202,9 @@ export default function ProfileClient() {
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
                     </Link>
-                    <Link className="hover:bg-muted flex items-center justify-between rounded-lg p-2" href="/help">
+                    <Link
+                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
+                      href="/dashboard/support/support-form">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <HelpCircle className="h-5 w-5" />
@@ -241,9 +232,9 @@ export default function ProfileClient() {
                 <div>
                   <h2 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">Ayarlar</h2>
                   <div className="space-y-2">
-                    <Link
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                      href="/settings/security">
+                    <div
+                      aria-disabled="true"
+                      className="hover:bg-muted pointer-events-none flex items-center justify-between rounded-lg p-2 opacity-70">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Shield className="h-5 w-5" />
@@ -256,10 +247,10 @@ export default function ProfileClient() {
                         </div>
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </Link>
-                    <Link
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                      href="/settings/notifications">
+                    </div>
+                    <div
+                      aria-disabled="true"
+                      className="hover:bg-muted pointer-events-none flex items-center justify-between rounded-lg p-2 opacity-70">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <BellDot className="h-5 w-5" />
@@ -272,10 +263,10 @@ export default function ProfileClient() {
                         </div>
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </Link>
-                    <Link
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                      href="/settings/integrations">
+                    </div>
+                    <div
+                      aria-disabled="true"
+                      className="hover:bg-muted pointer-events-none flex items-center justify-between rounded-lg p-2 opacity-70">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Link2 className="h-5 w-5" />
@@ -288,10 +279,10 @@ export default function ProfileClient() {
                         </div>
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </Link>
-                    <Link
-                      className="hover:bg-muted flex items-center justify-between rounded-lg p-2"
-                      href="/settings/payment">
+                    </div>
+                    <div
+                      aria-disabled="true"
+                      className="hover:bg-muted pointer-events-none flex items-center justify-between rounded-lg p-2 opacity-70">
                       <div className="flex items-center gap-3">
                         <div className="bg-muted rounded-full p-2">
                           <Building2 className="h-5 w-5" />
@@ -304,7 +295,7 @@ export default function ProfileClient() {
                         </div>
                       </div>
                       <ChevronRight className="text-muted-foreground h-5 w-5" />
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>
