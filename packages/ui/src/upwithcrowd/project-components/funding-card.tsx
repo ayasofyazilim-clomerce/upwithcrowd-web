@@ -1,10 +1,12 @@
 "use client";
 
-import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
-import {Card, CardHeader, CardTitle, CardContent} from "@repo/ayasofyazilim-ui/atoms/card";
+import {
+  UpwithCrowd_Projects_ProjectsDetailResponseDto,
+  UpwithCrowd_Projects_ProjectStatisticsDto,
+} from "@repo/actions/upwithcrowd/types";
+import {Card, CardContent, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
 import ListView from "@repo/ayasofyazilim-ui/molecules/list-view";
 import {formatCurrency} from "@repo/ui/utils";
-import {UpwithCrowd_Projects_ProjectsDetailResponseDto} from "@repo/actions/upwithcrowd/types";
 
 function prepareListViewData(
   projectDetail: Pick<
@@ -16,49 +18,78 @@ function prepareListViewData(
     | "cashValue"
     | "fundableAmount"
     | "fundCollectionType"
+    | "projectStartDate"
+    | "projectEndDate"
   >,
+  statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto | null,
 ) {
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   return [
     {
-      label: "Nominal Fon Miktarı",
-      value: formatCurrency(projectDetail.fundNominalAmount),
-      info: "The name of the project.",
-    },
-    {
-      label: "Ek Fon Oranı",
-      value: `${projectDetail.additionalFundRate}%`,
-      info: "Nominal miktara uygulanan ek fonlama oranı",
-    },
-    {
-      label: "Nitelikli Fon Oranı",
-      value: `${projectDetail.qualifiedFundRate}%`,
-      info: "Nitelikli fonlama senaryoları için uygulanan oran",
-    },
-    {
-      label: "Aşırı Fonlama",
-      value: (
-        <Badge variant={projectDetail.overFunding ? "default" : "secondary"}>
-          {projectDetail.overFunding ? "Evet" : "Hayır"}
-        </Badge>
-      ),
+      label: "Fonlama Türü",
+      value: (() => {
+        switch (projectDetail.fundCollectionType) {
+          case "SHRE":
+            return "Paya Dayalı";
+          case "DBIT":
+            return "Borca Dayalı";
+          case "SHRE_DBIT":
+            return "Paya ve Borca Dayalı";
+          default:
+            return projectDetail.fundCollectionType;
+        }
+      })(),
       info: "Projenin fonlama hedefini aşıp aşamayacağını gösterir",
     },
     {
-      label: "Nakit Değeri",
-      value: formatCurrency(projectDetail.cashValue),
-      info: "Fonlamanın mevcut nakit değeri",
+      label: "Hedeflenen Fonlama",
+      value: formatCurrency(projectDetail.fundableAmount),
+      info: "Projenin hedeflediği fon miktarı",
     },
     {
-      label: "Fonlanabilir Miktar",
-      value: formatCurrency(projectDetail.fundableAmount),
-      info: "Fonlanabilecek maksimum miktar",
+      label: "Alınan Toplam Yatırım",
+      value: formatCurrency(statsResponse?.totalInvestment),
+      info: "Proje için şimdiye kadar alınan toplam yatırım miktarı",
     },
-    {label: "Fon Toplama Tipi", value: projectDetail.fundCollectionType, info: "Fon toplama yöntemi"},
+    {
+      label: "Fonlama Başlangıç Tarihi",
+      value: formatDate(projectDetail.projectStartDate),
+      info: "Projenin fonlamaya başladığı tarih",
+    },
+    {
+      label: "Fonlama Bitiş Tarihi",
+      value: formatDate(projectDetail.projectEndDate),
+      info: "Projeye yatırım yapılabilen son tarih",
+    },
+    {
+      label: "Yatırımcı Sayısı",
+      value: `${statsResponse?.investorCount}`,
+      info: "Proje için şimdiye kadar yatırım yapan yatırımcı sayısı",
+    },
+    {
+      label: "Nitelikli Yatırımcı",
+      value: formatCurrency(statsResponse?.qualifiedInvestorCount),
+      info: "Proje için şimdiye kadar yatırım yapan nitelikli yatırımcı sayısı",
+    },
+    {
+      label: "Nitelikli Yatırım Oranı",
+      value: `${projectDetail.qualifiedFundRate}%`,
+      info: "Projeye yatırım yapılabilen son tarih",
+    },
   ];
 }
 
 export default function FundingTable({
   projectDetail,
+  statsResponse,
 }: {
   projectDetail: Pick<
     UpwithCrowd_Projects_ProjectsDetailResponseDto,
@@ -70,8 +101,9 @@ export default function FundingTable({
     | "fundableAmount"
     | "fundCollectionType"
   >;
+  statsResponse: UpwithCrowd_Projects_ProjectStatisticsDto | null;
 }) {
-  const listViewData = prepareListViewData(projectDetail);
+  const listViewData = prepareListViewData(projectDetail, statsResponse);
   return (
     <Card className="py- col-span-1">
       <CardHeader className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-6">

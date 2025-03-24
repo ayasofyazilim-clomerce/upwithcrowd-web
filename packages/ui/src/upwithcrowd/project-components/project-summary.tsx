@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  UpwithCrowd_Projects_ProjectsResponseDto,
-  UpwithCrowd_Projects_ProjectsFundingResponseDto,
   UpwithCrowd_Files_FileResponseListDto,
+  UpwithCrowd_Projects_ProjectsFundingResponseDto,
+  UpwithCrowd_Projects_ProjectsResponseDto,
   UpwithCrowd_Projects_ProjectStatisticsDto,
 } from "@repo/actions/upwithcrowd/types";
+import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
 import {Button} from "@repo/ayasofyazilim-ui/atoms/button";
 import {Progress} from "@repo/ayasofyazilim-ui/atoms/progress";
-import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
 import {cn, formatCurrency} from "@repo/ui/utils";
 import {ChevronLeft, ChevronRight, Film} from "lucide-react";
 import Image from "next/image";
@@ -174,7 +174,18 @@ export default function ProjectSummary({
           })()}
 
           <Badge className="bg-primary text-primary-foreground absolute right-4 top-4 px-3 py-1 text-sm font-medium shadow-md">
-            {funding.fundCollectionType}
+            {(() => {
+              switch (funding.fundCollectionType) {
+                case "SHRE":
+                  return "Paya Dayalı";
+                case "DBIT":
+                  return "Borca Dayalı";
+                case "SHRE_DBIT":
+                  return "Paya ve Borca Dayalı";
+                default:
+                  return funding.fundCollectionType;
+              }
+            })()}
           </Badge>
 
           {hasFiles && fileResponse.length > 1 ? (

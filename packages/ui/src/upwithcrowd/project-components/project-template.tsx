@@ -27,6 +27,7 @@ import type {Session} from "node_modules/@repo/utils/auth/auth-types";
 import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
 import {InvestorsDialog} from "./investors-card";
 import StatsCard from "./stats-card";
+import {handleFileDownload} from "../file-upload/index";
 
 function ProjectTemplate({
   data,
@@ -153,12 +154,26 @@ function ProjectTemplate({
     {
       value: "patent",
       label: "Patent, Marka ve Tescil Bilgileri",
-      files: patentFiles,
+      files: patentFiles.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
     {
       value: "legal",
       label: "Hukuki Durum",
-      files: legalFiles,
+      files: legalFiles.map((file) => ({
+        ...file,
+        onDownloadClick: () => {
+          void fetch(`/api/file/${file.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: {...file, fileId: file.fileId || ""}, actionType: "download"});
+          });
+        },
+      })),
     },
   ];
   return (
@@ -186,7 +201,7 @@ function ProjectTemplate({
                 selectedDonation={selectedDonation}
                 setSelectedDonation={setSelectedDonation}
               />
-              <FundingTable projectDetail={data} />
+              <FundingTable projectDetail={data} statsResponse={statsResponse} />
             </>
           )}
 
