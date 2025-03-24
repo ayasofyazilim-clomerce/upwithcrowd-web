@@ -105,7 +105,7 @@ export default function BasicsClient({data}: {data: PageData}) {
         <Button
           className="mt-4"
           onClick={() => {
-            router.push("/dashboard/projects/new/basics/?type=Project");
+            router.push("/dashboard/projects/new/basics?type=Project");
           }}>
           Proje Oluşturmaya Başla
         </Button>

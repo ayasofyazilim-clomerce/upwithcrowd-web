@@ -9,6 +9,7 @@ import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
+import {MemberActions} from "../_components/member-actions";
 
 async function getApiRequests(memberId: string) {
   try {
@@ -79,20 +80,24 @@ export default async function Page({
   });
 
   return (
-    <SchemaForm
-      className="p-px"
-      disabled
-      filter={{
-        type: "exclude",
-        keys: ["id", "type", "fullNameCheck", ...filterKeys],
-      }}
-      formData={member}
-      liveValidate={false}
-      readonly
-      schema={$UpwithCrowd_Members_ListMemberResponseDto}
-      uiSchema={uiSchema}
-      useDefaultSubmit={false}
-    />
+    <div className="flex h-full max-w-4xl flex-col">
+      <MemberActions member={member} />
+      <SchemaForm
+        className="p-px"
+        disabled
+        filter={{
+          type: "exclude",
+          keys: ["id", "type", "fullNameCheck", ...filterKeys],
+        }}
+        formData={member}
+        liveValidate={false}
+        readonly
+        schema={$UpwithCrowd_Members_ListMemberResponseDto}
+        uiSchema={uiSchema}
+        useDefaultSubmit={false}
+        withScrollArea={false}
+      />
+    </div>
   );
 }
 const switches = bulkCreateUiSchema<UpwithCrowd_Members_ListMemberResponseDto>({

@@ -3,9 +3,6 @@ import {$UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithc
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
 import {CheckCircle, XCircle} from "lucide-react";
-import {putMemberValidatedById} from "@repo/actions/upwithcrowd/member/put-action";
-import {handlePutResponse} from "@repo/utils/api";
-import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {getBaseLink} from "@/utils";
 
 type MemberTable = TanstackTableCreationProps<UpwithCrowd_Members_ListMemberResponseDto>;
@@ -70,46 +67,13 @@ const memberColumns = (locale: string) => {
   });
 };
 
-function memberTable(router: AppRouterInstance) {
+function memberTable() {
   const table: MemberTable = {
     fillerColumn: "title",
     columnVisibility: {
       type: "show",
       columns: ["title", "mail", "mobile", "isEntrepreneur", "isInvestor", "isValidated"],
     },
-    rowActions: [
-      {
-        actionLocation: "row",
-        cta: "Kimliği Onayla",
-        onClick(row) {
-          void putMemberValidatedById({
-            id: row.id,
-            isValidated: true,
-          }).then((response) => {
-            handlePutResponse(response, router);
-          });
-        },
-        type: "simple",
-        icon: CheckCircle,
-        condition: (row) => !row.isValidated,
-      },
-      {
-        actionLocation: "row",
-        cta: "Kimliği Reddet",
-
-        onClick(row) {
-          void putMemberValidatedById({
-            id: row.id,
-            isValidated: false,
-          }).then((response) => {
-            handlePutResponse(response);
-          });
-        },
-        type: "simple",
-        icon: XCircle,
-        condition: (row) => !row.isValidated,
-      },
-    ],
   };
   return table;
 }
