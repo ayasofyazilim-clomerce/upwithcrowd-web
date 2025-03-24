@@ -3,8 +3,6 @@
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {toast} from "@/components/ui/sonner";
-import {postProfileImageApi} from "@repo/actions/upwithcrowd/member/post-action";
 import {signOutServer} from "@repo/utils/auth";
 import {
   Bell,
@@ -21,46 +19,42 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import {useTransition} from "react";
 import {getBaseLink} from "@/utils/lib";
 import {useMember} from "@/app/providers/member";
 
 export default function ProfileClient() {
   const {currentMember, members, setCurrentMember, setMembers} = useMember();
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   if (!currentMember) return null;
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        // Remove data:image/[type];base64, prefix
-        const base64Content = base64String.split(",")[1];
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       const base64String = reader.result as string;
+  //       // Remove data:image/[type];base64, prefix
+  //       const base64Content = base64String.split(",")[1];
 
-        startTransition(() => {
-          void postProfileImageApi({
-            requestBody: base64Content,
-          })
-            .then((response) => {
-              if (response.type === "success") {
-                toast.success("Profile fotoğrafı başarıyla yüklendi.");
-              } else {
-                toast.error("Fotoğraf yüklenirken bir hata oluştu.");
-              }
-            })
-            .finally(() => {
-              router.push("/dashboard");
-            });
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  //       startTransition(() => {
+  //         void postProfileImageApi({
+  //           requestBody: base64Content,
+  //         })
+  //           .then((response) => {
+  //             if (response.type === "success") {
+  //               toast.success("Profile fotoğrafı başarıyla yüklendi.");
+  //             } else {
+  //               toast.error("Fotoğraf yüklenirken bir hata oluştu.");
+  //             }
+  //           })
+  //           .finally(() => {
+  //             router.push("/dashboard");
+  //           });
+  //       });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <div className="bg-background min-h-screen px-4 py-6 md:p-0">
@@ -83,7 +77,7 @@ export default function ProfileClient() {
                 </div>
                 <Button
                   className="bg-primary absolute bottom-0 right-0 cursor-pointer rounded-full p-1.5"
-                  disabled={isPending}
+                  disabled
                   onClick={() => document.getElementById("profileImage")?.click()}>
                   <Camera className="text-muted h-4 w-4" />
                 </Button>
@@ -303,7 +297,7 @@ export default function ProfileClient() {
           </Card>
         </div>
       </div>
-      <input accept="image/*" className="hidden" id="profileImage" onChange={handleImageChange} type="file" />
+      {/* <input accept="image/*" className="hidden" id="profileImage" onChange={handleImageChange} type="file" /> */}
     </div>
   );
 }
