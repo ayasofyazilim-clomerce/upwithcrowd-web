@@ -104,7 +104,7 @@ export default function ErrorComponent({
           animate={{opacity: 1, y: 0}}
           transition={{duration: 0.5, delay: 0.2}}
           className="mb-4 text-4xl font-bold text-black md:text-5xl">
-          {signOutServer ? "Your session has expired" : languageData.SomethingWentWrong}
+          {signOutServer ? message || "Your session has expired" : languageData.SomethingWentWrong}
         </motion.h1>
 
         <motion.div

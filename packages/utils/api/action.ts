@@ -3,7 +3,7 @@ import {getAccountServiceClient} from "../auth/auth-actions";
 import {auth} from "../auth/auth";
 import {AccountServiceClient} from "@ayasofyazilim/core-saas/AccountService";
 
-export async function getGrantedPoliciesApi() {
+export async function getGrantedPoliciesApi(isAdmin?: boolean) {
   try {
     const session = await auth();
     const client = new AccountServiceClient({
@@ -18,8 +18,11 @@ export async function getGrantedPoliciesApi() {
       includeLocalizationResources: false,
     });
     const grantedPolicies = response.auth?.grantedPolicies;
+    if (isAdmin && !grantedPolicies?.["AbpIdentity.Users"]) {
+      throw {message: "You are not allowed to login here.", type: "api-error", data: "test"};
+    }
     return grantedPolicies;
   } catch (error) {
-    return undefined;
+    throw error;
   }
 }

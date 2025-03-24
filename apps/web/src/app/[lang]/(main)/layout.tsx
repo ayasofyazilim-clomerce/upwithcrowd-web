@@ -26,7 +26,7 @@ const appName = process.env.APPLICATION_NAME || "UNIREFUND";
 
 async function getApiRequests() {
   try {
-    const requiredRequests = await Promise.all([getGrantedPoliciesApi(), myProfileApi()]);
+    const requiredRequests = await Promise.all([getGrantedPoliciesApi(true), myProfileApi()]);
 
     const optionalRequests = await Promise.allSettled([
       getProjectApi({status: "Pending"}),
@@ -102,7 +102,9 @@ export default async function Layout({children, params}: LayoutProps) {
             langugageData: languageData,
             appUrl: process.env.NOVU_APP_URL || "",
             appId: process.env.NOVU_APP_IDENTIFIER || "",
-            subscriberId: session?.user?.sub || "67b8674f58411ad400a054e9",
+            subscriberId: Array.isArray(session?.user?.member_id)
+              ? session.user.member_id[0]
+              : session?.user?.member_id || "",
           }}
           prefix=""
           profileMenu={profileMenuProps}

@@ -9,7 +9,7 @@ export default async function Layout({children}: {children: React.ReactNode}) {
     notification = {
       appId: process.env.NOVU_APP_IDENTIFIER,
       appUrl: process.env.NOVU_APP_URL,
-      subscriberId: session.user?.sub || "",
+      subscriberId: Array.isArray(session.user?.member_id) ? session.user.member_id[0] : session.user?.member_id || "",
       langugageData: {},
     };
   }

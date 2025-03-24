@@ -42,7 +42,6 @@ export default async function Layout({
 
   const [updatePermissionResponse] = apiRequests.requiredRequests;
   const isProjectEditable = updatePermissionResponse.data;
-
   return (
     <div className="bg-muted h-full ">
       <TabLayout
@@ -88,15 +87,16 @@ export default async function Layout({
             label: "Görseller",
             disabled: false,
           },
+
           {
-            href: `${baseLink}/projects/${id}/investments`,
-            label: "Yatırımlar",
+            href: `${baseLink}/projects/${id}/finish-project`,
+            label: "Önizle ve Bitir",
             disabled: false,
           },
           {
-            href: `${baseLink}/projects/${id}/finish-project`,
-            label: "Bitir",
-            disabled: false,
+            href: `${baseLink}/projects/${id}/investments`,
+            label: "Yatırımlar",
+            disabled: isProjectEditable,
           },
         ]}>
         <ProjectProvider isProjectEditable={isProjectEditable}>{children}</ProjectProvider>
