@@ -1,10 +1,8 @@
 "use client";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
-import {DatePicker} from "@/components/ui/date-picker";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Textarea} from "@/components/ui/textarea";
 import type {UpwithCrowd_Projects_UpdateProjectFundingDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
@@ -13,7 +11,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {putProjectFundingByIdApi} from "@repo/actions/upwithcrowd/project/put-action";
 import {handlePutResponse} from "@repo/utils/api";
 import {useParams, useRouter} from "next/navigation";
-import {useEffect, useState, useTransition} from "react";
+import {useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {FormContainer} from "../../new/_components/form";
@@ -63,33 +61,33 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
     reValidateMode: "onChange", // Re-validate when inputs change
   });
 
-  const [spesifDate, setSpesifDate] = useState(false);
+  // const [spesifDate, setSpesifDate] = useState(false);
 
   const fundCollectionType = form.watch("fundCollectionType");
   const showCashValue = fundCollectionType === "DBIT" || fundCollectionType === "SHRE_DBIT";
 
-  useEffect(() => {
-    if (!spesifDate) {
-      const startDate = form.getValues("projectStartDate");
-      if (!startDate) {
-        // Set current date as start date
-        const currentDate = new Date();
-        form.setValue("projectStartDate", currentDate.toISOString());
+  // useEffect(() => {
+  //   if (!spesifDate) {
+  //     const startDate = form.getValues("projectStartDate");
+  //     if (!startDate) {
+  //       // Set current date as start date
+  //       const currentDate = new Date();
+  //       form.setValue("projectStartDate", currentDate.toISOString());
 
-        // Set end date as 30 days from now
-        const endDate = new Date(currentDate);
-        endDate.setDate(endDate.getDate() + 30);
-        form.setValue("projectEndDate", endDate.toISOString());
-      } else {
-        const startDateTime = new Date(startDate);
-        if (!isNaN(startDateTime.getTime())) {
-          const endDate = new Date(startDateTime);
-          endDate.setDate(endDate.getDate() + 60);
-          form.setValue("projectEndDate", endDate.toISOString());
-        }
-      }
-    }
-  }, [spesifDate, form]);
+  //       // Set end date as 30 days from now
+  //       const endDate = new Date(currentDate);
+  //       endDate.setDate(endDate.getDate() + 30);
+  //       form.setValue("projectEndDate", endDate.toISOString());
+  //     } else {
+  //       const startDateTime = new Date(startDate);
+  //       if (!isNaN(startDateTime.getTime())) {
+  //         const endDate = new Date(startDateTime);
+  //         endDate.setDate(endDate.getDate() + 60);
+  //         form.setValue("projectEndDate", endDate.toISOString());
+  //       }
+  //     }
+  //   }
+  // }, [spesifDate, form]);
 
   useEffect(() => {
     if (!showCashValue) {
@@ -165,7 +163,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                 </FormContainer>
               </Section>
 
-              <Section text="Projenizin başlangıç ve bitiş tarihlerini seçin." title="Proje tarihleri">
+              {/* <Section text="Projenizin başlangıç ve bitiş tarihlerini seçin." title="Proje tarihleri">
                 <FormContainer>
                   <div className="flex flex-col gap-4">
                     <FormField
@@ -226,7 +224,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                     />
                   </div>
                 </FormContainer>
-              </Section>
+              </Section> */}
 
               {showCashValue ? (
                 <Section className="border-b-0" text={["Enter the cash value for the debit type."]} title="Cash Value">
