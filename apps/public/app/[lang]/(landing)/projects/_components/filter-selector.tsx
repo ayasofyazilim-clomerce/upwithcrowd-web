@@ -13,13 +13,13 @@ const fundingTypeOptions = [
   {label: "Hisse & Borç Bazlı", value: "shre_dbit"},
 ];
 
-const dateRangeOptions = [
-  {label: "Tüm Zamanlar", value: "all"},
-  {label: "Yakında Bitenler (7 gün)", value: "7d"},
-  {label: "Yakında Bitenler (15 gün)", value: "15d"},
-  {label: "Yakında Bitenler (30 gün)", value: "30d"},
-  {label: "Yakında Bitenler (60 gün)", value: "60d"},
-];
+// const dateRangeOptions = [
+//   {label: "Tüm Zamanlar", value: "all"},
+//   {label: "Yakında Bitenler (7 gün)", value: "7d"},
+//   {label: "Yakında Bitenler (15 gün)", value: "15d"},
+//   {label: "Yakında Bitenler (30 gün)", value: "30d"},
+//   {label: "Yakında Bitenler (60 gün)", value: "60d"},
+// ];
 
 export default function FilterSelector() {
   const router = useRouter();
@@ -100,7 +100,7 @@ export default function FilterSelector() {
           </Select>
         </div>
 
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="date-range">
             Tarih Aralığı
           </label>
@@ -121,7 +121,7 @@ export default function FilterSelector() {
               ))}
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
       </PopoverContent>
     </Popover>
   );
