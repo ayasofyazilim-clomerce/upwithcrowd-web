@@ -119,7 +119,12 @@ export default function ProjectSummary({
 
   return (
     <>
-      <h2 className="mb-2 text-2xl font-bold md:text-3xl">{basics.projectName}</h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="mb-2 text-2xl font-bold md:text-3xl">{basics.projectName}</h2>
+        <Badge className="bg-primary/20 text-primary rounded-full px-3 py-1 text-sm font-medium shadow-md">
+          {basics.categoryTypes?.map((category) => category).join(" - ")}
+        </Badge>
+      </div>
       <p className="text-md mb-4 font-medium md:text-lg">{basics.projectDefinition}</p>
       <p className="text-normal mb-4">
         <span className="text-primary font-bold">{formatCurrency(statsResponse?.totalInvestment)}</span> of{" "}
@@ -131,62 +136,74 @@ export default function ProjectSummary({
           {(() => {
             if (!hasFiles) {
               return (
-                <Image
-                  alt={`${basics.projectName} - No Image Available`}
-                  className="object-cover"
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                  src="/placeholder.jpg"
-                />
+                <>
+                  <Image
+                    alt={`${basics.projectName} - No Image Available`}
+                    className="object-cover"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                    src="/placeholder.jpg"
+                  />
+                  {basics.sectorId && (
+                    <div className="absolute bottom-2 right-2 z-10">
+                      <Badge className="bg-primary/80 text-white backdrop-blur-sm">
+                        {Array.isArray(basics.sectorId) ? basics.sectorId.join(" - ") : basics.sectorId}
+                      </Badge>
+                    </div>
+                  )}
+                </>
               );
             }
 
             if (isCurrentFileVideo) {
               return (
-                <video
-                  className={cn(
-                    "h-full w-full object-cover transition-all duration-300",
-                    isTransitioning ? "scale-[1.02] opacity-70" : "scale-100 opacity-100",
+                <>
+                  <video
+                    className={cn(
+                      "h-full w-full object-cover transition-all duration-300",
+                      isTransitioning ? "scale-[1.02] opacity-70" : "scale-100 opacity-100",
+                    )}
+                    controls
+                    playsInline
+                    ref={videoRef}
+                    src={currentFile?.fullPath ?? ""}>
+                    <track kind="captions" label="English" src="" />
+                  </video>
+                  {basics.sectorId && (
+                    <div className="absolute bottom-2 right-2 z-10">
+                      <Badge className="bg-primary/80 text-white backdrop-blur-sm">
+                        {Array.isArray(basics.sectorId) ? basics.sectorId.join(" - ") : basics.sectorId}
+                      </Badge>
+                    </div>
                   )}
-                  controls
-                  playsInline
-                  ref={videoRef}
-                  src={currentFile?.fullPath ?? ""}>
-                  <track kind="captions" label="English" src="" />
-                </video>
+                </>
               );
             }
 
             return (
-              <Image
-                alt={`${basics.projectName} - Image ${currentImageIndex + 1}`}
-                className={cn(
-                  "object-cover transition-all duration-300",
-                  isTransitioning ? "scale-[1.02] opacity-70" : "scale-100 opacity-100",
+              <>
+                <Image
+                  alt={`${basics.projectName} - Image ${currentImageIndex + 1}`}
+                  className={cn(
+                    "object-cover transition-all duration-300",
+                    isTransitioning ? "scale-[1.02] opacity-70" : "scale-100 opacity-100",
+                  )}
+                  fill
+                  priority={currentImageIndex === 0}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                  src={currentFile?.fullPath ?? "/placeholder.jpg"}
+                />
+                {basics.sectorId && (
+                  <div className="absolute bottom-2 right-2 z-10">
+                    <Badge className="bg-primary/80 text-white backdrop-blur-sm">
+                      {Array.isArray(basics.sectorId) ? basics.sectorId.join(" - ") : basics.sectorId}
+                    </Badge>
+                  </div>
                 )}
-                fill
-                priority={currentImageIndex === 0}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                src={currentFile?.fullPath ?? "/placeholder.jpg"}
-              />
+              </>
             );
           })()}
-
-          <Badge className="bg-primary text-primary-foreground absolute right-4 top-4 px-3 py-1 text-sm font-medium shadow-md">
-            {(() => {
-              switch (funding.fundCollectionType) {
-                case "SHRE":
-                  return "Paya Dayalı";
-                case "DBIT":
-                  return "Borca Dayalı";
-                case "SHRE_DBIT":
-                  return "Paya ve Borca Dayalı";
-                default:
-                  return funding.fundCollectionType;
-              }
-            })()}
-          </Badge>
 
           {hasFiles && fileResponse.length > 1 ? (
             <>
