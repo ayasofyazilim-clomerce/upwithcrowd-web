@@ -178,7 +178,8 @@ export default function ClientBasics({data}: {data: PageData}) {
                           <FormLabel>Proje Hikayesi</FormLabel>
                           <FormControl>
                             <TiptapEditor
-                              canEditable
+                              canEditable={!isFormDisabled}
+                              editOnStart={!isFormDisabled}
                               editorClassName="overflow-y-auto max-h-[500px]"
                               editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                               editorId="story"
