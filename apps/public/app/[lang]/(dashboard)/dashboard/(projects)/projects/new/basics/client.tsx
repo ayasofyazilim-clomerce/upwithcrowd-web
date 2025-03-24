@@ -240,10 +240,10 @@ export default function BasicsClient({data}: {data: PageData}) {
                             editorClassName="overflow-y-auto max-h-[500px]"
                             editorContent={(field.value ? JSON.parse(field.value) : {}) as JSONContent}
                             editorId="story"
+                            isSaveVisible={false}
                             minWordCount={1}
-                            onSaveFunction={async (_, content) => {
+                            onValueChange={(content) => {
                               field.onChange(content);
-                              return await Promise.resolve("OK");
                             }}
                           />
                         </FormControl>

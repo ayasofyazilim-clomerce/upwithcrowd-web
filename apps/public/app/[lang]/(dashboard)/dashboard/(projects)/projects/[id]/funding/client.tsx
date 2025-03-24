@@ -28,8 +28,8 @@ const fundingSchema = z.object({
   overFunding: z.boolean().optional().nullable(),
   minimumFundAmount: z.number().nullable(),
   privilege: z.string().max(135, "Privilege must be less than 135 characters").optional().nullable(),
-  projectStartDate: z.string(),
-  projectEndDate: z.string().optional(),
+  // projectStartDate: z.string(),
+  // projectEndDate: z.string().optional(),
   cashValue: z.coerce.number().min(0, "Cash value must be greater than or equal to 0"),
 });
 
