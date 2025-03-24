@@ -6,6 +6,7 @@ import {FileUploadContainer, FileUploadContainerProps} from "./_components/conta
 import {useState} from "react";
 import {FileUploadBaseProps} from "./_components/file-upload-base";
 import {Badge} from "@repo/ayasofyazilim-ui/atoms/badge";
+export * from "./_components/utils";
 
 export type Rule = {
   id: string;

@@ -65,33 +65,37 @@ export default function NewPersonalAccount({
         </CardContent>
       </Card>
 
-      <Card className="mx-auto w-full p-2 sm:p-6" id="document">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-xl font-bold sm:text-2xl">Belgeleriniz</CardTitle>
-          <CardDescription className="text-sm sm:text-base">
-            Hesabınıza ait belgeleri yükleyebilir ve düzenleyebilirsiniz.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 sm:gap-6">
-          <FileUpload
-            classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
-            propertyId={currentMember?.id || ""}
-            ruleset={memberDocuments}
-          />
-        </CardContent>
-      </Card>
+      {currentMember?.type === "Organization" ? (
+        <>
+          <Card className="mx-auto w-full p-2 sm:p-6" id="document">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-xl font-bold sm:text-2xl">Belgeleriniz</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
+                Hesabınıza ait belgeleri yükleyebilir ve düzenleyebilirsiniz.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4 sm:gap-6">
+              <FileUpload
+                classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+                propertyId={currentMember.id || ""}
+                ruleset={memberDocuments}
+              />
+            </CardContent>
+          </Card>
 
-      <Card className="mx-auto w-full p-2 sm:p-6">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-xl font-bold sm:text-2xl">Yüklenen Belgeleriniz</CardTitle>
-          <CardDescription className="text-sm sm:text-base">
-            Hesabınıza yüklediğiniz belgeleri görüntüleyebilirsiniz.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <OrganizationFormTable response={fileResponse} />
-        </CardContent>
-      </Card>
+          <Card className="mx-auto w-full p-2 sm:p-6">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-xl font-bold sm:text-2xl">Yüklenen Belgeleriniz</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
+                Hesabınıza yüklediğiniz belgeleri görüntüleyebilirsiniz.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OrganizationFormTable response={fileResponse} />
+            </CardContent>
+          </Card>
+        </>
+      ) : null}
     </div>
   );
 }

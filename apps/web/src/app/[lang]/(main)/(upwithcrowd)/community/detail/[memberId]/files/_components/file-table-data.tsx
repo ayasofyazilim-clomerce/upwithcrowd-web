@@ -1,3 +1,4 @@
+import {Button} from "@/components/ui/button";
 import {toast} from "@/components/ui/sonner";
 import {
   $UpwithCrowd_Files_FileResponseListDto,
@@ -6,10 +7,11 @@ import {
 import {putFileValidationByIdApi} from "@repo/actions/upwithcrowd/file/put-actions";
 import type {TanstackTableCreationProps} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/types";
 import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecules/tanstack-table/utils";
+import {handleFileDownload} from "@repo/ui/upwithcrowd/file-upload/index";
 import {handlePutResponse} from "@repo/utils/api";
-import {CircleCheck, DownloadIcon, FileTextIcon, Trash} from "lucide-react";
+import {CircleCheck, FileImageIcon, FileTextIcon, Trash} from "lucide-react";
 import type {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
-import Link from "next/link";
+import Image from "next/image";
 
 type FileTable = TanstackTableCreationProps<UpwithCrowd_Files_FileResponseListDto>;
 
@@ -29,21 +31,6 @@ const fileColumns = (locale: string) => {
             label: "Proje Resimleri",
           },
         ],
-      },
-    },
-    custom: {
-      fullPath: {
-        content(row) {
-          return (
-            <Link
-              className="flex items-center gap-2 text-blue-600"
-              href={row.fullPath || ""}
-              rel="noopener noreferrer"
-              target="_blank">
-              <DownloadIcon className="size-6" />
-            </Link>
-          );
-        },
       },
     },
     badges: {
@@ -84,7 +71,7 @@ function fileTable(router: AppRouterInstance) {
   const table: FileTable = {
     columnVisibility: {
       type: "hide",
-      columns: ["fileId", "validatedUser", "validatedType"],
+      columns: ["fileId", "validatedUser", "validatedType", "fullPath"],
     },
     fillerColumn: "fileDescription",
     columnOrder: [
@@ -112,6 +99,40 @@ function fileTable(router: AppRouterInstance) {
         icon: CircleCheck,
         actionLocation: "row",
         condition: (row) => !row.isValidated,
+      },
+      {
+        cta: "Görüntüle",
+        onClick(row) {
+          void fetch(`/api/file/${row.fileId}/download`).then((response) => {
+            handleFileDownload({response, file: row, actionType: "open"});
+          });
+        },
+        type: "simple",
+        icon: FileTextIcon,
+        condition: (row) => row.mimeType === "application/pdf",
+        actionLocation: "row",
+      },
+      {
+        cta: "Görüntüle",
+        content: (row) => (
+          <div>
+            <Image alt={row.fileId || ""} height={200} src={`${row.fullPath}`} width={200} />
+            <Button
+              onClick={() => {
+                void fetch(`/api/file/${row.fileId}/download`).then((response) => {
+                  handleFileDownload({response, file: row, actionType: "download"});
+                });
+              }}
+              type="button">
+              İndir
+            </Button>
+          </div>
+        ),
+        type: "custom-dialog",
+        icon: FileImageIcon,
+        condition: (row) => row.mimeType !== "application/pdf",
+        actionLocation: "row",
+        title: "Dosya Görüntüleme",
       },
       {
         cta: "Sil",
