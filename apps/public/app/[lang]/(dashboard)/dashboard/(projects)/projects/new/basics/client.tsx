@@ -8,6 +8,7 @@ import {toast} from "@/components/ui/sonner";
 import {Textarea} from "@/components/ui/textarea";
 import type {
   PagedResultDto_CategoryListDto,
+  PagedResultDto_SectorListDto,
   PagedResultDto_TypeListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -27,6 +28,7 @@ import TextWithTitle from "../_components/text-with-title";
 interface PageData {
   category: PagedResultDto_CategoryListDto | null;
   type: PagedResultDto_TypeListDto | null;
+  sector: PagedResultDto_SectorListDto | null;
 }
 
 const projectSchema = z.object({
@@ -83,7 +85,7 @@ export default function BasicsClient({data}: {data: PageData}) {
       projectDefinition: "",
       categorys: [],
       types: [],
-      sectorId: "e9c0723e-5862-4c1a-9801-530cc4c4a2bd",
+      sectorId: "",
       projectLogo: "",
       projectImage: "",
       projectVideo: "",
@@ -139,6 +141,12 @@ export default function BasicsClient({data}: {data: PageData}) {
     data.category?.items?.map((cat) => ({
       label: cat.name,
       value: cat.id,
+    })) || [];
+
+  const sectorOptions =
+    data.sector?.items?.map((sector) => ({
+      label: sector.name,
+      value: sector.id,
     })) || [];
 
   return (
@@ -254,7 +262,44 @@ export default function BasicsClient({data}: {data: PageData}) {
                 />
               </FormContainer>
             </Section>
-
+            <Section
+              text={[
+                "Projenizin sektörünü seçin.",
+                "Doğru sektör seçimi, projenizin hedef kitlesine ulaşmasını kolaylaştırır.",
+              ]}
+              title="Proje Sektörü">
+              <FormContainer className="grid gap-4">
+                <FormFieldUI
+                  control={form.control}
+                  name="sectorId"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel>Sektör Türleri</FormLabel>
+                      <FormControl>
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
+                          {sectorOptions.map((sector) => (
+                            <div className="flex items-center space-x-2" key={sector.value}>
+                              <Checkbox
+                                checked={field.value === sector.value}
+                                id={sector.value}
+                                onCheckedChange={() => {
+                                  field.onChange(sector.value);
+                                }}
+                              />
+                              <Label htmlFor={sector.value}>{sector.label}</Label>
+                            </div>
+                          ))}
+                        </div>
+                      </FormControl>
+                      {field.value.length === 0 && (
+                        <p className="text-muted-foreground text-xs">Bir sektör seçilmelidir</p>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </FormContainer>
+            </Section>
             <Section
               text={[
                 "Projenizin kategorisini seçin.",
