@@ -2,13 +2,15 @@
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {toast} from "@/components/ui/sonner";
-import {
+import type {
+  UpwithCrowd_Files_FileResponseDto,
   type GetApiFileTypeGroupRulesetResponse,
   type GetApiPublicFileResponse,
   type UpwithCrowd_Members_SaveMemberDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {putMemberApiById} from "@repo/actions/upwithcrowd/member/put-action";
 import {FileUpload} from "@repo/ui/upwithcrowd/file-upload/index";
+import {useEffect, useState} from "react";
 import {useMember} from "@/app/providers/member";
 import {IndividualForm} from "../_components/indiviual-form";
 import {OrganizationForm} from "../_components/organization-form";
@@ -16,13 +18,14 @@ import OrganizationFormTable from "../_components/table";
 
 export default function NewPersonalAccount({
   memberDocuments,
+  memberId,
   fileResponse,
 }: {
   memberDocuments: GetApiFileTypeGroupRulesetResponse;
   fileResponse: GetApiPublicFileResponse;
+  memberId: string;
 }) {
   const {setCurrentMember, currentMember} = useMember();
-
   async function onSubmit(values: unknown) {
     try {
       const result = await putMemberApiById({
@@ -46,7 +49,10 @@ export default function NewPersonalAccount({
       toast.error("Hesabınız güncellenirken bir hata oluştu. Lütfen tekrar deneyin.");
     }
   }
-
+  const [files, setFiles] = useState<GetApiPublicFileResponse>(fileResponse);
+  useEffect(() => {
+    setFiles(fileResponse);
+  }, [memberId]);
   return (
     <div className="mb-4 space-y-8">
       <Card className="mx-auto  w-full p-2 sm:p-6">
@@ -75,8 +81,11 @@ export default function NewPersonalAccount({
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 sm:gap-6">
-              <FileUpload
+              <FileUpload<UpwithCrowd_Files_FileResponseDto>
                 classNames={{container: "md:col-span-full", multiSelect: "bg-white"}}
+                onSuccess={(file) => {
+                  setFiles((prev) => [...prev, {...file, fileId: file.id || ""}]);
+                }}
                 propertyId={currentMember.id || ""}
                 ruleset={memberDocuments}
               />
@@ -91,7 +100,7 @@ export default function NewPersonalAccount({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <OrganizationFormTable response={fileResponse} />
+              <OrganizationFormTable key={currentMember.id} response={files} />
             </CardContent>
           </Card>
         </>
