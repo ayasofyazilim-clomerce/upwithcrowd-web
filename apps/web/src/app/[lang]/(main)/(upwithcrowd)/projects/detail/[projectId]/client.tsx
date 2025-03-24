@@ -1,9 +1,18 @@
 "use client";
-import type {UpwithCrowd_Projects_ListProjectsResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {
+  UpwithCrowd_Projects_ListProjectsResponseDto,
+  UpwithCrowd_Projects_ProjectStatisticsDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import SendNotificationForm from "@repo/ui/upwithcrowd/novu/send-notification-form";
 import FundingCard from "@repo/ui/upwithcrowd/project-components/funding-card";
 
-function ClientPage({projectDetail}: {projectDetail: UpwithCrowd_Projects_ListProjectsResponseDto}) {
+function ClientPage({
+  projectDetail,
+  stats,
+}: {
+  projectDetail: UpwithCrowd_Projects_ListProjectsResponseDto;
+  stats: UpwithCrowd_Projects_ProjectStatisticsDto | null;
+}) {
   const topics = [
     {
       value: `${projectDetail.id}_followers`,
@@ -20,7 +29,7 @@ function ClientPage({projectDetail}: {projectDetail: UpwithCrowd_Projects_ListPr
   ];
   return (
     <div className="mt-2 grid grid-cols-2 gap-3">
-      <FundingCard projectDetail={projectDetail} />
+      <FundingCard projectDetail={projectDetail} statsResponse={stats} />
       <SendNotificationForm notificationType="topics" topics={topics} />
     </div>
   );

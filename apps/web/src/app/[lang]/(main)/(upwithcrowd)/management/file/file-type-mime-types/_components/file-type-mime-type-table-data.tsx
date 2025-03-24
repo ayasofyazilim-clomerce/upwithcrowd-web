@@ -6,7 +6,7 @@ import {
   type UpwithCrowd_FileTypeMimeTypes_FileTypeMimeTypesListDto,
   type UpwithCrowd_FileTypeMimeTypes_FileTypeMimeTypesUpdateDto,
   type UpwithCrowd_FileTypes_ListFileTypeDto,
-  type UpwithCrowd_Members_MimeTypeListDto,
+  type UpwithCrowd_MimeTypes_MimeTypeListDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import type {
   TanstackTableCreationProps,
@@ -30,7 +30,7 @@ type FileRelationEntityTable = TanstackTableCreationProps<UpwithCrowd_FileTypeMi
 function fileTypeMimeTypesTableActions(
   router: AppRouterInstance,
   languageData: DefaultResource,
-  mimeTypeData: UpwithCrowd_Members_MimeTypeListDto[],
+  mimeTypeData: UpwithCrowd_MimeTypes_MimeTypeListDto[],
   fileTypeData: UpwithCrowd_FileTypes_ListFileTypeDto[],
 ) {
   const actions: TanstackTableTableActionsType[] = [];
@@ -62,7 +62,7 @@ function fileTypeMimeTypesTableActions(
           },
         }}
         widgets={{
-          MimeType: CustomComboboxWidget<UpwithCrowd_Members_MimeTypeListDto>({
+          MimeType: CustomComboboxWidget<UpwithCrowd_MimeTypes_MimeTypeListDto>({
             languageData,
             list: mimeTypeData,
             selectIdentifier: "id",
@@ -86,7 +86,7 @@ function fileTypeMimeTypesRowActions(
   languageData: DefaultResource,
   router: AppRouterInstance,
   grantedPolicies: Record<Policy, boolean>,
-  mimeTypeData: UpwithCrowd_Members_MimeTypeListDto[],
+  mimeTypeData: UpwithCrowd_MimeTypes_MimeTypeListDto[],
   fileTypeData: UpwithCrowd_FileTypes_ListFileTypeDto[],
 ): TanstackTableRowActionsType<UpwithCrowd_FileTypeMimeTypes_FileTypeMimeTypesListDto>[] {
   const actions: TanstackTableRowActionsType<UpwithCrowd_FileTypeMimeTypes_FileTypeMimeTypesListDto>[] = [
@@ -119,7 +119,7 @@ function fileTypeMimeTypesRowActions(
             },
           }}
           widgets={{
-            MimeType: CustomComboboxWidget<UpwithCrowd_Members_MimeTypeListDto>({
+            MimeType: CustomComboboxWidget<UpwithCrowd_MimeTypes_MimeTypeListDto>({
               languageData,
               list: mimeTypeData,
               selectIdentifier: "id",
@@ -174,7 +174,7 @@ function fileTypeMimeTypesTable(
   languageData: DefaultResource,
   router: AppRouterInstance,
   grantedPolicies: Record<Policy, boolean>,
-  mimeTypeData: UpwithCrowd_Members_MimeTypeListDto[],
+  mimeTypeData: UpwithCrowd_MimeTypes_MimeTypeListDto[],
   fileTypeData: UpwithCrowd_FileTypes_ListFileTypeDto[],
 ): FileRelationEntityTable {
   const table: FileRelationEntityTable = {
