@@ -80,10 +80,10 @@ function organizationTable() {
         title: "Dosya Görüntüleme",
       },
     ],
-    fillerColumn: "fullPath",
+    fillerColumn: "fileDescription",
     columnVisibility: {
       type: "show",
-      columns: ["mimeType", "fileDescription", "isValidated", "fullPath"],
+      columns: ["fileTypeNamespace", "fileDescription", "isValidated", "mimeType"],
     },
   };
   return table;

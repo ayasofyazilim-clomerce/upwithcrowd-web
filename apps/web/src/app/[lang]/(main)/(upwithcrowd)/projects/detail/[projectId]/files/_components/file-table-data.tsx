@@ -33,12 +33,12 @@ const fileColumns = (locale: string) => {
       },
     },
     badges: {
-      isValidated: {
-        hideColumnValue: true,
+      fileTypeNamespace: {
+        hideColumnValue: false,
         values: [
           {
             label: "Onaylandı",
-            badgeClassName: "text-primary-foreground bg-primary border-transparent",
+            badgeClassName: "text-green-500 bg-green-100 border-green-500 w-24 justify-center",
             conditions: [
               {
                 when: (value) => Boolean(value),
@@ -48,8 +48,7 @@ const fileColumns = (locale: string) => {
           },
           {
             label: "Onaylanmadı",
-
-            badgeClassName: "text-destructive-foreground bg-destructive border-transparent",
+            badgeClassName: "text-red-500 bg-red-100 border-red-500 w-24 justify-center",
             conditions: [
               {
                 when: (value) => !value,
@@ -70,17 +69,16 @@ function fileTable(router: AppRouterInstance) {
   const table: FileTable = {
     columnVisibility: {
       type: "hide",
-      columns: ["fileId", "validatedUser", "validatedType"],
+      columns: ["fileId", "validatedUser", "fullPath", "isValidated"],
     },
     fillerColumn: "fileDescription",
     columnOrder: [
-      "isValidated",
       "fileTypeNamespace",
-      "mimeType",
       "fileDescription",
+      "mimeType",
+      "validatedType",
       "documentNumber",
       "documentOriginator",
-      "fullPath",
     ],
 
     rowActions: [
