@@ -178,7 +178,6 @@
   "UpwithCrowd.Category.Save": false,
   "UpwithCrowd.Category.Update": false,
   "UpwithCrowd.Category.Delete": false,
-  "UpwithCrowd.Category.List": false,
   "UpwithCrowd.Type": false,
   "UpwithCrowd.Type.Save": false,
   "UpwithCrowd.Type.Update": false,
@@ -200,6 +199,11 @@
   "UpwithCrowd.NotificationTopics.Update": false,
   "UpwithCrowd.NotificationTopics.Delete": false,
   "UpwithCrowd.NotificationTopics.List": false,
+  "UpwithCrowd.Sectors": false,
+  "UpwithCrowd.Sectors.Save": false,
+  "UpwithCrowd.Sectors.Update": false,
+  "UpwithCrowd.Sectors.Delete": false,
+  "UpwithCrowd.Sectors.List": false,
   "UpwithCrowd.Projects.ListMyProject": false,
   "UpwithCrowd.Projects.UpdateMyProject": false,
   "UpwithCrowd.Projects.DeleteMyProject": false,
@@ -215,5 +219,6 @@
   "UpwithCrowd.People.UpdateMyProjectPeople": false,
   "UpwithCrowd.People.SaveMyProjectPeople": false,
   "UpwithCrowd.People.DeleteMyProjectPeople": false,
-  "UpwithCrowd.People.ListMyProjectPeople": false
+  "UpwithCrowd.People.ListMyProjectPeople": false,
+  "UpwithCrowd.Category.List": false
 }

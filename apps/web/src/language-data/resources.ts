@@ -1152,6 +1152,11 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:Sectors:I": "MARKET, MOBILE";
   "UpwithCrowd:Sectors:J": "TRANSPORTATION SERVICES";
   "UpwithCrowd:Sectors:K": "BUILDING ARTS";
+  "Permission:Sectors": "Sectors";
+  "Permission:Sectors.Save": "Saving the Sector";
+  "Permission:Sectors.Delete": "Delete the Sector";
+  "Permission:Sectors.Update": "Update the Sector";
+  "Permission:Sectors.List": "List the Sectors";
   "00000": "Operation Successful";
   EM000: "Message format error";
   EM001: "Message type is not valid.";
@@ -1301,6 +1306,9 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:EPR75": "Only files with the following extensions are allowed for {fileTypeName}: {mimeTypes}.The file type you attempted to upload: {fileContentType}.";
   "UpwithCrowd:EPR76": "This member has not been validated. Please proceed with a valid membership.";
   "UpwithCrowd:UPW0001": "File could not be fetched from file storage!";
+  "UpwithCrowd:UPW0002": "An active member already exists with this email address.";
+  "UpwithCrowd:UPW0003": "Investment amount exceeds the maximum allowable funding (including additional funding). Transaction cannot be completed.";
+  "UpwithCrowd:UPW0004": "Investment amount exceeds the fundable limit. Transaction cannot be completed.";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";

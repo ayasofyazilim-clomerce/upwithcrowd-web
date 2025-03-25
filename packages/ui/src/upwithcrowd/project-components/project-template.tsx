@@ -1,33 +1,32 @@
-import {Avatar, AvatarFallback} from "@repo/ayasofyazilim-ui/atoms/avatar";
-import {Card, CardHeader, CardTitle, CardContent} from "@repo/ayasofyazilim-ui/atoms/card";
-import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
-import {Crown} from "lucide-react";
-import React, {useState} from "react";
-import {formatCurrency} from "@repo/ui/utils";
-import AuthCard from "./auth-card";
-import FundingTable from "./funding-card";
-import ProjectTeam from "./project-team";
+import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
 import type {
-  UpwithCrowd_Projects_ProjectsDetailResponseDto,
+  PagedResultDto_ListProjectInvestorDto,
   PagedResultDto_ListProjectsMembersResponseDto,
   UpwithCrowd_Files_FileResponseListDto,
-  PagedResultDto_ListProjectInvestorDto,
-  UpwithCrowd_Projects_ProjectStatisticsDto,
+  UpwithCrowd_Members_ListMemberResponseDto,
   UpwithCrowd_Payment_PaymentStatus,
   UpwithCrowd_Payment_SavePaymentTransactionDto,
-  UpwithCrowd_Members_ListMemberResponseDto,
+  UpwithCrowd_Projects_ProjectsDetailResponseDto,
+  UpwithCrowd_Projects_ProjectStatisticsDto,
 } from "@repo/actions/upwithcrowd/types";
-import ProjectSummary from "./project-summary";
-import TipTapEditor, {type JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
-import ProjectActions from "./project-actions";
-import MobileSupportDrawer from "./mobile-support-card";
+import {Avatar, AvatarFallback} from "@repo/ayasofyazilim-ui/atoms/avatar";
+import {Card, CardContent, CardHeader, CardTitle} from "@repo/ayasofyazilim-ui/atoms/card";
 import {toast} from "@repo/ayasofyazilim-ui/atoms/sonner";
+import DocumentCard from "@repo/ayasofyazilim-ui/molecules/document-card";
+import TipTapEditor, {type JSONContent} from "@repo/ayasofyazilim-ui/organisms/tiptap";
+import {formatCurrency} from "@repo/ui/utils";
+import {Crown} from "lucide-react";
 import {useParams} from "next/navigation";
 import type {Session} from "node_modules/@repo/utils/auth/auth-types";
-import {postApiPaymentTransaction} from "@repo/actions/upwithcrowd/payment-transaction/post-action";
-import {InvestorsDialog} from "./investors-card";
-import StatsCard from "./stats-card";
+import React, {useState} from "react";
 import {handleFileDownload} from "../file-upload/index";
+import AuthCard from "./auth-card";
+import FundingTable from "./funding-card";
+import {InvestorsDialog} from "./investors-card";
+import MobileSupportDrawer from "./mobile-support-card";
+import ProjectActions from "./project-actions";
+import ProjectSummary from "./project-summary";
+import ProjectTeam from "./project-team";
 
 function ProjectTemplate({
   data,
@@ -201,23 +200,23 @@ function ProjectTemplate({
                 selectedDonation={selectedDonation}
                 setSelectedDonation={setSelectedDonation}
               />
+              {session ? (
+                <div className="mt-6">
+                  {data.privilege ? (
+                    <div className="mb-8">
+                      <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
+                      <p>{data.privilege}</p>
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <AuthCard description="Ayrıcalıkları görmek için giriş yapın veya üye olun" title="Ayrıcalıklar" />
+              )}
 
               <FundingTable projectDetail={data} statsResponse={statsResponse} />
             </>
           )}
 
-          {session ? (
-            <div className="mt-6">
-              {data.privilege ? (
-                <div className="mb-8">
-                  <h2 className="mb-2 text-xl font-bold md:text-2xl">Ayrıcalıklar</h2>
-                  <p>{data.privilege}</p>
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <AuthCard description="Ayrıcalıkları görmek için giriş yapın veya üye olun" title="Ayrıcalıklar" />
-          )}
           <ProjectTeam memberResponse={projectsMember} />
           {/* Conditionally render investors card or auth card */}
           {!isEditable && (
@@ -281,11 +280,11 @@ function ProjectTemplate({
           ) : (
             <AuthCard description="Proje belgelerini görmek için giriş yapın veya üye olun" title="Belgeler" />
           )}
-          {session ? (
+          {/* {session ? (
             <StatsCard stats={statsResponse} />
           ) : (
             <AuthCard description="İstatistikleri görmek için giriş yapın veya üye olun" title="İstatistikler" />
-          )}
+          )} */}
         </div>
       </div>
     </main>

@@ -1,15 +1,16 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Building2, Users, UserRound, PieChartIcon, Receipt, Combine, AlertCircle} from "lucide-react";
-import {Pie, PieChart, ResponsiveContainer, Cell} from "recharts";
 import type {
-  UpwithCrowd_Projects_ListProjectsResponseDto,
+  PagedResultDto_ListMemberResponseDto,
   UpwithCrowd_Members_ListMemberResponseDto,
+  UpwithCrowd_Projects_ListProjectsResponseDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import PageHeader from "@repo/ui/upwithcrowd/theme/header";
+import {AlertCircle, Building2, Combine, PieChartIcon, Receipt, UserRound, Users} from "lucide-react";
+import React, {useEffect, useState} from "react";
+import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
 
 // Update the chartColors object to have more harmonious colors
 const chartColors = {
@@ -107,11 +108,7 @@ export interface DashboardProps {
       organization: UpwithCrowd_Members_ListMemberResponseDto[];
     };
     projects: UpwithCrowd_Projects_ListProjectsResponseDto[];
-    membersResponse: {
-      data: {
-        items: UpwithCrowd_Members_ListMemberResponseDto[];
-      };
-    };
+    membersResponse: PagedResultDto_ListMemberResponseDto;
   };
 }
 
@@ -143,7 +140,7 @@ export default function DashboardClient({data}: DashboardProps) {
   ];
 
   const totalProjects = data.projects.length;
-  const totalMembers = data.membersResponse.data.items.length;
+  const totalMembers = data.membersResponse.totalCount || 0;
   const individualMembersCount = data.filteredMembers.individual.length;
   const organizationMembersCount = data.filteredMembers.organization.length;
 
