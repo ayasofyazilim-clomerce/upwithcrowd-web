@@ -17,7 +17,7 @@ function ProjectActions({projectId}: {projectId: string}) {
     });
   }
   return (
-    <div className="flex flex-1 flex-row gap-3">
+    <div className="flex flex-1 flex-col gap-3 md:flex-row">
       <Button
         className="border-destructive text-destructive hover:text-destructive-foreground hover:bg-destructive h-12 justify-between gap-6 transition-all"
         onClick={() => {

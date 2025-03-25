@@ -6,10 +6,9 @@ import SendNotificationForm from "@repo/ui/upwithcrowd/novu/send-notification-fo
 
 function Form({notificationStats}: {notificationStats: ActivityStatsResponseDto | undefined}) {
   return (
-    <div className="grid grid-cols-2 gap-3">
-      <SendNotificationForm notificationType="broadcast" />
+    <div className="grid grid-cols-1 gap-3">
       <div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <Infocard
             content={notificationStats?.weeklySent.toString() || "0"}
             description="gönderilen bildirimler"
@@ -24,6 +23,7 @@ function Form({notificationStats}: {notificationStats: ActivityStatsResponseDto 
           />
         </div>
       </div>
+      <SendNotificationForm notificationType="broadcast" />
     </div>
   );
 }
