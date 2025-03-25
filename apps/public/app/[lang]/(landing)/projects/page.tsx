@@ -4,6 +4,7 @@ import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/act
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import {getSectorApi} from "@repo/actions/upwithcrowd/sector/actions";
 import {getResourceData} from "@/language/core/Default";
 import LandingHero from "@/components/landing-hero";
 import FilterSelector from "./_components/filter-selector";
@@ -15,7 +16,7 @@ import SortSelector from "./_components/sort-selector";
 async function getApiRequests(params: GetApiPublicProjectProjectListData) {
   try {
     const requiredRequests = await Promise.all([getPublicProjectsApi({...params, maxResultCount: 10})]);
-    const optionalRequests = await Promise.allSettled([getCategoryApi({...params})]);
+    const optionalRequests = await Promise.allSettled([getCategoryApi({...params}), getSectorApi({...params})]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -42,7 +43,7 @@ export default async function Page({
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
   const [projectsResponse] = apiRequests.requiredRequests;
-  const [categoriesResponse] = apiRequests.optionalRequests;
+  const [categoriesResponse, sectorResponse] = apiRequests.optionalRequests;
   const projects = projectsResponse.data.items || [];
   const totalCount = projectsResponse.data.totalCount || 0;
 
@@ -56,6 +57,7 @@ export default async function Page({
             <div className="flex flex-wrap items-center gap-4">
               <FilterSelector
                 categories={categoriesResponse.status === "fulfilled" ? categoriesResponse.value.data.items || [] : []}
+                sectors={sectorResponse.status === "fulfilled" ? sectorResponse.value.data.items || [] : []}
               />
               <SortSelector />
             </div>

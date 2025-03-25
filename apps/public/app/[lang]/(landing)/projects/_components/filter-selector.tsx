@@ -3,7 +3,10 @@
 import {Button} from "@/components/ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import type {UpwithCrowd_Categorys_CategoryListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import type {
+  UpwithCrowd_Categorys_CategoryListDto,
+  UpwithCrowd_Sectors_SectorListDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {FilterIcon} from "lucide-react";
 import {useRouter, useSearchParams} from "next/navigation";
 
@@ -14,7 +17,13 @@ const fundingTypeOptions = [
   {label: "Hisse & Borç Bazlı", value: "SHRE_DBIT"},
 ];
 
-export default function FilterSelector({categories}: {categories: UpwithCrowd_Categorys_CategoryListDto[]}) {
+export default function FilterSelector({
+  categories,
+  sectors,
+}: {
+  categories: UpwithCrowd_Categorys_CategoryListDto[];
+  sectors: UpwithCrowd_Sectors_SectorListDto[];
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const handleFilterChange = (type: string, value: string) => {
@@ -38,6 +47,12 @@ export default function FilterSelector({categories}: {categories: UpwithCrowd_Ca
       } else {
         params.set("categoryIds", value);
       }
+    } else if (type === "sectorId") {
+      if (value === "all") {
+        params.delete("sectorId");
+      } else {
+        params.set("sectorId", value);
+      }
     }
 
     // Preserve existing sort parameters
@@ -60,6 +75,9 @@ export default function FilterSelector({categories}: {categories: UpwithCrowd_Ca
       count++;
     }
     if (searchParams.get("categoryIds") && searchParams.get("categoryIds") !== "all") {
+      count++;
+    }
+    if (searchParams.get("sectorId") && searchParams.get("sectorId") !== "all") {
       count++;
     }
     return count;
@@ -119,6 +137,30 @@ export default function FilterSelector({categories}: {categories: UpwithCrowd_Ca
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id || ""}>
                   {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="sectorId">
+            Sektör
+          </label>
+          <Select
+            defaultValue={searchParams.get("sectorId") || "all"}
+            name="sector"
+            onValueChange={(value) => {
+              handleFilterChange("sectorId", value);
+            }}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sektör seçin" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tüm Sektörler</SelectItem>
+              {sectors.map((sector) => (
+                <SelectItem key={sector.id} value={sector.id || ""}>
+                  {sector.name}
                 </SelectItem>
               ))}
             </SelectContent>
