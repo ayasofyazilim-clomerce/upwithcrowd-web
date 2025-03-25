@@ -58,7 +58,7 @@ export default function MemberSwitcher() {
         <Button
           aria-expanded={open}
           aria-label="Üye seçin"
-          className={cn("h-auto w-[300px] justify-start rounded-full border-none px-2")}
+          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
           <MemberItem member={_currentMember} />
@@ -76,7 +76,7 @@ export default function MemberSwitcher() {
         <Button
           aria-expanded={open}
           aria-label="Üye seçin"
-          className={cn("h-auto w-[300px] justify-start rounded-full border-none px-2")}
+          className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
           <MemberItem member={_currentMember} />
@@ -180,7 +180,7 @@ function MemberItem({member}: {member: Partial<Member> | null}) {
           )}
         </Avatar>
         <div className="flex items-center gap-2 overflow-hidden text-left">
-          <div className="flex flex-col">
+          <div className="flex flex-col overflow-hidden">
             <div className="flex items-center gap-1 overflow-hidden text-ellipsis">
               <p className="overflow-hidden text-ellipsis text-nowrap">
                 {member?.type === "Organization" ? member.title : `${member?.name} ${member?.surname}`}

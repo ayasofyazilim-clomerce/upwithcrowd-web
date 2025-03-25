@@ -46,6 +46,7 @@ export function FileUploadContainer<T>({
       {} as Record<string, string[]>,
     ),
     maxFileCount: rule.isMulti ? rule.maxFileCount || 5 : 1,
+    maxSize: rule.maxSize || 1024 * 1024 * 5,
   };
 
   return (
@@ -54,6 +55,7 @@ export function FileUploadContainer<T>({
         onSuccess={onSuccess}
         key={rule.id}
         maxFileCount={config.maxFileCount}
+        maxSize={config.maxSize}
         accept={config.accept}
         classNames={classNames?.core}
         disabled={disabled}
