@@ -6,6 +6,8 @@ import {handlePostResponse} from "@repo/utils/api";
 import {useTransition} from "react";
 import {useMember} from "@/app/providers/member";
 import "react-international-phone/style.css";
+import {getBaseLink} from "@/utils/lib";
+import {useRouter} from "next/navigation";
 
 const $BusinessAccount = {
   type: "object",
@@ -29,6 +31,7 @@ interface BusinessAccount {
 }
 
 export function NewBusinessAccountForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const {setCurrentMember} = useMember();
   const uiSchema = createUiSchemaWithResource({
@@ -80,13 +83,13 @@ export function NewBusinessAccountForm() {
         };
         startTransition(() => {
           void postApiMember({requestBody}).then((res) => {
-            handlePostResponse(res);
             if (res.type === "success") {
               setCurrentMember({
                 ...requestBody,
                 id: res.data.memberID || "",
               });
             }
+            handlePostResponse(res, router, getBaseLink("dashboard/member/settings"));
           });
         });
       }}
