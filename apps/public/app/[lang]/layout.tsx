@@ -1,12 +1,16 @@
+"use server";
+
+import {myProfileApi} from "@repo/actions/core/AccountService/actions";
 import {getProfileImageApi} from "@repo/actions/upwithcrowd/profile/actions";
 import {getUserMembersApi} from "@repo/actions/upwithcrowd/user-members/actions";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {signOutServer} from "@repo/utils/auth";
 import {auth} from "@repo/utils/auth/next-auth";
+import {GeistSans} from "geist/font/sans";
+import type {Metadata} from "next";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import {Inter} from "next/font/google";
-import {myProfileApi} from "@repo/actions/core/AccountService/actions";
+import {Suspense} from "react";
 import {getLocalizationResources} from "@/utils/lib";
 import {getResourceData} from "@/language/core/Default";
 import "../globals.css";
@@ -14,12 +18,13 @@ import {LocaleProvider} from "../providers/locale";
 import type {Member} from "../providers/member";
 import Providers from "../providers/providers";
 
-const inter = Inter({subsets: ["latin"]});
-
-export const metadata = {
-  title: "UPwithCrowd",
-  description: "Empowering ideas through crowdfunding",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  await Promise.resolve();
+  return {
+    title: "UPwithCrowd",
+    description: "Empowering ideas through crowdfunding",
+  };
+}
 
 async function getApiRequests() {
   try {
@@ -45,7 +50,7 @@ export default async function RootLayout({children, params}: {children: React.Re
     if ("message" in apiRequests) {
       return (
         <html lang="en">
-          <body className={inter.className}>
+          <body className={GeistSans.className}>
             <ErrorComponent
               clearSession
               languageData={languageData}
@@ -76,12 +81,14 @@ export default async function RootLayout({children, params}: {children: React.Re
   const resources = await getLocalizationResources(lang);
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <LocaleProvider lang={lang} resources={resources}>
-          <Providers currentMember={member} key={session?.user?.email} members={members} session={session}>
-            {children}
-          </Providers>
-        </LocaleProvider>
+      <body className={GeistSans.className}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <LocaleProvider lang={lang} resources={resources}>
+            <Providers currentMember={member} key={session?.user?.email} members={members} session={session}>
+              {children}
+            </Providers>
+          </LocaleProvider>
+        </Suspense>
       </body>
     </html>
   );
