@@ -1,12 +1,13 @@
 import {getTaskApi} from "@repo/actions/upwithcrowd/tasks/action";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import type {GetApiTaskData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import EmptySupportRequestState from "../_components/empty-support-request-state";
 import SupportClient from "./client";
 
-async function getApiRequests() {
+async function getApiRequests(searchParams: GetApiTaskData) {
   try {
-    const requiredRequests = await Promise.all([getTaskApi()]);
+    const requiredRequests = await Promise.all([getTaskApi(searchParams)]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
@@ -17,8 +18,8 @@ async function getApiRequests() {
   }
 }
 
-export default async function SupportPage() {
-  const apiRequests = await getApiRequests();
+export default async function SupportPage({searchParams}: {searchParams: GetApiTaskData}) {
+  const apiRequests = await getApiRequests(searchParams);
   if ("message" in apiRequests) {
     return <EmptySupportRequestState />;
   }
