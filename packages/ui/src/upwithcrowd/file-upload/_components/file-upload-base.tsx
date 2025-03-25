@@ -8,7 +8,7 @@ import {cn} from "../../../utils";
 
 export type FileUploadBaseProps<T> = Pick<
   BaseFileUploaderProps,
-  "accept" | "maxFileCount" | "label" | "description" | "fileCardRenderer" | "classNames" | "children"
+  "accept" | "maxFileCount" | "label" | "description" | "fileCardRenderer" | "classNames" | "children" | "maxSize"
 > & {
   formData: FileFormData[];
   onSuccess?: (response: T) => void;
@@ -23,6 +23,7 @@ export type FileUploadBaseProps<T> = Pick<
 export function FileUploadBase<T>({
   accept = {"*": []},
   maxFileCount = 1,
+  maxSize = 1024 * 1024 * 5,
   formData,
   label,
   description,
@@ -86,7 +87,7 @@ export function FileUploadBase<T>({
       description={description}
       accept={accept}
       variant="button"
-      maxSize={1024 * 1024 * 2}
+      maxSize={maxSize}
       maxFileCount={maxFileCount}
       disabled={pending.length > 0 || disabled}
       fileCardRenderer={fileCardRenderer}

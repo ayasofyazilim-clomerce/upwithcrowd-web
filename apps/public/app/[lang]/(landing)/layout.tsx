@@ -9,14 +9,14 @@ export default async function Layout({children}: {children: React.ReactNode}) {
     notification = {
       appId: process.env.NOVU_APP_IDENTIFIER,
       appUrl: process.env.NOVU_APP_URL,
-      subscriberId: Array.isArray(session.user?.member_id) ? session.user.member_id[0] : session.user?.member_id || "",
+      subscriberId: session.user?.member_id || "",
       langugageData: {},
     };
   }
 
   return (
     <section className="overflow-hidden">
-      <Header appName={process.env.APPLICATION_NAME || "UPWITHCROWD"} notification={notification} />
+      <Header notification={notification} />
       <main className="flex-grow">{children}</main>
       <Footer />
     </section>

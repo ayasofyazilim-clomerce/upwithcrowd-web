@@ -15,10 +15,10 @@ import UPWC from "@public/upwc.png";
 import MemberSwitcher from "./member-switcher";
 
 export default function Header({
-  appName,
+  // appName,
   notification,
 }: {
-  appName: string;
+  // appName: string;
   notification?: NotificationProps | undefined;
 }) {
   const pathName = usePathname();
@@ -52,12 +52,12 @@ export default function Header({
       <div className="container mx-auto flex items-center justify-between px-12 md:px-0">
         <Link className="flex shrink-0 items-center" href={getBaseLink("", lang)}>
           <Image alt="" height={60} src={UPWC.src} width={60} />
-          <span className="text-primary hidden text-2xl font-bold lg:flex">{appName}</span>
+          {/* <span className="text-primary hidden text-lg font-bold lg:flex xl:text-2xl">{appName}</span> */}
         </Link>
 
         <div className="hidden flex-1 items-center justify-center lg:flex">
           <nav className="mx-8">
-            <ul className="flex items-center space-x-8 text-lg">
+            <ul className="flex items-center space-x-4 text-sm xl:space-x-8 xl:text-lg">
               {PublicLinks.map((link) => (
                 <li key={link.href}>
                   <Link
@@ -75,7 +75,7 @@ export default function Header({
           {session !== null ? (
             <div className="flex items-center space-x-6">
               <Link
-                className="flex items-center justify-center gap-2"
+                className="flex items-center justify-center gap-2 text-sm xl:text-base"
                 href={getBaseLink("dashboard/projects/new", lang)}>
                 <PlusCircle className="text-primary size-5" />
                 Proje Başlat

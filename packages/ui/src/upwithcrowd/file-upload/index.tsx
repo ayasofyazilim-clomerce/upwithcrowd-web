@@ -20,6 +20,7 @@ export type Rule = {
   dateRequired: boolean;
   isMulti: boolean;
   maxFileCount?: number | null;
+  maxSize?: number | null;
   isTenant: boolean;
   originatorRequired: boolean;
   descriptionRequired: boolean;
