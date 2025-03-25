@@ -15,7 +15,9 @@ const fileColumns = (locale: string) => {
   return tanstackTableCreateColumnsByRowData<UpwithCrowd_Payment_ListProjectInvestorDto>({
     rows: $UpwithCrowd_Payment_ListProjectInvestorDto.properties,
     languageData: {
-      fileTypeNamespace: "Dosya Tipi",
+      name: "Yatırımcı",
+      amount: "Miktar",
+      creationTime: "Yatırım Tarihi",
     },
     config: {
       locale,
