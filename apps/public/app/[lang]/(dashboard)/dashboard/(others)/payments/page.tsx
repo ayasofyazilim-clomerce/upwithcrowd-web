@@ -1,15 +1,13 @@
 import {getApiPaymentTransactionApi} from "@repo/actions/upwithcrowd/payment-transaction/action";
-import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
-import {getResourceData} from "@/language/core/Default";
 import EmptyPaymentsState from "../_components/empty-payments-state";
 import PaymentsPage from "./client";
 
 async function getApiRequests() {
   try {
-    const requiredRequests = await Promise.all([]);
-    const optionalRequests = await Promise.allSettled([getApiPaymentTransactionApi()]);
+    const requiredRequests = await Promise.all([getApiPaymentTransactionApi()]);
+    const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -19,21 +17,17 @@ async function getApiRequests() {
   }
 }
 
-export default async function Page({params}: {params: {lang: string}}) {
-  const {lang} = params;
-  const {languageData} = await getResourceData(lang);
-
+export default async function Page() {
   const apiRequests = await getApiRequests();
   if ("message" in apiRequests) {
-    return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
+    return <EmptyPaymentsState />;
   }
 
-  const [paymentsResponse] = apiRequests.optionalRequests;
-
-  const payments = paymentsResponse.status === "fulfilled" ? paymentsResponse.value.data : null;
+  const [paymentsResponse] = apiRequests.requiredRequests;
+  const payments = paymentsResponse.data;
 
   // Ödeme yoksa boş durumu göster
-  if (!payments || payments.totalCount === 0) {
+  if (payments.totalCount === 0) {
     return <EmptyPaymentsState />;
   }
 
