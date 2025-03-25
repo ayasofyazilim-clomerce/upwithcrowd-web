@@ -1,20 +1,22 @@
 import type {GetApiPublicProjectProjectListData} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getCategoryApi} from "@repo/actions/upwithcrowd/category-project/action";
 import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {isRedirectError} from "next/dist/client/components/redirect";
+import {getSectorApi} from "@repo/actions/upwithcrowd/sector/actions";
 import {getResourceData} from "@/language/core/Default";
 import LandingHero from "@/components/landing-hero";
 import FilterSelector from "./_components/filter-selector";
 import ListedProjectCard from "./_components/listed-project-card";
+import Pagination from "./_components/pagination";
 import SearchBar from "./_components/search-bar";
 import SortSelector from "./_components/sort-selector";
-import Pagination from "./_components/pagination";
 
 async function getApiRequests(params: GetApiPublicProjectProjectListData) {
   try {
     const requiredRequests = await Promise.all([getPublicProjectsApi({...params, maxResultCount: 10})]);
-    const optionalRequests = await Promise.allSettled([]);
+    const optionalRequests = await Promise.allSettled([getCategoryApi({...params}), getSectorApi({...params})]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -41,8 +43,10 @@ export default async function Page({
     return <ErrorComponent languageData={languageData} message={apiRequests.message} />;
   }
   const [projectsResponse] = apiRequests.requiredRequests;
+  const [categoriesResponse, sectorResponse] = apiRequests.optionalRequests;
   const projects = projectsResponse.data.items || [];
   const totalCount = projectsResponse.data.totalCount || 0;
+
   return (
     <div className="bg-background min-h-screen">
       <section className="px-4 py-8 md:px-6 md:py-12 lg:py-20">
@@ -51,11 +55,14 @@ export default async function Page({
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <SearchBar />
             <div className="flex flex-wrap items-center gap-4">
-              <FilterSelector />
+              <FilterSelector
+                categories={categoriesResponse.status === "fulfilled" ? categoriesResponse.value.data.items || [] : []}
+                sectors={sectorResponse.status === "fulfilled" ? sectorResponse.value.data.items || [] : []}
+              />
               <SortSelector />
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {projects.map((project) => (
               <ListedProjectCard
                 key={project.id}
@@ -68,6 +75,7 @@ export default async function Page({
                   fundCollectionType: project.fundCollectionType?.toString() || "",
                   url: project.filePath || "",
                   totalInvestment: project.totalInvestment || 0,
+                  categoryTypes: project.categoryTypes || [],
                 }}
               />
             ))}

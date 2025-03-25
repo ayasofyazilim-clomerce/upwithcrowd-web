@@ -3,33 +3,34 @@
 import {Button} from "@/components/ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {useRouter, useSearchParams} from "next/navigation";
+import type {
+  UpwithCrowd_Categorys_CategoryListDto,
+  UpwithCrowd_Sectors_SectorListDto,
+} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {FilterIcon} from "lucide-react";
+import {useRouter, useSearchParams} from "next/navigation";
 
 const fundingTypeOptions = [
-  {label: "Tüm Tipler", value: "all"},
-  {label: "Hisse Bazlı", value: "shre"},
-  {label: "Borç Bazlı", value: "dbit"},
-  {label: "Hisse & Borç Bazlı", value: "shre_dbit"},
+  {label: "Tüm Tipler", value: "NONE"},
+  {label: "Hisse Bazlı", value: "SHRE"},
+  {label: "Borç Bazlı", value: "DBIT"},
+  {label: "Hisse & Borç Bazlı", value: "SHRE_DBIT"},
 ];
 
-// const dateRangeOptions = [
-//   {label: "Tüm Zamanlar", value: "all"},
-//   {label: "Yakında Bitenler (7 gün)", value: "7d"},
-//   {label: "Yakında Bitenler (15 gün)", value: "15d"},
-//   {label: "Yakında Bitenler (30 gün)", value: "30d"},
-//   {label: "Yakında Bitenler (60 gün)", value: "60d"},
-// ];
-
-export default function FilterSelector() {
+export default function FilterSelector({
+  categories,
+  sectors,
+}: {
+  categories: UpwithCrowd_Categorys_CategoryListDto[];
+  sectors: UpwithCrowd_Sectors_SectorListDto[];
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const handleFilterChange = (type: string, value: string) => {
     const params = new URLSearchParams(searchParams);
 
     if (type === "fundType") {
-      if (value === "all") {
+      if (value === "NONE") {
         params.delete("fundCollectionType");
       } else {
         params.set("fundCollectionType", value);
@@ -39,6 +40,18 @@ export default function FilterSelector() {
         params.delete("dateFilter");
       } else {
         params.set("dateFilter", value);
+      }
+    } else if (type === "categoryIds") {
+      if (value === "all") {
+        params.delete("categoryIds");
+      } else {
+        params.set("categoryIds", value);
+      }
+    } else if (type === "sectorId") {
+      if (value === "all") {
+        params.delete("sectorId");
+      } else {
+        params.set("sectorId", value);
       }
     }
 
@@ -59,6 +72,12 @@ export default function FilterSelector() {
       count++;
     }
     if (searchParams.get("dateFilter") && searchParams.get("dateFilter") !== "all") {
+      count++;
+    }
+    if (searchParams.get("categoryIds") && searchParams.get("categoryIds") !== "all") {
+      count++;
+    }
+    if (searchParams.get("sectorId") && searchParams.get("sectorId") !== "all") {
       count++;
     }
     return count;
@@ -82,7 +101,7 @@ export default function FilterSelector() {
             Fonlama Tipi
           </label>
           <Select
-            defaultValue={searchParams.get("fundCollectionType") || "all"}
+            defaultValue={searchParams.get("fundCollectionType") || "NONE"}
             name="funding-type"
             onValueChange={(value) => {
               handleFilterChange("fundType", value);
@@ -100,28 +119,53 @@ export default function FilterSelector() {
           </Select>
         </div>
 
-        {/* <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="date-range">
-            Tarih Aralığı
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="categoryIds">
+            Kategori
           </label>
           <Select
-            defaultValue={searchParams.get("dateFilter") || "all"}
-            name="date-range"
+            defaultValue={searchParams.get("categoryIds") || "all"}
+            name="category"
             onValueChange={(value) => {
-              handleFilterChange("dateRange", value);
+              handleFilterChange("categoryIds", value);
             }}>
             <SelectTrigger>
-              <SelectValue placeholder="Aralık seçin" />
+              <SelectValue placeholder="Kategori seçin" />
             </SelectTrigger>
             <SelectContent>
-              {dateRangeOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+              <SelectItem value="all">Tüm Kategoriler</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id || ""}>
+                  {category.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-        </div> */}
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="sectorId">
+            Sektör
+          </label>
+          <Select
+            defaultValue={searchParams.get("sectorId") || "all"}
+            name="sector"
+            onValueChange={(value) => {
+              handleFilterChange("sectorId", value);
+            }}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sektör seçin" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tüm Sektörler</SelectItem>
+              {sectors.map((sector) => (
+                <SelectItem key={sector.id} value={sector.id || ""}>
+                  {sector.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </PopoverContent>
     </Popover>
   );

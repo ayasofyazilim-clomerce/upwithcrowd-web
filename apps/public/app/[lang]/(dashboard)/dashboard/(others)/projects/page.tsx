@@ -3,6 +3,8 @@ import type {
   GetApiProjectData,
   UpwithCrowd_Projects_FundCollectionType,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
+import {getCategoryApi} from "@repo/actions/upwithcrowd/category-project/action";
+import {getSectorApi} from "@repo/actions/upwithcrowd/sector/actions";
 import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
 import {structuredError} from "@repo/utils/api";
 import {Plus} from "lucide-react";
@@ -17,7 +19,7 @@ import SortSelector from "./_components/sort-selector";
 async function getApiRequests(searchParams: GetApiProjectData) {
   try {
     const requiredRequests = await Promise.all([getProjectApi(searchParams)]);
-    const optionalRequests = await Promise.allSettled([]);
+    const optionalRequests = await Promise.allSettled([getCategoryApi(), getSectorApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -34,29 +36,11 @@ export default async function Page({
     sortField?: string;
     sortOrder?: string;
     fundCollectionType?: UpwithCrowd_Projects_FundCollectionType;
-    dateFilter?: string;
     search?: string;
+    categoryIds?: string;
+    sectorId?: string;
   };
 }) {
-  const getDateFilter = (filter?: string) => {
-    const now = new Date();
-    switch (filter) {
-      case "7d":
-        now.setDate(now.getDate() + 7);
-        return now.toISOString();
-      case "15d":
-        now.setDate(now.getDate() + 15);
-        return now.toISOString();
-      case "30d":
-        now.setDate(now.getDate() + 30);
-        return now.toISOString();
-      case "60d":
-        now.setDate(now.getDate() + 60);
-        return now.toISOString();
-      default:
-        return undefined;
-    }
-  };
   const apiRequests = await getApiRequests({
     maxResultCount: 100,
     sorting:
@@ -64,29 +48,36 @@ export default async function Page({
         ? `${searchParams.sortField} ${searchParams.sortOrder}`
         : undefined,
     fundCollectionType: searchParams.fundCollectionType || undefined,
-    projectEndDate: getDateFilter(searchParams.dateFilter),
     projectName: searchParams.search,
+    categoryIds:
+      searchParams.categoryIds && searchParams.categoryIds !== "all" ? [searchParams.categoryIds] : undefined,
+    sectorId: searchParams.sectorId && searchParams.sectorId !== "all" ? searchParams.sectorId : undefined,
   });
 
   if ("message" in apiRequests) {
     return <EmptyProjectsState />;
   }
   const [projectsResponse] = apiRequests.requiredRequests;
+  const [categoriesResponse, sectorResponse] = apiRequests.optionalRequests;
 
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center">
             <ProjectSearch />
-            <FilterSelector />
+
+            <FilterSelector
+              categories={categoriesResponse.status === "fulfilled" ? categoriesResponse.value.data.items || [] : []}
+              sectors={sectorResponse.status === "fulfilled" ? sectorResponse.value.data.items || [] : []}
+            />
             <SortSelector />
+            <Link className="w-full sm:w-auto md:ml-auto" href="/dashboard/projects/new">
+              <Button className="h-full w-full sm:w-auto">
+                Yeni Proje Oluştur <Plus className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
-          <Link className="w-full sm:w-auto" href="/dashboard/projects/new">
-            <Button className="w-full sm:w-auto" size="sm">
-              Yeni Proje Oluştur <Plus className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
         </div>
 
         <section className="pb-6">

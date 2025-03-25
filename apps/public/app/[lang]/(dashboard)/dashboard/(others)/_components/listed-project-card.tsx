@@ -13,7 +13,6 @@ import {getBaseLink} from "@/utils/lib";
 export default function ListedProjectCard({project}: {project: Project}) {
   const params = useParams<{lang: string | string[]}>();
   const {lang} = params;
-
   const safeLang = Array.isArray(lang) ? lang[0] : lang;
   const baseLink = getBaseLink("dashboard", safeLang);
   // Calculate the correct funding percentage
@@ -40,7 +39,7 @@ export default function ListedProjectCard({project}: {project: Project}) {
             width={300}
           />
           <Badge className="bg-primary text-primary-foreground absolute bottom-2 left-2 font-medium">
-            {project.fundCollectionType}
+            {project.categoryTypes?.join(", ")}
           </Badge>
         </div>
         <div className="flex flex-col justify-center gap-1">
