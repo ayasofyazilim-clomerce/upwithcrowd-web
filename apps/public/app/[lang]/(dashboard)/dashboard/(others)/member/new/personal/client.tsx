@@ -25,6 +25,7 @@ import {useForm} from "react-hook-form";
 import {PhoneInput} from "react-international-phone";
 import "react-international-phone/style.css";
 import * as z from "zod";
+import {getBaseLink} from "@/utils/lib";
 
 const formSchema = z.object({
   name: z
@@ -108,7 +109,7 @@ export default function NewPersonalAccount() {
               member_type: "Individual",
             },
           });
-          handlePostResponse(response, router);
+          handlePostResponse(response, router, getBaseLink("dashboard"));
         } else {
           toast.error(response.message);
         }
