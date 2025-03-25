@@ -1,10 +1,10 @@
 "use client";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import type {PagedResultDto_ListPaymentTransactionDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import PaymentsTable from "./_components/table";
-import type {Payment} from "./types";
 
 interface PaymentsTableProps {
-  payments: Payment[];
+  payments: PagedResultDto_ListPaymentTransactionDto;
   projectID: string;
   amount: number;
 }
@@ -17,7 +17,7 @@ export default function PaymentsPage({payments, projectID, amount}: PaymentsTabl
         <CardDescription className="text-sm">Ödemelerinizi yönetin.</CardDescription>
       </CardHeader>
       <CardContent className="px-2 sm:px-6">
-        <PaymentsTable amount={amount} payments={payments} projectID={projectID} />
+        <PaymentsTable amount={amount} paymentsResponse={payments} projectID={projectID} />
       </CardContent>
     </Card>
   );

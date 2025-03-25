@@ -300,7 +300,7 @@ function TaskDetail({
                   handleMarkAsResolved();
                 }}>
                 <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Sorunum Çözüldü</span>
+                <span>Sorun Çözüldü</span>
               </Button>
               {/* Comment Dialog */}
               <Dialog onOpenChange={setIsCommentDialogOpen} open={isCommentDialogOpen}>

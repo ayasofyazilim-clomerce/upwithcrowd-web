@@ -4,13 +4,12 @@ import type {
   UpwithCrowd_Projects_FundCollectionType,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {getCategoryApi} from "@repo/actions/upwithcrowd/category-project/action";
+import {getSectorApi} from "@repo/actions/upwithcrowd/sector/actions";
 import {getProjectApi} from "@repo/actions/upwithcrowd/project/action";
-import ErrorComponent from "@repo/ui/components/error-component";
 import {structuredError} from "@repo/utils/api";
 import {Plus} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import Link from "next/link";
-import {getSectorApi} from "@repo/actions/upwithcrowd/sector/actions";
 import EmptyProjectsState from "../_components/empty-projects-state";
 import ListedProjectCard from "../_components/listed-project-card";
 import FilterSelector from "./_components/filter-selector";
@@ -56,7 +55,7 @@ export default async function Page({
   });
 
   if ("message" in apiRequests) {
-    return <ErrorComponent languageData={{SomethingWentWrong: "Something went wrong"}} message={apiRequests.message} />;
+    return <EmptyProjectsState />;
   }
   const [projectsResponse] = apiRequests.requiredRequests;
   const [categoriesResponse, sectorResponse] = apiRequests.optionalRequests;
