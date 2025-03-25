@@ -12,7 +12,10 @@ const investmentColumns = (locale: string) => {
   return tanstackTableCreateColumnsByRowData<UpwithCrowd_Payment_ListPaymentTransactionDto>({
     rows: $UpwithCrowd_Payment_ListPaymentTransactionDto.properties,
     languageData: {
-      investmentTypeNamespace: "Dosya Tipi",
+      projectName: "Proje Adı",
+      paymentStatus: "Ödeme Durumu",
+      remainingAmount: "Tutar",
+      paymentType: "Ödeme Tipi",
     },
     links: {
       projectName: {

@@ -19,10 +19,17 @@ const fileColumns = (locale: string) => {
   return tanstackTableCreateColumnsByRowData<UpwithCrowd_Files_FileResponseListDto>({
     rows: $UpwithCrowd_Files_FileResponseListDto.properties,
     languageData: {
-      fileTypeNamespace: "Dosya Tipi",
+      fileTypeName: "Dosya",
+      fileDescription: "Açıklama",
+      mimeType: "Mime Tipi",
+      validatedType: "Onay Tipi",
+      documentNumber: "Belge Numarası",
+      documentOriginator: "Belge Sahibi",
+      createdDate: "Oluşturulma Tarihi",
+      updatedDate: "Güncellenme Tarihi",
     },
     faceted: {
-      fileTypeNamespace: {
+      fileTypeName: {
         options: [
           {
             icon: FileTextIcon,
@@ -34,7 +41,7 @@ const fileColumns = (locale: string) => {
       },
     },
     badges: {
-      fileTypeNamespace: {
+      fileTypeName: {
         hideColumnValue: false,
         values: [
           {
@@ -70,11 +77,11 @@ function fileTable(router: AppRouterInstance) {
   const table: FileTable = {
     columnVisibility: {
       type: "hide",
-      columns: ["fileId", "validatedUser", "fullPath", "isValidated"],
+      columns: ["fileId", "validatedUser", "fullPath", "isValidated", "fileTypeNamespace"],
     },
     fillerColumn: "fileDescription",
     columnOrder: [
-      "fileTypeNamespace",
+      "fileTypeName",
       "fileDescription",
       "mimeType",
       "validatedType",
