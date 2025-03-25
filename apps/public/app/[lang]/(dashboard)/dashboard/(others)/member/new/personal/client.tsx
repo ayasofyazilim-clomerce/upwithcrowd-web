@@ -1,6 +1,4 @@
 "use client";
-import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
-import {putMyProfileApi} from "@repo/actions/upwithcrowd/my-profile/put-action";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
@@ -15,6 +13,8 @@ import type {
 import {zodResolver} from "@hookform/resolvers/zod";
 import EDevletIcon from "@public/e-devlet-icon.png";
 import EDevletWhiteIcon from "@public/e-devlet-white-icon.png";
+import {postApiMember} from "@repo/actions/upwithcrowd/member/post-action";
+import {putMyProfileApi} from "@repo/actions/upwithcrowd/my-profile/put-action";
 import {handlePostResponse} from "@repo/utils/api";
 import {useSession} from "@repo/utils/auth";
 import {AlertCircle, CheckCircle2, Loader2} from "lucide-react";
@@ -25,6 +25,7 @@ import {useForm} from "react-hook-form";
 import {PhoneInput} from "react-international-phone";
 import "react-international-phone/style.css";
 import * as z from "zod";
+import {getBaseLink} from "@/utils/lib";
 
 const formSchema = z.object({
   name: z
@@ -108,7 +109,7 @@ export default function NewPersonalAccount() {
               member_type: "Individual",
             },
           });
-          handlePostResponse(response, router);
+          handlePostResponse(response, router, getBaseLink("dashboard"));
         } else {
           toast.error(response.message);
         }
