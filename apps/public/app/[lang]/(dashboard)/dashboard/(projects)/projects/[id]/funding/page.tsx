@@ -15,11 +15,11 @@ export default async function Funding({
   if (projectDetail.type !== "success") return <>veri bulunamadı</>;
 
   const fundingDetail: Required<UpwithCrowd_Projects_UpdateProjectFundingDto> = {
-    fundCollectionType: projectDetail.data.fundCollectionType || "NONE",
+    fundCollectionType: projectDetail.data.fundCollectionType || "SHRE",
     fundNominalAmount: projectDetail.data.fundNominalAmount || 0,
     fundableAmount: projectDetail.data.fundableAmount || 0,
-    additionalFundRate: projectDetail.data.additionalFundRate || "",
-    qualifiedFundRate: projectDetail.data.qualifiedFundRate || "",
+    additionalFundRate: projectDetail.data.additionalFundRate || 0,
+    qualifiedFundRate: projectDetail.data.qualifiedFundRate || 0,
     overFunding: projectDetail.data.overFunding || false,
     cashValue: 1000,
     minimumFundAmount: projectDetail.data.minimumFundAmount || 0,
