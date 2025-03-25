@@ -26,7 +26,6 @@ export default async function Page() {
   const [paymentsResponse] = apiRequests.requiredRequests;
   const payments = paymentsResponse.data;
 
-  // Ödeme yoksa boş durumu göster
   if (payments.totalCount === 0) {
     return <EmptyPaymentsState />;
   }
