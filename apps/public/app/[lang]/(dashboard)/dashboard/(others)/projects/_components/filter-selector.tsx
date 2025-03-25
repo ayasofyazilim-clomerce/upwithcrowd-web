@@ -3,25 +3,18 @@
 import {Button} from "@/components/ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {useRouter, useSearchParams} from "next/navigation";
+import type {UpwithCrowd_Categorys_CategoryListDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {FilterIcon} from "lucide-react";
+import {useRouter, useSearchParams} from "next/navigation";
 
 const fundingTypeOptions = [
   {label: "Tüm Tipler", value: "all"},
-  {label: "Hisse Bazlı", value: "shre"},
-  {label: "Borç Bazlı", value: "dbit"},
-  {label: "Hisse & Borç Bazlı", value: "shre_dbit"},
+  {label: "Hisse Bazlı", value: "SHRE"},
+  {label: "Borç Bazlı", value: "DBIT"},
+  {label: "Hisse & Borç Bazlı", value: "SHRE_DBIT"},
 ];
 
-const dateRangeOptions = [
-  {label: "Tüm Zamanlar", value: "all"},
-  {label: "Yakında Bitiyor (7 gün)", value: "7d"},
-  {label: "Yakında Bitiyor (15 gün)", value: "15d"},
-  {label: "Yakında Bitiyor (30 gün)", value: "30d"},
-  {label: "Yakında Bitiyor (60 gün)", value: "60d"},
-];
-
-export default function FilterSelector() {
+export default function FilterSelector({categories}: {categories: UpwithCrowd_Categorys_CategoryListDto[]}) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -34,11 +27,11 @@ export default function FilterSelector() {
       } else {
         params.set("fundCollectionType", value);
       }
-    } else if (type === "dateRange") {
+    } else if (type === "category") {
       if (value === "all") {
-        params.delete("dateFilter");
+        params.delete("categoryIds");
       } else {
-        params.set("dateFilter", value);
+        params.set("categoryIds", value);
       }
     }
 
@@ -58,7 +51,7 @@ export default function FilterSelector() {
     if (searchParams.get("fundCollectionType") && searchParams.get("fundCollectionType") !== "all") {
       count++;
     }
-    if (searchParams.get("dateFilter") && searchParams.get("dateFilter") !== "all") {
+    if (searchParams.get("categoryIds") && searchParams.get("categoryIds") !== "all") {
       count++;
     }
     return count;
@@ -77,6 +70,31 @@ export default function FilterSelector() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] space-y-4 p-3">
+        {/* Category Filter */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium" htmlFor="category-filter">
+            Kategori
+          </label>
+          <Select
+            defaultValue={searchParams.get("categoryIds") || "all"}
+            name="category-filter"
+            onValueChange={(value) => {
+              handleFilterChange("category", value);
+            }}>
+            <SelectTrigger>
+              <SelectValue placeholder="Kategori seçin" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tüm Kategoriler</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id.toString() || ""}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="funding-type">
             Fonlama Tipi
@@ -92,29 +110,6 @@ export default function FilterSelector() {
             </SelectTrigger>
             <SelectContent>
               {fundingTypeOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="date-range">
-            Tarih Aralığı
-          </label>
-          <Select
-            defaultValue={searchParams.get("dateFilter") || "all"}
-            name="date-range"
-            onValueChange={(value) => {
-              handleFilterChange("dateRange", value);
-            }}>
-            <SelectTrigger>
-              <SelectValue placeholder="Aralık seçin" />
-            </SelectTrigger>
-            <SelectContent>
-              {dateRangeOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
                 </SelectItem>
