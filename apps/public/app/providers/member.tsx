@@ -3,7 +3,6 @@ import {toast} from "@/components/ui/sonner";
 import type {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {putMemberSwitchByIdApi} from "@repo/actions/upwithcrowd/member/put-action";
 import {useSession} from "@repo/utils/auth";
-import {useRouter} from "next/navigation";
 import {createContext, useContext, useState} from "react";
 
 export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
@@ -39,7 +38,6 @@ export default function MemberProvider({
   const [__member, setCurrentMember] = useState<Member | null>(currentMember);
   const [memberList, setMemberList] = useState<Member[]>(members);
   const {sessionUpdate} = useSession();
-  const router = useRouter();
   const _currentMember = currentMember;
 
   const saveMember = (_member: Member) => {
@@ -51,8 +49,6 @@ export default function MemberProvider({
             member_id: _member.id,
             member_type: _member.type,
           },
-        }).finally(() => {
-          router.refresh();
         });
       } else {
         toast.error("Cannot switch member at the moment. Please try again later.");
