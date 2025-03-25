@@ -1,16 +1,16 @@
 import {getMemberApi} from "@repo/actions/upwithcrowd/member/actions";
 import {getPublicProjectsApi} from "@repo/actions/upwithcrowd/public-project/action";
 import ErrorComponent from "@repo/ui/components/error-component";
-import {isRedirectError} from "next/dist/client/components/redirect";
 import {structuredError} from "@repo/utils/api";
+import {isRedirectError} from "next/dist/client/components/redirect";
 import {getResourceData} from "@/language-data/core/Default";
 import DashboardClient from "./client";
 
 async function getApiRequests() {
   try {
     const requiredRequests = await Promise.all([
-      getMemberApi({maxResultCount: 999}),
-      getPublicProjectsApi({maxResultCount: 999}),
+      getMemberApi({isValidated: true}),
+      getPublicProjectsApi({projectStateType: "PA", maxResultCount: 100}),
     ]);
     const optionalRequests = await Promise.allSettled([]);
     return {requiredRequests, optionalRequests};
@@ -54,11 +54,7 @@ export default async function Page({params}: {params: {lang: string}}) {
         organization: organizationMembers,
       },
       projects,
-      membersResponse: {
-        data: {
-          items: members,
-        },
-      },
+      membersResponse: memberResponse.data,
     },
   };
   return <DashboardClient data={dashboardData.data} />;
