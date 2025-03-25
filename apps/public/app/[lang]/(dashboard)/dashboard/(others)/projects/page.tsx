@@ -10,6 +10,7 @@ import {structuredError} from "@repo/utils/api";
 import {Plus} from "lucide-react";
 import {isRedirectError} from "next/dist/client/components/redirect";
 import Link from "next/link";
+import {getSectorApi} from "@repo/actions/upwithcrowd/sector/actions";
 import EmptyProjectsState from "../_components/empty-projects-state";
 import ListedProjectCard from "../_components/listed-project-card";
 import FilterSelector from "./_components/filter-selector";
@@ -19,7 +20,7 @@ import SortSelector from "./_components/sort-selector";
 async function getApiRequests(searchParams: GetApiProjectData) {
   try {
     const requiredRequests = await Promise.all([getProjectApi(searchParams)]);
-    const optionalRequests = await Promise.allSettled([getCategoryApi()]);
+    const optionalRequests = await Promise.allSettled([getCategoryApi(), getSectorApi()]);
     return {requiredRequests, optionalRequests};
   } catch (error) {
     if (!isRedirectError(error)) {
@@ -38,6 +39,7 @@ export default async function Page({
     fundCollectionType?: UpwithCrowd_Projects_FundCollectionType;
     search?: string;
     categoryIds?: string;
+    sectorId?: string;
   };
 }) {
   const apiRequests = await getApiRequests({
@@ -50,13 +52,14 @@ export default async function Page({
     projectName: searchParams.search,
     categoryIds:
       searchParams.categoryIds && searchParams.categoryIds !== "all" ? [searchParams.categoryIds] : undefined,
+    sectorId: searchParams.sectorId && searchParams.sectorId !== "all" ? searchParams.sectorId : undefined,
   });
 
   if ("message" in apiRequests) {
     return <ErrorComponent languageData={{SomethingWentWrong: "Something went wrong"}} message={apiRequests.message} />;
   }
   const [projectsResponse] = apiRequests.requiredRequests;
-  const [categoriesResponse] = apiRequests.optionalRequests;
+  const [categoriesResponse, sectorResponse] = apiRequests.optionalRequests;
 
   return (
     <div className="bg-background min-h-screen">
@@ -67,6 +70,7 @@ export default async function Page({
 
             <FilterSelector
               categories={categoriesResponse.status === "fulfilled" ? categoriesResponse.value.data.items || [] : []}
+              sectors={sectorResponse.status === "fulfilled" ? sectorResponse.value.data.items || [] : []}
             />
             <SortSelector />
             <Link className="w-full sm:w-auto md:ml-auto" href="/dashboard/projects/new">
