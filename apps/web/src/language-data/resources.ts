@@ -1311,6 +1311,9 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:UPW0004": "Investment amount exceeds the fundable limit. Transaction cannot be completed.";
   "UpwithCrowd:UPW0005": "The file size exceeds the allowed maximum size.";
   "UpwithCrowd:UPW0006": "Funding information is incomplete. Please fill in all required funding fields.";
+  "UpwithCrowd:UPW0007": "Project thumbnail is missing. Please upload a thumbnail for the project.";
+  "UpwithCrowd:UPW0008": "Project images are missing. Please upload at least one image for the project.";
+  "UpwithCrowd:UPW0009": "There are unvalidated files. Please perform the validation process.";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";
