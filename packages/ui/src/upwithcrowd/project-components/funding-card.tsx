@@ -76,7 +76,7 @@ function prepareListViewData(
     },
     {
       label: "Nitelikli Yatırımcı",
-      value: formatCurrency(statsResponse?.qualifiedInvestorCount),
+      value: `${statsResponse?.qualifiedInvestorCount}`,
       info: "Proje için şimdiye kadar yatırım yapan nitelikli yatırımcı sayısı",
     },
     {
