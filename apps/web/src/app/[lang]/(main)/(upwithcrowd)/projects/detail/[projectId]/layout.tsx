@@ -75,7 +75,7 @@ export default async function Layout({
           </Badge>
         </div>
       </PageHeader>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-5">
         <Infocard
           className="min-w-full"
           content={projectStatistics.investorCount?.toString() || "0"}
@@ -109,6 +109,12 @@ export default async function Layout({
       </div>
 
       <TabLayout
+        classNames={{
+          horizontal: {
+            tabList:
+              "max-w-full bg-transparent gap-2 bg-muted  flex-row overflow-x-auto lg:justify-center justify-start",
+          },
+        }}
         tabList={[
           {
             href: baseLink,

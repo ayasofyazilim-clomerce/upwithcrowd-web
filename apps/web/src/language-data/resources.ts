@@ -1309,6 +1309,7 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:UPW0002": "An active member already exists with this email address.";
   "UpwithCrowd:UPW0003": "Investment amount exceeds the maximum allowable funding (including additional funding). Transaction cannot be completed.";
   "UpwithCrowd:UPW0004": "Investment amount exceeds the fundable limit. Transaction cannot be completed.";
+  "UpwithCrowd:UPW0005": "The file size exceeds the allowed maximum size.";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";

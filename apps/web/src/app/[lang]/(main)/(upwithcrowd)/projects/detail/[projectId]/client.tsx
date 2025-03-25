@@ -28,7 +28,7 @@ function ClientPage({
     },
   ];
   return (
-    <div className="mt-2 grid grid-cols-2 gap-3">
+    <div className="mt-2 grid grid-cols-1 gap-3 lg:grid-cols-2">
       <FundingCard projectDetail={projectDetail} statsResponse={stats} />
       <SendNotificationForm notificationType="topics" topics={topics} />
     </div>
