@@ -15,7 +15,7 @@ import {CustomMultiSelectWidget} from "@repo/ayasofyazilim-ui/organisms/schema-f
 import {handleDeleteResponse, handlePutResponse} from "@repo/utils/api";
 import {isActionGranted, useGrantedPolicies} from "@repo/utils/policies";
 import {Trash2} from "lucide-react";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {useTransition} from "react";
 import {deleteUserByIdApi} from "@repo/actions/core/IdentityService/delete-actions";
 import {putUserApi} from "@repo/actions/core/IdentityService/put-actions";
@@ -40,10 +40,10 @@ export default function Form({
   userRoles: Volo_Abp_Identity_IdentityRoleDto[];
   userOrganizationUnits: Volo_Abp_Identity_OrganizationUnitDto[];
 }) {
+  const {lang} = useParams<{lang: string}>();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const {grantedPolicies} = useGrantedPolicies();
-
   const uiSchema = createUiSchemaWithResource({
     schema: $Volo_Abp_Identity_IdentityUserUpdateDto,
     resources: languageData,
@@ -134,8 +134,10 @@ export default function Form({
         formData={{
           ...userDetailsData,
           roleNames: userRoles.map((role) => role.name || ""),
+
           organizationUnitIds: userOrganizationUnits.map((org) => org.id || ""),
         }}
+        locale={lang}
         onSubmit={({formData}) => {
           startTransition(() => {
             void putUserApi({

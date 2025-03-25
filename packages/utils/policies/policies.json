@@ -203,22 +203,5 @@
   "UpwithCrowd.Sectors.Save": false,
   "UpwithCrowd.Sectors.Update": false,
   "UpwithCrowd.Sectors.Delete": false,
-  "UpwithCrowd.Sectors.List": false,
-  "UpwithCrowd.Projects.ListMyProject": false,
-  "UpwithCrowd.Projects.UpdateMyProject": false,
-  "UpwithCrowd.Projects.DeleteMyProject": false,
-  "UpwithCrowd.Members.MyProfile": false,
-  "UpwithCrowd.Members.DeleteMyMember": false,
-  "UpwithCrowd.Members.ListMyMember": false,
-  "UpwithCrowd.Members.UpdateMyMember": false,
-  "UpwithCrowd.ProjectEntrepreneur.UpdateMyProjectEntrepreneur": false,
-  "UpwithCrowd.ProjectEntrepreneur.ListMyProjectEntrepreneur": false,
-  "UpwithCrowd.ProjectEntrepreneur.DeleteMyProjectEntrepreneur": false,
-  "UpwithCrowd.ProjectEntrepreneur.SaveMyProjectEntrepreneur": false,
-  "UpwithCrowd.Payments.ListMyPayments": false,
-  "UpwithCrowd.People.UpdateMyProjectPeople": false,
-  "UpwithCrowd.People.SaveMyProjectPeople": false,
-  "UpwithCrowd.People.DeleteMyProjectPeople": false,
-  "UpwithCrowd.People.ListMyProjectPeople": false,
-  "UpwithCrowd.Category.List": false
+  "UpwithCrowd.Sectors.List": false
 }
