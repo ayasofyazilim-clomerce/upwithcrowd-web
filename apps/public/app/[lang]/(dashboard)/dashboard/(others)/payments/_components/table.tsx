@@ -1,6 +1,7 @@
 "use client";
 import {toast} from "@/components/ui/sonner";
 import type {
+  PagedResultDto_ListPaymentTransactionDto,
   UpwithCrowd_Payment_ListPaymentTransactionDto,
   UpwithCrowd_Payment_SavePaymentTransactionDto,
 } from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
@@ -11,11 +12,10 @@ import {tanstackTableCreateColumnsByRowData} from "@repo/ayasofyazilim-ui/molecu
 import {formatCurrency} from "@repo/ui/utils";
 import {LinkIcon} from "lucide-react";
 import {useRouter} from "next/navigation";
-import type {Payment} from "../types";
 import ExpandedRow from "./expanded-row-component";
 
 interface PaymentsTableProps {
-  payments: Payment[];
+  paymentsResponse: PagedResultDto_ListPaymentTransactionDto;
   projectID: string;
   amount: number;
 }
@@ -23,8 +23,9 @@ interface PaymentsTableProps {
 function AmountRow(row: UpwithCrowd_Payment_ListPaymentTransactionDto) {
   return <div>{formatCurrency(row.amount)}</div>;
 }
-export default function PaymentsTable({payments}: PaymentsTableProps) {
+export default function PaymentsTable({paymentsResponse}: PaymentsTableProps) {
   const router = useRouter();
+  const paymentsData = paymentsResponse.items?.filter((payment) => !payment.relatedTransactionID) || [];
 
   const columns = tanstackTableCreateColumnsByRowData<UpwithCrowd_Payment_ListPaymentTransactionDto>({
     rows: $UpwithCrowd_Payment_ListPaymentTransactionDto.properties,
@@ -50,8 +51,8 @@ export default function PaymentsTable({payments}: PaymentsTableProps) {
         type: "show",
       }}
       columns={columns}
-      data={payments.filter((payment) => !payment.relatedTransactionID)}
-      expandedRowComponent={(row) => ExpandedRow({row, payments})}
+      data={paymentsData}
+      expandedRowComponent={(row) => ExpandedRow({row, payments: paymentsData})}
       fillerColumn="projectName"
       rowActions={[
         {
