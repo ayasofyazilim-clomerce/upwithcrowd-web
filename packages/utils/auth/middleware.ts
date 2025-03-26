@@ -9,6 +9,7 @@ const homeRoute = process.env.HOME_ROUTE || "/";
 const protectedRoutes = process.env.PROTECTED_ROUTES?.split(",") || [];
 const unauthorizedRoutes = process.env.UNAUTHORIZED_ROUTES?.split(",") || [];
 const protectAllRoutes = process.env.PROTECT_ALL_ROUTES === "true";
+const isAdminPanel = process.env.IS_ADMIN_PANEL === "true";
 
 export const i18n = {
   defaultLocale: process.env.DEFAULT_LOCALE || "en",
@@ -42,6 +43,9 @@ function getLocale(request: NextRequest) {
   return getLocaleFromCookies(request) || getLocaleFromBrowser(request) || getLocaleFromRequest(request);
 }
 function isUserAuthorized(request: NextAuthRequest) {
+  if (isAdminPanel) {
+    return Boolean(request.auth?.user?.access_token && request.auth?.user.role === "admin");
+  }
   return Boolean(request.auth?.user?.access_token && (request.auth.user.userName || request.auth.user.email));
 }
 function redirectToLocale(request: NextRequest, pathname: string) {

@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node get-resources.js && prettier --write \"language/resources.ts\" && next dev",
-    "build": "next build",
+    "resources": "node get-resources.js && prettier --write \"language/resources.ts\"",
+    "dev": "pnpm resources && next dev",
+    "build": "pnpm resources && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix --quiet",
