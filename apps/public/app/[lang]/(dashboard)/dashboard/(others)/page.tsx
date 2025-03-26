@@ -103,7 +103,7 @@ export default function ProfileClient() {
                       className="hover:bg-muted cursor-pointer transition-colors"
                       key={membership.id}
                       onClick={() => {
-                        setCurrentMember(membership, true);
+                        setCurrentMember(membership);
                         setMembers(members);
                       }}>
                       <CardContent className="p-6">
