@@ -35,6 +35,11 @@ const memberColumns = (locale: string) => {
     languageData: {
       title: "Tam Adı",
       isValidated: "Onay Durumu",
+      tel: "Kurumsal Telefon",
+      mobile: "Cep Telefonu",
+      mail: "E-posta Adresi",
+      isInvestor: "Yatırımcı",
+      isEntrepreneur: "Girişimci",
     },
     custom: {
       title: {
@@ -72,8 +77,9 @@ function memberTable() {
     fillerColumn: "title",
     columnVisibility: {
       type: "show",
-      columns: ["title", "mail", "mobile", "isEntrepreneur", "isInvestor", "isValidated"],
+      columns: ["title", "mail", "tel", "mobile", "isEntrepreneur", "isInvestor", "isValidated"],
     },
+    columnOrder: ["title", "mail", "mobile", "tel", "isEntrepreneur", "isInvestor", "isValidated"],
   };
   return table;
 }
