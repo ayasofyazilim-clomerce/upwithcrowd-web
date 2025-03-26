@@ -20,7 +20,7 @@ import {BadgeCheck, LogOut, PlusCircle, UserIcon, HelpCircle} from "lucide-react
 import Link from "next/link";
 import {useParams, usePathname, useRouter} from "next/navigation";
 import * as React from "react";
-import {useEffect} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {getBaseLink} from "@/utils/lib";
 import {useMember} from "@/app/providers/member";
 import type {Member} from "@/app/providers/member";
@@ -29,28 +29,28 @@ export default function MemberSwitcher() {
   const router = useRouter();
   const path = usePathname();
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const {session} = useSession();
   const {currentMember} = useMember();
-  let _currentMember = currentMember; // members?.find((x) => x.type === "Individual") || null;
+
+  const activeMember = useMemo(() => {
+    if (currentMember) return currentMember;
+    return {
+      id: session?.user?.member_id || "",
+      name: session?.user?.name || "",
+      surname: session?.user?.surname || "",
+      identifier: session?.user?.email || "",
+      type: "Individual" as const,
+      idType: "TCKN" as const,
+      mail: session?.user?.email || "",
+    };
+  }, [currentMember, session]);
 
   useEffect(() => {
     if (!currentMember && path.includes("/dashboard")) {
       router.push("/dashboard/member/new/personal");
     }
-  }, [_currentMember, path]);
-
-  if (!_currentMember) {
-    _currentMember = {
-      id: session?.user?.member_id || "",
-      name: session?.user?.name || "",
-      surname: session?.user?.surname || "",
-      identifier: session?.user?.email || "",
-      type: "Individual",
-      idType: "TCKN",
-      mail: session?.user?.email || "",
-    };
-  }
+  }, [currentMember, path]);
 
   const DesktopContent = (
     <Popover modal onOpenChange={setOpen} open={open}>
@@ -61,11 +61,11 @@ export default function MemberSwitcher() {
           className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
-          <MemberItem member={_currentMember} />
+          <MemberItem member={activeMember} />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="min-w-[300px] p-0">
-        <Content currentMember={_currentMember} setOpen={setOpen} />
+        <Content currentMember={activeMember} setOpen={setOpen} />
       </PopoverContent>
     </Popover>
   );
@@ -79,12 +79,12 @@ export default function MemberSwitcher() {
           className={cn("h-auto w-[200px] justify-start rounded-full border-none px-2")}
           role="combobox"
           variant="outline">
-          <MemberItem member={_currentMember} />
+          <MemberItem member={activeMember} />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <Content currentMember={_currentMember} setOpen={setOpen} />
+          <Content currentMember={activeMember} setOpen={setOpen} />
         </div>
       </DrawerContent>
     </Drawer>
@@ -154,7 +154,7 @@ function ListItem({
       )}
       key={member.id}
       onSelect={() => {
-        setCurrentMember(member, true);
+        setCurrentMember(member);
         setOpen(false);
       }}
       value={member.id}>
