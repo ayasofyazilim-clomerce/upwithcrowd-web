@@ -3,6 +3,7 @@ import {toast} from "@/components/ui/sonner";
 import type {UpwithCrowd_Members_ListMemberResponseDto} from "@ayasofyazilim/upwithcrowd-saas/UPWCService";
 import {putMemberSwitchByIdApi} from "@repo/actions/upwithcrowd/member/put-action";
 import {useSession} from "@repo/utils/auth";
+import {useRouter} from "next/navigation";
 import {createContext, useContext, useState} from "react";
 
 export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
@@ -11,7 +12,7 @@ export type Member = UpwithCrowd_Members_ListMemberResponseDto & {
 export interface MemberContent {
   currentMember: Member | null;
   members: Member[];
-  setCurrentMember: (c: Member) => void;
+  setCurrentMember: (c: Member, refresh?: boolean) => void;
   setMembers: (m: Member[]) => void;
 }
 export const MemberContext = createContext<MemberContent>({
@@ -35,12 +36,13 @@ export default function MemberProvider({
   currentMember: Member | null;
   members: Member[];
 }) {
+  const router = useRouter();
   const [__member, setCurrentMember] = useState<Member | null>(currentMember);
   const [memberList, setMemberList] = useState<Member[]>(members);
   const {sessionUpdate} = useSession();
   const _currentMember = currentMember;
 
-  const saveMember = (_member: Member) => {
+  const saveMember = (_member: Member, refresh?: boolean) => {
     void putMemberSwitchByIdApi({id: _member.id}).then((res) => {
       if (res.type === "success") {
         setCurrentMember(_member);
@@ -49,6 +51,10 @@ export default function MemberProvider({
             member_id: _member.id,
             member_type: _member.type,
           },
+        }).finally(() => {
+          if (refresh) {
+            router.refresh();
+          }
         });
       } else {
         toast.error("Cannot switch member at the moment. Please try again later.");

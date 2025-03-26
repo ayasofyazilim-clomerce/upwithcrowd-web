@@ -4,6 +4,7 @@ export interface MyUser {
   email: string;
   name: string;
   surname: string;
+  role: string;
 
   //tenant
   tenantId?: string;
@@ -14,4 +15,4 @@ export interface MyUser {
   expiration_date: number;
 }
 
-export type { Session } from "next-auth";
+export type {Session} from "next-auth";

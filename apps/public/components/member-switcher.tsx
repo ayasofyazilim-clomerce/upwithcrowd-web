@@ -154,7 +154,7 @@ function ListItem({
       )}
       key={member.id}
       onSelect={() => {
-        setCurrentMember(member);
+        setCurrentMember(member, true);
         setOpen(false);
       }}
       value={member.id}>

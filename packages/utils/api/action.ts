@@ -1,7 +1,6 @@
 "use server";
-import {getAccountServiceClient} from "../auth/auth-actions";
-import {auth} from "../auth/auth";
 import {AccountServiceClient} from "@ayasofyazilim/core-saas/AccountService";
+import {auth} from "../auth/auth";
 
 export async function getGrantedPoliciesApi(isAdmin?: boolean) {
   try {
