@@ -23,11 +23,11 @@ const fundingSchema = z.object({
   fundCollectionType: z.enum($UpwithCrowd_Projects_FundCollectionType.enum).optional(),
   fundNominalAmount: z.coerce.number().min(0, "Amount must be greater than or equal to 0"),
   fundableAmount: z.coerce.number().min(0, "Amount must be greater than or equal to 0"),
-  additionalFundRate: z.number(),
-  qualifiedFundRate: z.number(),
+  additionalFundRate: z.coerce.number(),
+  qualifiedFundRate: z.coerce.number(),
   overFunding: z.boolean().optional().nullable(),
   minimumFundAmount: z.number().nullable(),
-  privilege: z.string().max(135, "Privilege must be less than 135 characters").optional().nullable(),
+  privilege: z.string().max(600, "Privilege must be less than 600 characters").optional().nullable(),
   // projectStartDate: z.string(),
   // projectEndDate: z.string().optional(),
   cashValue: z.coerce.number().min(0, "Cash value must be greater than or equal to 0"),
@@ -392,7 +392,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                         <FormControl>
                           <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
-                            <Input className="pl-7" placeholder="0" type="text" {...field} />
+                            <Input className="pl-7" placeholder="0" type="number" {...field} />
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -415,7 +415,7 @@ export default function ClientFunding({fundingDetail}: {fundingDetail: UpwithCro
                         <FormControl>
                           <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
-                            <Input className="pl-7" placeholder="0" type="text" {...field} />
+                            <Input className="pl-7" placeholder="0" type="number" {...field} />
                           </div>
                         </FormControl>
                         <FormMessage />
