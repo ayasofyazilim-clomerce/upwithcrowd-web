@@ -84,7 +84,7 @@ export default async function RootLayout({children, params}: {children: React.Re
       <body className={GeistSans.className}>
         <Suspense fallback={<div>Loading...</div>}>
           <LocaleProvider lang={lang} resources={resources}>
-            <Providers currentMember={member} key={session?.user?.email} members={members} session={session}>
+            <Providers currentMember={member} members={members} session={session}>
               {children}
             </Providers>
           </LocaleProvider>
