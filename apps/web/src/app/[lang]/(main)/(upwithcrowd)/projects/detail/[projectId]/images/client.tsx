@@ -8,19 +8,27 @@ import {CheckCircle, XCircle} from "lucide-react";
 import {useMemo, useState, useTransition} from "react";
 import GalleryDialogFooter from "./_components/gallery-dialog-footer";
 
+// Helper function to determine file type based on file extension
+function getFileType(filePath: string): "image" | "video" {
+  const extension = filePath.split(".").pop()?.toLowerCase();
+  const videoExtensions = ["mp4", "webm", "ogg", "mov", "avi", "wmv", "flv", "mkv"];
+  return videoExtensions.includes(extension || "") ? "video" : "image";
+}
+
 function prepareImageData(data: GetApiFileResponse) {
   return data.map((item) => ({
     id: item.fileId || "",
     imageUrl: item.fullPath || "",
     alt: item.fileDescription || "",
     isValidated: Boolean(item.isValidated),
+    type: getFileType(item.fullPath || ""),
   }));
 }
 
 function ClientPage({imageResponse}: {imageResponse: GetApiFileResponse}) {
   const [isPending, startTransition] = useTransition();
   const [images, setImages] = useState(() => prepareImageData(imageResponse));
-  const galleryData = useMemo(() => prepareGalleryData(images), [images, prepareGalleryData]);
+  const galleryData = useMemo(() => prepareGalleryData(images), [images]);
 
   function prepareGalleryData(data: (GalleryItem & {isValidated: boolean})[]) {
     return data.map((item) => ({
