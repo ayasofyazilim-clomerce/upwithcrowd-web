@@ -1314,6 +1314,7 @@ export type UpwithCrowdResources = {
   "UpwithCrowd:UPW0007": "Project thumbnail is missing. Please upload a thumbnail for the project.";
   "UpwithCrowd:UPW0008": "Project images are missing. Please upload at least one image for the project.";
   "UpwithCrowd:UPW0009": "There are unvalidated files. Please perform the validation process.";
+  "UpwithCrowd:UPW0010": "Investment amount cannot be less than the minimum investment amount.";
 };
 export type AbpDddApplicationContractsResources = {
   MaxResultCountExceededExceptionMessage: "{0} can not be more than {1}! Increase {2}.{3} on the server side to allow more results.";
