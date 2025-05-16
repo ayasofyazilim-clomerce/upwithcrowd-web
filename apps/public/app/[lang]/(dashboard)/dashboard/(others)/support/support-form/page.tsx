@@ -58,10 +58,7 @@ export default function SupportFormClient() {
   async function searchProject(search: string) {
     try {
       const res = await getPublicProjectsApi({projectName: search, maxResultCount: 10});
-      if (res.type === "success") {
         return res.data.items?.map((i) => ({id: i.id, name: i.projectName})) || [];
-      }
-      return [];
     } catch (error) {
       return [];
     }
